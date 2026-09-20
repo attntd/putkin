@@ -4,8 +4,8 @@
 var catalog = [
     {id: "launcher", title: "Launcher", group: "Shell", shortcut: "SUPER + SPACE"},
     {id: "clipboard", title: "Schowek", group: "Shell", shortcut: "SUPER + V"},
-    {id: "commands", title: "Launcher komend", group: "Shell", shortcut: "SUPER + SHIFT + semicolon"},
-    {id: "settings", title: "Ustawienia", group: "Shell"},
+    {id: "commands", title: "Launcher komend", group: "Shell", shortcut: "SUPER + semicolon"},
+    {id: "settings", title: "Ustawienia", group: "Shell", command: ":settings"},
     {id: "quickSettings", title: "Szybkie ustawienia", group: "Shell", shortcut: "SUPER + SHIFT + Q"},
     {id: "audio", title: "Panel dźwięku", group: "Shell"},
     {id: "battery", title: "Panel baterii", group: "Shell"},
@@ -20,7 +20,12 @@ var catalog = [
     {id: "brightnessUp", title: "Jaśniej", group: "Ekran"},
     {id: "brightnessDown", title: "Ciemniej", group: "Ekran"},
     {id: "power", title: "Menu zasilania", group: "Sesja", shortcut: "SUPER + SHIFT + P"},
-    {id: "lock", title: "Zablokuj ekran", group: "Sesja"},
+    {id: "lock", title: "Zablokuj ekran", group: "Sesja", command: ":lock"},
+    {id: "shutdown", title: "Wyłącz komputer (shutdown)", group: "Sesja", command: ":shutdown"},
+    {id: "poweroff", title: "Wyłącz komputer (poweroff)", group: "Sesja", command: ":poweroff"},
+    {id: "sleep", title: "Uśpij", group: "Sesja", command: ":sleep"},
+    {id: "hibernate", title: "Hibernuj", group: "Sesja", command: ":hibernate"},
+    {id: "reboot", title: "Uruchom ponownie", group: "Sesja", command: ":reboot"},
     {id: "closeWindow", title: "Zamknij okno", group: "Hyprland"},
     {id: "floating", title: "Przełącz pływające okno", group: "Hyprland"},
     {id: "fullscreen", title: "Przełącz pełny ekran", group: "Hyprland"},
@@ -86,8 +91,29 @@ function parse(text) {
     try { value = JSON.parse(text); } catch (_) { return {error: "Niepoprawny JSON ustawień klawiatury."}; }
     if (!value || value.schemaVersion !== 1 || Object.keys(value).some(key => ["schemaVersion", "bindings"].indexOf(key) < 0))
         return {error: "Nieobsługiwana wersja lub opcje ustawień klawiatury."};
-    // Upgrade exactly the previous complete catalog, preserving user edits.
-    // A truncated or unknown catalog still fails normal validation.
+    // Upgrade complete catalogs from before the session commands, with or
+    // without screenshot. Never fill arbitrary holes in a damaged catalog.
+    const added = ["shutdown", "poweroff", "sleep", "hibernate", "reboot"];
+    if (Array.isArray(value.bindings) && !value.bindings.some(row => row && added.indexOf(row.action) >= 0)) {
+        const legacy = catalog.filter(action => added.indexOf(action.id) < 0
+            && (action.id !== "screenshot" || value.bindings.some(row => row && row.action === "screenshot")));
+        if (value.bindings.length === legacy.length && legacy.every(action =>
+                value.bindings.filter(row => row && row.action === action.id).length === 1)) {
+            const usedCommands = value.bindings.map(row => typeof row.command === "string" ? row.command.toLowerCase() : "");
+            const usedShortcuts = value.bindings.filter(row => row.action !== "commands").map(row => shortcut(row.shortcut));
+            value.bindings = value.bindings.map(row => {
+                if (row.action === "commands" && shortcut(row.shortcut) === "SUPER + SHIFT + semicolon"
+                        && usedShortcuts.indexOf("SUPER + semicolon") < 0)
+                    return Object.assign({}, row, {shortcut: find("commands").shortcut});
+                if ((row.action === "settings" || row.action === "lock") && row.command === ""
+                        && usedCommands.indexOf(find(row.action).command) < 0)
+                    return Object.assign({}, row, {command: find(row.action).command});
+                return row;
+            }).concat(defaults().filter(row => added.indexOf(row.action) >= 0).map(row =>
+                usedCommands.indexOf(row.command) < 0 ? row : Object.assign({}, row, {command: ""})));
+        }
+    }
+    // The oldest complete catalog also predates screenshot.
     if (Array.isArray(value.bindings) && value.bindings.length === catalog.length - 1
             && !value.bindings.some(row => row && row.action === "screenshot")) {
         const action = find("screenshot");

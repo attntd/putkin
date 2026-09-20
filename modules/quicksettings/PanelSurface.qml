@@ -138,7 +138,13 @@ UI.FadeScope {
         sourceComponent: LauncherPreview { service: root.host.launcher; launcherView: root.page }
     }
     Component { id: launcherPage; LauncherView { service: root.host.launcher; previewControl: previewLoader.item as Item; maximumHeight: Math.max(1, root.host.availableHeight - Metrics.space12 * 2) } }
-    Component { id: powerPage; PowerView { sessionService: root.host.sessionService } }
+    Component {
+        id: powerPage
+        PowerView {
+            sessionService: root.host.sessionService
+            requestedAction: root.host.coordinator.session ? root.host.coordinator.session.powerAction || "" : ""
+        }
+    }
     Component { id: batteryPage; BatteryView { battery: root.host.battery; powerProfiles: root.host.powerProfiles } }
     Component { id: audioPage; AudioView { audio: root.host.audio; monitor: root.host.screen ? root.host.screen.name : "" } }
     Component { id: networkPage; NetworkView { network: root.host.network } }

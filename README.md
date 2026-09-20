@@ -8,7 +8,9 @@ i stałą ścieżkę autostartu. [Szczegóły instalacji](docs/install.md).
 Minimalistyczny shell w **Quickshell/QML dla Hyprlanda**, budowany według czterech obrazów w katalogu głównym: ciemny Catppuccin Mocha, pastelowe akcenty, ostre narożniki i prosty górny pasek.
 
 **Launcher:** `Super+Spacja`, wyszukiwanie aplikacji, plików i schowka.
-`Super+V` otwiera Schowek; `Super+:` (Super+Shift+średnik) otwiera komendy.
+`Super+V` otwiera Schowek; `Super+;` (bez Shift) otwiera komendy.
+Domyślne komendy sesji: `shutdown`/`poweroff`, `sleep`, `hibernate`, `lock`,
+`reboot` i `settings` (w zwykłym launcherze poprzedzone `:`).
 Prefiksy `:a `, `:f `, `:c ` zmieniają się w filtr; puste pole pokazuje
 ostatnie użycia. Enter uruchamia/kopiuje, Escape przechodzi do nawigacji
 `j/k`, kolejny zamyka. [Obsługa i historia](docs/launcher.md).

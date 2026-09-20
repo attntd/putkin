@@ -1,5 +1,31 @@
 # Status implementacji
 
+## Komendy sesji i Super+; — 2026-09-20
+
+Tryb komend otwiera `Super+;`, bez Shift. Domyślne komendy to
+`shutdown`/`poweroff`, `sleep`, `hibernate`, `lock`, `reboot` i `settings`.
+Wyłączenie i restart otwierają istniejące potwierdzenie z fokusem na Anuluj.
+Uśpienie i hibernacja czekają na potwierdzoną blokadę kompozytora.
+Migracja kompletnych starszych ustawień dodaje komendy i zmienia stary
+domyślny skrót, zachowując własne przypisania oraz zajęte nazwy/skróty.
+
+- `scripts/check`: **217 QML PASS**, 0 błędów.
+- Testy QML: klawiatura **22 PASS**, screenshot **19 PASS**, sesja
+  **10 PASS**, launcher **62 PASS**; razem **113 PASS**, 0 FAIL i pominięć.
+- Adapter skrótów: **6 testów Python PASS**.
+- `scripts/test-session-integration`: **13 scenariuszy PASS** na prywatnym
+  D-Bus z atrapą logind, w tym Hibernate dopiero po aktualnym secure,
+  brak wywołania po timeout i niezależność dostępności suspend/hibernate.
+  Raport: `/tmp/launcher-commands-session.json`.
+- `scripts/test-keyboard-wayland`: **11 scenariuszy PASS** w izolowanym
+  Hyprlandzie, w tym rzeczywiste wejście Super+;, zapis skrótów, komendy,
+  przeładowanie oraz brak duplikatów i błędów QML/konfiguracji.
+  Raport: `/tmp/launcher-commands-keyboard/result.json`.
+
+Nie instalowano zmiany w aktywnej sesji ani nie wykonywano rzeczywistego
+wyłączenia, restartu, uśpienia, hibernacji lub uwierzytelniania PAM.
+[Kontrakt launchera](launcher.md), [ustawienia i migracja](keyboard.md).
+
 ## Odzyskiwanie aktywnego workspace — 2026-09-20
 
 **Wdrożone: `20260920-172244-98dd3094da3d`**, poprawka scalona do `main`

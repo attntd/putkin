@@ -2,8 +2,8 @@
 
 `Super+Spacja` / `launcher toggle` otwiera jeden panel na aktywnym monitorze.
 `Super+V` / `launcher openClipboard` otwiera od razu filtr Schowek.
-`Super+:` / `launcher openCommands` otwiera chip „Komenda” i puste pole
-z fokusem (na układzie polskim/US: Super+Shift+`;`). Oba skróty
+`Super+;` / `launcher openCommands` otwiera chip „Komenda” i puste pole
+z fokusem, bez Shift. Oba skróty
 zmieniają tryb również w już otwartym launcherze i przywracają fokus pola.
 Wyszukiwanie bez prefiksu łączy aplikacje, pliki oraz schowek. Puste pole
 pokazuje ostatnio wywołane pozycje pod nagłówkiem „Ostatnie”. Wpisz `:a `, `:f ` lub `:c `, aby
@@ -65,6 +65,13 @@ chipa przywraca zwykłe wyszukiwanie. Dokładnie dopasowane komendy z sekcji
 Puste pole i niepełna komenda nie pokazują podpowiedzi ani listy sugestii.
 [Ustawienia skrótów i komend](keyboard.md).
 
+Domyślnie dostępne są `shutdown` i `poweroff` (wyłączenie), `sleep`
+(uśpienie), `hibernate` (hibernacja), `lock` (blokada), `reboot` (restart)
+oraz `settings` (ustawienia). W zwykłym launcherze wpisz `:shutdown` itd.;
+w trybie „Komenda” samą nazwę. Restart i wyłączenie otwierają potwierdzenie
+wybranej operacji z fokusem na Anuluj. Uśpienie i hibernacja czekają na
+potwierdzoną przez kompozytor blokadę. Niedostępna operacja zgłasza błąd.
+
 `LauncherService` otrzymuje ten sam `WorkspaceService` co pasek. PanelHost
 przekazuje monitor, a serwis zapamiętuje natywny obiekt okna przed pobraniem
 fokusu przez panel. Zamknięte okno lub niedostępny Hyprland daje błąd;
@@ -73,9 +80,8 @@ potwierdza wynik z limitem 2 s. Powtórny Enter w trakcie oczekiwania nie
 wysyła kolejnej akcji. Spóźnione potwierdzenie nie zamyka nowej sesji panelu.
 Komendy działają również przy niedostępnym pomocniku wyszukiwania.
 
-Hyprland 0.56.2 dopasowuje symbol bazowy osobno od modyfikatorów: zapis
-skrótu to `SUPER + SHIFT + semicolon`. Lokalny `xkbcli how-to-type` dla
-układu `pl` potwierdza dwukropek na AC10/47 z Shift.
+Hyprland dopasowuje symbol bazowy osobno od modyfikatorów: zapis
+skrótu to `SUPER + semicolon`.
 [Implementacja dopasowania v0.56.2](https://github.com/hyprwm/Hyprland/blob/v0.56.2/src/managers/KeybindManager.cpp).
 
 ## Stan i granice

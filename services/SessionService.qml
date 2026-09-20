@@ -25,7 +25,7 @@ QtObject {
         const id = ++sequence;
         lastError = "";
         resultText = "";
-        phase = ["lock", "suspend", "idleSuspend"].indexOf(action) >= 0 ? "locking" : "dispatching";
+        phase = ["lock", "suspend", "hibernate", "idleSuspend"].indexOf(action) >= 0 ? "locking" : "dispatching";
         pending = { id: id, action: action };
         deadline.restart();
         if (!backend.request(id, action)) {

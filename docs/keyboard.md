@@ -1,9 +1,10 @@
 # Klawiatura — 2026-09-17
 
 Sekcja Ustawienia → Klawiatura przypisuje skrót i komendę `:` do gotowego
-działania. Katalog `core/Actions.js` obejmuje 50 działań: launcher, schowek,
+działania. Katalog `core/Actions.js` obejmuje 55 działań: launcher, schowek,
 komendy, ustawienia, panele audio/baterii/Quick Settings, pasek, powiadomienia
-i DND, screenshot, audio/mikrofon, jasność, blokadę/menu sesji, fokus/przenoszenie okien,
+i DND, screenshot, audio/mikrofon, jasność, blokadę/menu sesji, wyłączenie
+(`shutdown` i `poweroff`), uśpienie, hibernację, restart, fokus/przenoszenie okien,
 pływanie/pełny ekran, workspace 1–10 oraz przeniesienie okna do workspace.
 Własne dispatchery, polecenia powłoki i edytor istniejącego pliku Hyprlanda
 nie są częścią tego zakresu. Pozostałe skróty użytkownika pozostają w jego
@@ -38,11 +39,17 @@ potwierdzeniem aktywnych skrótów. Nie ma nowego daemona ani pollingu.
 Reload Hyprlanda zgłasza zdarzenie, po którym wracają zapisane przypisania.
 Restart Quickshella ponownie odczytuje plik.
 
-Screenshot ma domyślnie `Print` i `:screenshot`. Odczyt kompletnego
-poprzedniego katalogu 49 działań dodaje wyłącznie ten rekord w pamięci;
-dotychczasowe edycje są zachowane. Niepełna/uszkodzona lista nadal jest
-błędem. Zapis z edytora utrwala już pełne 50 rekordów. Cudzy Print jest
-konfliktem, tak jak inne przypisania; adapter nie usuwa obcych skrótów.
+Launcher komend ma domyślnie `SUPER + semicolon` (Super+; bez Shift).
+Komendy domyślne to `:settings`, `:lock`, `:shutdown`, `:poweroff`, `:sleep`,
+`:hibernate`, `:reboot` oraz `:screenshot`; screenshot zachowuje `Print`.
+Odczyt kompletnego poprzedniego katalogu 49/50 działań dodaje nowe rekordy
+w pamięci oraz uzupełnia puste komendy ustawień i blokady. Stary domyślny
+skrót komend zmienia się na Super+;, jeśli nie zajmuje go inne działanie.
+Własne przypisania pozostają; zajęte nazwy nowych komend nie są nadpisywane.
+Niepełna/uszkodzona lista nadal jest błędem. Zapis z edytora utrwala 55
+rekordów. Późniejsze świadome usunięcie lub zmiana przypisania pozostaje
+zachowane. Cudzy Print jest konfliktem, tak jak inne przypisania;
+adapter nie usuwa obcych skrótów.
 
 `config/menu-keybinds.lua` rejestruje siedem początkowych uchwytów z opisem
 `Putkin:<action>`. Adapter usuwa/odtwarza tylko te uchwyty i zachowuje dane
@@ -55,7 +62,9 @@ przypisaną komendę; Enter wykonuje ją przez ten sam `ActionController`.
 Komendy Hyprlanda zachowują okno i monitor sprzed otwarcia launchera.
 Otwieranie kolejnego panelu jest odroczone do zamknięcia starego launchera,
 aby jego sygnał aktywacji nie zamknął nowego widoku. Komendy niepełne niczego
-nie wykonują i nie pokazują pomocy. Menu sesji zachowuje potwierdzenia.
+nie wykonują i nie pokazują pomocy. `:shutdown`, `:poweroff` i `:reboot`
+otwierają potwierdzenie odpowiedniej operacji w menu sesji. `:sleep` i
+`:hibernate` czekają na potwierdzoną blokadę przed wysłaniem żądania logind.
 
 ## Sprawdzone API
 

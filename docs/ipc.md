@@ -260,7 +260,7 @@ oraz lokalne `quickshell ipc --help`. Reguły numerów i przenoszenia:
 | `launcher` | `toggle()` | `ok` lub błąd koordynatora; Super+Spacja |
 | `launcher` | `open()` | Otwarcie na skupionym monitorze, `ok` lub błąd |
 | `launcher` | `openClipboard()` | Otwarcie lub zmiana trybu na Schowek; `ok` lub błąd; Super+V |
-| `launcher` | `openCommands()` | Otwarcie lub zmiana trybu na komendy z `:` w polu; `ok` lub błąd; Super+: |
+| `launcher` | `openCommands()` | Otwarcie lub zmiana trybu na pusty chip „Komenda”; `ok` lub błąd; Super+; |
 | `launcher` | `close()` | Zamknięcie tylko aktywnego launchera |
 
 Przykład: `quickshell ipc --path /absolutna/instalacja/shell.qml call launcher toggle`.

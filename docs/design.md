@@ -264,7 +264,7 @@ Wynik komendy jest widoczny w liście i wymaga Enter; samo wpisywanie nie
 zmienia pulpitu. Filtry :a/:f/:c nadal traktują zawartość jako wyszukiwanie.
 
 Korekta 2026-09-17: `Super+V` otwiera launcher z filtrem schowka,
-`Super+:` otwiera pustą treść komendy z usuwalnym chipem „Komenda”.
+`Super+;` (bez Shift) otwiera pustą treść komendy z usuwalnym chipem „Komenda”.
 Nagłówek historii nazywa się „Ostatnie”. W trybie komend dwukropek jest
 reprezentowany przez chip; wpisanie `:w3` w zwykłym launcherze działa nadal.
 Niepełne komendy, w tym `:w`, nie pokazują tekstu pomocniczego.

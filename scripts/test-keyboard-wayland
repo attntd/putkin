@@ -125,6 +125,7 @@ local value=hl.get_config(key); assert(value.colors[1] == "{first}" and value.co
             time.sleep(.2)
             assert len(bindings())==8, bindings()
             assert shortcut('screenshot')==[(0,'print')], bindings()
+            assert shortcut('commands')==[(64,'semicolon')], bindings()
             passed('startup: eight owned bindings including Print, no duplicates or errors')
             border_options('#cba6f7', '#89b4fa')
             border_capture('window-border-default', '#cba6f7', '#89b4fa')
@@ -132,11 +133,11 @@ local value=hl.get_config(key); assert(value.colors[1] == "{first}" and value.co
             keys('-M','logo','-s','100','-k','space','-m','logo'); opened('launcher')
             assert state()['mode']==''
             close()
-            keys('-M','logo','-M','shift','-k','semicolon','-m','shift','-m','logo')
+            keys('-M','logo','-k','semicolon','-m','logo')
             result=opened('launcher'); assert result['mode']=='command' and result['text']=='' and result['results']==[], result
             close()
             keys('-M','logo','-k','v','-m','logo'); assert opened('launcher')['mode']=='clipboard'
-            close(); passed('real Super+Space / Super+: / Super+V keyboard input')
+            close(); passed('real Super+Space / Super+; / Super+V keyboard input')
             ipc('ui','openSettings'); opened('settings')
             window=eventually(clients,lambda cs:any(c['title']=='Ustawienia' for c in cs),'settings toplevel')
             window=next(c for c in window if c['title']=='Ustawienia'); assert window['floating'], window

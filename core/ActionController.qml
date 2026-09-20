@@ -18,6 +18,18 @@ QtObject {
     function invoke(id: string, window: var, monitor: string): bool {
         if (!Actions.find(id)) { lastError = qsTr("Nieznane działanie."); return false; }
         lastError = "";
+        if (id === "shutdown" || id === "poweroff" || id === "reboot") {
+            const action = id === "shutdown" ? "poweroff" : id;
+            const capability = sessionService.capability(action);
+            if (sessionService.busy || !capability.available) {
+                lastError = sessionService.busy ? qsTr("Trwa operacja sesji.") : capability.reason;
+                return false;
+            }
+            Qt.callLater(() => {
+                if (!coordinator.openPower(action)) lastError = coordinator.lastError;
+            });
+            return true;
+        }
         if (id === "screenshot") {
             if (!screenshot || screenshot.blocked || screenshot.phase !== "idle" || screenshot.backend.busy) return false;
             // start() captures the original target before the launcher closes.
@@ -51,7 +63,10 @@ QtObject {
         else if (id === "mute") { service = audio; accepted = audio.toggleMute(monitor); }
         else if (id === "micMute") { service = audio.microphone; accepted = audio.microphone.toggleMute(monitor); }
         else if (id === "brightnessUp" || id === "brightnessDown") { service = brightness; accepted = brightness.change(id === "brightnessUp" ? 5 : -5, monitor); }
-        else if (id === "lock") { service = sessionService; accepted = sessionService.request("lock"); }
+        else if (id === "lock" || id === "sleep" || id === "hibernate") {
+            service = sessionService;
+            accepted = sessionService.request(id === "sleep" ? "suspend" : id);
+        }
         else {
             service = windowActions;
             accepted = windowActions.invoke(id, window, monitor);

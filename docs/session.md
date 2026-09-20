@@ -67,6 +67,9 @@ prezentującego kolor. Nie ma dodatkowych etykiet ani podpowiedzi.
 
 Progi i automatyczne uśpienie z późniejszą hibernacją zachowują dotychczasową
 konfigurację użytkownika. Ręczne Uśpij w Power menu nadal wywołuje Suspend.
+Komenda `sleep` launchera również używa Suspend, a `hibernate` wywołuje
+Hibernate po potwierdzeniu blokady; dostępność sprawdza CanHibernate.
+Sygnatury metod: [oficjalne API logind](https://github.com/systemd/systemd/blob/main/man/org.freedesktop.login1.xml).
 Aktywność przywraca DPMS i zapamiętaną jasność tego samego urządzenia,
 bez OSD. Nie rozjaśniamy uprzednio ciemniejszego ekranu. Brak backlight
 nie wyłącza blokady ani DPMS. Wznowienie wymusza DPMS on, przywraca jasność

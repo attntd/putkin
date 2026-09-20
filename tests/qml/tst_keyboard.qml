@@ -48,7 +48,7 @@ Item {
         readonly property var item: active ? itemLoader.item : null
         readonly property Loader itemLoader: Loader { active: loader.activeAsync; asynchronous: true; sourceComponent: preview.panelComponent }
     }
-    PanelPreviewScene { id: preview; anchors.fill: parent; panelLoader: loader; settings: settings; launcher: launcher; audio: audio; notifications: notifications }
+    PanelPreviewScene { id: preview; anchors.fill: parent; panelLoader: loader; settings: settings; launcher: launcher; audio: audio; notifications: notifications; sessionService: session }
     TestCase {
         name: "Keyboard"
         when: windowShown
@@ -60,6 +60,7 @@ Item {
             file.snapshot = Appearance.observation("", true, "");
             backend.autoComplete = true; backend.checkError = ""; backend.lastError = "";
             keyboard.cancelEdit(); windowActions.calls = [];
+            sessionBackend.reset(); session.lastError = "";
             preview.backend.reset(); scene.width = 1000; scene.height = 900;
         }
         function cleanup() { preview.coordinator.close(false); tryCompare(loader, "active", false); }
@@ -110,6 +111,8 @@ Item {
             verify(!settings.editing); verify(!keyboard.editing);
         }
         function test_duplicate_and_reserved_commands_do_not_write() {
+            compare(Actions.shortcut("Super + ;"), "SUPER + semicolon");
+            compare(Actions.find("commands").shortcut, "SUPER + semicolon");
             compare(Actions.shortcut("Super + :"), "SUPER + SHIFT + semicolon");
             compare(Actions.shortcut("Super + Shift + ;"), "SUPER + SHIFT + semicolon");
             keyboard.beginEdit();
@@ -182,6 +185,106 @@ Item {
             verify(audio.microphone.muted);
             const previous = notifications.dnd; verify(actions.invoke("dnd", null, "TEST-1")); compare(notifications.dnd, !previous);
             verify(!actions.invoke("exec", null, "TEST-1")); verify(actions.lastError.length > 0);
+        }
+        function test_default_settings_command() {
+            verify(preview.coordinator.open("launcher", preview.firstScreen, null));
+            tryCompare(loader, "active", true);
+            launcher.edit(":settings");
+            compare(launcher.results[0].action, "settings");
+            verify(launcher.activate(launcher.results[0]));
+            tryCompare(preview.coordinator, "activeId", "settings");
+        }
+        function test_session_commands_data() {
+            return [
+                {tag: "shutdown", action: "shutdown", requested: "poweroff", confirm: true},
+                {tag: "poweroff", action: "poweroff", requested: "poweroff", confirm: true},
+                {tag: "reboot", action: "reboot", requested: "reboot", confirm: true},
+                {tag: "sleep", action: "sleep", requested: "suspend", confirm: false},
+                {tag: "hibernate", action: "hibernate", requested: "hibernate", confirm: false},
+                {tag: "lock", action: "lock", requested: "lock", confirm: false}
+            ];
+        }
+        function test_session_commands(data) {
+            verify(preview.coordinator.open("launcher", preview.firstScreen, null));
+            tryCompare(loader, "active", true);
+            launcher.startMode("commands");
+            launcher.edit(data.action.slice(0, -1)); compare(launcher.results.length, 0);
+            launcher.edit(data.action); compare(launcher.results.length, 1);
+            sessionBackend.automatic = false;
+            verify(launcher.activate(launcher.results[0]));
+            if (data.confirm) {
+                tryCompare(preview.coordinator, "activeId", "power");
+                tryVerify(() => control("powerCancel") && control("powerCancel").activeFocus);
+                compare(sessionBackend.calls, []);
+                compare(loader.item.page.confirmation, data.requested);
+                keyClick(Qt.Key_L); keyClick(Qt.Key_Return); keyClick(Qt.Key_Return);
+                compare(sessionBackend.calls, [data.requested]);
+                sessionBackend.settle(true, "");
+            } else {
+                compare(sessionBackend.calls, ["lock-requested"]);
+                compare(session.phase, "locking");
+                sessionBackend.confirmLock();
+                compare(sessionBackend.calls, data.requested === "lock" ? ["lock-requested", "lock-confirmed"]
+                    : ["lock-requested", "lock-confirmed", data.requested]);
+            }
+            verify(!session.busy);
+            compare(windowActions.calls, []);
+            compare(launcherBackend.activations.length, 0);
+        }
+        function test_power_command_cancel_and_unavailable_session() {
+            verify(actions.invoke("shutdown", null, "TEST-1"));
+            tryCompare(preview.coordinator, "activeId", "power");
+            tryVerify(() => control("powerCancel") && control("powerCancel").activeFocus);
+            keyClick(Qt.Key_Return);
+            compare(sessionBackend.calls, []);
+            compare(loader.item.page.confirmation, "");
+            sessionBackend.ready = false; sessionBackend.errorText = "Sesja niedostępna";
+            for (const action of ["shutdown", "poweroff", "reboot", "sleep", "hibernate", "lock"]) {
+                verify(!actions.invoke(action, null, "TEST-1"));
+                compare(actions.lastError, "Sesja niedostępna");
+            }
+            compare(sessionBackend.calls, []);
+        }
+        function legacyBindings(screenshot) {
+            const added = ["shutdown", "poweroff", "sleep", "hibernate", "reboot"];
+            return Actions.defaults().filter(row => added.indexOf(row.action) < 0 && (screenshot || row.action !== "screenshot"))
+                .map(row => Object.assign({}, row, row.action === "commands" ? {shortcut: "SUPER + SHIFT + semicolon"}
+                    : row.action === "settings" || row.action === "lock" ? {command: ""} : {}));
+        }
+        function test_migrate_session_commands_and_shortcut() {
+            for (const screenshot of [false, true]) {
+                const rows = legacyBindings(screenshot);
+                rows[0].command = ":start";
+                file.external(JSON.stringify({schemaVersion: 1, bindings: rows}));
+                compare(keyboard.readProblem, ""); compare(file.writes, 0);
+                compare(backend.applied.find(row => row.action === "commands").shortcut, "SUPER + semicolon");
+                for (const action of ["settings", "lock", "shutdown", "poweroff", "sleep", "hibernate", "reboot", "screenshot"])
+                    compare(keyboard.command(":" + action).action, action);
+                compare(keyboard.command(":start").action, "launcher");
+                verify(!!Actions.parse(JSON.stringify({schemaVersion: 1, bindings: rows.slice(1)})).error);
+            }
+        }
+        function test_migration_preserves_custom_bindings_and_conflicts() {
+            const rows = legacyBindings(true);
+            rows.find(row => row.action === "commands").shortcut = "SUPER + ALT + C";
+            rows.find(row => row.action === "settings").command = ":prefs";
+            rows.find(row => row.action === "audio").command = ":SHUTDOWN";
+            rows.find(row => row.action === "brightnessUp").command = ":lock";
+            const parsed = Actions.parse(JSON.stringify({schemaVersion: 1, bindings: rows}));
+            verify(!parsed.error);
+            compare(parsed.value.find(row => row.action === "commands").shortcut, "SUPER + ALT + C");
+            compare(parsed.value.find(row => row.action === "settings").command, ":prefs");
+            compare(parsed.value.find(row => row.action === "shutdown").command, "");
+            compare(parsed.value.find(row => row.action === "lock").command, "");
+            rows.find(row => row.action === "commands").shortcut = "SUPER + SHIFT + semicolon";
+            rows.find(row => row.action === "audio").shortcut = "SUPER + ;";
+            const collision = Actions.parse(JSON.stringify({schemaVersion: 1, bindings: rows}));
+            verify(!collision.error);
+            compare(collision.value.find(row => row.action === "commands").shortcut, "SUPER + SHIFT + semicolon");
+            const current = Actions.defaults();
+            current.find(row => row.action === "commands").shortcut = "SUPER + SHIFT + semicolon";
+            current.find(row => row.action === "lock").command = "";
+            compare(Actions.parse(Actions.serialize(current)).value, current);
         }
         function test_small_window_keeps_list_and_editor_focus_visible() {
             scene.width = 320; scene.height = 220;

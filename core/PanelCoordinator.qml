@@ -22,12 +22,17 @@ QtObject {
         return present(id, screen, invoker, null, reason);
     }
 
+    function openPower(action: string): bool {
+        if (["poweroff", "reboot"].indexOf(action) < 0) return false;
+        return present("power", null, null, null, undefined, action);
+    }
+
     function openTray(item: var, screen: var, invoker: var, reason = undefined): bool {
         if (!item || !item.hasMenu || !item.menu) return false;
         return present("trayMenu", screen, invoker, item, reason);
     }
 
-    function present(id: string, screen: var, invoker: var, item: var, reason: var): bool {
+    function present(id: string, screen: var, invoker: var, item: var, reason: var, powerAction = ""): bool {
         if (["quickSettings", "settings", "trayOverflow", "trayMenu", "power", "launcher", "battery", "audio", "network", "bluetooth", "notifications"].indexOf(id) < 0) {
             lastError = "unknown-surface";
             return false;
@@ -57,7 +62,7 @@ QtObject {
         }
         barFocus.close();
         lastError = "";
-        session = { id: id, screen: target, invoker: origin, restoreBar: restoreBar, focusReason: focusReason, trayItem: item, anchorRight: anchorRight,
+        session = { id: id, screen: target, invoker: origin, restoreBar: restoreBar, focusReason: focusReason, trayItem: item, anchorRight: anchorRight, powerAction: powerAction,
             returnToOverflow: id === "trayMenu" && previous !== null
                 && (previous.id === "trayOverflow" || previous.returnToOverflow === true) };
         presented(id);

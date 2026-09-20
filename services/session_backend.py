@@ -151,7 +151,7 @@ class SessionBackend:
             if owner != self.login_owner:
                 self.release_delay()
             self.login_owner = owner
-            for action, method in [("reboot", "CanReboot"), ("poweroff", "CanPowerOff"), ("suspend", "CanSuspend"),
+            for action, method in [("reboot", "CanReboot"), ("poweroff", "CanPowerOff"), ("suspend", "CanSuspend"), ("hibernate", "CanHibernate"),
                                    ("idleSuspend", "CanSuspendThenHibernate")]:
                 value = str(self.login(method, timeout=1))
                 caps[action] = {"available": value in ("yes", "challenge"), "reason":
@@ -171,7 +171,7 @@ class SessionBackend:
         except dbus.DBusException:
             self.login_owner = ""
             self.release_delay()
-            for action in ("logout", "reboot", "poweroff", "suspend", "idleSuspend"):
+            for action in ("logout", "reboot", "poweroff", "suspend", "hibernate", "idleSuspend"):
                 caps[action] = {"available": False, "reason": "Logind niedostępny lub nie odpowiada."}
         if not self.owns_saver:
             result = self.session.request_name(SAVER, dbus.bus.NAME_FLAG_DO_NOT_QUEUE)
@@ -188,6 +188,7 @@ class SessionBackend:
         caps["lock"] = {"available": self.native, "reason": "" if self.native else "Blokada Quickshell nie jest gotowa."}
         if not self.native or not self.session_id or (self.delay_fd is None and not self.sleeping):
             caps["suspend"] = {"available": False, "reason": self.error or "Brak gotowości blokady przed snem."}
+            caps["hibernate"] = dict(caps["suspend"])
             caps["idleSuspend"] = dict(caps["suspend"])
         self.capabilities = caps
         self.publish()
@@ -274,7 +275,7 @@ class SessionBackend:
 
     def ask_lock(self, reason):
         self.token += 1
-        if reason in ("sleep", "suspend", "idleSuspend"):
+        if reason in ("sleep", "suspend", "hibernate", "idleSuspend"):
             self.emit({"hold": True})
         if self.pending and self.pending["phase"] == "locking":
             self.pending["token"] = self.token
@@ -320,7 +321,7 @@ class SessionBackend:
         return False
 
     def request(self, identifier, action):
-        if self.pending or identifier <= self.last_id or action not in ("lock", "logout", "reboot", "poweroff", "suspend", "idleSuspend"):
+        if self.pending or identifier <= self.last_id or action not in ("lock", "logout", "reboot", "poweroff", "suspend", "hibernate", "idleSuspend"):
             self.emit({"completed": identifier, "success": False, "message": "Odrzucono powtórzone lub nieprawidłowe żądanie."})
             return
         self.last_id = identifier
@@ -329,7 +330,7 @@ class SessionBackend:
         capability = self.capabilities[action]
         if not capability["available"]:
             self.finish(False, capability["reason"])
-        elif action in ("lock", "suspend", "idleSuspend"):
+        elif action in ("lock", "suspend", "hibernate", "idleSuspend"):
             self.pending.update(phase="locking", deadline=time.monotonic() + self.lock_timeout_ms / 1000)
             self.timer = GLib.timeout_add(self.lock_timeout_ms, self.expired)
             self.emit({"progress": identifier, "phase": "locking"})
@@ -358,13 +359,13 @@ class SessionBackend:
         try:
             if str(self.system.get_name_owner(LOGIN)) != self.login_owner:
                 raise RuntimeError("Zmieniła się usługa logind.")
-            if action in ("suspend", "idleSuspend") and (not self.secure or time.monotonic() >= self.pending["deadline"]):
+            if action in ("suspend", "hibernate", "idleSuspend") and (not self.secure or time.monotonic() >= self.pending["deadline"]):
                 raise RuntimeError("Blokada nie jest już potwierdzona; odmowa uśpienia.")
             if action == "logout":
                 session_id, _ = self.current_session()
                 method, args = "TerminateSession", [dbus.String(session_id)]
             else:
-                method = {"poweroff": "PowerOff", "reboot": "Reboot", "suspend": "Suspend", "idleSuspend": "SuspendThenHibernate"}[action]
+                method = {"poweroff": "PowerOff", "reboot": "Reboot", "suspend": "Suspend", "hibernate": "Hibernate", "idleSuspend": "SuspendThenHibernate"}[action]
                 args = [dbus.Boolean(True)]
             self.emit({"progress": identifier, "phase": "dispatching"})
             def reply(*_args):
