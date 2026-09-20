@@ -1,0 +1,48 @@
+{
+  "timestamp_utc": "2026-09-20T17:07:42.977137+00:00",
+  "result": "PASS",
+  "source_commit": "34c11f10615a70e5c07cd7a8717f9fea77bb856d",
+  "build": "20260920-170400-e2d7150ad167",
+  "previous": "/home/attntd/.local/share/putkin/releases/20260920-155210-f60d99e92e0f",
+  "instance": {
+    "config_path": "/home/attntd/.config/quickshell/shell.qml",
+    "id": "4017n7aolt",
+    "launch_time": "2026-09-20T19:06:59",
+    "pid": 327892,
+    "shell_id": "770bba0d0f619c4ab3ab0453a539d542"
+  },
+  "unit": {
+    "ActiveState": "active",
+    "SubState": "running",
+    "MainPID": "327892",
+    "Slice": "session-graphical.slice"
+  },
+  "runtime_files": 274,
+  "runtime_matches_main": true,
+  "changed_runtime_files": [
+    "components/Glyph.qml",
+    "modules/notifications/NotificationCard.qml",
+    "modules/notifications/NotificationCenter.qml",
+    "modules/notifications/NotificationStack.qml",
+    "modules/quicksettings/PanelSurface.qml"
+  ],
+  "notification_owner": 327892,
+  "keyboard_ready": true,
+  "keyboard_applied": true,
+  "idle_ready": true,
+  "lock_available": true,
+  "caffeinate_mode": "presentation",
+  "configuration_unchanged": true,
+  "retained": [
+    "20260920-170400-e2d7150ad167",
+    "20260920-155210-f60d99e92e0f",
+    "20260920-152319-06db5a42cb5e",
+    "20260920-144910-c522126acd2f",
+    "20260920-143123-526a551c6a9f"
+  ],
+  "qml_log_clean": true,
+  "known_external_tray_warnings": [],
+  "runtime_no_new_errors": true,
+  "first_attempt_rolled_back_on_existing_tray_warning": true,
+  "hyprland_config_clean": true
+}

@@ -2,7 +2,7 @@
 
 ## Interakcje powiadomień — 2026-09-20
 
-**Gotowe w źródłach.** Przycisk × jest domyślnie bez tła i ramki, z grubszym
+**Wdrożone: `20260920-170400-e2d7150ad167`.** Przycisk × jest domyślnie bez tła i ramki, z grubszym
 symbolem. Karta ma własny fokus; kliknięcie nagłówka/treści oraz Enter
 wywołują akcję. Skrócony tekst rozwija się przez `i` lub strzałkę, a Escape
 zwija go przed zamknięciem panelu. `j/k` zachowują przechodzenie między
@@ -25,8 +25,26 @@ tekstem; powrót klawiaturą odsłania początek wysokiej karty.
   Pierwszy rozszerzony test wykazał za wczesne sprawdzanie układu tekstu;
   końcowe asercje oczekują na przeliczenie geometrii Qt.
 
-Nie wykonywano instalacji, próby na aktywnym pulpicie ani nowego odbioru
-natywnego Waylanda. [Kontrakt](notifications.md#karty-rozwijanie-i-przewijanie--2026-09-20),
+Po poleceniu użytkownika scalono zmiany do `main` przez fast-forward,
+commit `34c11f1`, i uruchomiono instalator z `--activate`. Walidacja paczki:
+**137 QML PASS**. Pierwsza próba automatycznie przywróciła poprzednią wersję
+z powodu błędu odczytu `IconName` zewnętrznego StatusNotifierItem; identyczny
+komunikat wystąpił w starej wersji. Ponowienie dopuszczało wyłącznie te dwa
+konkretne komunikaty po pozostałych kontrolach instalatora, ale wyjątek
+**nie został użyty**: nowy proces wystartował z czystym logiem.
+[Pierwsza próba](evidence/notification-fixes-install-first-attempt.log),
+[udana instalacja](evidence/notification-fixes-install.log).
+
+Odbiór aktywnej sesji **PASS**: jedna instancja PID 327892, usługa
+`active/running`, ten sam PID właścicielem powiadomień, skróty zastosowane,
+blokada i idle gotowe. Wszystkie 274 pliki runtime odpowiadają `main`;
+settings.json, keyboard.json i launch.json zachowały sumy. Zachowano tryb
+Caffeinate „Prezentacja”, pięć buildów i poprzednią wersję do powrotu.
+Log QML oraz konfiguracja Hyprlanda bez ostrzeżeń/błędów.
+[Raport odbioru](evidence/notification-fixes-activation.json).
+
+Nie wykonywano nowego testu wejścia UI na natywnym Waylandzie ani prób
+blokady/PAM/suspend. [Kontrakt](notifications.md#karty-rozwijanie-i-przewijanie--2026-09-20),
 [odtwarzanie testów](testing.md#interakcje-powiadomień--2026-09-20).
 
 ## Repozytorium Git i wykluczenia AI — 2026-09-20

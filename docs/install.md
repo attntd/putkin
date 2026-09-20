@@ -1,5 +1,21 @@
 # Lokalne przełączenie na Putkin
 
+## Poprawki powiadomień — 2026-09-20
+
+Aktywne wydanie: **`20260920-170400-e2d7150ad167`**, ze zmianami scalonymi
+do `main` w commicie `34c11f1`. Zmienia pięć plików runtime: obsługę kart,
+rozwijanie tekstu, przewijanie, wybór klawiaturą i wygląd przycisku ×.
+
+Odbiór **PASS**: 137 QML w paczce, 274 pliki zgodne z `main`, jedna instancja
+PID 327892 i jeden właściciel powiadomień. Skróty, blokada i idle gotowe,
+ustawienia oraz Caffeinate „Prezentacja” zachowane. Końcowy log bez
+ostrzeżeń; pierwsza próba została automatycznie wycofana przez niezależny
+błąd odczytu ikony traya. [Wynik](evidence/notification-fixes-activation.json),
+[przebieg i ograniczenia](status.md#interakcje-powiadomień--2026-09-20).
+
+Zachowano pięć buildów. `previous` wskazuje `20260920-155210-f60d99e92e0f`.
+Powrót z odblokowanej sesji: `scripts/install --restore --activate`.
+
 ## Launcher, fade i poprawka screenshota — 2026-09-20
 
 Aktywne wydanie: **`20260920-155210-f60d99e92e0f`**, 274 pliki runtime.
