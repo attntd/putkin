@@ -21,6 +21,7 @@ Item {
         width: root.width + inset * 2
         height: root.height + inset * 2
         layer.enabled: root.visible
+        layer.live: root.shown
         Column {
             id: column
             x: composite.inset; y: x

@@ -29,6 +29,10 @@ przy opacity 0,25 / 0,5 / 0,75 z pojedynczym złożeniem obrazu końcowego
 na tle. Sprawdza oczekiwanie na gotowość, stałą geometrię podczas fade,
 zamknięcie przed przygotowaniem, zmianę strony, ponowne otwarcie podczas
 zanikania oraz zagnieżdżone przejścia i zakończenie pracy klatkowej.
+Zanikanie zachowuje ostatnią wyrenderowaną klatkę także po wyłączeniu
+kontrolek i utracie fokusu; test pikseli obejmuje panel i zwijaną kolumnę.
+`tst_quick_menu.qml` sprawdza położenie treści przy zwijaniu sekcji,
+w tym wybór trybu Caffeinate i granice przewijania przy trzech wysokościach.
 Testy ustawień obejmują brak opcji ruchu, nawigację po jej usunięciu i
 odczyt starych booleanów bez zapisu, z ich usunięciem przy jawnym zapisie.
 
@@ -37,6 +41,10 @@ GPU sprawdza `python3 scripts/test-fade-wayland --nested --scale 1`
 montowań i sieci, XDG, D-Bus i zagnieżdżonego Hyprlanda. Udostępnione są
 wyłącznie gniazdo Waylanda rodzica i węzeł renderera GPU; domeny sprzętu
 i sesji w widokach są atrapami. Zapisuje logi, raport i wynik sprzątania.
+Uruchamia też produkcyjne okno panelu i wybiera tryb Caffeinate przez
+klawiaturę. Podczas zwijania natywna warstwa musi zachować rozmiar:
+zmniejszanie bufora Waylanda powodowało pojedynczą przeskalowaną klatkę.
+Wynik i próbki geometrii zapisuje w `native-collapse.json`.
 Wcześniejsze testy opcji ograniczania ruchu opisują historyczny kontrakt.
 
 ## Lista i podgląd launchera — 2026-09-20

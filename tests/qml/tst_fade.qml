@@ -12,9 +12,10 @@ Rectangle {
         UI.FadeScope {
             readonly property bool accentScope: true
             property alias buttonText: button.text
+            enabled: shown
             x: 30; y: 30; width: 340; height: 200
             Rectangle { anchors.fill: parent; color: Theme.backgroundStrong }
-            UI.Button { id: button; x: 20; y: 20; width: 300; height: 100; text: "Wi-Fi"; highlighted: true }
+            UI.Button { id: button; objectName: "panelButton"; x: 20; y: 20; width: 300; height: 100; text: "Wi-Fi"; highlighted: true }
             UI.AccentRectangle {
                 anchors.fill: parent
                 color: "transparent"
@@ -127,6 +128,35 @@ Rectangle {
         }
         function test_group_pixels_data() {
             return [{tag: "quarter", alpha: 0.25}, {tag: "half", alpha: 0.5}, {tag: "three_quarters", alpha: 0.75}];
+        }
+        function test_exit_preserves_last_frame_data() {
+            return [{tag: "panel", column: false}, {tag: "column", column: true}];
+        }
+        function test_exit_preserves_last_frame(data) {
+            const item = createTemporaryObject(data.column ? columnComponent : panelComponent, scene);
+            const button = findChild(item, data.column ? "columnButton" : "panelButton");
+            button.forceActiveFocus(Qt.TabFocusReason);
+            tryCompare(item, "opacity", 1);
+            verify(findChild(button, "focusIndicator").visible);
+            const opaque = grabImage(scene);
+            item.shown = false;
+            verify(!button.enabled, "Closing content must stop accepting input immediately");
+            // Hold one exit frame while the disabled style and focus settle.
+            item.opacity = 0.5;
+            verify(waitForRendering(scene));
+            const faded = grabImage(scene);
+            const ratio = faded.width / scene.width;
+            for (let y = 20; y < 240; y += 3) {
+                for (let x = 20; x < 380; x += 3) {
+                    const px = Math.round(x * ratio), py = Math.round(y * ratio);
+                    for (const channel of ["red", "green", "blue"]) {
+                        const background = channel === "red" ? 16 : channel === "green" ? 24 : 32;
+                        const expected = (opaque[channel](px, py) + background) / 2;
+                        verify(Math.abs(faded[channel](px, py) - expected) <= 3,
+                            "Exit changed the composed image at " + x + "," + y + " " + channel);
+                    }
+                }
+            }
         }
         function test_group_pixels(data) {
             const panel = createTemporaryObject(panelComponent, scene);

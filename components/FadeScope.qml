@@ -12,6 +12,9 @@ FocusScope {
     // Composite the finished subtree once; individual translucent backgrounds
     // would otherwise show through icons, text and the shared accent gradient.
     layer.enabled: visible
+    // Keep the last rendered frame while input/focus are released on close.
+    // Disabled styles and nested fades must not alter parts of the exit image.
+    layer.live: shown
     FadePresentation {
         id: presentation
         item: root

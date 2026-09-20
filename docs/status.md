@@ -18,6 +18,9 @@ przyciski oraz nawigację. Pusty wiersz akcji nie zajmuje miejsca.
   poprawiono harness, sam obraz był zapisany prawidłowo.
 - Logi: `/tmp/kitty-notifications-qml.log`, `/tmp/kitty-quick_menu-qml.log`
   i `/tmp/kitty-notification-visual.log`. Testy używały atrap i prywatnego D-Bus.
+- Po połączeniu z poprawką animacji z `main` (`6b6721c`): powiadomienia
+  **37 PASS**, Quick Menu **35 PASS**, kontrola sześciu plików QML **PASS**.
+  Logi: `/tmp/kitty-merge-notifications.log`, `/tmp/kitty-merge-quick_menu.log`.
 
 Poprawka w źródłach, bez instalacji w aktywnej sesji i bez nowego testu
 natywnego klienta Kitty. [Kontrakt powiadomień](notifications.md).
@@ -246,6 +249,34 @@ Zmieniono adapter, sondę testową, testy natywne i dokumentację;
 Nie uruchamiano pełnego shella na aktywnym pulpicie ani nie odczytywano
 schowka użytkownika. Późniejsze wspólne wdrożenie z fade i launcherem
 opisano powyżej.
+
+## Równe zanikanie i zwijanie Caffeinate — 2026-09-20
+
+Warstwy panelu i zwijanej kolumny zachowują ostatni wyrenderowany obraz
+podczas zamykania. Wyłączenie kontrolek i utrata fokusu nadal następują
+od razu, ale nie zmieniają już fragmentów zanikającej ramki.
+Natywne okno panelu zachowuje wysokość ekranu; widoczna powierzchnia
+i maska wejścia nadal odpowiadają treści. Zapis klatek prywatnego Waylanda
+odtworzył jedną pomniejszoną, przesuniętą klatkę przy zwijaniu Caffeinate
+przed poprawką i stałą górną krawędź po poprawce.
+
+- `scripts/check`: **217 QML PASS**, 0 błędów.
+- Regresja QML: **612 różnych wyników PASS** w 25 zestawach. Zbiorczy
+  runner osiągnął limit 240 s po 544 wynikach bez błędów asercji;
+  pozostałe zestawy ukończono osobno, bez błędów i pominięć.
+- `scripts/test-fade-wayland`: **PASS** przy skali 1 i 1,25, w tym
+  piksele zanikania po wyłączeniu kontrolek, pozycje treści i natywne
+  okno Caffeinate podczas wyboru trybu oraz zwijania.
+- `scripts/test-wayland --launcher-preview`: **PASS**, w tym kliknięcia
+  w przezroczystym obszarze i poza panelem oraz skala 1,5.
+- Po integracji z `main` (`e8df4a9`): ponownie **PASS** testów GPU,
+  natywnego Caffeinate oraz **22 PASS** klawiatury i komend launchera.
+  Raporty: `/tmp/animation-jitter-merge-wayland/` oraz
+  `/tmp/animation-jitter-merge-keyboard.log`.
+
+Logi i raporty tej sesji: `/tmp/animation-jitter-*`. Testy używają atrap,
+prywatnych XDG/D-Bus i odizolowanego kompozytora. Poprawka nie została
+jeszcze zainstalowana w aktywnej sesji.
 
 ## Stabilny fade bez opcji ograniczania ruchu — 2026-09-20
 

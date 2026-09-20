@@ -10,7 +10,7 @@ import sys
 import tempfile
 import time
 
-from _common import ROOT, isolated_environment, qml_errors, stop_process_group, tool
+from _common import ROOT, isolated_environment, ipc_json, ipc_reply, qml_errors, runtime_log, stop_process_group, tool
 
 
 def eventually(read, label):
@@ -21,6 +21,70 @@ def eventually(read, label):
             return result
         time.sleep(.04)
     raise AssertionError(label)
+
+
+def native_collapse(env, output):
+    """Exercise a real layer surface: QtTest's fixed window cannot catch resize jitter."""
+    entry = ROOT / "wayland-validation.qml"
+    with (output / "native-collapse.log").open("w+") as log:
+        app = subprocess.Popen([tool("quickshell"), "--no-color", "--path", str(entry)], env=env,
+                               stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+        try:
+            def ipc(target, method, *args, starting=False):
+                result = subprocess.run([tool("quickshell"), "ipc", "--path", str(entry), "call", target, method, *args],
+                                        env=env, capture_output=True, text=True, timeout=5)
+                return ipc_reply(result, app, log, starting=starting)
+
+            def state(): return ipc_json(ipc("probe", "snapshot", starting=True))
+
+            def hypr(*args):
+                result = subprocess.run([tool("hyprctl"), "-i", env["HYPRLAND_INSTANCE_SIGNATURE"], *args],
+                                        env=env, capture_output=True, text=True, check=True, timeout=5)
+                return result.stdout
+
+            def panel_geometry():
+                layers = json.loads(hypr("-j", "layers"))
+                panels = [layer for monitor in layers.values() for level in monitor["levels"].values()
+                          for layer in level if layer["namespace"] == "putkin-panel"]
+                assert len(panels) == 1, panels
+                return {key: panels[0][key] for key in ("x", "y", "w", "h")}
+
+            def keys(*values):
+                command = [tool("wtype")]
+                for value in values:
+                    command += ["-k", value]
+                subprocess.run(command, env=env, capture_output=True, check=True, timeout=5)
+
+            eventually(lambda: state().get("ready"), "native shell ready")
+            hypr("dismissnotify")
+            assert ipc("ui", "openQuickSettings") == "ok"
+            eventually(lambda: state().get("focus") == "audioVolume", "native panel focused")
+            for _ in range(12):
+                if state()["focus"] == "caffeinateToggle":
+                    break
+                keys("j")
+            assert state()["focus"] == "caffeinateToggle", state()
+            keys("i", "j", "j")
+            eventually(lambda: state().get("focus") == "caffeinateMode-background", "Caffeinate mode focused")
+            time.sleep(.35)
+            expanded = panel_geometry()
+            keys("Return")
+            samples = []
+            deadline = time.monotonic() + .6
+            while time.monotonic() < deadline:
+                samples.append(panel_geometry())
+                time.sleep(.008)
+            final = state()
+            result = {"expanded": expanded, "collapse_frames": samples, "mode": final["caffeinate"]}
+            (output / "native-collapse.json").write_text(json.dumps(result, indent=2) + "\n")
+            assert final["caffeinate"] == "background" and final["focus"] == "caffeinateToggle", final
+            assert len(samples) >= 2 and all(sample == expanded for sample in samples), result
+            ipc("ui", "closePanels")
+            eventually(lambda: not state().get("loaded"), "native panel released")
+            assert not qml_errors(runtime_log(log)), runtime_log(log)
+            return result
+        finally:
+            stop_process_group(app)
 
 
 def inside(base, scale):
@@ -45,10 +109,17 @@ def inside(base, scale):
             env["QT_SCALE_FACTOR"] = scale
             env["QSG_INFO"] = "1"
             env.pop("QT_QUICK_BACKEND", None)
-            for name in ("tst_fade.qml", "tst_visual_contract.qml"):
-                cases = [] if name == "tst_fade.qml" else ["VisualContract::test_surface_fade_geometry",
+            env["HYPRLAND_INSTANCE_SIGNATURE"] = eventually(
+                lambda: [p.parent.name for p in (base / "r/hypr").glob("*/.socket.sock")], "private compositor IPC")[0]
+            suites = {
+                "tst_fade.qml": [],
+                "tst_visual_contract.qml": ["VisualContract::test_surface_fade_geometry",
                     "VisualContract::test_fade_keeps_geometry_and_legacy_motion_cannot_disable_it",
-                    "VisualContract::test_osd_horizontal_and_fade_retains_last_monitor"]
+                    "VisualContract::test_osd_horizontal_and_fade_retains_last_monitor"],
+                "tst_quick_menu.qml": ["QuickMenu::test_collapse_keeps_top_row_stationary",
+                    "QuickMenu::test_caffeinate_collapse_keeps_scroll_in_bounds"],
+            }
+            for name, cases in suites.items():
                 with (output / (name + ".log")).open("w") as test_log:
                     process = subprocess.Popen([tool("qmltestrunner"), "-input", str(ROOT / "tests/qml" / name),
                                                 "-import", str(ROOT), *cases], env=env, stdout=test_log,
@@ -61,6 +132,9 @@ def inside(base, scale):
                 assert process.returncode == 0 and not qml_errors(text), text
                 report["checks"].append(name)
                 print("PASS GPU:", name, "scale", scale, flush=True)
+            report["native_collapse"] = native_collapse(env, output)
+            report["checks"].append("native Caffeinate collapse keeps layer geometry stable")
+            print("PASS native: Caffeinate collapse, scale", scale, flush=True)
             report["result"] = "PASS"
         except Exception as error:
             report["error"] = str(error)

@@ -1,4 +1,4 @@
-// Only scripts/test-wayland may launch this in its private compositor.
+// Only the isolated Wayland test runners may launch this in a private compositor.
 // Production windows/controllers, native monitor IPC, explicit domain mocks.
 pragma ComponentBehavior: Bound
 
