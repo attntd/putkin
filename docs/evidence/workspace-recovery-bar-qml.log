@@ -1,0 +1,17 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::Bar::initTestCase()
+PASS   : qmltestrunner::Bar::test_action_waits_for_monitor_and_times_out()
+PASS   : qmltestrunner::Bar::test_click_uses_clicked_monitor_and_swaps_visible_workspace()
+PASS   : qmltestrunner::Bar::test_disconnect_clears_stale_state_and_keyboard_mode()
+PASS   : qmltestrunner::Bar::test_global_numbers_and_monitor_states()
+PASS   : qmltestrunner::Bar::test_ipc_controller_fallback_and_hotplug_state()
+PASS   : qmltestrunner::Bar::test_keypad_enter_and_escape()
+PASS   : qmltestrunner::Bar::test_locale_clock_tooltip_and_minute_change()
+PASS   : qmltestrunner::Bar::test_model_updates_preserve_delegate_and_selection()
+PASS   : qmltestrunner::Bar::test_overflow_mouse_and_narrow_layout()
+PASS   : qmltestrunner::Bar::test_text_input_does_not_navigate_bar()
+PASS   : qmltestrunner::Bar::test_vim_overflow_enter_once_and_focus()
+PASS   : qmltestrunner::Bar::cleanupTestCase()
+Totals: 13 passed, 0 failed, 0 skipped, 0 blacklisted, 2026ms
+********* Finished testing of qmltestrunner *********

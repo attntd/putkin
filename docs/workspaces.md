@@ -1,5 +1,24 @@
 # Workspace i pasek — etap 01
 
+## Odzyskiwanie danych monitorów — 2026-09-20
+
+Quickshell 0.3.1 interpretuje pierwszy `readyRead` jako całą odpowiedź IPC.
+Gdy JSON `j/monitors` przychodzi w częściach, odczyt może pozostawić tylko
+monitory utworzone pośrednio przez workspace’y: bez aktywnego workspace
+i bez skupionego monitora. Wtedy znika oznaczenie na pasku, a jego akcja
+czeka na potwierdzenie monitora i kończy się timeoutem. Odtworzono oba
+brakujące pola na prawdziwym modelu Quickshella z prywatnym gniazdem.
+[Implementacja odczytu 0.3.1](https://github.com/quickshell-mirror/quickshell/blob/v0.3.1/src/wayland/hyprland/ipc/connection.cpp#L155).
+
+`HyprlandService` po zmianie niepełnego stanu odracza
+`Hyprland.refreshMonitors()` przez `Qt.callLater`. Dane nadal pochodzą
+wyłącznie z natywnego modelu; zdrowe połączenie nie jest odpytywane.
+Tak samo odzyskiwany jest aktywny workspace po `focusedmon` z `?`.
+Odłączenie monitora i EOF zachowują dotychczasowe zachowanie.
+[API refreshMonitors 0.3.1](https://quickshell.org/docs/v0.3.1/types/Quickshell.Hyprland/Hyprland/#func.refreshMonitors).
+`bar status` pozwala porównać aktywne numery i skupiony monitor z Hyprlandem
+bez przełączania pulpitów lub otwierania panelu.
+
 ## Widok
 
 `shell.qml` tworzy jeden `HyprlandService`, jeden zegar `SystemClock.Minutes`

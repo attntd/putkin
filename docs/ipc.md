@@ -23,6 +23,7 @@ quickshell ipc --path /ścieżka/putkin/shell.qml call bar close
 | --- | --- | --- |
 | `bar focus(): string` | Nazwa monitora albo pusty napis | Rozpoczyna nawigację na monitorze skupionym przez Hyprlanda. Gdy nie ma odpowiadającego mu ekranu Qt, wybiera pierwszy ekran Qt obecny w modelu Hyprlanda. Bez dostępnego monitora niczego nie skupia. |
 | `bar close(): void` | Brak | Kończy nawigację i oddaje klawiaturę compositorowi. |
+| `bar status(): string` | JSON | Odczyt dostępności, monitorów z `activeId`, `focusedMonitor`, workspace’ów z `visibleOn`, `busy` i `error`; bez zmiany fokusu ani workspace’u. |
 
 `focus` wybiera aktywny workspace danego monitora; powtórne wywołanie
 ponownie ustawia ten wybór. `h`/`l` przesuwają wybór, `Enter` i Enter

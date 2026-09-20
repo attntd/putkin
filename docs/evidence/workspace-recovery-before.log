@@ -1,0 +1,6 @@
+FAIL: native model initialization: {'available': True, 'monitors': [{'name': 'TEST-2', 'activeId': -1}, {'name': 'TEST-1', 'activeId': -1}], 'focusedMonitor': '', 'navigationMonitor': '', 'rows': [{'id': 1, 'occupied': False, 'urgent': False, 'visibleOn': ''}, {'id': 2, 'occupied': False, 'urgent': False, 'visibleOn': ''}, {'id': 3, 'occupied': False, 'urgent': False, 'visibleOn': ''}, {'id': 4, 'occupied': False, 'urgent': False, 'visibleOn': ''}, {'id': 5, 'occupied': False, 'urgent': False, 'visibleOn': ''}, {'id': 12, 'occupied': True, 'urgent': False, 'visibleOn': ''}], 'busy': False, 'error': '', 'activeWindow': '', 'windows': [{'address': '123', 'workspace': 12}], 'launcherActive': False, 'launcherBusy': False, 'launcherError': '', 'commandsCompleted': 0}; logs: artifacts/bar-integration-*.log
+  WARN : Failed to create wl_display (No such file or directory)
+  WARN: Compositor does not support hyprland-toplevel-mapping-v1.It will not be possible to derive hyprland addresses from toplevels.
+  WARN quickshell.io.socket: Socket error for Socket(0x7efe00073c80) QLocalSocket::PeerClosedError
+  WARN: Hyprland event socket error: QLocalSocket::PeerClosedError
+PASS: native Hyprland (Hyprlang, fragmented monitors=False), bar + launcher workspace commands, captured window, hotplug, disconnect

@@ -18,6 +18,20 @@ WorkspaceService {
             urgent: workspace.urgent
         }))
 
+        // Quickshell 0.3.1 parses the first readyRead as a complete JSON reply.
+        // A fragmented monitor reply can leave only workspace-created monitor
+        // placeholders: no active workspace or focused monitor. Re-query when
+        // that incomplete state changes, without polling a healthy connection.
+        function recoverMonitors(): void {
+            if (!connected) return;
+            const values = Hyprland.monitors.values;
+            if (values.length > 0 && (!Hyprland.focusedMonitor || values.some(monitor => !monitor.activeWorkspace)))
+                Hyprland.refreshMonitors();
+        }
+        onConnectedChanged: Qt.callLater(recoverMonitors)
+        onMonitorsChanged: Qt.callLater(recoverMonitors)
+        onFocusedMonitorNameChanged: Qt.callLater(recoverMonitors)
+
         function focusMonitor(name: string): void {
             // Only a name already present in the native monitor model is accepted.
             const monitor = Hyprland.monitors.values.find(item => item.name === name);

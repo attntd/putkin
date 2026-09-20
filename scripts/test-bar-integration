@@ -26,12 +26,13 @@ def eventually(read, predicate, description):
     raise AssertionError(f"{description}: {last}")
 
 
-def scenario(lua):
+def scenario(lua, fragment_monitors=False):
     quickshell, dbus = tool("quickshell"), tool("dbus-run-session")
     with tempfile.TemporaryDirectory(prefix="pk-") as directory:
         env = isolated_environment(directory)
         env["HYPRLAND_INSTANCE_SIGNATURE"] = "putkin-test"
-        peer = HyprlandPeer(Path(env["XDG_RUNTIME_DIR"]) / "hypr/putkin-test", lua=lua)
+        peer = HyprlandPeer(Path(env["XDG_RUNTIME_DIR"]) / "hypr/putkin-test", lua=lua,
+                           fragment_monitors=fragment_monitors)
         with tempfile.TemporaryFile(mode="w+") as log:
             process = subprocess.Popen([dbus, "--", quickshell, "--no-color", "--path", str(ROOT / "bar-test.qml")],
                                        env=env, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
@@ -47,11 +48,19 @@ def scenario(lua):
 
             try:
                 initial = eventually(state, lambda s: s.get("available") and len(s.get("rows", [])) == 7
-                                     and s["rows"][-1]["occupied"], "native model initialization")
+                                     and s["rows"][-1]["occupied"] and s.get("focusedMonitor") == "TEST-1"
+                                     and any(m["name"] == "TEST-1" and m["activeId"] == 9 for m in s["monitors"]),
+                                     "native model initialization")
                 assert [r["id"] for r in initial["rows"]] == [1, 2, 3, 4, 5, 9, 12]
                 assert initial["rows"][1]["visibleOn"] == "TEST-2"
                 assert initial["rows"][5]["visibleOn"] == "TEST-1"
+                assert json.loads(ipc("bar", "status"))["monitors"] == initial["monitors"]
                 assert len(peer.events) == 2, "one native stream and one shared EOF guard"
+                refresh_requests = peer.requests.count("j/monitors")
+                peer.send("focusedmon>>TEST-1,?")
+                eventually(state, lambda s: peer.requests.count("j/monitors") > refresh_requests
+                           and any(m["name"] == "TEST-1" and m["activeId"] == 9 for m in s["monitors"]),
+                           "recover unknown active workspace event")
                 peer.send("urgent>>123")
                 eventually(state, lambda s: s["rows"][-1]["urgent"], "native urgency")
                 assert ipc("bar", "focus") == "TEST-1"
@@ -59,7 +68,8 @@ def scenario(lua):
                 ipc("bar", "close")
                 assert state()["navigationMonitor"] == ""
                 assert ipc("probe", "activate", 12, "TEST-2") == "true"
-                eventually(state, lambda s: not s.get("busy", True) and s["monitors"][1]["activeId"] == 12,
+                eventually(state, lambda s: not s.get("busy", True)
+                           and any(m["name"] == "TEST-2" and m["activeId"] == 12 for m in s["monitors"]),
                            "native monitor-aware action acknowledgement")
                 expected = ['dispatch hl.dsp.focus({ monitor = "1" })',
                             'dispatch hl.dsp.focus({ workspace = "12", on_current_monitor = true })'] if lua else [
@@ -71,7 +81,7 @@ def scenario(lua):
                 ipc("probe", "openLauncher")
                 assert ipc("probe", "command", ":w0") == "true"
                 eventually(state, lambda s: s["commandsCompleted"] == 1 and not s["launcherActive"]
-                           and s["monitors"][1]["activeId"] == 10, "command creates workspace 10")
+                           and any(m["name"] == "TEST-2" and m["activeId"] == 10 for m in s["monitors"]), "command creates workspace 10")
                 expected.append('dispatch hl.dsp.focus({ workspace = "10", on_current_monitor = true })' if lua
                                 else "dispatch focusworkspaceoncurrentmonitor 10")
                 ipc("probe", "openLauncher")  # Capture 123 before focus moves elsewhere.
@@ -85,7 +95,8 @@ def scenario(lua):
                 moved = eventually(state, lambda s: s["commandsCompleted"] == 2 and not s["launcherBusy"],
                                    "native move acknowledgement")
                 assert {w["address"].removeprefix("0x"): w["workspace"] for w in moved["windows"]} == {"123": 7, "456": 2}
-                assert moved["focusedMonitor"] == "TEST-2" and moved["monitors"][1]["activeId"] == 10
+                assert moved["focusedMonitor"] == "TEST-2"
+                assert any(m["name"] == "TEST-2" and m["activeId"] == 10 for m in moved["monitors"])
                 expected.append('dispatch hl.dsp.window.move({ workspace = "7", follow = false, window = "address:0x123" })' if lua
                                 else "dispatch movetoworkspacesilent 7,address:0x123")
                 assert [r for r in peer.requests if r.startswith("dispatch")] == expected
@@ -131,14 +142,14 @@ def scenario(lua):
                 assert not unexpected, "\n".join(unexpected)
                 for line in qml_errors(output):
                     print(line)
-                print(f"PASS: native Hyprland ({'Lua' if lua else 'Hyprlang'}), bar + launcher workspace commands, captured window, hotplug, disconnect")
+                print(f"PASS: native Hyprland ({'Lua' if lua else 'Hyprlang'}, fragmented monitors={fragment_monitors}), bar + launcher workspace commands, captured window, hotplug, disconnect")
                 return output
             finally:
                 stop_process_group(process)
                 peer.close()
                 log.seek(0)
                 output = log.read()
-                path = ROOT / "artifacts" / f"bar-integration-{'lua' if lua else 'hyprlang'}.log"
+                path = ROOT / "artifacts" / f"bar-integration-{'lua' if lua else 'hyprlang'}{'-fragmented' if fragment_monitors else ''}.log"
                 path.parent.mkdir(exist_ok=True)
                 path.write_text(output)
 
@@ -147,6 +158,7 @@ def main():
     try:
         for lua in [False, True]:
             scenario(lua)
+            scenario(lua, fragment_monitors=True)
     except (AssertionError, OSError, subprocess.SubprocessError) as error:
         print(f"FAIL: {error}; logs: artifacts/bar-integration-*.log", file=sys.stderr)
         return 1

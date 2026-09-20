@@ -1,5 +1,27 @@
 # Status implementacji
 
+## Odzyskiwanie aktywnego workspace — 2026-09-20
+
+Po wdrożeniu powiadomień użytkownik zgłosił brak aktywnego numeru na pasku
+i timeout kliknięcia; skróty Hyprlanda nadal działały. Odczyt kompozytora
+pokazał poprawny aktywny workspace. Źródła Quickshella 0.3.1 i test prywatnego
+gniazda wykazały, że podzielona odpowiedź `j/monitors` pozostawia model bez
+skupionego monitora i aktywnych numerów. [Odtworzenie](evidence/workspace-recovery-before.log).
+Nie przechwycono pierwotnej odpowiedzi IPC działającego procesu; potwierdzono
+mechanizm odtwarzający zgłoszone objawy, nie sam pakiet z aktywnej sesji.
+
+Adapter ponawia natywny odczyt po zmianie niepełnego stanu, bez pollingu.
+Dodano `bar status` do odczytu modelu bez zmiany fokusu/workspace’u.
+[Kontrakt i sprawdzone API](workspaces.md#odzyskiwanie-danych-monitorów--2026-09-20).
+
+- `scripts/check`: **217 QML PASS**, 0 błędów; [log](evidence/workspace-recovery-check.log).
+- `tst_bar.qml`: **13 PASS**, 0 FAIL, 0 pominięć; kliknięcia, klawiatura,
+  oznaczenia, drugi monitor, timeout i utrata połączenia; [log](evidence/workspace-recovery-bar-qml.log).
+- Natywna integracja na prywatnych gniazdach: **4 scenariusze PASS**,
+  Hyprlang/Lua × zwykła/podzielona odpowiedź; potwierdzono również odzyskanie
+  po `focusedmon` z `?`, komendy launchera, hotplug, EOF i brak zapytań
+  w spoczynku; [log](evidence/workspace-recovery-integration.log).
+
 ## Interakcje powiadomień — 2026-09-20
 
 **Wdrożone: `20260920-170400-e2d7150ad167`.** Przycisk × jest domyślnie bez tła i ramki, z grubszym

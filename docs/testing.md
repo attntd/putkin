@@ -1,5 +1,15 @@
 # Testowanie Putkin
 
+## Odzyskiwanie aktywnego workspace — 2026-09-20
+
+`scripts/test-bar-integration` wykonuje cztery scenariusze: Hyprlang i Lua,
+każdy ze zwykłą odpowiedzią oraz pierwszym `j/monitors` podzielonym na dwa
+zapisy gniazda. Weryfikuje odzyskanie aktywnych numerów i skupionego monitora,
+`focusedmon` z nieznanym workspace, przełączenie na drugi monitor, komendy
+launchera, brak odpytywania w spoczynku, hotplug, EOF i odczyt `bar status`.
+Wszystkie gniazda, XDG i D-Bus są prywatne; działają natywne modele Quickshella.
+`tst_bar.qml` uzupełnia odbiór o kliknięcia, klawisze i oznaczenia w UI.
+
 ## Interakcje powiadomień — 2026-09-20
 
 `python3 scripts/test-icons --file tst_notifications.qml --log /tmp/putkin-notifications-qml.log`
