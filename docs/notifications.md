@@ -1,5 +1,26 @@
 # Powiadomienia i DND — etap 09
 
+## Karty, rozwijanie i przewijanie — 2026-09-20
+
+Zaznaczenie obejmuje kartę. Kliknięcie jej nagłówka lub treści oraz `Enter`
+wywołuje akcję `default`, a przy jej braku pierwszą dostępną akcję.
+Karta bez akcji (w tym archiwalna) pozostaje dostępna do czytania i usuwania;
+jej aktywacja nie zamyka panelu. Osobne przyciski zachowują własne akcje.
+Przycisk × ma grubszy symbol i domyślnie przezroczyste tło bez ramki;
+fokus jest widoczny wyłącznie podczas obsługi klawiaturą.
+
+Gdy tytuł lub treść są skrócone, w nagłówku pojawia się strzałka rozwijania.
+`i` pokazuje wszystkie linie w granicach istniejącego limitu znaków;
+`Escape` najpierw zwija wybraną kartę, a kolejne naciśnięcie zamyka panel.
+`j/k` i strzałki góra/dół przechodzą między kartami niezależnie od rozwinięcia.
+Powrót odsłania początek karty i zachowuje jej rozwinięcie. `l` oraz `Tab`
+udostępniają przyciski rozwijania, zamknięcia i poszczególnych akcji.
+
+W centrum karty mają wysokość zawartości i korzystają ze wspólnego
+przewijania panelu, także kółkiem nad tekstem. Toasty zachowują ograniczoną
+wysokość i przewijają długą treść wewnętrznie. Rozwinięcie nie uruchamia
+akcji powiadomienia, a kliknięcie biernego toasta nie przejmuje klawiatury.
+
 ## Centrum i historia sesji — 2026-09-19
 
 Dzwonek w pasku oraz dotychczasowy skrót otwierają centrum, także gdy lista
@@ -84,7 +105,8 @@ pozostaje widoczny podczas przewijania. Czas pochodzi z nadejścia/aktualizacji;
 nie uruchamia zegara sekundowego.
 
 UI ogranicza aplikację do 128 znaków, tytuł do 512 i trzech linii, treść do
-4096 i sześciu linii; tekst kończy się wielokropkiem. Teksty nadawcy, także
+4096 i sześciu linii w widoku zwiniętym; tekst kończy się wielokropkiem.
+Rozwinięcie usuwa ograniczenie liczby linii. Teksty nadawcy, także
 etykiety akcji i tooltipy, są `PlainText`. Nie ma HTML, klikanych linków,
 inline replies, dźwięku ani ikon akcji. Najwyżej osiem pierwszych akcji;
 identyfikator do 256 znaków i etykieta do 128. `inline-reply` jest pomijane.
@@ -120,7 +142,7 @@ liter w polach innych widoków. Wewnętrzny NotificationFocus.enter nadal
 obsługuje bezpośrednią nawigację toastów i jej testy. Usunięcie wybranej
 karty lub akcji przywraca poprawny fokus z zachowaniem mysz/klawiatura.
 
-Escape, kliknięcie poza grabem, otwarcie panelu, wejście na pasek lub utrata
+Escape przy zwiniętej karcie, kliknięcie poza grabem, otwarcie panelu, wejście na pasek lub utrata
 monitorowanych toastów zwalnia klawiaturę. Przed wywołaniem akcji kontroler
 kończy nawigację, pozwalając klientowi skupić własne okno. Gdy panel zasłania
 prawy górny róg tego samego monitora, okno toastów jest zwolnione; czas nadal

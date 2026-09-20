@@ -18,7 +18,7 @@ UI.FadeScope {
     readonly property real cardHeightLimit: (availableHeight - Math.max(0, count - 1) * Metrics.panelGap) / Math.max(1, count)
     implicitHeight: column.implicitHeight
     function cardAt(index: int): Item { return cards.itemAt(index); }
-    function focusInitial(): void { if (navigating && cards.count > 0) cards.itemAt(0).closeControl.forceActiveFocus(controller.focusReason); }
+    function focusInitial(): void { if (navigating && cards.count > 0) cards.itemAt(0).selectionControl.forceActiveFocus(controller.focusReason); }
     function sync(): void {
         const values = service.visibleOn(screenName);
         for (let index = list.count - 1; index >= 0; index--) {
@@ -62,8 +62,8 @@ UI.FadeScope {
                 width: column.width
                 height: Math.min(implicitHeight, root.cardHeightLimit)
                 navigating: root.navigating
-                previousControl: index > 0 && root.cardAt(index - 1) ? root.cardAt(index - 1).closeControl : null
-                nextControl: index + 1 < root.count && root.cardAt(index + 1) ? root.cardAt(index + 1).closeControl : null
+                previousControl: index > 0 && root.cardAt(index - 1) ? root.cardAt(index - 1).selectionControl : null
+                nextControl: index + 1 < root.count && root.cardAt(index + 1) ? root.cardAt(index + 1).selectionControl : null
                 onControlFocused: item => root.focusedControl = item
                 onDismissRequested: root.service.dismiss(entry)
                 onActionRequested: identifier => {

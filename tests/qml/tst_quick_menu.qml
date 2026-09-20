@@ -362,7 +362,8 @@ Item {
             compare(notices.history.length, 3);
             open("notifications");
             compare(preview.panelHost.window.page.cards.count, 3);
-            keyClick(Qt.Key_J); verify(preview.panelHost.window.page.cardAt(0).closeControl.activeFocus);
+            keyClick(Qt.Key_J); verify(preview.panelHost.window.page.cardAt(0).selectionControl.activeFocus);
+            keyClick(Qt.Key_L); verify(preview.panelHost.window.page.cardAt(0).closeControl.activeFocus);
             keyClick(Qt.Key_Return); compare(notices.history.length, 2);
             control("notificationClear").forceActiveFocus(Qt.TabFocusReason); keyClick(Qt.Key_Return);
             compare(notices.history.length, 0); compare(preview.panelHost.window.page.cards.count, 0);

@@ -7,7 +7,6 @@ import "../../components" as UI
 Column {
     id: root
     required property var service
-    property real maximumHeight: 600
     readonly property alias cards: cards
     property Item focusedControl: null
     property int lastFocusReason: Qt.TabFocusReason
@@ -47,8 +46,8 @@ Column {
             checked: root.service.dnd
             enabled: root.service.available
             rightTarget: clear
-            downTarget: root.cardAt(0) ? root.cardAt(0).closeControl : clear
-            KeyNavigation.tab: clear; KeyNavigation.backtab: root.cardAt(cards.count - 1) ? root.cardAt(cards.count - 1).closeControl : clear
+            downTarget: root.cardAt(0) ? root.cardAt(0).selectionControl : clear
+            KeyNavigation.tab: clear; KeyNavigation.backtab: root.cardAt(cards.count - 1) ? root.cardAt(cards.count - 1).selectionControl : clear
             onClicked: root.service.dnd = !root.service.dnd
             onEnsureVisible: item => root.reveal(item)
         }
@@ -58,7 +57,7 @@ Column {
             width: 92
             text: qsTr("Wyczyść")
             leftTarget: dnd
-            downTarget: root.cardAt(0) ? root.cardAt(0).closeControl : dnd
+            downTarget: root.cardAt(0) ? root.cardAt(0).selectionControl : dnd
             KeyNavigation.tab: downTarget; KeyNavigation.backtab: dnd
             onClicked: { root.service.clearHistory(); root.focusInitial(focusReason); }
             onEnsureVisible: item => root.reveal(item)
@@ -74,10 +73,11 @@ Column {
             required property int key
             entry: root.service.historyEntry(key)
             width: root.width
-            height: Math.min(implicitHeight, Math.max(96, root.maximumHeight - Metrics.controlHeight - Metrics.space24))
+            height: implicitHeight
+            scrollable: false
             navigating: true
-            previousControl: index > 0 && root.cardAt(index - 1) ? root.cardAt(index - 1).closeControl : dnd.enabled ? dnd : clear
-            nextControl: root.cardAt(index + 1) ? root.cardAt(index + 1).closeControl : dnd.enabled ? dnd : clear
+            previousControl: index > 0 && root.cardAt(index - 1) ? root.cardAt(index - 1).selectionControl : dnd.enabled ? dnd : clear
+            nextControl: root.cardAt(index + 1) ? root.cardAt(index + 1).selectionControl : dnd.enabled ? dnd : clear
             onControlFocused: item => root.reveal(item)
             onDismissRequested: {
                 const reason = closeControl.focusReason;

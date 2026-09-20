@@ -1,5 +1,34 @@
 # Status implementacji
 
+## Interakcje powiadomień — 2026-09-20
+
+**Gotowe w źródłach.** Przycisk × jest domyślnie bez tła i ramki, z grubszym
+symbolem. Karta ma własny fokus; kliknięcie nagłówka/treści oraz Enter
+wywołują akcję. Skrócony tekst rozwija się przez `i` lub strzałkę, a Escape
+zwija go przed zamknięciem panelu. `j/k` zachowują przechodzenie między
+kartami i stan rozwinięcia. Centrum przewija całą listę, także kółkiem nad
+tekstem; powrót klawiaturą odsłania początek wysokiej karty.
+
+- `scripts/check`: **PASS**, 217 QML, 0 błędów.
+- `tst_notifications.qml`: **32 PASS** przy skali 1 oraz **32 PASS** przy
+  skali 1,25; obejmuje ekran 320×220, kliknięcia, Enter, rozwijanie,
+  nawigację w obie strony, Escape, przewijanie 20 kart i bierne toasty.
+- Regresja: Quick Menu **27 PASS**, panele **12 PASS**, launcher **62 PASS**,
+  ikony **94 PASS**; łącznie z powyższymi **259 PASS**, 0 FAIL i 0 pominięć.
+  Testy końcowe bez ostrzeżeń QML. Logi tej sesji:
+  `/tmp/putkin-notifications-{qml,scale125,quick-menu,panels,launcher,icons}.log`.
+- Obejrzano syntetyczne zrzuty offscreen kart zwiniętych i rozwiniętych,
+  także przy 320×220. Skorygowano ramkę wyboru tak, aby mieściła się
+  w warstwie karty. Dodatkowy przebieg wizualny: **4 PASS**.
+- Początkowy sandbox blokował gniazdo prywatnego D-Bus; powtórzenie
+  dopuszczono poza tym ograniczeniem, nadal z prywatnym XDG/D-Bus i atrapami.
+  Pierwszy rozszerzony test wykazał za wczesne sprawdzanie układu tekstu;
+  końcowe asercje oczekują na przeliczenie geometrii Qt.
+
+Nie wykonywano instalacji, próby na aktywnym pulpicie ani nowego odbioru
+natywnego Waylanda. [Kontrakt](notifications.md#karty-rozwijanie-i-przewijanie--2026-09-20),
+[odtwarzanie testów](testing.md#interakcje-powiadomień--2026-09-20).
+
 ## Repozytorium Git i wykluczenia AI — 2026-09-20
 
 Zainicjowano repozytorium Git 2.55.0 na gałęzi `main`, bez commitów.

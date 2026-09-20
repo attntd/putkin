@@ -52,10 +52,11 @@ UI.FadeScope {
         rememberFocusReason();
         const y = item.mapToItem(flick.contentItem, 0, 0).y;
         const margin = Metrics.focusOffset + Metrics.focusWidth;
+        const visibleHeight = Math.min(item.height, Math.max(1, flick.height - margin * 2));
         if (y - margin < flick.contentY)
             flick.contentY = Math.max(0, y - margin);
-        else if (y + item.height + margin > flick.contentY + flick.height)
-            flick.contentY = Math.min(Math.max(0, flick.contentHeight - flick.height), y + item.height + margin - flick.height);
+        else if (y + visibleHeight + margin > flick.contentY + flick.height)
+            flick.contentY = Math.min(Math.max(0, flick.contentHeight - flick.height), y + visibleHeight + margin - flick.height);
     }
     function revealFocus(): void {
         if (focusedControl && focusedControl.activeFocus)
@@ -142,7 +143,7 @@ UI.FadeScope {
     Component { id: audioPage; AudioView { audio: root.host.audio; monitor: root.host.screen ? root.host.screen.name : "" } }
     Component { id: networkPage; NetworkView { network: root.host.network } }
     Component { id: bluetoothPage; BluetoothView { bluetooth: root.host.bluetooth; onHandoffRequested: root.host.coordinator.close(false) } }
-    Component { id: notificationsPage; NotificationCenter { service: root.host.notifications; maximumHeight: Math.max(1, root.host.availableHeight - Metrics.space12 * 2) } }
+    Component { id: notificationsPage; NotificationCenter { service: root.host.notifications } }
     Component { id: settingsPage; SettingsView { settings: root.host.coordinator.settings; maximumHeight: Math.max(1, root.height - Metrics.space12 * 2) } }
     Component { id: trayPage; TrayView { host: root.host } }
     Connections {

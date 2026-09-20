@@ -142,6 +142,11 @@ Centrum przechowuje do 100 ostatnich powiadomień w pamięci sesji, także
 wygasłych, wyciszonych przez DND i oznaczonych `transient` (także VoxType).
 Po zamknięciu protokołu zachowuje tylko tekst i bezpieczną ikonę, bez
 akcji i obrazów zależnych od życia natywnego obiektu. Restart czyści historię.
+Karty wybierane przez `j/k` mają własny fokus; `Enter` i kliknięcie treści
+wykonują akcję powiadomienia. `i` oraz strzałka w nagłówku rozwijają skrócony
+tekst, `Escape` zwija go przed zamknięciem panelu. Nawigacja między kartami
+zachowuje rozwinięcie. Centrum przewija całą listę wraz z pełnym tekstem.
+Przycisk × ma grubszy symbol, bez domyślnej ramki i tła.
 
 Data decyzji: 2026-09-17. Kontrakt uwzględnia korekty użytkownika po obejrzeniu działającego shella, w tym wielkość ikon oraz oznaczenie zajętych workspace’ów. Minimalizm, zgodność z referencjami i przejścia wyłącznie przez opacity są wymaganiami, nie opcjami.
 

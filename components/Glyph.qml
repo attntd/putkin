@@ -8,6 +8,7 @@ Item {
     property string symbol: ""
     property string section: "list"
     property color color: Theme.text
+    property real strokeWidth: 0
     readonly property var metrics: Metrics.iconSections[section] || Metrics.iconSections.list
     readonly property real iconSize: metrics.size
     readonly property real iconPadding: metrics.padding
@@ -43,7 +44,8 @@ Item {
             transformOrigin: Item.TopLeft
             preferredRendererType: Shape.CurveRenderer
             ShapePath {
-                strokeWidth: -1
+                strokeWidth: root.strokeWidth > 0 ? root.strokeWidth / shape.ratio : -1
+                strokeColor: root.color
                 fillColor: root.color
                 fillRule: ShapePath.WindingFill
                 PathSvg { path: root.vector.path }

@@ -50,6 +50,141 @@ Item {
         function card(index) { return preview.notificationStack.cardAt(index || 0); }
         function waitCard() { tryVerify(() => preview.notificationStack !== null && preview.notificationStack.count > 0); }
         function closed(id, reason) { return backend.closedEvents.some(event => event.id === id && event.reason === reason); }
+        function openCenter() {
+            preview.notificationController.openCenter();
+            tryCompare(preview.panelHost, "loaded", true);
+            tryCompare(preview.panelHost.window, "opacity", 1);
+            verify(waitForPolish(scene));
+            return preview.panelHost.window;
+        }
+        function test_card_activation_data() {
+            return [
+                {tag: "enter", target: "", key: Qt.Key_Return},
+                {tag: "keypad-enter", target: "", key: Qt.Key_Enter},
+                {tag: "summary-click", target: "notificationSummary", key: 0},
+                {tag: "body-click", target: "notificationBody", key: 0},
+                {tag: "header-click", target: "header", key: 0}
+            ];
+        }
+        function test_card_activation(data) {
+            const id = send({body: "Klikalna treść", resident: true, actions: [["other", "Inna"], ["default", "Otwórz"]]});
+            const surface = openCenter();
+            const item = surface.page.cardAt(0);
+            keyClick(Qt.Key_J); verify(item.selectionControl.activeFocus);
+            if (data.key) keyClick(data.key);
+            else if (data.target === "header") mouseClick(item, 70, 30);
+            else mouseClick(findChild(item, data.target), 15, 8);
+            compare(backend.actionEvents.length, 1);
+            compare(backend.actionEvents[0].action, "default");
+            verify(notifications.find(id) !== null);
+            compare(preview.coordinator.activeId, "");
+        }
+        function test_card_without_action_does_not_dismiss_and_single_action_works() {
+            send();
+            const surface = openCenter();
+            keyClick(Qt.Key_J); keyClick(Qt.Key_Return);
+            compare(backend.actionEvents.length, 0); compare(notifications.history.length, 1);
+            compare(preview.coordinator.activeId, "notifications");
+            const id = send({actions: [["open", "Otwórz"]]});
+            tryVerify(() => surface.page.cardAt(0).entry.notificationId === id);
+            surface.page.cardAt(0).selectionControl.forceActiveFocus(Qt.TabFocusReason);
+            keyClick(Qt.Key_Return);
+            compare(backend.actionEvents.length, 1); compare(backend.actionEvents[0].action, "open");
+            verify(closed(id, 2));
+        }
+        function test_center_expand_navigation_and_escape_data() {
+            return [{tag: "desktop", width: 1366, height: 768}, {tag: "small", width: 320, height: 220}];
+        }
+        function test_center_expand_navigation_and_escape(data) {
+            scene.width = data.width; scene.height = data.height;
+            notifications.dnd = true;
+            send({summary: "Następne"});
+            send({summary: "Długi tytuł ".repeat(35), body: "Pełny tekst powiadomienia. ".repeat(120)});
+            const surface = openCenter();
+            const first = surface.page.cardAt(0), second = surface.page.cardAt(1);
+            const summary = findChild(first, "notificationSummary"), body = findChild(first, "notificationBody");
+            verify(summary.truncated); verify(body.truncated); verify(first.expandControl.visible);
+            keyClick(Qt.Key_J); verify(first.selectionControl.activeFocus);
+            const collapsedHeight = first.height;
+            keyClick(Qt.Key_I); tryCompare(first, "expanded", true);
+            verify(waitForPolish(scene));
+            tryCompare(summary, "truncated", false); tryCompare(body, "truncated", false);
+            tryVerify(() => first.height > collapsedHeight);
+            verify(first.selectionControl.activeFocus);
+            keyClick(Qt.Key_I); verify(first.expanded);
+            keyClick(Qt.Key_J); verify(second.selectionControl.activeFocus);
+            verify(surface.viewport.contentY > 0);
+            keyClick(Qt.Key_K); verify(first.selectionControl.activeFocus); verify(first.expanded);
+            const point = first.mapToItem(surface.viewport, 0, 0);
+            verify(point.y >= 0 && point.y < 20, "Return reveals the top of the expanded card");
+            first.closeControl.forceActiveFocus(Qt.TabFocusReason);
+            keyClick(Qt.Key_Escape); tryCompare(first, "expanded", false);
+            compare(preview.coordinator.activeId, "notifications"); verify(first.selectionControl.activeFocus);
+            tryCompare(first, "height", collapsedHeight);
+            keyClick(Qt.Key_Escape); tryCompare(preview.panelHost, "loaded", false);
+        }
+        function test_expand_pointer_and_no_keyboard_ring() {
+            send({body: "Długi tekst ".repeat(200), resident: true, actions: [["default", "Otwórz"]]});
+            const surface = openCenter(), item = surface.page.cardAt(0);
+            keyClick(Qt.Key_J); verify(item.selectionControl.activeFocus);
+            mouseClick(item.expandControl);
+            tryCompare(item, "expanded", true);
+            compare(backend.actionEvents.length, 0);
+            verify(!findChild(item.selectionControl, "focusIndicator").visible);
+            mouseClick(item.expandControl);
+            tryCompare(item, "expanded", false);
+            compare(backend.actionEvents.length, 0);
+            mouseMove(scene, 40, 400);
+            compare(item.closeControl.background.color, Qt.rgba(0, 0, 0, 0));
+            compare(item.closeControl.background.border.width, 0);
+        }
+        function test_center_wheel_over_cards_and_reveal_last_data() {
+            return [{tag: "short", body: "Krótki tekst"}, {tag: "long", body: "Długi tekst ".repeat(200)}];
+        }
+        function test_center_wheel_over_cards_and_reveal_last(data) {
+            scene.width = 320; scene.height = 400;
+            notifications.dnd = true;
+            for (let i = 0; i < 20; ++i) send({summary: "Pozycja " + i, body: data.body});
+            const surface = openCenter(), viewport = surface.viewport;
+            const first = surface.page.cardAt(0), last = surface.page.cardAt(19);
+            verify(viewport.contentHeight > viewport.height);
+            compare(viewport.contentY, 0);
+            mouseWheel(findChild(first, "notificationBody"), 20, 8, 0, -120);
+            tryVerify(() => viewport.contentY > 0);
+            compare(first.viewport.contentY, 0);
+            last.selectionControl.forceActiveFocus(Qt.TabFocusReason);
+            verify(waitForPolish(scene));
+            const point = last.mapToItem(viewport, 0, 0);
+            verify(point.y >= 0 && point.y < viewport.height);
+            keyClick(Qt.Key_K); verify(surface.page.cardAt(18).selectionControl.activeFocus);
+            keyClick(Qt.Key_J); verify(last.selectionControl.activeFocus);
+            first.selectionControl.forceActiveFocus(Qt.TabFocusReason);
+            if (first.expandable) {
+                keyClick(Qt.Key_I); verify(first.expanded);
+                verify(waitForPolish(scene));
+                const before = viewport.contentY;
+                mouseWheel(findChild(first, "notificationBody"), 20, 8, 0, -120);
+                tryVerify(() => viewport.contentY > before);
+                compare(first.viewport.contentY, 0);
+            }
+            compare(backend.actionEvents.length, 0);
+        }
+        function test_toast_expand_navigation_and_body_click() {
+            send({body: "Długi tekst ".repeat(200), resident: true, actions: [["default", "Otwórz"]]});
+            send({summary: "Drugie"}); waitCard();
+            const first = card(), second = card(1);
+            preview.notificationController.enter(); tryVerify(() => first.selectionControl.activeFocus);
+            keyClick(Qt.Key_I); verify(first.expanded);
+            tryCompare(findChild(first, "notificationBody"), "truncated", false);
+            tryVerify(() => first.viewport.contentHeight > first.viewport.height);
+            keyClick(Qt.Key_J); verify(second.selectionControl.activeFocus);
+            keyClick(Qt.Key_K); verify(first.selectionControl.activeFocus); verify(first.expanded);
+            keyClick(Qt.Key_Escape); verify(!first.expanded); compare(preview.notificationController.screenName, "TEST-1");
+            keyClick(Qt.Key_Escape); compare(preview.notificationController.screenName, "");
+            desktop.forceActiveFocus();
+            mouseClick(findChild(first, "notificationBody"), 15, 8);
+            compare(backend.actionEvents.length, 1); verify(desktop.activeFocus);
+        }
         function test_unread_bell_expiry_center_replacement_and_dnd() {
             const bell = findChild(preview.bar, "barNotifications").contentItem;
             compare(bell.symbol, "notifications");
@@ -99,18 +234,20 @@ Item {
         function test_keyboard_hjkl_enter_escape_and_tooltip() {
             const id = send({resident: true, actions: [["a", "Akcja A"], ["b", "Akcja B"], ["c", "Akcja C"], ["d", "Akcja D"]]});
             waitCard(); preview.notificationController.enter();
-            tryVerify(() => card().closeControl.activeFocus);
-            verify(findChild(card().closeControl, "focusIndicator").visible);
-            keyClick(Qt.Key_J); verify(card().actionAt(0).activeFocus);
+            tryVerify(() => card().selectionControl.activeFocus);
+            verify(findChild(card().selectionControl, "focusIndicator").visible);
+            keyClick(Qt.Key_L); keyClick(Qt.Key_J); verify(card().actionAt(0).activeFocus);
             keyClick(Qt.Key_L); verify(card().actionAt(1).activeFocus);
             keyClick(Qt.Key_J); verify(card().actionAt(3).activeFocus);
             keyClick(Qt.Key_H); verify(card().actionAt(2).activeFocus);
             keyClick(Qt.Key_K); verify(card().actionAt(0).activeFocus);
             keyClick(Qt.Key_Enter); compare(backend.actionEvents.length, 1); compare(backend.actionEvents[0].action, "a");
             verify(notifications.find(id) !== null); compare(preview.notificationController.screenName, "");
-            preview.notificationController.enter(); tryVerify(() => card().closeControl.activeFocus);
+            preview.notificationController.enter(); tryVerify(() => card().selectionControl.activeFocus);
+            keyClick(Qt.Key_Tab); verify(card().closeControl.activeFocus);
             keyClick(Qt.Key_Tab); verify(card().actionAt(0).activeFocus);
             keyClick(Qt.Key_Backtab); verify(card().closeControl.activeFocus);
+            keyClick(Qt.Key_Backtab); verify(card().selectionControl.activeFocus);
             keyClick(Qt.Key_Escape); compare(preview.notificationController.screenName, "");
             mouseMove(card().closeControl, 18, 18);
             wait(650); compare(findChild(card().closeControl, "tooltip"), null);
@@ -178,7 +315,8 @@ Item {
             waitCard(); verify(card().height <= 172); verify(card().width <= 304);
             const picture = findChild(card(), "notificationImage");
             tryCompare(picture, "status", Image.Ready); verify(picture.sourceSize.width <= 360); verify(picture.sourceSize.height <= 100);
-            preview.notificationController.enter(); tryVerify(() => card().closeControl.activeFocus);
+            preview.notificationController.enter(); tryVerify(() => card().selectionControl.activeFocus);
+            card().closeControl.forceActiveFocus(Qt.TabFocusReason);
             for (let i = 0; i < 4; i++) keyClick(Qt.Key_J);
             keyClick(Qt.Key_L); verify(card().actionAt(7).activeFocus); verify(card().viewport.contentY > 0);
             const point = card().actionAt(7).mapToItem(card(), 0, 0);
@@ -215,10 +353,10 @@ Item {
         }
         function test_keyboard_pause_and_focus_repair() {
             const id = send({expireTimeout: 100}); waitCard(); preview.notificationController.enter();
-            tryVerify(() => card().closeControl.activeFocus); wait(150); verify(notifications.find(id) !== null);
-            const original = card(); send(); compare(card(), original); verify(card().closeControl.activeFocus);
-            keyClick(Qt.Key_Return); verify(closed(id, 2));
-            tryVerify(() => card().closeControl.activeFocus);
+            tryVerify(() => card().selectionControl.activeFocus); wait(150); verify(notifications.find(id) !== null);
+            const original = card(); send(); compare(card(), original); verify(card().selectionControl.activeFocus);
+            keyClick(Qt.Key_L); keyClick(Qt.Key_Return); verify(closed(id, 2));
+            tryVerify(() => card().selectionControl.activeFocus);
             preview.notificationController.close();
         }
         function test_quick_settings_center_dnd_and_intentional_handoff() {
@@ -230,7 +368,7 @@ Item {
             tryVerify(() => findChild(preview.panelHost.window, "notificationDnd").activeFocus);
             keyClick(Qt.Key_Return); verify(notifications.dnd); compare(notifications.entries.length, 0);
             keyClick(Qt.Key_Enter); verify(!notifications.dnd);
-            send(); keyClick(Qt.Key_J); verify(preview.panelHost.window.page.cardAt(0).closeControl.activeFocus);
+            send(); keyClick(Qt.Key_J); verify(preview.panelHost.window.page.cardAt(0).selectionControl.activeFocus);
             keyClick(Qt.Key_Return); verify(notifications.history.length > 0);
             keyClick(Qt.Key_Escape); tryCompare(preview.panelHost, "loaded", false);
             send(); waitCard();

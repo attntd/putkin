@@ -1,5 +1,19 @@
 # Środowisko i rozwój
 
+## Interakcje powiadomień — 2026-09-20
+
+Przed zmianą potwierdzono lokalnie `qmake6 -query QT_VERSION`: **6.11.2**
+i `qs --version`: **0.3.1**. Sprawdzono oficjalne API Qt 6.11:
+[Text.truncated / maximumLineCount](https://doc.qt.io/qt-6.11/qml-qtquick-text.html),
+[ScrollView](https://doc.qt.io/qt-6.11/qml-qtquick-controls-scrollview.html),
+[Control.wheelEnabled](https://doc.qt.io/qt-6.11/qml-qtquick-controls-control.html#wheelEnabled-prop),
+[Flickable.interactive](https://doc.qt.io/qt-6.11/qml-qtquick-flickable.html#interactive-prop),
+[AbstractButton](https://doc.qt.io/qt-6.11/qml-qtquick-controls-abstractbutton.html)
+i [ShapePath.strokeWidth](https://doc.qt.io/qt-6.11/qml-qtquick-shapes-shapepath.html#strokeWidth-prop).
+Wspólny `Glyph` przyjmuje opcjonalną szerokość obrysu w pikselach widoku;
+domyślne ikony pozostają bez obrysu. Karty centrum wyłączają własną obsługę
+kółka i gestu przewijania, przekazując je otaczającemu panelowi.
+
 ## Fade — 2026-09-20
 
 Lokalne `qs --version`, `qmake -query QT_VERSION` i qmltypes potwierdzają

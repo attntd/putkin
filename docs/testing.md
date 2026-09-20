@@ -1,5 +1,17 @@
 # Testowanie Putkin
 
+## Interakcje powiadomień — 2026-09-20
+
+`python3 scripts/test-icons --file tst_notifications.qml --log /tmp/putkin-notifications-qml.log`
+sprawdza kliknięcia w nagłówek, tytuł i treść, oba Entery, wybór akcji
+domyślnej i brak akcji, `i/Escape`, przejście do następnej karty i powrót,
+zachowanie rozwinięcia, obsługę myszy bez ramki, przewijanie kółkiem nad
+krótką/długą/rozwiniętą treścią i dojście do ostatniej z 20 kart.
+Rozwinięcie sprawdzane jest również przy 320×220 i dla biernych toastów.
+Testy używają prawdziwego wejścia Qt oraz produkcyjnych widoków z atrapami,
+w prywatnych XDG/D-Bus. Regresja współdzielonych kontrolek i paneli:
+`tst_quick_menu.qml`, `tst_panels.qml`, `tst_launcher.qml`, `tst_material_icons.qml`.
+
 ## Stabilny fade — 2026-09-20
 
 `tests/qml/tst_fade.qml` porównuje piksele ramki, tekstu i aktywnego kafelka
