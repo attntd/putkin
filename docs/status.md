@@ -2,6 +2,9 @@
 
 ## Odzyskiwanie aktywnego workspace — 2026-09-20
 
+**Wdrożone: `20260920-172244-98dd3094da3d`**, poprawka scalona do `main`
+w commicie `53b3e70`.
+
 Po wdrożeniu powiadomień użytkownik zgłosił brak aktywnego numeru na pasku
 i timeout kliknięcia; skróty Hyprlanda nadal działały. Odczyt kompozytora
 pokazał poprawny aktywny workspace. Źródła Quickshella 0.3.1 i test prywatnego
@@ -21,6 +24,18 @@ Dodano `bar status` do odczytu modelu bez zmiany fokusu/workspace’u.
   Hyprlang/Lua × zwykła/podzielona odpowiedź; potwierdzono również odzyskanie
   po `focusedmon` z `?`, komendy launchera, hotplug, EOF i brak zapytań
   w spoczynku; [log](evidence/workspace-recovery-integration.log).
+
+Instalacja: **137 QML PASS**, dwa zmienione pliki runtime; [log](evidence/workspace-recovery-install.log).
+Odbiór działającej wersji: **PASS**, `bar status` i `hyprctl -j monitors`
+zgodnie wskazują workspace 1 na eDP-1 i skupiony eDP-1; model paska ma
+`visibleOn: eDP-1`, bez oczekującej akcji i bez błędu. Jedna instancja
+PID 334201, poprawny właściciel powiadomień, gotowe skróty, blokada i idle,
+274 pliki zgodne z `main`, ustawienia zachowane. Log QML i konfiguracja
+Hyprlanda czyste; wyjątek znanego ostrzeżenia traya nie był potrzebny.
+Zachowano poprzednie wydanie powiadomień i pięć buildów.
+[Raport](evidence/workspace-recovery-activation.json).
+Obejrzany zrzut wyłącznie fragmentu paska potwierdza widoczne wypełnienie
+aktywnego numeru 1: [oznaczenie](evidence/workspace-recovery-bar.png).
 
 ## Interakcje powiadomień — 2026-09-20
 

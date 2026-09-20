@@ -1,0 +1,79 @@
+{
+  "timestamp_utc": "2026-09-20T17:23:50.450205+00:00",
+  "result": "PASS",
+  "source_commit": "53b3e705b626cc03f021a827be9725b7b3009b01",
+  "build": "20260920-172244-98dd3094da3d",
+  "previous": "/home/attntd/.local/share/putkin/releases/20260920-170400-e2d7150ad167",
+  "instance": {
+    "config_path": "/home/attntd/.config/quickshell/shell.qml",
+    "id": "dv570zaolt",
+    "launch_time": "2026-09-20T19:23:24",
+    "pid": 334201,
+    "shell_id": "770bba0d0f619c4ab3ab0453a539d542"
+  },
+  "unit": {
+    "ActiveState": "active",
+    "SubState": "running",
+    "MainPID": "334201",
+    "Slice": "session-graphical.slice"
+  },
+  "runtime_files": 274,
+  "runtime_matches_main": true,
+  "changed_runtime_files": [
+    "modules/bar/BarIpc.qml",
+    "services/HyprlandService.qml"
+  ],
+  "notification_owner": 334201,
+  "bar": {
+    "available": true,
+    "monitors": [
+      {
+        "name": "eDP-1",
+        "activeId": 1
+      }
+    ],
+    "focusedMonitor": "eDP-1",
+    "workspaces": [
+      {
+        "id": 1,
+        "visibleOn": "eDP-1"
+      },
+      {
+        "id": 2,
+        "visibleOn": ""
+      },
+      {
+        "id": 3,
+        "visibleOn": ""
+      },
+      {
+        "id": 4,
+        "visibleOn": ""
+      },
+      {
+        "id": 5,
+        "visibleOn": ""
+      }
+    ],
+    "busy": false,
+    "error": ""
+  },
+  "workspace_model_matches_hyprland": true,
+  "keyboard_ready": true,
+  "keyboard_applied": true,
+  "idle_ready": true,
+  "lock_available": true,
+  "caffeinate_mode": "off",
+  "configuration_unchanged": true,
+  "retained": [
+    "20260920-172244-98dd3094da3d",
+    "20260920-170400-e2d7150ad167",
+    "20260920-155210-f60d99e92e0f",
+    "20260920-152319-06db5a42cb5e",
+    "20260920-144910-c522126acd2f"
+  ],
+  "qml_log_clean": true,
+  "known_external_tray_warnings": [],
+  "runtime_no_new_errors": true,
+  "hyprland_config_clean": true
+}

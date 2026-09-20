@@ -1,5 +1,20 @@
 # Lokalne przełączenie na Putkin
 
+## Oznaczenie i przełączanie workspace’ów — 2026-09-20
+
+Aktywne wydanie: **`20260920-172244-98dd3094da3d`**, poprawka `53b3e70`
+na `main`. Przywraca dane monitorów po niepełnej odpowiedzi IPC Quickshella
+i dodaje odczyt diagnostyczny `bar status`. Zmiany powiadomień są zachowane.
+
+Odbiór **PASS**: model aktywnego workspace i skupionego monitora zgadza się
+z Hyprlandem, oznaczenie aktywności jest obecne w modelu paska, brak błędu
+lub oczekującej operacji. Jedna instancja, czysty log, 274 pliki zgodne
+z `main`, niezmienione ustawienia. [Raport](evidence/workspace-recovery-activation.json),
+[testy](status.md#odzyskiwanie-aktywnego-workspace--2026-09-20).
+
+`previous` wskazuje `20260920-170400-e2d7150ad167`; zachowano pięć buildów.
+Powrót z odblokowanej sesji: `scripts/install --restore --activate`.
+
 ## Poprawki powiadomień — 2026-09-20
 
 Aktywne wydanie: **`20260920-170400-e2d7150ad167`**, ze zmianami scalonymi
