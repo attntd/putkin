@@ -225,6 +225,34 @@ Nie uruchamiano pełnego shella na aktywnym pulpicie ani nie odczytywano
 schowka użytkownika. Późniejsze wspólne wdrożenie z fade i launcherem
 opisano powyżej.
 
+## Równe zanikanie i zwijanie Caffeinate — 2026-09-20
+
+Warstwy panelu i zwijanej kolumny zachowują ostatni wyrenderowany obraz
+podczas zamykania. Wyłączenie kontrolek i utrata fokusu nadal następują
+od razu, ale nie zmieniają już fragmentów zanikającej ramki.
+Natywne okno panelu zachowuje wysokość ekranu; widoczna powierzchnia
+i maska wejścia nadal odpowiadają treści. Zapis klatek prywatnego Waylanda
+odtworzył jedną pomniejszoną, przesuniętą klatkę przy zwijaniu Caffeinate
+przed poprawką i stałą górną krawędź po poprawce.
+
+- `scripts/check`: **217 QML PASS**, 0 błędów.
+- Regresja QML: **612 różnych wyników PASS** w 25 zestawach. Zbiorczy
+  runner osiągnął limit 240 s po 544 wynikach bez błędów asercji;
+  pozostałe zestawy ukończono osobno, bez błędów i pominięć.
+- `scripts/test-fade-wayland`: **PASS** przy skali 1 i 1,25, w tym
+  piksele zanikania po wyłączeniu kontrolek, pozycje treści i natywne
+  okno Caffeinate podczas wyboru trybu oraz zwijania.
+- `scripts/test-wayland --launcher-preview`: **PASS**, w tym kliknięcia
+  w przezroczystym obszarze i poza panelem oraz skala 1,5.
+- Po integracji z `main` (`e8df4a9`): ponownie **PASS** testów GPU,
+  natywnego Caffeinate oraz **22 PASS** klawiatury i komend launchera.
+  Raporty: `/tmp/animation-jitter-merge-wayland/` oraz
+  `/tmp/animation-jitter-merge-keyboard.log`.
+
+Logi i raporty tej sesji: `/tmp/animation-jitter-*`. Testy używają atrap,
+prywatnych XDG/D-Bus i odizolowanego kompozytora. Poprawka nie została
+jeszcze zainstalowana w aktywnej sesji.
+
 ## Stabilny fade bez opcji ograniczania ruchu — 2026-09-20
 
 **Wdrożone: `20260920-155210-f60d99e92e0f`; do odbioru wizualnego użytkownika.**
