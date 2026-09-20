@@ -5,7 +5,10 @@
 Zaznaczenie obejmuje kartę. Kliknięcie jej nagłówka lub treści oraz `Enter`
 wywołuje akcję `default`, a przy jej braku pierwszą dostępną akcję.
 Karta bez akcji (w tym archiwalna) pozostaje dostępna do czytania i usuwania;
-jej aktywacja nie zamyka panelu. Osobne przyciski zachowują własne akcje.
+jej aktywacja nie zamyka panelu. Akcja `default` nie tworzy osobnego
+przycisku, także gdy klient Kitty przekazuje etykietę zawierającą samą spację.
+Pozostałe akcje zachowują własne przyciski. Bez nich karta nie rezerwuje
+wiersza akcji. Zasada dotyczy toastów i centrum powiadomień.
 Przycisk × ma grubszy symbol i domyślnie przezroczyste tło bez ramki;
 fokus jest widoczny wyłącznie podczas obsługi klawiaturą.
 

@@ -241,11 +241,13 @@ UI.FadeScope {
                 Grid {
                     id: actionGrid
                     width: parent.width
+                    visible: actions.count > 0
                     columns: 2
                     spacing: Metrics.space12
                     Repeater {
                         id: actions
-                        model: root.entry ? root.entry.actions : []
+                        // The card invokes default; only additional actions need buttons.
+                        model: root.entry ? root.entry.actions.filter(action => action.identifier !== "default") : []
                         delegate: UI.NavigationButton {
                             id: actionButton
                             required property int index

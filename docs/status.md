@@ -1,5 +1,27 @@
 # Status implementacji
 
+## Domyślna akcja powiadomienia Kitty — 2026-09-20
+
+Lokalny kod Kitty (`kitty/notifications.py`) wysyła `default` z etykietą
+zawierającą pojedynczą spację. Karta renderowała ją jako pusty przycisk.
+Akcja `default` jest teraz pomijana wyłącznie w przyciskach; kliknięcie
+nagłówka/treści i Enter nadal ją wywołują. Dodatkowe akcje zachowują
+przyciski oraz nawigację. Pusty wiersz akcji nie zajmuje miejsca.
+
+- `scripts/check`: **217 QML PASS**, 0 błędów.
+- Powiadomienia: **37 PASS**, w tym pięć przypadków Kitty/default,
+  kliknięcia, Enter, zastąpienie akcji, geometria i dodatkowe przyciski.
+- Quick Menu / centrum: **27 PASS**, 0 FAIL i pominięć.
+- Obejrzano syntetyczny zrzut offscreen bez przycisku:
+  `/tmp/kitty-notification-after.png`; końcowy przebieg wizualny **3 PASS**.
+  Pierwsza asercja podglądu błędnie sprawdzała wartość zwrotną zapisu obrazu;
+  poprawiono harness, sam obraz był zapisany prawidłowo.
+- Logi: `/tmp/kitty-notifications-qml.log`, `/tmp/kitty-quick_menu-qml.log`
+  i `/tmp/kitty-notification-visual.log`. Testy używały atrap i prywatnego D-Bus.
+
+Poprawka w źródłach, bez instalacji w aktywnej sesji i bez nowego testu
+natywnego klienta Kitty. [Kontrakt powiadomień](notifications.md).
+
 ## Komendy sesji i Super+; — 2026-09-20
 
 Tryb komend otwiera `Super+;`, bez Shift. Domyślne komendy to

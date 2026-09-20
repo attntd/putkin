@@ -79,6 +79,35 @@ Item {
             verify(notifications.find(id) !== null);
             compare(preview.coordinator.activeId, "");
         }
+        function test_kitty_default_has_no_button_data() {
+            return [
+                {tag: "toast-summary", center: false, target: "notificationSummary", label: " "},
+                {tag: "toast-header", center: false, target: "header", label: " "},
+                {tag: "center-body", center: true, target: "notificationBody", label: " "},
+                {tag: "center-enter", center: true, target: "enter", label: " "},
+                {tag: "named-default", center: false, target: "notificationSummary", label: "Otwórz"}
+            ];
+        }
+        function test_kitty_default_has_no_button(data) {
+            const id = send({appName: "kitty", body: "Zakończono zadanie", actions: [["default", data.label]]});
+            waitCard();
+            const item = data.center ? openCenter().page.cardAt(0) : card();
+            compare(item.actionItems.count, 0);
+            verify(waitForPolish(scene));
+            const defaultHeight = item.height;
+            backend.send({replacesId: id, actions: []});
+            verify(waitForPolish(scene));
+            compare(item.height, defaultHeight, "Default action must not reserve a button row");
+            backend.send({replacesId: id, actions: [["default", data.label]]});
+            if (data.target === "enter") {
+                item.selectionControl.forceActiveFocus(Qt.TabFocusReason);
+                keyClick(Qt.Key_Return);
+            } else if (data.target === "header") mouseClick(item, 70, 30);
+            else mouseClick(findChild(item, data.target), 15, 8);
+            compare(backend.actionEvents, [{id: id, action: "default"}]);
+            verify(closed(id, 2));
+            if (!data.center) verify(desktop.activeFocus);
+        }
         function test_card_without_action_does_not_dismiss_and_single_action_works() {
             send();
             const surface = openCenter();
@@ -215,7 +244,7 @@ Item {
             waitCard();
             compare(notifications.find(id).appName, "Aplikacja"); compare(notifications.find(id).summary, "Powiadomienie");
             compare(notifications.find(id).iconName, "apps");
-            backend.send({replacesId: id, summary: "<b>hjkl & tytuł</b>", body: "<img src='https://example.invalid/x'>" + "długi ".repeat(2000), actions: [["default", "<b>Otwórz</b>"]]});
+            backend.send({replacesId: id, summary: "<b>hjkl & tytuł</b>", body: "<img src='https://example.invalid/x'>" + "długi ".repeat(2000), actions: [["default", " "], ["open", "<b>Otwórz</b>"]]});
             wait(30);
             compare(findChild(card(), "notificationSummary").textFormat, Text.PlainText);
             compare(findChild(card(), "notificationBody").textFormat, Text.PlainText);
@@ -228,11 +257,12 @@ Item {
             waitCard(); verify(desktop.activeFocus); compare(preview.notificationController.screenName, "");
             [Qt.Key_H, Qt.Key_J, Qt.Key_K, Qt.Key_L].forEach(key => keyClick(key)); compare(desktop.text, "hjkl");
             mouseClick(card().closeControl); verify(desktop.activeFocus); verify(closed(id, 2));
-            send({actions: [["default", "Otwórz"]]}); waitCard();
+            send({actions: [["default", " "], ["open", "Otwórz"]]}); waitCard();
             mouseClick(card().actionAt(0)); verify(desktop.activeFocus); compare(backend.actionEvents.length, 1);
+            compare(backend.actionEvents[0].action, "open");
         }
         function test_keyboard_hjkl_enter_escape_and_tooltip() {
-            const id = send({resident: true, actions: [["a", "Akcja A"], ["b", "Akcja B"], ["c", "Akcja C"], ["d", "Akcja D"]]});
+            const id = send({resident: true, actions: [["a", "Akcja A"], ["default", " "], ["b", "Akcja B"], ["c", "Akcja C"], ["d", "Akcja D"]]});
             waitCard(); preview.notificationController.enter();
             tryVerify(() => card().selectionControl.activeFocus);
             verify(findChild(card().selectionControl, "focusIndicator").visible);
