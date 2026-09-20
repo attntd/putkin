@@ -1,0 +1,75 @@
+{
+  "checks": [
+    "native Lua fragment and rollback; hyprsunset parser if installed",
+    "already active state read without writing or starting another daemon",
+    "on/off, temperature and complete fragmented reply/readback",
+    "denial, unconfirmed write, late write, timeout and malformed state invalidate UI",
+    "absent backend, restart recovery and stale intent rejected without replay",
+    "production ownership rejects the fixture before any IPC",
+    "Process timeout, SIGTERM/SIGKILL and child reaping",
+    "reload also terminates the helper's own preflight child",
+    "shell reload keeps the external daemon and confirmed state",
+    "20 panel cycles release every view; no persistent child helper"
+  ],
+  "isolation": "private XDG, session D-Bus, IPC peer; no host Wayland or hardware",
+  "configs": {
+    "appearance": {
+      "code": 0,
+      "output": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/pk-t1r5y2nw/hyprland.lua'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is lua, loading lua mgr\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs (debug.enable_stdout_logs = 0). Further logs will be written to /hyprland.log\n\n\n======== Config parsing result:\n\nconfig ok\n"
+    },
+    "rollback": {
+      "code": 0,
+      "output": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/pk-t1r5y2nw/hyprland.lua'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is lua, loading lua mgr\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs (debug.enable_stdout_logs = 0). Further logs will be written to /hyprland.log\n\n\n======== Config parsing result:\n\nconfig ok\n"
+    },
+    "hyprsunset_config": {
+      "code": 1,
+      "output": "┏ hyprsunset v0.4.0 ━━╸\n┃\n┣ Loaded 0 profiles\n┣ Resetting the matrix (--identity passed)\n┃\n┣ Calculated the CTM to be [mat3x3: 1, 0, 0, 0, 1, 0, 0, 0, 1]\n┃\n✖ Couldn't connect to a wayland compositor\n"
+    },
+    "hyprsunset_invalid_control": {
+      "code": 1,
+      "output": "┏ hyprsunset v0.4.0 ━━╸\n┃\n[ERR] Config has errors:\nConfig error in file /tmp/pk-t1r5y2nw/config/hypr/hyprsunset.conf: Unclosed category at EOF\nProceeding ignoring faulty entries\n┣ Loaded 0 profiles\n┣ Resetting the matrix (--identity passed)\n┃\n┣ Calculated the CTM to be [mat3x3: 1, 0, 0, 0, 1, 0, 0, 0, 1]\n┃\n✖ Couldn't connect to a wayland compositor\n"
+    }
+  },
+  "cycles": {
+    "count": 20,
+    "rss_kib": [
+      125908,
+      125908,
+      125908,
+      126036,
+      126164,
+      126164,
+      126148,
+      125940,
+      125792,
+      125652,
+      125652,
+      125524,
+      125524,
+      125524,
+      125360,
+      125208,
+      125208,
+      125208,
+      125048,
+      125048
+    ],
+    "snapshot": {
+      "available": true,
+      "enabled": true,
+      "temperature": 3900,
+      "sample": {
+        "owner": "290522:18291684",
+        "enabled": true,
+        "temperature": 3900
+      },
+      "busy": false,
+      "error": "",
+      "pid": null,
+      "panelLoaded": false,
+      "created": 20,
+      "destroyed": 20
+    }
+  },
+  "result": "PASS"
+}

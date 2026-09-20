@@ -1,0 +1,996 @@
+{
+  "timestamp_utc": "2026-09-16T19:53:44.163484+00:00",
+  "mode": "offscreen/software; real Process/IPC/LazyLoader; fake brightnessctl; mock audio and monitors; no hardware",
+  "cycles": [
+    {
+      "cycle": 1,
+      "pid": 287171,
+      "name": "quickshell",
+      "parent": 287168,
+      "cpu_ticks": 116,
+      "rss_kib": 140664
+    },
+    {
+      "cycle": 2,
+      "pid": 287171,
+      "name": "quickshell",
+      "parent": 287168,
+      "cpu_ticks": 117,
+      "rss_kib": 140536
+    },
+    {
+      "cycle": 3,
+      "pid": 287171,
+      "name": "quickshell",
+      "parent": 287168,
+      "cpu_ticks": 118,
+      "rss_kib": 140536
+    },
+    {
+      "cycle": 4,
+      "pid": 287171,
+      "name": "quickshell",
+      "parent": 287168,
+      "cpu_ticks": 119,
+      "rss_kib": 140536
+    },
+    {
+      "cycle": 5,
+      "pid": 287171,
+      "name": "quickshell",
+      "parent": 287168,
+      "cpu_ticks": 120,
+      "rss_kib": 140536
+    },
+    {
+      "cycle": 6,
+      "pid": 287171,
+      "name": "quickshell",
+      "parent": 287168,
+      "cpu_ticks": 120,
+      "rss_kib": 140536
+    },
+    {
+      "cycle": 7,
+      "pid": 287171,
+      "name": "quickshell",
+      "parent": 287168,
+      "cpu_ticks": 121,
+      "rss_kib": 140536
+    },
+    {
+      "cycle": 8,
+      "pid": 287171,
+      "name": "quickshell",
+      "parent": 287168,
+      "cpu_ticks": 122,
+      "rss_kib": 140536
+    },
+    {
+      "cycle": 9,
+      "pid": 287171,
+      "name": "quickshell",
+      "parent": 287168,
+      "cpu_ticks": 123,
+      "rss_kib": 140536
+    },
+    {
+      "cycle": 10,
+      "pid": 287171,
+      "name": "quickshell",
+      "parent": 287168,
+      "cpu_ticks": 124,
+      "rss_kib": 140536
+    },
+    {
+      "cycle": 11,
+      "pid": 287171,
+      "name": "quickshell",
+      "parent": 287168,
+      "cpu_ticks": 125,
+      "rss_kib": 140536
+    },
+    {
+      "cycle": 12,
+      "pid": 287171,
+      "name": "quickshell",
+      "parent": 287168,
+      "cpu_ticks": 125,
+      "rss_kib": 130928
+    },
+    {
+      "cycle": 13,
+      "pid": 287171,
+      "name": "quickshell",
+      "parent": 287168,
+      "cpu_ticks": 127,
+      "rss_kib": 130928
+    },
+    {
+      "cycle": 14,
+      "pid": 287171,
+      "name": "quickshell",
+      "parent": 287168,
+      "cpu_ticks": 128,
+      "rss_kib": 130332
+    },
+    {
+      "cycle": 15,
+      "pid": 287171,
+      "name": "quickshell",
+      "parent": 287168,
+      "cpu_ticks": 129,
+      "rss_kib": 130204
+    },
+    {
+      "cycle": 16,
+      "pid": 287171,
+      "name": "quickshell",
+      "parent": 287168,
+      "cpu_ticks": 129,
+      "rss_kib": 130048
+    },
+    {
+      "cycle": 17,
+      "pid": 287171,
+      "name": "quickshell",
+      "parent": 287168,
+      "cpu_ticks": 130,
+      "rss_kib": 130048
+    },
+    {
+      "cycle": 18,
+      "pid": 287171,
+      "name": "quickshell",
+      "parent": 287168,
+      "cpu_ticks": 131,
+      "rss_kib": 130048
+    },
+    {
+      "cycle": 19,
+      "pid": 287171,
+      "name": "quickshell",
+      "parent": 287168,
+      "cpu_ticks": 132,
+      "rss_kib": 130048
+    },
+    {
+      "cycle": 20,
+      "pid": 287171,
+      "name": "quickshell",
+      "parent": 287168,
+      "cpu_ticks": 132,
+      "rss_kib": 130048
+    }
+  ],
+  "final": {
+    "available": true,
+    "percent": 50,
+    "device": "test_backlight",
+    "busy": false,
+    "error": "",
+    "diagnostic": "Urządzenie: test_backlight · zakres 0–100. Stan odświeża się po otwarciu panelu i własnej zmianie.",
+    "child": null,
+    "osd": false,
+    "kind": "brightness",
+    "osdLoaded": false,
+    "created": 20,
+    "destroyed": 20,
+    "screen": "",
+    "panel": "",
+    "focus": ""
+  },
+  "events": [
+    {
+      "pid": 287180,
+      "time": 65278.691387747,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 287191,
+      "time": 65278.998125788,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "1"
+      ]
+    },
+    {
+      "pid": 287194,
+      "time": 65279.055960919,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 287199,
+      "time": 65279.192370584,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "100"
+      ]
+    },
+    {
+      "pid": 287202,
+      "time": 65279.251531791,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 287207,
+      "time": 65279.386783281,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "30"
+      ]
+    },
+    {
+      "pid": 287209,
+      "time": 65279.44242944,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 287215,
+      "time": 65279.597262738,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "35"
+      ]
+    },
+    {
+      "pid": 287218,
+      "time": 65279.653015913,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 287223,
+      "time": 65279.792857908,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "75"
+      ]
+    },
+    {
+      "pid": 287228,
+      "time": 65279.931295711,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 287241,
+      "time": 65280.301118913,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "45"
+      ]
+    },
+    {
+      "pid": 287243,
+      "time": 65280.352916094,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 287251,
+      "time": 65280.556601295,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 287267,
+      "time": 65281.142941735,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 287276,
+      "time": 65281.374374243,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "80"
+      ]
+    },
+    {
+      "pid": 287279,
+      "time": 65281.42864718,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 287284,
+      "time": 65281.565841433,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "80"
+      ]
+    },
+    {
+      "pid": 287286,
+      "time": 65281.624146132,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 287292,
+      "time": 65281.759566818,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "80"
+      ]
+    },
+    {
+      "pid": 287334,
+      "time": 65283.408913208,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 287340,
+      "time": 65283.590811405,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "80"
+      ]
+    },
+    {
+      "pid": 287342,
+      "time": 65283.637708453,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 287348,
+      "time": 65283.780941802,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "65"
+      ]
+    },
+    {
+      "pid": 287350,
+      "time": 65283.829393859,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 287356,
+      "time": 65283.976567014,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 287363,
+      "time": 65284.144408299,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 287370,
+      "time": 65284.313311707,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 287381,
+      "time": 65284.601910536,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 287386,
+      "time": 65284.712379288,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 287391,
+      "time": 65284.8287349,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 287438,
+      "time": 65286.570868378,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 287452,
+      "time": 65286.893925356,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 287459,
+      "time": 65287.084624081,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "55"
+      ]
+    },
+    {
+      "pid": 287465,
+      "time": 65287.455941282,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 287472,
+      "time": 65287.649270551,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "55"
+      ]
+    },
+    {
+      "pid": 287478,
+      "time": 65288.028514046,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 287485,
+      "time": 65288.213634761,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "30"
+      ]
+    },
+    {
+      "pid": 287488,
+      "time": 65288.271791504,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 287495,
+      "time": 65288.463029551,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "31"
+      ]
+    },
+    {
+      "pid": 287497,
+      "time": 65288.521105774,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 287515,
+      "time": 65289.086253098,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "32"
+      ]
+    },
+    {
+      "pid": 287517,
+      "time": 65289.139668355,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 287536,
+      "time": 65289.724334435,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "33"
+      ]
+    },
+    {
+      "pid": 287538,
+      "time": 65289.779842958,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 287560,
+      "time": 65290.347288216,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "34"
+      ]
+    },
+    {
+      "pid": 287563,
+      "time": 65290.399280421,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 287581,
+      "time": 65290.992689754,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "35"
+      ]
+    },
+    {
+      "pid": 287584,
+      "time": 65291.048501909,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 287601,
+      "time": 65291.596243669,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "36"
+      ]
+    },
+    {
+      "pid": 287603,
+      "time": 65291.649766915,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 287621,
+      "time": 65292.215445647,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "37"
+      ]
+    },
+    {
+      "pid": 287624,
+      "time": 65292.267471108,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 287641,
+      "time": 65292.830476241,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "38"
+      ]
+    },
+    {
+      "pid": 287643,
+      "time": 65292.886017638,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 287661,
+      "time": 65293.464246473,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "39"
+      ]
+    },
+    {
+      "pid": 287664,
+      "time": 65293.517202119,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 287681,
+      "time": 65294.081289927,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "40"
+      ]
+    },
+    {
+      "pid": 287683,
+      "time": 65294.135518084,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 287701,
+      "time": 65294.71489504,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "41"
+      ]
+    },
+    {
+      "pid": 287703,
+      "time": 65294.770164031,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 287721,
+      "time": 65295.347368014,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "42"
+      ]
+    },
+    {
+      "pid": 287724,
+      "time": 65295.401129854,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 287742,
+      "time": 65295.983972913,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "43"
+      ]
+    },
+    {
+      "pid": 287745,
+      "time": 65296.043852811,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 287762,
+      "time": 65296.589186748,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "44"
+      ]
+    },
+    {
+      "pid": 287765,
+      "time": 65296.64669025,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 287782,
+      "time": 65297.211837289,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "45"
+      ]
+    },
+    {
+      "pid": 287785,
+      "time": 65297.268115593,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 287802,
+      "time": 65297.83762039,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "46"
+      ]
+    },
+    {
+      "pid": 287804,
+      "time": 65297.889925707,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 287822,
+      "time": 65298.459559283,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "47"
+      ]
+    },
+    {
+      "pid": 287825,
+      "time": 65298.509294643,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 287842,
+      "time": 65299.091297227,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "48"
+      ]
+    },
+    {
+      "pid": 287844,
+      "time": 65299.142531087,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 287862,
+      "time": 65299.727054003,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "49"
+      ]
+    },
+    {
+      "pid": 287865,
+      "time": 65299.779750733,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 287882,
+      "time": 65300.343971959,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "50"
+      ]
+    },
+    {
+      "pid": 287885,
+      "time": 65300.400829667,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    }
+  ],
+  "expected_diagnostics": [
+    "  WARN: Process failed to start, likely because the binary could not be found. Command: QList(\"/tmp/pk-fxdb54l4/missing-brightnessctl\", \"--class=backlight\", \"--machine-readable\", \"--list\")"
+  ]
+}

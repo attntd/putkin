@@ -1,0 +1,9 @@
+PASS: 136 plików QML, 0 z błędami.
+{
+  "current": "/tmp/putkin-launcher-package/data/putkin/releases/20260920-152039-06db5a42cb5e",
+  "active": null,
+  "removed": [],
+  "retained": [
+    "20260920-152039-06db5a42cb5e"
+  ]
+}

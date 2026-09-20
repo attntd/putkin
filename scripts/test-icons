@@ -1,0 +1,42 @@
+#!/usr/bin/env python3
+"""Run actual QML icon/UI tests with mocks and private XDG and D-Bus."""
+import argparse
+from pathlib import Path
+import subprocess
+import tempfile
+
+from _common import ROOT, isolated_environment, qml_errors, stop_process_group, tool
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--scale", default="1", choices=["1", "1.25", "1.5", "2"])
+    parser.add_argument("--all-qml", action="store_true")
+    parser.add_argument("--file", default="tst_material_icons.qml")
+    parser.add_argument("--log", type=Path, default=ROOT / "docs/evidence/material-icons-qt.log")
+    args = parser.parse_args()
+    with tempfile.TemporaryDirectory(prefix="pk-icons-") as directory:
+        env = isolated_environment(directory)
+        env.update(HOME=directory, QT_SCALE_FACTOR=args.scale)
+        source = ROOT / "tests/qml" if args.all_qml else ROOT / "tests/qml" / args.file
+        args.log.parent.mkdir(parents=True, exist_ok=True)
+        timed_out = False
+        with args.log.open("wb") as log:
+            process = subprocess.Popen([tool("dbus-run-session"), "--", tool("qmltestrunner"),
+                "-input", str(source), "-import", str(ROOT)], env=env,
+                stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+            try:
+                process.wait(timeout=240 if args.all_qml else 100)
+            except subprocess.TimeoutExpired:
+                timed_out = True
+            finally:
+                stop_process_group(process)
+        output = args.log.read_bytes().decode("utf-8", errors="backslashreplace")
+        print(output[-12000:])
+        if timed_out:
+            print("FAIL: test deadline exceeded; raw output preserved in", args.log)
+        return 1 if timed_out or process.returncode or qml_errors(output) else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

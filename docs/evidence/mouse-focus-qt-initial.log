@@ -1,0 +1,51 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::PointerFocus::initTestCase()
+PASS   : qmltestrunner::PointerFocus::test_bar(workspace)
+FAIL!  : qmltestrunner::PointerFocus::test_bar(tray) Compared values are not the same
+   Actual   (): 0
+   Expected (): 1
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(147)]
+FAIL!  : qmltestrunner::PointerFocus::test_bar(tray-menu) Compared values are not the same
+   Actual   (): 0
+   Expected (): 1
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(147)]
+FAIL!  : qmltestrunner::PointerFocus::test_bar(overflow) 'Unexpected mouse focus ring' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(83)]
+PASS   : qmltestrunner::PointerFocus::test_bar(network)
+PASS   : qmltestrunner::PointerFocus::test_bar(bluetooth)
+PASS   : qmltestrunner::PointerFocus::test_bar(audio)
+PASS   : qmltestrunner::PointerFocus::test_bar(battery)
+PASS   : qmltestrunner::PointerFocus::test_bar(quick)
+FAIL!  : qmltestrunner::PointerFocus::test_keyboard_entry_and_return_after_mouse() 'verify()' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(177)]
+FAIL!  : qmltestrunner::PointerFocus::test_mouse_page_changes_and_power_confirmation() 'Unexpected mouse focus ring' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(83)]
+PASS   : qmltestrunner::PointerFocus::test_quick_controls(audioMute)
+PASS   : qmltestrunner::PointerFocus::test_quick_controls(audioOutputs)
+PASS   : qmltestrunner::PointerFocus::test_quick_controls(brightnessDetails)
+PASS   : qmltestrunner::PointerFocus::test_quick_controls(wifiRadio)
+PASS   : qmltestrunner::PointerFocus::test_quick_controls(wifiExpand)
+PASS   : qmltestrunner::PointerFocus::test_quick_controls(bluetoothRadio)
+PASS   : qmltestrunner::PointerFocus::test_quick_controls(bluetoothExpand)
+PASS   : qmltestrunner::PointerFocus::test_quick_controls(nightLightToggle)
+PASS   : qmltestrunner::PointerFocus::test_quick_controls(nightLightExpand)
+PASS   : qmltestrunner::PointerFocus::test_quick_controls(notificationDnd)
+FAIL!  : qmltestrunner::PointerFocus::test_shared_buttons(button) 'verify()' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(108)]
+FAIL!  : qmltestrunner::PointerFocus::test_shared_buttons(navigation) 'verify()' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(108)]
+FAIL!  : qmltestrunner::PointerFocus::test_shared_buttons(module) 'verify()' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(108)]
+FAIL!  : qmltestrunner::PointerFocus::test_shared_buttons(tile) 'verify()' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(108)]
+FAIL!  : qmltestrunner::PointerFocus::test_shared_buttons(icon) Received a warning that resulted in a failure:
+file:///home/attntd/projects/putkin/components/IconButton.qml:16:18: QML QQuickImage: Cannot open: file:///home/attntd/projects/assets/icons/volume.svg
+   Loc: [file:///home/attntd/projects/putkin/components/IconButton.qml(16)]
+FAIL!  : qmltestrunner::PointerFocus::test_shared_buttons(icon) 'verify()' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(108)]
+FAIL!  : qmltestrunner::PointerFocus::test_slider_and_text_keep_standard_input() 'verify()' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(118)]
+PASS   : qmltestrunner::PointerFocus::cleanupTestCase()
+Totals: 18 passed, 11 failed, 0 skipped, 0 blacklisted, 6027ms
+********* Finished testing of qmltestrunner *********

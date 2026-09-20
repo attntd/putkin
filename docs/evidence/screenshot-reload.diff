@@ -1,0 +1,248 @@
+--- before/services/ScreenshotBackend.qml
++++ services/ScreenshotBackend.qml
+@@ -17,8 +17,8 @@
+     function configure(): void {
+         if (!Hyprland.usingLua) return;
+         // No compositor fade can leave the selection visible in the capture.
+-        Hyprland.dispatch('function() if _G.putkin_screenshot_rule then _G.putkin_screenshot_rule:remove() end '
+-            + '_G.putkin_screenshot_rule = hl.layer_rule({name="putkin-screenshot",match={namespace="^putkin-screenshot$"},'
++        // Hyprland 0.56 updates rules by name, including after a shell reload.
++        Hyprland.dispatch('function() hl.layer_rule({name="putkin-screenshot",match={namespace="^putkin-screenshot$"},'
+             + 'no_anim=true,blur=false,dim_around=false}) end');
+     }
+     onUsingLuaChanged: configure()
+--- before/keyboard-test.qml
++++ keyboard-test.qml
+@@ -13,6 +13,7 @@
+ 
+ ShellRoot {
+     id: root
++    readonly property real generation: Date.now()
+     function find(object: var, name: string): var {
+         if (!object) return null;
+         if (object.objectName === name) return object;
+@@ -74,7 +75,7 @@
+         function snapshot(): string {
+             const page = root.find(host.window ? host.window.contentItem : null, "keyboardSection");
+             const search = root.find(host.window ? host.window.contentItem : null, "launcherSearch");
+-            return JSON.stringify({ready: keyboard.ready && settings.ready && hyprland.available,
++            return JSON.stringify({generation: root.generation, ready: keyboard.ready && settings.ready && hyprland.available,
+                 active: panels.activeId, loaded: host.loaded, editing: settings.editing, saving: keyboard.saving,
+                 keyboardBusy: keyboardBackend.current !== null || keyboardBackend.queue.length > 0,
+                 problem: keyboard.problem, actionError: actions.lastError, bindings: keyboard.persisted,
+@@ -124,5 +125,6 @@
+         }
+         function activate(): bool { return launcher.activate(launcher.results[0]); }
+         function reload(): void { Quickshell.reload(true); }
++        function softReload(): void { Quickshell.reload(false); }
+     }
+ }
+--- before/tests/screenshot_wayland.py
++++ tests/screenshot_wayland.py
+@@ -143,6 +143,39 @@
+     keys('Escape'); idle(); assert clipboard() == data
+     check('compositor animations do not retain dimmer in capture; Escape closes preview and preserves clipboard')
+ 
++    # Reapply the named rule after both types of shell reload and after the
++    # compositor clears its rules. Exercise the resulting native capture too.
++    for cycle in range(2):
++        for mode in ('soft', 'hard', 'compositor'):
++            # Keep the reference window static while the shell recreates it;
++            # re-enable compositor fades before opening the screenshot overlay.
++            hypr('eval', 'hl.config({animations={enabled=false}})')
++            previous = state()['generation']
++            if mode == 'compositor':
++                assert hypr('reload') == 'ok'
++            else:
++                ipc('probe', 'softReload' if mode == 'soft' else 'reload')
++            eventually(state, lambda s: s.get('ready') and not s.get('keyboardBusy')
++                       and (mode == 'compositor' or s.get('generation') != previous), 'reload ready')
++            eventually(lambda: hypr('binds', data=True),
++                       lambda bs: sum(b.get('description') == 'Putkin:screenshot' and b['key'] == 'Print'
++                                      for b in bs) == 1, 'one Print binding after reload')
++            eventually(target, bool, 'target restored after reload')
++            assert not state()['problem'], state()
++            hypr('eval', 'hl.config({animations={enabled=true}})')
++            focus(); time.sleep(.2)
++            reference = capture(f'screenshot-reload-{mode}-{cycle + 1}-baseline')
++            keys('Print'); phase('selecting'); keys('Return')
++            result, path, data = image()
++            assert (result['width'], result['height']) == (1920, 1080), result
++            assert pixel(path) == pixel(reference), f'selection shade captured after {mode} reload'
++            name = f'screenshot-reload-{mode}-{cycle + 1}.png'
++            shutil.copy2(path, output / name); captures.append(name)
++            keys('Escape'); idle(); assert clipboard() == data
++            assert not hypr('configerrors').strip()
++            assert not qml_errors(runtime_log(log)), runtime_log(log)
++            check(f'{mode} reload {cycle + 1}: Print captures clean PNG, clipboard survives and runtime has no warnings')
++
+     # Fractional scaling and a negative output origin use layout coordinates.
+     hypr('eval', 'hl.monitor({output=' + json.dumps(first) + ',mode="1920x1080@60",position="-1536x0",scale=1.25})')
+     eventually(lambda: hypr('monitors', data=True), lambda ms: any(m['name'] == first and m['scale'] == 1.25 for m in ms), 'fractional monitor')
+--- before/scripts/test-keyboard-wayland
++++ scripts/test-keyboard-wayland
+@@ -53,6 +53,17 @@
+                 assert result.returncode == 0, result.stdout+result.stderr
+                 return json.loads(result.stdout) if data else result.stdout.strip()
+             eventually(lambda: hypr('monitors', data=True), bool, 'monitor')
++            # The parent can resize a nested window below the Settings height.
++            # Use a fixed private output so its shadow cannot cover border probes.
++            hypr('output', 'create', 'headless')
++            monitors = eventually(lambda: hypr('monitors', data=True),
++                                  lambda ms: any(m['name'].startswith('HEADLESS-') for m in ms), 'private output')
++            test_output = next(m['name'] for m in monitors if m['name'].startswith('HEADLESS-'))
++            hypr('eval', 'hl.monitor({output=' + json.dumps(test_output) + ',mode="1280x900@60",position="2000x0",scale=1})')
++            eventually(lambda: hypr('monitors', data=True),
++                       lambda ms: any(m['name'] == test_output and m['width'] == 1280 and m['height'] == 900
++                                      and m['scale'] == 1 for m in ms), 'fixed output geometry')
++            hypr('dispatch', 'hl.dsp.focus({monitor=' + json.dumps(test_output) + '})')
+             app = subprocess.Popen([tool('quickshell'), '--no-color', '--path', entry], env=env, stdout=app_log, stderr=subprocess.STDOUT, start_new_session=True)
+             processes.append(app)
+             def ipc(target, method, *args, starting=False):
+--- before/docs/architecture.md
++++ docs/architecture.md
+@@ -21,7 +21,9 @@
+ oraz uruchamiania poleceń. Nowe przyciski używają wspólnego wejścia i fokusu.
+ 
+ `ScreenshotBackend` uruchamia pomocnik Python dopiero po zatwierdzeniu i
+-odmapowaniu nakładki. Reguła namespace wyłącza jej animacje kompozytora.
++odmapowaniu nakładki. Nazwana reguła namespace wyłącza jej animacje
++kompozytora; adapter aktualizuje ją przy starcie i odtwarza po reloadzie
++Hyprlanda przez idempotentne `hl.layer_rule`.
+ `screenshot_backend.py` wywołuje grim oraz wl-copy, trzyma prywatny PNG
+ wyłącznie przez życie podglądu i zapisuje go dopiero na żądanie. Zamknięcie
+ sprząta plik, ale nie zabiera schowka. W spoczynku i podczas zaznaczania
+--- before/docs/development.md
++++ docs/development.md
+@@ -55,6 +55,17 @@
+ [subprocess](https://docs.python.org/3.14/library/subprocess.html).
+ PNG tymczasowy trafia do prywatnego XDG_RUNTIME_DIR. Docelowy katalog obrazów
+ wyznacza Qt StandardPaths zgodnie z XDG; w nim powstaje `Screenshots`.
++
++Reguła nakładki używa `hl.layer_rule` ze stałym `name="putkin-screenshot"`.
++W Hyprlandzie 0.56.2 ponowne wywołanie aktualizuje tę samą nazwaną regułę;
++reload kompozytora usuwa reguły, więc adapter odtwarza ją po `configreloaded`.
++Uchwyt `HL.LayerRule` udostępnia `set_enabled` i `is_enabled`, bez `remove`.
++Sprawdzono zainstalowane `/usr/share/hypr/stubs/hl.meta.lua` i źródła wersji:
++[rejestracja reguły](https://github.com/hyprwm/Hyprland/blob/v0.56.2/src/config/lua/bindings/LuaBindingsConfigRules.cpp#L1182),
++[uchwyt](https://github.com/hyprwm/Hyprland/blob/v0.56.2/src/config/lua/objects/LuaLayerRule.cpp#L53),
++[reload konfiguracji](https://github.com/hyprwm/Hyprland/blob/v0.56.2/src/config/lua/ConfigManager.cpp#L647).
++Test natywny sprawdza również oba tryby
++[Quickshell.reload](https://quickshell.org/docs/v0.3.1/types/Quickshell/Quickshell/#func.reload).
+ 
+ ## Natywna sesja — migracja 2026-09-20
+ 
+--- before/docs/testing.md
++++ docs/testing.md
+@@ -98,7 +98,11 @@
+ virtual-pointer przeciąga obszar. Test porównuje rzeczywiste wymiary i
+ bajty schowka/zapisu, pływający podgląd i jego natywny fokus, czysty obraz
+ po zniknięciu nakładki, także przy animacjach kompozytora, oraz skalę 1,25
+-z ujemną pozycją monitora. Pliki i procesy testowe są usuwane. Pomiar czasu
++z ujemną pozycją monitora. Dwa cykle soft reload, hard reload Quickshella
++i reload konfiguracji Hyprlanda kończą się rzeczywistym Print/Enter:
++porównaniem pikseli z nieruchomym oknem odniesienia, kontrolą PNG w schowku,
++sprzątania, jednej rejestracji Print oraz braku ostrzeżeń runtime.
++Pliki i procesy testowe są usuwane. Pomiar czasu
+ obejmuje narzut IPC/wtype i odczytu schowka, nie jest benchmarkiem sprzętu.
+ 
+ ## Natywna blokada i bezczynność — 2026-09-20
+@@ -205,7 +209,9 @@
+ rzeczywistych ustawień i klawiatury na prywatnym kompozytorze. Odczytuje
+ konfigurację przez Lua i porównuje 16 pikseli GPU, w tym cztery narożniki,
+ z polem sRGB Shella. Kontroluje neutralną ramkę, warianty grup, zapis,
+-anulowanie i oba reloady. Zrzuty obejmują wyłącznie prywatny Wayland.
++anulowanie i oba reloady. Prywatny HEADLESS 1280 × 900 uniezależnia
++geometrię od rozmiaru okna rodzica, aby cień Ustawień nie zasłaniał próbek
++ramki. Zrzuty obejmują wyłącznie prywatny Wayland.
+ 
+ ## Gradient grupy i aktywne moduły — 2026-09-20
+ 
+--- before/docs/status.md
++++ docs/status.md
+@@ -1,4 +1,44 @@
+ # Status implementacji
++
++## Screenshot po przeładowaniu — 2026-09-20
++
++**Naprawione w źródłach; testy końcowe PASS. Bez przełączania instalacji
++na pulpicie.** Usunięto wywołanie nieistniejącego `HL.LayerRule.remove()`.
++`ScreenshotBackend` aktualizuje jedną nazwaną regułę przez `hl.layer_rule`;
++po reloadzie Hyprlanda odtwarza ją zdarzenie `configreloaded`. Nakładka
++nadal znika bez animacji kompozytora przed przechwyceniem PNG.
++[Sprawdzone API wersji](development.md#screenshot--2026-09-20).
++
++Dodano do istniejącego testu Waylanda dwa cykle soft reload, hard reload
++Quickshella i reload konfiguracji Hyprlanda. Każdy wykonuje Print/Enter,
++sprawdza piksele obrazu, schowek, sprzątanie, pojedynczy skrót Print
++i brak ostrzeżeń. Przed poprawką ten sam test odtworzył `remove()` przy
++pierwszym soft reloadzie: [log](evidence/screenshot-reload-baseline.log),
++[runtime](evidence/screenshot-reload-baseline/screenshot.log).
++
++| Sprawdzenie | Rzeczywisty wynik |
++| --- | --- |
++| `scripts/check` | **PASS**, 217 QML, 0 błędów; [log](evidence/screenshot-reload-check.log). |
++| `tst_screenshot.qml` | **19 PASS**, 0 FAIL, 0 pominięć, prywatne XDG/D-Bus i atrapy; [log](evidence/screenshot-reload-qt.log). |
++| `test_screenshot.py` | **9 PASS**, rzeczywisty pomocnik z atrapami narzędzi; [log](evidence/screenshot-reload-python.log). |
++| Prywatny Wayland `--screenshot` | **13 grup PASS**, w tym sześć reloadów, czyste piksele przy włączonych animacjach, zapis i schowek, skala 1,25 oraz odłączenie monitora; [raport](evidence/screenshot-reload-wayland/report.json), [log](evidence/screenshot-reload-wayland.log). |
++| Regresja klawiatury i ramek | **11 grup PASS**, oba reloady bez błędu screenshota, 16 pikseli GPU, brak duplikatów skrótów i 10 cykli Ustawień; [raport](evidence/screenshot-reload-keyboard-headless/result.json), [log](evidence/screenshot-reload-keyboard-headless.log). |
++| Sprzątanie obu prób natywnych | **PASS**, usunięte prywatne katalogi i zebrane wrappery: [screenshot](evidence/screenshot-reload-wayland/cleanup.json), [klawiatura](evidence/screenshot-reload-keyboard-headless/cleanup.json). |
++
++Weryfikacja ujawniła zależność testu klawiatury od rozmiaru okna
++nadrzędnego: przy 941 × 565 px cień Ustawień zasłaniał górną ramkę
++okna referencyjnego. Zachowano [pierwszą próbę](evidence/screenshot-reload-keyboard.log)
++i [powtórzenie](evidence/screenshot-reload-keyboard-final.log). Runner używa
++teraz prywatnego HEADLESS 1280 × 900, bez zmiany tolerancji pikseli.
++Pierwsza próba nowego testu screenshota miała animowane okno odniesienia;
++[zachowany log](evidence/screenshot-reload-before.log). Końcowy test
++stabilizuje je przed ponownym włączeniem animacji i otwarciem nakładki.
++
++Zmieniono adapter, sondę testową, testy natywne i dokumentację;
++[manifest źródeł](evidence/screenshot-reload-source-sha256.json).
++Nie uruchamiano pełnego shella na aktywnym pulpicie ani nie odczytywano
++schowka użytkownika. Wdrożenie razem z oczekującymi zmianami fade
++i launchera pozostaje odroczone.
+ 
+ ## Stabilny fade bez opcji ograniczania ruchu — 2026-09-20
+ 
+@@ -44,8 +84,10 @@
+ przechodzi na software i GPU. Software inaczej wygładza tekst do tekstury;
+ test koloru w czasie fade obejmuje tekst z tej samej złożonej warstwy.
+ 
+-Nie deklarujemy pełnego odbioru całego shella ani naprawy niezależnego błędu
+-screenshota. Wrażenie płynności na aktywnym pulpicie pozostaje do oceny
++Ten przebieg nie obejmował pełnego odbioru całego shella ani naprawy
++niezależnego błędu screenshota; jego późniejszą poprawkę opisano
++[powyżej](#screenshot-po-przeładowaniu--2026-09-20).
++Wrażenie płynności na aktywnym pulpicie pozostaje do oceny
+ użytkownika po wspólnym wdrożeniu. [Kontrakt](design.md#stabilny-fade--2026-09-20),
+ [testy](testing.md#stabilny-fade--2026-09-20).
+ 
+--- before/ROADMAP.md
++++ ROADMAP.md
+@@ -1,4 +1,13 @@
+ # Roadmapa Putkin
++
++## Planowana integracja Signala — 2026-09-20
++
++Przygotowano [osobną roadmapę Signala](docs/signal/ROADMAP.md) i 13
++samowystarczalnych promptów S00–S12 do kolejnych sesji Codex Max.
++Zakres: komunikator przez signal-cli, synchronizacja od sparowania,
++Mocha ze wspólnymi akcentami, życie usługi związane z shellem oraz
++powiadomienia z otwarciem rozmowy i quick reply. Implementacja tych
++etapów jeszcze nie rozpoczęta. [Status](docs/signal/STATUS.md).
+ 
+ ## Wybrana korekta — stabilny fade, 2026-09-20
+ 
+@@ -25,6 +34,11 @@
+ zatwierdzeniu; Escape/Q anuluje wybór bez przechwycenia. Pływający podgląd pozwala zapisać obraz przez Enter/F albo
+ zamknąć przez Escape/Q, zachowując automatyczną kopię w schowku.
+ [Kontrakt](docs/screenshot.md). Bez rozszerzania instalatora.
++
++Korekta z tego samego dnia usuwa błąd odnawiania reguły nakładki po
++przeładowaniu. Gotowa w źródłach; sześć reloadów i regresja natywna PASS,
++wdrożenie oczekuje razem z fade i launcherem.
++[Wyniki](docs/status.md#screenshot-po-przeładowaniu--2026-09-20).
+ 
+ ## Wybrana migracja sesji — 2026-09-20
+ 

@@ -1,0 +1,26 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::Audio::initTestCase()
+PASS   : qmltestrunner::Audio::test_audio_panel_monitor_exclusivity_and_lifecycle()
+PASS   : qmltestrunner::Audio::test_audio_panel_small_scroll_hotplug_and_unavailable_escape()
+PASS   : qmltestrunner::Audio::test_bar_wheel_and_navigation()
+PASS   : qmltestrunner::Audio::test_burst_delay_rejection_and_timeout()
+PASS   : qmltestrunner::Audio::test_dedicated_panel_levels_devices_keyboard_and_mouse()
+PASS   : qmltestrunner::Audio::test_external_update_shared_state_and_identity()
+PASS   : qmltestrunner::Audio::test_invalid_delta_mute_and_stale_output()
+PASS   : qmltestrunner::Audio::test_invalid_values(negative)
+PASS   : qmltestrunner::Audio::test_invalid_values(over)
+PASS   : qmltestrunner::Audio::test_invalid_values(nan)
+PASS   : qmltestrunner::Audio::test_invalid_values(infinity)
+PASS   : qmltestrunner::Audio::test_invalid_values(string)
+PASS   : qmltestrunner::Audio::test_invalid_values(null)
+PASS   : qmltestrunner::Audio::test_microphone_confirmation_errors_and_independence()
+PASS   : qmltestrunner::Audio::test_no_startup_or_reconnect_osd()
+PASS   : qmltestrunner::Audio::test_output_preference_is_not_actual_and_removal()
+PASS   : qmltestrunner::Audio::test_slider_arrow_burst_with_delayed_backend_and_failed_write()
+PASS   : qmltestrunner::Audio::test_slider_vim_arrows_mouse_mute_and_selection()
+PASS   : qmltestrunner::Audio::test_small_panel_keyboard_reveals_controls_and_skips_missing()
+PASS   : qmltestrunner::Audio::test_timeout_renewal_monitor_removal_theme_and_focus()
+PASS   : qmltestrunner::Audio::cleanupTestCase()
+Totals: 22 passed, 0 failed, 0 skipped, 0 blacklisted, 12108ms
+********* Finished testing of qmltestrunner *********

@@ -1,0 +1,180 @@
+{
+  "source": "report.json",
+  "result": "PASS",
+  "elapsed_s": 127.75361654200242,
+  "idle_s": 60.00002414699702,
+  "idle": {
+    "shell": {
+      "cpu_ticks": 2,
+      "percent_one_core": 0.03333331991834039,
+      "rss_start_kib": 203888,
+      "rss_end_kib": 203480
+    },
+    "compositor": {
+      "cpu_ticks": 57,
+      "percent_one_core": 0.949999617672701,
+      "rss_start_kib": 147796,
+      "rss_end_kib": 147796
+    }
+  },
+  "captures_reviewed": 18,
+  "review": "Every listed PNG opened and visually inspected. Mocha, opaque surfaces, square corners, both accents, readable focus, scrolling and bounded panels; one pixel PNG height rounding at 1366x768/1.25.",
+  "cycles": {
+    "count": 20,
+    "start_kib": 244360,
+    "end_kib": 247552,
+    "min_kib": 244360,
+    "max_kib": 248352,
+    "end_first_10_kib": 247584,
+    "end_last_10_kib": 247552,
+    "median_first_10_kib": 246284.0,
+    "median_last_10_kib": 247704.0,
+    "interpretation": "Overall +3192 KiB; cycle 10 to 20: -32 KiB. No continuing increase in block endpoints, but short RSS measurements do not prove absence of leaks or measure GPU memory."
+  },
+  "images": [
+    {
+      "file": "initial-quick.png",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "sha256": "039a0bb0066f6774da7e6b7b9dc81902c203550db276836314c80f5fa16e113d"
+    },
+    {
+      "file": "passive-overlays.png",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "sha256": "dc0ac1ef6ee0db3f66aa6f1a6436866f70c71629c92ac8e9efd56e2a87c940b3"
+    },
+    {
+      "file": "settings-mauve.png",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "sha256": "3169484e6019a0661759ee144fbf665bb591b8066a035bacea1ea9fbb3ff839b"
+    },
+    {
+      "file": "settings-teal-peach.png",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "sha256": "d9803c74a34a2d36179f66bff320267cbad0f86a5c98fee5533a8d1c1a2750c5"
+    },
+    {
+      "file": "power-cancel.png",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "sha256": "16ec8c92d5f72768fd27f180e9af82dcef13b47174804c51a4f278c59187c2e3"
+    },
+    {
+      "file": "tray-overflow-last.png",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "sha256": "68e5677f709e02946a804d0e4fc06ed08302c77d9edf6162ea85707ee6e38e8e"
+    },
+    {
+      "file": "tray-submenu.png",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "sha256": "346432a796829553e8c2834d2ae122ae8a5a0773227fa0947960e5899de94c99"
+    },
+    {
+      "file": "quick-1920x1080-1.png",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "sha256": "9410d7c59d13aa6d302a19ad771208323617d2e2a3919fc6d5ec0154a7eb1ae0"
+    },
+    {
+      "file": "quick-1920x1080-1.25.png",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "sha256": "d2eea63574b440e648189f1b53b91f1544aef0e4507935828d2ac82a51b6f07d"
+    },
+    {
+      "file": "quick-1920x1080-1.5.png",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "sha256": "0ec48ad30631249e6973296d85efe752fa5848f8200c636c0976d1e1f0db6b63"
+    },
+    {
+      "file": "quick-1920x1080-2.png",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "sha256": "cc41fa70afcb6e137a24fee27594145a3f090be0672de81d47a76e907b6dcff8"
+    },
+    {
+      "file": "quick-1366x768-1.png",
+      "pixels": [
+        1366,
+        768
+      ],
+      "sha256": "f8f8e29e890150f61dce56957fa235fe9c8189980a8d1e1df0263cb7f1d49a6d"
+    },
+    {
+      "file": "quick-1366x768-1.25.png",
+      "pixels": [
+        1366,
+        767
+      ],
+      "sha256": "5f644b7746c64481b5b8df1a6839af12c3102da1e5639cd1d197f5a19922b144"
+    },
+    {
+      "file": "quick-1366x768-1.5.png",
+      "pixels": [
+        1366,
+        768
+      ],
+      "sha256": "1c1bfd68096f9b68661077163b2373df8c2d6a24c857d898f997e4be8f5e6719"
+    },
+    {
+      "file": "quick-1366x768-2.png",
+      "pixels": [
+        1366,
+        768
+      ],
+      "sha256": "74b2718fbab060ddb3f8dcfaebd2ae7a02756eb899959d973cae0e2397f71bca"
+    },
+    {
+      "file": "mixed-first.png",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "sha256": "e0cc8d3ae599c3ba2da5858d7c9ff279ac2e48e5ce5c648f761c26929d273639"
+    },
+    {
+      "file": "mixed-second.png",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "sha256": "1d5b97c2fe55ded5b82a9462eb12f128e499652d24965b43913f7cd0917dc256"
+    },
+    {
+      "file": "osd-second.png",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "sha256": "bd79e867c281c1997a42450abb1378d383c12ee436422f37a29ffde0cfbb427a"
+    }
+  ]
+}

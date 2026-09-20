@@ -1,0 +1,17 @@
+PASS: native BarWindow/WallpaperWindow/InteractivePanelWindow mapped; initial panel keyboard focus; real output capture
+PASS: separate Wayland application receives hjkl before and during native OSD/toast; overlays do not steal focus
+Traceback (most recent call last):
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 413, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 378, in main
+    inside(args.inside, args.smoke, args.idle)
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 232, in inside
+    closed()
+    ~~~~~~^^
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 189, in closed
+    return eventually(state, lambda s: not s['loaded'] and s['created'] == s['destroyed'] and not s['busy'], 'all native panels destroyed')
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 41, in eventually
+    raise AssertionError(f"{description}: {last}")
+AssertionError: all native panels destroyed: {'screens': [{'name': 'WAYLAND-1', 'width': 1920, 'height': 1080}, {'name': 'HEADLESS-1', 'width': 1920, 'height': 1080}], 'ready': True, 'focusedMonitor': 'HEADLESS-1', 'barScreen': '', 'bars': [{'screen': 'WAYLAND-1', 'focus': ''}, {'screen': 'HEADLESS-1', 'focus': ''}], 'loaded': True, 'surface': 'quickSettings', 'screen': 'HEADLESS-1', 'focus': 'wifiRadio', 'created': 2, 'destroyed': 1, 'editing': False, 'saving': False, 'accent': '#cba6f7', 'secondary': '#89b4fa', 'persisted': {'accent': '#cba6f7', 'accentSecondary': '#89b4fa', 'reducedMotion': False}, 'scans': 0, 'scanStops': 0, 'scanning': False, 'discovery': False, 'sessionCalls': 0, 'volume': 47, 'brightness': 60, 'pskCalls': 0, 'needsPassword': False, 'keyboardConnected': False, 'dnd': False, 'notifications': 0, 'osd': False, 'osdScreen': '', 'osdLoaded': False, 'busy': False, 'brightnessRequests': 3, 'nightRequests': 3, 'menuLeafActivations': 0, 'trayCount': 40}

@@ -1,0 +1,509 @@
+{
+  "checks": [
+    "native Lua fragment and rollback; hyprsunset parser if installed",
+    "already active state read without writing or starting another daemon",
+    "on/off, temperature and complete fragmented reply/readback",
+    "denial, unconfirmed write, late write, timeout and malformed state invalidate UI",
+    "absent backend, restart recovery and stale intent rejected without replay",
+    "production ownership rejects the fixture before any IPC",
+    "Process timeout, SIGTERM/SIGKILL and child reaping",
+    "reload also terminates the helper's own preflight child",
+    "shell reload keeps the external daemon and confirmed state",
+    "20 panel cycles release every view; no persistent child helper"
+  ],
+  "isolation": "private XDG, session D-Bus, IPC peer; no host Wayland or hardware",
+  "configs": {
+    "appearance": {
+      "code": 0,
+      "output": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/pk-_bd5o9pe/hyprland.lua'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is lua, loading lua mgr\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs (debug.enable_stdout_logs = 0). Further logs will be written to /hyprland.log\n\n\n======== Config parsing result:\n\nconfig ok\n"
+    },
+    "rollback": {
+      "code": 0,
+      "output": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/pk-_bd5o9pe/hyprland.lua'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is lua, loading lua mgr\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs (debug.enable_stdout_logs = 0). Further logs will be written to /hyprland.log\n\n\n======== Config parsing result:\n\nconfig ok\n"
+    },
+    "hyprsunset_config": {
+      "code": 1,
+      "output": "┏ hyprsunset v0.4.0 ━━╸\n┃\n┣ Loaded 0 profiles\n┣ Resetting the matrix (--identity passed)\n┃\n┣ Calculated the CTM to be [mat3x3: 1, 0, 0, 0, 1, 0, 0, 0, 1]\n┃\n✖ Couldn't connect to a wayland compositor\n"
+    },
+    "hyprsunset_invalid_control": {
+      "code": 1,
+      "output": "┏ hyprsunset v0.4.0 ━━╸\n┃\n[ERR] Config has errors:\nConfig error in file /tmp/pk-_bd5o9pe/config/hypr/hyprsunset.conf: Unclosed category at EOF\nProceeding ignoring faulty entries\n┣ Loaded 0 profiles\n┣ Resetting the matrix (--identity passed)\n┃\n┣ Calculated the CTM to be [mat3x3: 1, 0, 0, 0, 1, 0, 0, 0, 1]\n┃\n✖ Couldn't connect to a wayland compositor\n"
+    }
+  },
+  "cycles": {
+    "count": 20,
+    "rss_kib": [
+      123992,
+      123992,
+      124120,
+      124120,
+      124120,
+      124248,
+      124096,
+      123924,
+      123612,
+      123612,
+      123400,
+      123240,
+      123240,
+      122816,
+      122816,
+      122672,
+      122516,
+      122516,
+      122260,
+      122260
+    ],
+    "snapshot": {
+      "available": true,
+      "enabled": true,
+      "temperature": 3900,
+      "sample": {
+        "owner": "241205:17721014",
+        "enabled": true,
+        "temperature": 3900
+      },
+      "busy": false,
+      "error": "",
+      "pid": null,
+      "panelLoaded": false,
+      "created": 20,
+      "destroyed": 20
+    }
+  },
+  "idle": {
+    "duration_s": 60.00096231700445,
+    "samples": [
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 122260
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 122260
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 122260
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 122260
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 122260
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 122260
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 122260
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 122260
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 122260
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 122260
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 122260
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 122260
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 122260
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 122260
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 122260
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 122260
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 122260
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 122260
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 122260
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 122260
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 122260
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 122260
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 122128
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 122128
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 122128
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 122128
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 122128
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 122128
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 122128
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 122128
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 119404
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 119404
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 119404
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 119404
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 119404
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 119404
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 119404
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 119404
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 119404
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 119404
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 119404
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 119404
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 119404
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 164,
+        "rss_kib": 119404
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 165,
+        "rss_kib": 119276
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 165,
+        "rss_kib": 119276
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 165,
+        "rss_kib": 119276
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 165,
+        "rss_kib": 119276
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 165,
+        "rss_kib": 119276
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 165,
+        "rss_kib": 119276
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 165,
+        "rss_kib": 119276
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 165,
+        "rss_kib": 119276
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 165,
+        "rss_kib": 119276
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 165,
+        "rss_kib": 119276
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 165,
+        "rss_kib": 119276
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 165,
+        "rss_kib": 119276
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 165,
+        "rss_kib": 119276
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 165,
+        "rss_kib": 119276
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 165,
+        "rss_kib": 119276
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 165,
+        "rss_kib": 119276
+      },
+      {
+        "pid": 241050,
+        "name": "quickshell",
+        "parent": 241047,
+        "cpu_ticks": 165,
+        "rss_kib": 119276
+      }
+    ],
+    "cpu_ticks": 1,
+    "children": []
+  },
+  "result": "PASS"
+}

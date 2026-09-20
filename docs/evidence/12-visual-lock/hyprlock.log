@@ -1,0 +1,448 @@
+Hyprlock version v0.9.6
+[1;32mDEBUG [0m]:   | got iface: wl_seat v9
+[1;32mDEBUG [0m]:    > Bound to wl_seat v9
+[1;32mDEBUG [0m]:   | got iface: wl_data_device_manager v3
+[1;32mDEBUG [0m]:   | got iface: wl_compositor v6
+[1;32mDEBUG [0m]:    > Bound to wl_compositor v6
+[1;32mDEBUG [0m]:   | got iface: wl_subcompositor v1
+[1;32mDEBUG [0m]:   | got iface: wl_shm v2
+[1;32mDEBUG [0m]:    > Bound to wl_shm v2
+[1;32mDEBUG [0m]:   | got iface: wp_viewporter v1
+[1;32mDEBUG [0m]:    > Bound to wp_viewporter v1
+[1;32mDEBUG [0m]:   | got iface: wp_tearing_control_manager_v1 v1
+[1;32mDEBUG [0m]:   | got iface: wp_fractional_scale_manager_v1 v1
+[1;32mDEBUG [0m]:    > Bound to wp_fractional_scale_manager_v1 v1
+[1;32mDEBUG [0m]:   | got iface: zxdg_output_manager_v1 v3
+[1;32mDEBUG [0m]:   | got iface: wp_cursor_shape_manager_v1 v2
+[1;32mDEBUG [0m]:    > Bound to wp_cursor_shape_manager_v1 v2
+[1;32mDEBUG [0m]:   | got iface: zwp_idle_inhibit_manager_v1 v1
+[1;32mDEBUG [0m]:   | got iface: zwp_relative_pointer_manager_v1 v1
+[1;32mDEBUG [0m]:   | got iface: zxdg_decoration_manager_v1 v2
+[1;32mDEBUG [0m]:   | got iface: wp_alpha_modifier_v1 v1
+[1;32mDEBUG [0m]:   | got iface: zwlr_gamma_control_manager_v1 v1
+[1;32mDEBUG [0m]:   | got iface: ext_foreign_toplevel_list_v1 v1
+[1;32mDEBUG [0m]:   | got iface: zwp_pointer_gestures_v1 v3
+[1;32mDEBUG [0m]:   | got iface: zwlr_foreign_toplevel_manager_v1 v3
+[1;32mDEBUG [0m]:   | got iface: zwp_keyboard_shortcuts_inhibit_manager_v1 v1
+[1;32mDEBUG [0m]:   | got iface: zwp_text_input_manager_v1 v1
+[1;32mDEBUG [0m]:   | got iface: zwp_text_input_manager_v3 v1
+[1;32mDEBUG [0m]:   | got iface: zwp_pointer_constraints_v1 v1
+[1;32mDEBUG [0m]:   | got iface: zwlr_output_power_manager_v1 v1
+[1;32mDEBUG [0m]:   | got iface: xdg_activation_v1 v1
+[1;32mDEBUG [0m]:   | got iface: ext_idle_notifier_v1 v2
+[1;32mDEBUG [0m]:   | got iface: hyprland_lock_notifier_v1 v1
+[1;32mDEBUG [0m]:   | got iface: ext_session_lock_manager_v1 v1
+[1;32mDEBUG [0m]:    > Bound to ext_session_lock_manager_v1 v1
+[1;32mDEBUG [0m]:   | got iface: zwp_input_method_manager_v2 v1
+[1;32mDEBUG [0m]:   | got iface: zwp_virtual_keyboard_manager_v1 v1
+[1;32mDEBUG [0m]:   | got iface: zwlr_virtual_pointer_manager_v1 v2
+[1;32mDEBUG [0m]:   | got iface: zwlr_output_manager_v1 v4
+[1;32mDEBUG [0m]:   | got iface: org_kde_kwin_server_decoration_manager v1
+[1;32mDEBUG [0m]:   | got iface: hyprland_focus_grab_manager_v1 v1
+[1;32mDEBUG [0m]:   | got iface: zwp_tablet_manager_v2 v1
+[1;32mDEBUG [0m]:   | got iface: zwlr_layer_shell_v1 v5
+[1;32mDEBUG [0m]:   | got iface: wp_presentation v2
+[1;32mDEBUG [0m]:   | got iface: xdg_wm_base v7
+[1;32mDEBUG [0m]:   | got iface: zwlr_data_control_manager_v1 v2
+[1;32mDEBUG [0m]:   | got iface: zwp_primary_selection_device_manager_v1 v1
+[1;32mDEBUG [0m]:   | got iface: xwayland_shell_v1 v1
+[1;32mDEBUG [0m]:   | got iface: hyprland_toplevel_mapping_manager_v1 v1
+[1;32mDEBUG [0m]:   | got iface: hyprland_global_shortcuts_manager_v1 v1
+[1;32mDEBUG [0m]:   | got iface: xdg_wm_dialog_v1 v1
+[1;32mDEBUG [0m]:   | got iface: wp_single_pixel_buffer_manager_v1 v1
+[1;32mDEBUG [0m]:   | got iface: wp_security_context_manager_v1 v1
+[1;32mDEBUG [0m]:   | got iface: hyprland_ctm_control_manager_v1 v2
+[1;32mDEBUG [0m]:   | got iface: hyprland_input_capture_manager_v1 v1
+[1;32mDEBUG [0m]:   | got iface: hyprland_surface_manager_v1 v2
+[1;32mDEBUG [0m]:   | got iface: wp_content_type_manager_v1 v1
+[1;32mDEBUG [0m]:   | got iface: xdg_toplevel_tag_manager_v1 v1
+[1;32mDEBUG [0m]:   | got iface: xdg_system_bell_v1 v1
+[1;32mDEBUG [0m]:   | got iface: vicinae_hotkey_manager_v1 v1
+[1;32mDEBUG [0m]:   | got iface: ext_workspace_manager_v1 v1
+[1;32mDEBUG [0m]:   | got iface: ext_data_control_manager_v1 v1
+[1;32mDEBUG [0m]:   | got iface: wp_pointer_warp_v1 v1
+[1;32mDEBUG [0m]:   | got iface: wp_fifo_manager_v1 v1
+[1;32mDEBUG [0m]:   | got iface: zxdg_exporter_v2 v1
+[1;32mDEBUG [0m]:   | got iface: zxdg_importer_v2 v1
+[1;32mDEBUG [0m]:   | got iface: ext_background_effect_manager_v1 v1
+[1;32mDEBUG [0m]:   | got iface: wp_commit_timing_manager_v1 v1
+[1;32mDEBUG [0m]:   | got iface: zwlr_screencopy_manager_v1 v3
+[1;32mDEBUG [0m]:    > Bound to zwlr_screencopy_manager_v1 v3
+[1;32mDEBUG [0m]:   | got iface: hyprland_toplevel_export_manager_v1 v2
+[1;32mDEBUG [0m]:   | got iface: ext_output_image_capture_source_manager_v1 v1
+[1;32mDEBUG [0m]:   | got iface: ext_foreign_toplevel_image_capture_source_manager_v1 v1
+[1;32mDEBUG [0m]:   | got iface: ext_image_copy_capture_manager_v1 v1
+[1;32mDEBUG [0m]:   | got iface: wp_color_manager_v1 v3
+[1;32mDEBUG [0m]:   | got iface: wl_drm v2
+[1;32mDEBUG [0m]:   | got iface: zwp_linux_dmabuf_v1 v5
+[1;32mDEBUG [0m]:    > Bound to zwp_linux_dmabuf_v1 v5
+[1;32mDEBUG [0m]:   | got iface: wl_output v4
+[1;32mDEBUG [0m]:    > Bound to wl_output v4
+[1;32mDEBUG [0m]:   | got iface: wl_output v4
+[1;32mDEBUG [0m]:    > Bound to wl_output v4
+[1;32mDEBUG [0m]: Exposed seat name: Hyprland
+[1;34mTRACE [0m]: [core] dmabufFeedbackFormatTable
+[1;32mDEBUG [0m]: [core] dmabufFeedbackMainDevice
+[1;34mTRACE [0m]: [core] createGBMDevice: render node /dev/dri/renderD128
+[1;34mTRACE [0m]: [core] dmabufFeedbackTrancheTargetDevice
+[1;34mTRACE [0m]: [core] dmabufFeedbackTrancheFormats
+[1;34mTRACE [0m]: GPU Reports supported format 48344241 with modifier 0
+[1;34mTRACE [0m]: GPU Reports supported format 48344241 with modifier 100000000000001
+[1;34mTRACE [0m]: GPU Reports supported format 48344241 with modifier 100000000000009
+[1;34mTRACE [0m]: GPU Reports supported format 48344241 with modifier 100000000000010
+[1;34mTRACE [0m]: GPU Reports supported format 48344241 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 48344258 with modifier 0
+[1;34mTRACE [0m]: GPU Reports supported format 48344258 with modifier 100000000000001
+[1;34mTRACE [0m]: GPU Reports supported format 48344258 with modifier 100000000000009
+[1;34mTRACE [0m]: GPU Reports supported format 48344258 with modifier 100000000000010
+[1;34mTRACE [0m]: GPU Reports supported format 48344258 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 38344241 with modifier 0
+[1;34mTRACE [0m]: GPU Reports supported format 38344241 with modifier 100000000000001
+[1;34mTRACE [0m]: GPU Reports supported format 38344241 with modifier 100000000000009
+[1;34mTRACE [0m]: GPU Reports supported format 38344241 with modifier 100000000000010
+[1;34mTRACE [0m]: GPU Reports supported format 38344241 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 38344258 with modifier 0
+[1;34mTRACE [0m]: GPU Reports supported format 38344258 with modifier 100000000000001
+[1;34mTRACE [0m]: GPU Reports supported format 38344258 with modifier 100000000000009
+[1;34mTRACE [0m]: GPU Reports supported format 38344258 with modifier 100000000000010
+[1;34mTRACE [0m]: GPU Reports supported format 38344258 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 30335241 with modifier 0
+[1;34mTRACE [0m]: GPU Reports supported format 30335241 with modifier 100000000000001
+[1;34mTRACE [0m]: GPU Reports supported format 30335241 with modifier 100000000000009
+[1;34mTRACE [0m]: GPU Reports supported format 30335241 with modifier 100000000000010
+[1;34mTRACE [0m]: GPU Reports supported format 30335241 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 30335258 with modifier 0
+[1;34mTRACE [0m]: GPU Reports supported format 30335258 with modifier 100000000000001
+[1;34mTRACE [0m]: GPU Reports supported format 30335258 with modifier 100000000000009
+[1;34mTRACE [0m]: GPU Reports supported format 30335258 with modifier 100000000000010
+[1;34mTRACE [0m]: GPU Reports supported format 30335258 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 30334241 with modifier 0
+[1;34mTRACE [0m]: GPU Reports supported format 30334241 with modifier 100000000000001
+[1;34mTRACE [0m]: GPU Reports supported format 30334241 with modifier 100000000000009
+[1;34mTRACE [0m]: GPU Reports supported format 30334241 with modifier 100000000000010
+[1;34mTRACE [0m]: GPU Reports supported format 30334241 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 30334258 with modifier 0
+[1;34mTRACE [0m]: GPU Reports supported format 30334258 with modifier 100000000000001
+[1;34mTRACE [0m]: GPU Reports supported format 30334258 with modifier 100000000000009
+[1;34mTRACE [0m]: GPU Reports supported format 30334258 with modifier 100000000000010
+[1;34mTRACE [0m]: GPU Reports supported format 30334258 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 34325241 with modifier 0
+[1;34mTRACE [0m]: GPU Reports supported format 34325241 with modifier 100000000000001
+[1;34mTRACE [0m]: GPU Reports supported format 34325241 with modifier 100000000000009
+[1;34mTRACE [0m]: GPU Reports supported format 34325241 with modifier 100000000000010
+[1;34mTRACE [0m]: GPU Reports supported format 34325241 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 34324241 with modifier 0
+[1;34mTRACE [0m]: GPU Reports supported format 34324241 with modifier 100000000000001
+[1;34mTRACE [0m]: GPU Reports supported format 34324241 with modifier 100000000000009
+[1;34mTRACE [0m]: GPU Reports supported format 34324241 with modifier 100000000000010
+[1;34mTRACE [0m]: GPU Reports supported format 34324241 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 34325258 with modifier 0
+[1;34mTRACE [0m]: GPU Reports supported format 34325258 with modifier 100000000000001
+[1;34mTRACE [0m]: GPU Reports supported format 34325258 with modifier 100000000000009
+[1;34mTRACE [0m]: GPU Reports supported format 34325258 with modifier 100000000000010
+[1;34mTRACE [0m]: GPU Reports supported format 34325258 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 34324258 with modifier 0
+[1;34mTRACE [0m]: GPU Reports supported format 34324258 with modifier 100000000000001
+[1;34mTRACE [0m]: GPU Reports supported format 34324258 with modifier 100000000000009
+[1;34mTRACE [0m]: GPU Reports supported format 34324258 with modifier 100000000000010
+[1;34mTRACE [0m]: GPU Reports supported format 34324258 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 35315241 with modifier 0
+[1;34mTRACE [0m]: GPU Reports supported format 35315241 with modifier 100000000000001
+[1;34mTRACE [0m]: GPU Reports supported format 35315241 with modifier 100000000000009
+[1;34mTRACE [0m]: GPU Reports supported format 35315241 with modifier 100000000000010
+[1;34mTRACE [0m]: GPU Reports supported format 35315241 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 32315241 with modifier 0
+[1;34mTRACE [0m]: GPU Reports supported format 32315241 with modifier 100000000000001
+[1;34mTRACE [0m]: GPU Reports supported format 32315241 with modifier 100000000000009
+[1;34mTRACE [0m]: GPU Reports supported format 32315241 with modifier 100000000000010
+[1;34mTRACE [0m]: GPU Reports supported format 32315241 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 36314752 with modifier 0
+[1;34mTRACE [0m]: GPU Reports supported format 36314752 with modifier 100000000000001
+[1;34mTRACE [0m]: GPU Reports supported format 36314752 with modifier 100000000000009
+[1;34mTRACE [0m]: GPU Reports supported format 36314752 with modifier 100000000000010
+[1;34mTRACE [0m]: GPU Reports supported format 36314752 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 20203852 with modifier 0
+[1;34mTRACE [0m]: GPU Reports supported format 20203852 with modifier 100000000000001
+[1;34mTRACE [0m]: GPU Reports supported format 20203852 with modifier 100000000000009
+[1;34mTRACE [0m]: GPU Reports supported format 20203852 with modifier 100000000000010
+[1;34mTRACE [0m]: GPU Reports supported format 20203852 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 20363152 with modifier 0
+[1;34mTRACE [0m]: GPU Reports supported format 20363152 with modifier 100000000000001
+[1;34mTRACE [0m]: GPU Reports supported format 20363152 with modifier 100000000000009
+[1;34mTRACE [0m]: GPU Reports supported format 20363152 with modifier 100000000000010
+[1;34mTRACE [0m]: GPU Reports supported format 20363152 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 38385247 with modifier 0
+[1;34mTRACE [0m]: GPU Reports supported format 38385247 with modifier 100000000000001
+[1;34mTRACE [0m]: GPU Reports supported format 38385247 with modifier 100000000000009
+[1;34mTRACE [0m]: GPU Reports supported format 38385247 with modifier 100000000000010
+[1;34mTRACE [0m]: GPU Reports supported format 38385247 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 32335247 with modifier 0
+[1;34mTRACE [0m]: GPU Reports supported format 32335247 with modifier 100000000000001
+[1;34mTRACE [0m]: GPU Reports supported format 32335247 with modifier 100000000000009
+[1;34mTRACE [0m]: GPU Reports supported format 32335247 with modifier 100000000000010
+[1;34mTRACE [0m]: GPU Reports supported format 32335247 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 48202052 with modifier 0
+[1;34mTRACE [0m]: GPU Reports supported format 48202052 with modifier 100000000000001
+[1;34mTRACE [0m]: GPU Reports supported format 48202052 with modifier 100000000000009
+[1;34mTRACE [0m]: GPU Reports supported format 48202052 with modifier 100000000000010
+[1;34mTRACE [0m]: GPU Reports supported format 48202052 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 46202052 with modifier 0
+[1;34mTRACE [0m]: GPU Reports supported format 46202052 with modifier 100000000000001
+[1;34mTRACE [0m]: GPU Reports supported format 46202052 with modifier 100000000000009
+[1;34mTRACE [0m]: GPU Reports supported format 46202052 with modifier 100000000000010
+[1;34mTRACE [0m]: GPU Reports supported format 46202052 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 48205247 with modifier 0
+[1;34mTRACE [0m]: GPU Reports supported format 48205247 with modifier 100000000000001
+[1;34mTRACE [0m]: GPU Reports supported format 48205247 with modifier 100000000000009
+[1;34mTRACE [0m]: GPU Reports supported format 48205247 with modifier 100000000000010
+[1;34mTRACE [0m]: GPU Reports supported format 48205247 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 46205247 with modifier 0
+[1;34mTRACE [0m]: GPU Reports supported format 46205247 with modifier 100000000000001
+[1;34mTRACE [0m]: GPU Reports supported format 46205247 with modifier 100000000000009
+[1;34mTRACE [0m]: GPU Reports supported format 46205247 with modifier 100000000000010
+[1;34mTRACE [0m]: GPU Reports supported format 46205247 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 46384241 with modifier 0
+[1;34mTRACE [0m]: GPU Reports supported format 46384241 with modifier 100000000000001
+[1;34mTRACE [0m]: GPU Reports supported format 46384241 with modifier 100000000000009
+[1;34mTRACE [0m]: GPU Reports supported format 46384241 with modifier 100000000000010
+[1;34mTRACE [0m]: GPU Reports supported format 46384241 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 39565559 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 31315559 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 32315559 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 36315559 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 34325559 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 39555659 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 31315659 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 32315659 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 36315659 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 34325659 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 30313053 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 30313253 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 30313453 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 32313053 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 32313253 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 32313453 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 36313053 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 36313253 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 36313453 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 3231564e with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 3132564e with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 30313050 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 32313050 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 36313050 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 30333050 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 3631564e with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 3136564e with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 3432564e with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 3234564e with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 56555941 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 56555958 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 30313459 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 32313459 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 36313459 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 56595559 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 55595659 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 59565955 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 59555956 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 30313259 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 32313259 with modifier ffffffffffffff
+[1;34mTRACE [0m]: GPU Reports supported format 36313259 with modifier ffffffffffffff
+[1;34mTRACE [0m]: [core] dmabufFeedbackTrancheDone
+[1;34mTRACE [0m]: [core] dmabufFeedbackDone
+[1;32mDEBUG [0m]: output WAYLAND-1 name WAYLAND-1
+[1;32mDEBUG [0m]: output 69 description 
+[1;32mDEBUG [0m]: output 69 make  model 
+[1;32mDEBUG [0m]: output 69 done
+[1;32mDEBUG [0m]: output HEADLESS-1 name HEADLESS-1
+[1;32mDEBUG [0m]: output 70 description 
+[1;32mDEBUG [0m]: output 70 make  model 
+[1;32mDEBUG [0m]: output 70 done
+[1;32mDEBUG [0m]: [gl] VS SIMD16 shader: 22 inst, 0 loops, 120 cycles, 0:0 spills:fills, 2 sends, scheduled with mode top-down, Promoted 1 constants, compacted 352 to 352 bytes.
+
+[1;32mDEBUG [0m]: [gl] SIMD32 shader inefficient
+
+[1;32mDEBUG [0m]: [gl] FS SIMD16 shader: 69 inst, 0 loops, 436 cycles, 0:0 spills:fills, 1 sends, scheduled with mode latency-sensitive, Promoted 3 constants, compacted 1104 to 944 bytes.
+
+[1;32mDEBUG [0m]: [gl] VS SIMD16 shader: 19 inst, 0 loops, 108 cycles, 0:0 spills:fills, 2 sends, scheduled with mode latency-sensitive, Promoted 0 constants, compacted 304 to 288 bytes.
+
+[1;32mDEBUG [0m]: [gl] FS SIMD16 shader: 92 inst, 0 loops, 1199 cycles, 0:0 spills:fills, 2 sends, scheduled with mode latency-sensitive, Promoted 3 constants, compacted 1472 to 1264 bytes.
+
+[1;32mDEBUG [0m]: [gl] FS SIMD32 shader: 105 inst, 0 loops, 1583 cycles, 0:0 spills:fills, 2 sends, scheduled with mode top-down, Promoted 3 constants, compacted 1680 to 1472 bytes.
+
+[1;32mDEBUG [0m]: [gl] FS SIMD16 shader: 104 inst, 0 loops, 1274 cycles, 0:0 spills:fills, 3 sends, scheduled with mode latency-sensitive, Promoted 4 constants, compacted 1696 to 1472 bytes.
+
+[1;32mDEBUG [0m]: [gl] FS SIMD32 shader: 117 inst, 0 loops, 1727 cycles, 0:0 spills:fills, 3 sends, scheduled with mode top-down, Promoted 4 constants, compacted 1904 to 1680 bytes.
+
+[1;32mDEBUG [0m]: [gl] VS SIMD16 shader: 19 inst, 0 loops, 112 cycles, 0:0 spills:fills, 2 sends, scheduled with mode latency-sensitive, Promoted 0 constants, compacted 304 to 288 bytes.
+
+[1;32mDEBUG [0m]: [gl] FS SIMD16 shader: 169 inst, 0 loops, 2038 cycles, 0:0 spills:fills, 6 sends, scheduled with mode latency-sensitive, Promoted 6 constants, compacted 2800 to 2192 bytes.
+
+[1;32mDEBUG [0m]: [gl] FS SIMD32 shader: 173 inst, 0 loops, 2692 cycles, 0:0 spills:fills, 6 sends, scheduled with mode top-down, Promoted 6 constants, compacted 2864 to 2368 bytes.
+
+[1;32mDEBUG [0m]: [gl] VS SIMD16 shader: 19 inst, 0 loops, 112 cycles, 0:0 spills:fills, 2 sends, scheduled with mode latency-sensitive, Promoted 0 constants, compacted 304 to 288 bytes.
+
+[1;32mDEBUG [0m]: [gl] FS SIMD16 shader: 57 inst, 0 loops, 1112 cycles, 0:0 spills:fills, 9 sends, scheduled with mode top-down, Promoted 1 constants, compacted 1040 to 912 bytes.
+
+[1;32mDEBUG [0m]: [gl] FS SIMD32 shader: 61 inst, 0 loops, 1554 cycles, 0:0 spills:fills, 9 sends, scheduled with mode latency-sensitive, Promoted 1 constants, compacted 1120 to 960 bytes.
+
+[1;32mDEBUG [0m]: [gl] FS SIMD16 shader: 53 inst, 0 loops, 1314 cycles, 0:0 spills:fills, 2 sends, scheduled with mode top-down, Promoted 0 constants, compacted 880 to 624 bytes.
+
+[1;32mDEBUG [0m]: [gl] FS SIMD32 shader: 57 inst, 0 loops, 1546 cycles, 0:0 spills:fills, 2 sends, scheduled with mode latency-sensitive, Promoted 0 constants, compacted 944 to 752 bytes.
+
+[1;32mDEBUG [0m]: [gl] FS SIMD16 shader: 36 inst, 0 loops, 914 cycles, 0:0 spills:fills, 2 sends, scheduled with mode latency-sensitive, Promoted 1 constants, compacted 576 to 448 bytes.
+
+[1;32mDEBUG [0m]: [gl] FS SIMD32 shader: 40 inst, 0 loops, 1044 cycles, 0:0 spills:fills, 2 sends, scheduled with mode latency-sensitive, Promoted 1 constants, compacted 640 to 528 bytes.
+
+[1;32mDEBUG [0m]: [gl] VS SIMD16 shader: 19 inst, 0 loops, 108 cycles, 0:0 spills:fills, 2 sends, scheduled with mode latency-sensitive, Promoted 0 constants, compacted 304 to 288 bytes.
+
+[1;32mDEBUG [0m]: [gl] FS SIMD16 shader: 327 inst, 0 loops, 1683 cycles, 0:0 spills:fills, 5 sends, scheduled with mode top-down, Promoted 18 constants, compacted 5264 to 4480 bytes.
+
+[1;32mDEBUG [0m]: [gl] FS SIMD32 shader: 376 inst, 0 loops, 3099 cycles, 0:0 spills:fills, 9 sends, scheduled with mode latency-sensitive, Promoted 18 constants, compacted 6112 to 5216 bytes.
+
+[1;32mDEBUG [0m]: Running on 
+[1;34mTRACE [0m]: Requesting image resource /home/attntd/.config/hypr/backgrounds/Cloudsnight.jpg revision 0 (resourceID: 14301616747142659523)
+[1;32mDEBUG [0m]: PAMPROMPT: Render-only fixture
+[1;34mTRACE [0m]: [sc] wlrOnDmabuf for 0x55e216b9b8b0
+[1;34mTRACE [0m]: [sc] DMABUF format reported: 34325241
+[1;34mTRACE [0m]: [sc] wlrOnBufferDone for 0x55e216b28d60
+[1;32mDEBUG [0m]: eglQueryDmaBufModifiersEXT found 4 mods
+[1;34mTRACE [0m]: Modifier 0 passed test
+[1;34mTRACE [0m]: Modifier 100000000000001 passed test
+[1;34mTRACE [0m]: Modifier 100000000000009 passed test
+[1;34mTRACE [0m]: Modifier 100000000000010 passed test
+[1;32mDEBUG [0m]: [bo] has 1 plane(s)
+[1;32mDEBUG [0m]: [bo] chose modifier 100000000000010
+[1;34mTRACE [0m]: [sc] wlr frame copied
+[1;34mTRACE [0m]: [sc] wlrOnDmabuf for 0x55e216939690
+[1;34mTRACE [0m]: [sc] DMABUF format reported: 34325241
+[1;34mTRACE [0m]: [sc] wlrOnBufferDone for 0x55e2169576e0
+[1;32mDEBUG [0m]: eglQueryDmaBufModifiersEXT found 4 mods
+[1;34mTRACE [0m]: Modifier 0 passed test
+[1;34mTRACE [0m]: Modifier 100000000000001 passed test
+[1;34mTRACE [0m]: Modifier 100000000000009 passed test
+[1;34mTRACE [0m]: Modifier 100000000000010 passed test
+[1;32mDEBUG [0m]: [bo] has 1 plane(s)
+[1;32mDEBUG [0m]: [bo] chose modifier 100000000000010
+[1;34mTRACE [0m]: [sc] wlr frame copied
+[1;34mTRACE [0m]: [sc] wlrOnReady for 0x55e216b28d60
+[1;32mDEBUG [0m]: Got dma frame with size [Vector2D: x: 1920, y: 1080]
+[1;34mTRACE [0m]: Done sc frame 10838970840652124388
+[1;34mTRACE [0m]: [sc] wlrOnReady for 0x55e2169576e0
+[1;32mDEBUG [0m]: Got dma frame with size [Vector2D: x: 1920, y: 1080]
+[1;34mTRACE [0m]: Done sc frame 7166894775899742164
+[1;32mDEBUG [0m]: Gathered all screencopy frames - removing dmabuf listeners
+[1;34mTRACE [0m]: Resource to texture id:14301616747142659523
+[1;32mDEBUG [0m]: Resources gathered after 330 milliseconds
+[1;32mDEBUG [0m]: Locking session
+[1;32mDEBUG [0m]: Starting fade in
+[1;34mTRACE [0m]: timer thread firing
+[1;34mTRACE [0m]: [core] got poll event
+[1;32mDEBUG [0m]: Got fractional scale: 100.0%
+[1;32mDEBUG [0m]: configure with serial 13
+[1;32mDEBUG [0m]: Configuring surface for logical [Vector2D: x: 1920, y: 1080] and pixel [Vector2D: x: 1920, y: 1080]
+[1;34mTRACE [0m]: Reusing image resource /home/attntd/.config/hypr/backgrounds/Cloudsnight.jpg revision 0 (resourceID: 14301616747142659523)
+[1;32mDEBUG [0m]: Updating placeholder text: Hasło…
+[1;34mTRACE [0m]: Requesting text resource "Hasło…" (resourceID: 9926685637217859681)
+[1;34mTRACE [0m]: Requesting text resource "22:57" (resourceID: 7849191814509821809)
+[1;34mTRACE [0m]: Requesting text resource "środa 16 września" (resourceID: 15784748085623371633)
+[1;34mTRACE [0m]: Framebuffer created, status 36053
+[1;32mDEBUG [0m]: round: 0, borderround: 0
+[1;34mTRACE [0m]: Framebuffer created, status 36053
+[1;32mDEBUG [0m]: Got fractional scale: 100.0%
+[1;32mDEBUG [0m]: configure with serial 14
+[1;32mDEBUG [0m]: Configuring surface for logical [Vector2D: x: 1920, y: 1080] and pixel [Vector2D: x: 1920, y: 1080]
+[1;34mTRACE [0m]: Reusing image resource /home/attntd/.config/hypr/backgrounds/Cloudsnight.jpg revision 0 (resourceID: 14301616747142659523)
+[1;32mDEBUG [0m]: Updating placeholder text: Hasło…
+[1;34mTRACE [0m]: Reusing text resource "Hasło…" (resourceID: 9926685637217859681)
+[1;34mTRACE [0m]: Reusing text resource "22:57" (resourceID: 7849191814509821809)
+[1;34mTRACE [0m]: Reusing text resource "środa 16 września" (resourceID: 15784748085623371633)
+[1;34mTRACE [0m]: Framebuffer created, status 36053
+[1;32mDEBUG [0m]: round: 0, borderround: 0
+[1;34mTRACE [0m]: Framebuffer created, status 36053
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [WAYLAND-1] frame 0, Current fps: 0.00
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [HEADLESS-1] frame 0, Current fps: 0.00
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [WAYLAND-1] frame 1, Current fps: 142.86
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: timer thread firing
+[1;34mTRACE [0m]: Resource to texture id:9926685637217859681
+[1;34mTRACE [0m]: [core] got poll event
+[1;32mDEBUG [0m]: onLockLocked called
+[1;34mTRACE [0m]: [HEADLESS-1] frame 1, Current fps: 71.43
+[1;34mTRACE [0m]: timer thread firing
+[1;34mTRACE [0m]: timer thread firing
+[1;34mTRACE [0m]: Resource to texture id:7849191814509821809
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: timer thread firing
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: timer thread firing
+[1;34mTRACE [0m]: Resource to texture id:15784748085623371633
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [WAYLAND-1] frame 2, Current fps: 66.67
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: timer thread firing
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [WAYLAND-1] frame 3, Current fps: 111.11
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [HEADLESS-1] frame 2, Current fps: 58.82
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [WAYLAND-1] frame 4, Current fps: 58.82
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [HEADLESS-1] frame 3, Current fps: 62.50
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [WAYLAND-1] frame 5, Current fps: 125.00
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [WAYLAND-1] frame 6, Current fps: 125.00
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [HEADLESS-1] frame 4, Current fps: 58.82
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [WAYLAND-1] frame 7, Current fps: 125.00
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [WAYLAND-1] frame 8, Current fps: 111.11
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [HEADLESS-1] frame 5, Current fps: 58.82
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [WAYLAND-1] frame 9, Current fps: 125.00
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [WAYLAND-1] frame 10, Current fps: 125.00
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [HEADLESS-1] frame 6, Current fps: 62.50
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [WAYLAND-1] frame 11, Current fps: 125.00
+[1;34mTRACE [0m]: [core] got poll event
+[1;34mTRACE [0m]: [HEADLESS-1] frame 7, Current fps: 58.82

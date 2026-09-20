@@ -1,0 +1,311 @@
+#!/usr/bin/env python3
+"""Native UPower/SNI/DBusMenu on a private bus, with Item/offscreen surfaces."""
+import argparse
+from datetime import datetime, timezone
+import importlib.machinery
+import importlib.util
+import json
+import re
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
+import time
+
+from _common import ROOT, ipc_reply, ipc_json, isolated_environment, qml_errors, stop_process_group, tool
+
+loader = importlib.machinery.SourceFileLoader("putkin_measure_idle", str(ROOT / "scripts/measure-idle"))
+spec = importlib.util.spec_from_loader(loader.name, loader)
+measurement = importlib.util.module_from_spec(spec)
+loader.exec_module(measurement)
+
+
+def eventually(read, predicate, description):
+    deadline = time.monotonic() + 7
+    last = None
+    while time.monotonic() < deadline:
+        last = read()
+        if predicate(last):
+            return last
+        time.sleep(0.025)
+    raise AssertionError(f"{description}: {last}")
+
+
+def run(output, idle):
+    # Test dependencies only. Production uses existing glib2/systemd tools.
+    import dbus
+    quickshell = tool("quickshell")
+    entrypoint = str(ROOT / "status-test.qml")
+    output.parent.mkdir(parents=True, exist_ok=True)
+    report = {"timestamp_utc": datetime.now(timezone.utc).isoformat(), "checks": [], "cycles": []}
+    combined_log = []
+    with tempfile.TemporaryDirectory(prefix="pk-") as directory:
+        base = Path(directory)
+        env = isolated_environment(directory)
+        address = f"unix:path={base}/bus"
+        env.update(DBUS_SESSION_BUS_ADDRESS=address, DBUS_SYSTEM_BUS_ADDRESS=address,
+                   PUTKIN_SCENARIO="closed", PUTKIN_PREVIEW_WIDTH="1920", PUTKIN_PREVIEW_HEIGHT="1080",
+                   QS_NO_RELOAD_POPUP="1", PUTKIN_TEST_MARKER=str(base / "test-only"), PUTKIN_TEST_POWER_PRESENT="1")
+        (base / "test-only").touch()
+        processes = []
+        logs = []
+        seen_pids = set()
+
+        def start(command, name):
+            log = (base / f"{name}.log").open("w+")
+            logs.append((name, log))
+            process = subprocess.Popen(command, env=env, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+            processes.append(process)
+            seen_pids.add(process.pid)
+            return process
+
+        def stop(process):
+            if process.poll() is None:
+                seen_pids.update(p["pid"] for p in measurement.process_tree(process.pid))
+            stop_process_group(process)
+
+        def ipc(target, method, *args, starting=False):
+            result = subprocess.run([quickshell, "ipc", "--path", entrypoint, "call", target, method, *map(str, args)],
+                                    env=env, capture_output=True, text=True, timeout=4)
+            return ipc_reply(result, shell, logs, starting=starting)
+
+        def state():
+            value = ipc("probe", "snapshot", starting=True)
+            return ipc_json(value)
+
+        try:
+            start([tool("dbus-daemon"), "--session", "--nofork", f"--address={address}"], "bus")
+            eventually(lambda: (base / "bus").is_socket(), bool, "private bus socket")
+            start([sys.executable, str(ROOT / "tests/status_dbus_fake.py")], "fake")
+            bus = dbus.bus.BusConnection(address)
+            eventually(lambda: bus.name_has_owner("org.putkin.Test"), bool, "fake service")
+            control = dbus.Interface(bus.get_object("org.putkin.Test", "/Test"), "org.putkin.Test")
+
+            def command(op, **kwargs):
+                return json.loads(str(control.Command(json.dumps({"op": op, **kwargs}))))
+
+            shell = start([quickshell, "--no-color", "--path", entrypoint], "native")
+            first = eventually(state, lambda s: s.get("percentage") == 72, "native battery")
+            eventually(state, lambda s: s.get("profile") == "balanced", "PPD initial confirmed profile")
+            assert not command("snapshot")["profileWrites"], "initialization must not change profiles"
+            ipc("ui", "openBattery")
+            eventually(state, lambda s: s.get("panel") == "battery" and s.get("loaded"), "dedicated battery panel")
+            for profile in ["power-saver", "performance", "balanced"]:
+                ipc("probe", "profile", profile)
+                eventually(state, lambda s: s.get("profile") == profile and not s.get("profileBusy"), "typed PPD write and readback")
+            assert command("snapshot")["profileWrites"] == ["power-saver", "performance", "balanced"]
+            command("profiles", mode="denied")
+            ipc("probe", "profile", "performance")
+            denied = eventually(state, lambda s: bool(s.get("profileError")) and not s.get("profileBusy"), "PPD permission denial")
+            assert denied["profile"] == "balanced"
+            command("profiles", mode="ignored")
+            ipc("probe", "profile", "power-saver")
+            ignored = eventually(state, lambda s: "nie potwierdził" in s.get("profileError", ""), "no optimistic success")
+            assert ignored["profile"] == "balanced" and not ignored["profileBusy"]
+            command("profiles", mode="success", performance=False)
+            eventually(state, lambda s: s.get("performance") is False, "missing performance profile")
+            writes = command("snapshot")["profileWrites"]
+            ipc("probe", "profile", "performance")
+            assert command("snapshot")["profileWrites"] == writes
+            command("profiles", performance=True, profile="performance", degradation="high-operating-temperature")
+            eventually(state, lambda s: "temperatura" in s.get("limitation", ""), "external changes and performance degradation")
+            command("profiles", mode="drop")
+            ipc("probe", "profile", "balanced")
+            eventually(state, lambda s: not s.get("profilesAvailable") and not s.get("profileBusy"), "PPD disappears during operation")
+            command("profiles", present=True, mode="success", profile="power-saver", degradation="")
+            eventually(state, lambda s: s.get("profile") == "power-saver", "PPD recovers without restarting shell")
+            ipc("probe", "profile", "balanced")
+            eventually(state, lambda s: s.get("profile") == "balanced" and not s.get("profileError"), "retry after PPD return")
+            ipc("ui", "closePanels")
+            eventually(state, lambda s: not s.get("loaded"), "battery panel released")
+            report["checks"].append("battery panel; 3 typed PPD writes/readback; refusal, ignored write, unavailable profile, external change, degradation, owner loss/recovery")
+
+            assert first["nativeReady"] and not first["recovery"], first
+            report["checks"].append("native UPower 0..100 to 0..1; peripheral excluded")
+            for state_id, percent, seconds in [(1, 45, 3900), (2, 12, 3600), (4, 100, 0), (0, 56, 0)]:
+                command("battery", values={"State": state_id, "Percentage": percent, "TimeToFull": seconds, "TimeToEmpty": seconds})
+                snapshot = eventually(state, lambda s: s.get("state") == state_id and s.get("percentage") == percent, "native PropertiesChanged")
+                if state_id == 2:
+                    assert snapshot["warning"] == 1 and "1 h" in snapshot["time"]
+                if state_id == 1:
+                    assert "1 h 5 min" in snapshot["time"]
+            command("battery", values={"IsPresent": False})
+            eventually(state, lambda s: s.get("present") is False, "absent battery")
+            command("battery", values={"IsPresent": True, "Type": 5, "PowerSupply": False})
+            eventually(state, lambda s: s.get("present") is False, "display cannot be a peripheral")
+            command("battery", values={"Type": 2, "PowerSupply": True, "State": 2, "Percentage": 72})
+            eventually(state, lambda s: s.get("percentage") == 72, "battery restored")
+            command("power", present=False)
+            eventually(state, lambda s: s.get("available") is False and not s.get("present"), "service disappearance clears stale state")
+            command("battery", values={"Percentage": 38})
+            command("power", present=True)
+            returned = eventually(state, lambda s: s.get("percentage") == 38 and s.get("recovery"), "service recovery")
+            command("battery", values={"Percentage": 39})
+            eventually(state, lambda s: s.get("percentage") == 39, "recovery signal-driven updates")
+            report["checks"].append("states/absent/service loss and return with event-driven recovery")
+
+            command("add", count=16)
+            eventually(state, lambda s: len(s.get("tray", [])) == 16, "native SNI registrations")
+            command("title", index=1, text="Signal")
+            eventually(lambda: json.loads(ipc("probe", "icon", 1)),
+                lambda value: value["ready"] and value["symbol"] == "chat_bubble" and value["centered"] and value["size"] == 20 and value["padding"] == 6,
+                "native Signal identity uses a centered local vector")
+            for unread in (True, False, True, False):
+                command("signalIcon", index=1, unread=unread)
+                symbol = "chat" if unread else "chat_bubble"
+                eventually(lambda: json.loads(ipc("probe", "icon", 1)),
+                    lambda value: value["ready"] and value["symbol"] == symbol and value["centered"] and value["size"] == 20 and value["padding"] == 6,
+                    "Signal NewIcon pixmap switches the Material symbol while SNI remains Active")
+            command("title", index=1, text="Aplikacja 1")
+            eventually(lambda: json.loads(ipc("probe", "icon", 1)),
+                lambda value: value["ready"] and value["symbol"] == "apps" and value["centered"] and value["size"] == 20 and value["padding"] == 6,
+                "unknown native SNI uses the same local vector geometry")
+            report["checks"].append("native SNI identity selects local monochrome vectors, centered 20 px canvas with 6 px padding")
+            ipc("probe", "activate", 0, "false")
+            ipc("probe", "activate", 0, "true")
+            events = command("snapshot")["events"]
+            assert ["activate", 0] in events and ["secondary", 0] in events, events
+            ipc("ui", "openQuickSettings")
+            eventually(state, lambda s: s.get("panel") == "quickSettings", "quick settings")
+            ipc("probe", "openMenu", 0)
+            opened = eventually(state, lambda s: len(s.get("menu", [])) == 5, "DBusMenu layout")
+            assert opened["panel"] == "trayMenu" and opened["screen"] == "TEST-1", opened
+            assert opened["menu"][1]["enabled"] is False and opened["menu"][2]["separator"]
+            assert opened["menu"][4]["button"] == 1 and opened["menu"][4]["check"] == 2
+            ipc("probe", "submenu", 3)
+            eventually(state, lambda s: s.get("depth") == 2 and len(s.get("menu", [])) == 1, "native submenu")
+            events = command("snapshot")["events"]
+            assert ["about", 0] in events and ["opened", 4] in events, events
+            ipc("probe", "trigger", 0)
+            eventually(state, lambda s: s.get("loaded") is False, "menu action closes surface")
+            eventually(lambda: command("snapshot")["events"], lambda e: ["clicked", 40] in e, "DBusMenu clicked event")
+            report["checks"].append("16 native SNI clients; activate/secondary; DBusMenu AboutToShow/opened, disabled/separator/check/hidden, submenu/action")
+
+            ipc("probe", "openMenu", 0)
+            eventually(state, lambda s: len(s.get("menu", [])) == 5, "reopen menu")
+            ipc("probe", "submenu", 3)
+            eventually(state, lambda s: s.get("depth") == 2, "submenu before update")
+            command("hideSubmenu", index=0)
+            eventually(state, lambda s: s.get("depth") == 1 and len(s.get("menu", [])) == 4, "live removal of submenu")
+            command("remove", index=0)
+            eventually(state, lambda s: s.get("loaded") is False and len(s.get("tray", [])) == 15, "removed active menu owner")
+            ipc("probe", "focusItem", 1)
+            eventually(state, lambda s: s.get("focus") == "tray-app1", "focus tray item")
+            command("remove", index=1)
+            eventually(state, lambda s: s.get("focus") == "trayOverflowButton", "focus recovery after native removal")
+            ipc("probe", "overflow")
+            eventually(state, lambda s: s.get("focus") == "trayApp-app10", "overflow keyboard focus")
+            command("title", index=10, text="Nowy tytuł")
+            assert state()["focus"] == "trayApp-app10"
+            command("remove", index=10)
+            eventually(state, lambda s: s.get("focus") == "trayApp-app11", "overflow item removal")
+            command("passive", index=11)
+            eventually(state, lambda s: s.get("focus") == "trayApp-app12", "passive item focus recovery")
+            ipc("ui", "closePanels")
+            report["checks"].append("native layout updates, removed menu owner, focused removal, passive status and stable title updates")
+
+            event_offset = len(command("snapshot")["events"])
+            for cycle in range(20):
+                ipc("probe", "openMenu", 4)
+                eventually(state, lambda s: len(s.get("menu", [])) == 5, "cycle open")
+                ipc("probe", "submenu", 3)
+                eventually(state, lambda s: s.get("depth") == 2, "cycle submenu")
+                ipc("ui", "closePanels")
+                closed = eventually(state, lambda s: s.get("loaded") is False and s["created"] == s["destroyed"], "cycle destruction")
+                report["cycles"].append({"cycle": cycle + 1, **measurement.snapshot(shell.pid)})
+            lifecycle = eventually(lambda: command("snapshot")["events"][event_offset:],
+                                   lambda events: events.count(["closed", 0]) == 20 and events.count(["closed", 4]) == 20,
+                                   "native menu opener releases")
+            assert lifecycle.count(["opened", 0]) == 20 and lifecycle.count(["opened", 4]) == 20, lifecycle
+            report["menu_lifecycle"] = {"root_opened": 20, "root_closed": 20, "submenu_opened": 20, "submenu_closed": 20}
+            report["checks"].append("20 menu/submenu cycles; all surfaces destroyed; native opened/closed balanced")
+
+            for hard in [False, True]:
+                previous = state()
+                generation = previous["generation"]
+                old_watcher = previous["watcherPid"]
+                old_profile_watcher = previous["profileWatcherPid"]
+                seen_pids.update([old_watcher, old_profile_watcher])
+                ipc("probe", "reload", str(hard).lower())
+                eventually(state, lambda s: s.get("generation") != generation and s.get("percentage") == 39 and len(s.get("tray", [])) == 13, "reload")
+                eventually(lambda: Path(f"/proc/{old_watcher}").exists(), lambda exists: not exists, "old watcher reaped by reload")
+                eventually(lambda: Path(f"/proc/{old_profile_watcher}").exists(), lambda exists: not exists, "old profile watcher reaped")
+                eventually(state, lambda s: s.get("profile") == "balanced", "profile recovered after reload")
+            stop(shell)
+            command("profiles", present=False)
+            command("power", present=False)
+            shell = start([quickshell, "--no-color", "--path", entrypoint], "absent-start")
+            eventually(state, lambda s: s.get("available") is False and s.get("recovery"), "start without UPower")
+            command("profiles", present=True)
+            eventually(state, lambda s: s.get("profile") == "balanced", "late PPD startup")
+            command("power", present=True)
+            eventually(state, lambda s: s.get("percentage") == 39 and len(s.get("tray", [])) == 13, "UPower starts after shell and clients re-register")
+            report["checks"].append("soft/hard reload; fresh start without UPower then late service start")
+
+            if idle:
+                stop(shell)
+                env["PUTKIN_LIVE_CLOCK"] = "1"
+                shell = start([quickshell, "--no-color", "--path", entrypoint], "idle")
+                idle_initial = eventually(state, lambda s: s.get("percentage") == 39 and len(s.get("tray", [])) == 13, "fresh idle shell and tray clients")
+                time.sleep(2)
+                before = command("snapshot")["reads"]
+                profiles_before = command("snapshot")["profileReads"]
+                tree_before = measurement.process_tree(shell.pid)
+                begin = time.monotonic()
+                samples = [{"second": 0, **measurement.snapshot(shell.pid)}]
+                for second in range(1, 61):
+                    time.sleep(max(0, begin + second - time.monotonic()))
+                    samples.append({"second": second, **measurement.snapshot(shell.pid)})
+                tree_after = measurement.process_tree(shell.pid)
+                assert len(tree_after) == 3, tree_after
+                assert command("snapshot")["profileReads"] == profiles_before, "no idle PPD polling"
+                assert command("snapshot")["reads"] == before, "no idle UPower polling"
+                report["idle"] = {"duration_seconds": time.monotonic() - begin, "samples": samples,
+                                  "tree_before": tree_before, "tree_after": tree_after, "new_battery_reads": 0, "tray_clients": len(idle_initial["tray"])}
+
+            for process in processes:
+                if process.poll() is None:
+                    seen_pids.update(p["pid"] for p in measurement.process_tree(process.pid))
+            report["checks"].append("private XDG/system+session bus; no host hardware or compositor")
+        finally:
+            for process in reversed(processes):
+                stop(process)
+            for name, log in logs:
+                log.seek(0)
+                combined_log.append((name, log.read()))
+                log.close()
+            output.with_suffix(".log").write_text("\n".join(f"[{name}]\n{log}" for name, log in combined_log))
+        # The missing service is intentionally non-activatable on this private bus.
+        expected = {
+            "WARN quickshell.dbus: Could not launch service org.freedesktop.UPower: QDBusError(org.freedesktop.DBus.Error.ServiceUnknown, The name org.freedesktop.UPower was not provided by any .service files)",
+            "WARN quickshell.service.upower: Could not start UPower. The UPower service will not work.",
+        }
+        diagnostics = [line.strip() for _, log in combined_log for line in qml_errors(log, allow_offscreen_masks=True)]
+        # Local vectors never request the deliberately missing SNI bitmap.
+        # Any icon-provider diagnostic is now an unexpected regression.
+        unexpected = [line for line in diagnostics if line not in expected]
+        assert not unexpected, unexpected
+        assert all(diagnostics.count(line) == 1 for line in expected), diagnostics
+        report["expected_diagnostics"] = diagnostics
+        for pid in seen_pids:
+            assert not Path(f"/proc/{pid}").exists(), f"Leaked process: {pid}"
+        report["processes_cleaned"] = sorted(seen_pids)
+    output.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n")
+    print(f"PASS: native UPower/SNI/DBusMenu, {len(report['checks'])} checks, 20 cycles; {output}")
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, default=ROOT / "artifacts/status.json")
+    parser.add_argument("--idle", action="store_true")
+    args = parser.parse_args()
+    try:
+        run(args.output.resolve(), args.idle)
+    except (AssertionError, OSError, subprocess.SubprocessError) as error:
+        print(f"FAIL: {error}; log: {args.output.with_suffix('.log')}", file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

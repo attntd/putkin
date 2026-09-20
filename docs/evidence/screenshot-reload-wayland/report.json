@@ -1,0 +1,235 @@
+{
+  "timestamp_utc": "2026-09-20T15:43:42.266725+00:00",
+  "checks": [
+    "native screenshot selection, clipboard, preview and keyboard entry points"
+  ],
+  "captures": [],
+  "mode": "native nested Hyprland, private HEADLESS outputs, GPU renderer, explicit domain mocks",
+  "isolation": "private PID/network/mount namespaces, XDG and session D-Bus; only parent Wayland socket and GPU render node shared",
+  "version": {
+    "branch": "v0.56.2",
+    "commit": "efb50993780079460b0cbed1363e2166a2de1d9f",
+    "version": "0.56.2",
+    "dirty": false,
+    "commit_message": "[gha] Nix: update inputs",
+    "commit_date": "Wed Aug 5 14:13:21 2026",
+    "tag": "v0.56.2",
+    "commits": "7661",
+    "buildAquamarine": "0.15.0",
+    "buildHyprlang": "0.6.8",
+    "buildHyprutils": "0.14.1",
+    "buildHyprcursor": "0.1.13",
+    "buildHyprgraphics": "0.5.1",
+    "systemAquamarine": "0.15.1",
+    "systemHyprlang": "0.6.8",
+    "systemHyprutils": "0.14.2",
+    "systemHyprcursor": "0.1.13",
+    "systemHyprgraphics": "0.5.1",
+    "abiHash": "efb50993780079460b0cbed1363e2166a2de1d9f_aq_0.15_hu_0.14_hg_0.5_hc_0.1_hlg_0.6",
+    "flags": []
+  },
+  "initial_monitors": [
+    {
+      "id": 0,
+      "name": "WAYLAND-1",
+      "description": "",
+      "make": "",
+      "model": "",
+      "serial": "",
+      "width": 1920,
+      "height": 1080,
+      "physicalWidth": 0,
+      "physicalHeight": 0,
+      "refreshRate": 60.0,
+      "x": 3920,
+      "y": 0,
+      "activeWorkspace": {
+        "id": 1,
+        "name": "1"
+      },
+      "specialWorkspace": {
+        "id": 0,
+        "name": ""
+      },
+      "reserved": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "scale": 1,
+      "transform": 0,
+      "focused": false,
+      "dpmsStatus": true,
+      "vrr": false,
+      "solitary": "0",
+      "solitaryBlockedBy": [
+        "NOTIFICATION",
+        "WINDOWED",
+        "CANDIDATE"
+      ],
+      "activelyTearing": false,
+      "tearingBlockedBy": [
+        "NOT_TORN",
+        "USER",
+        "SUPPORT",
+        "CANDIDATE",
+        "HW_CURSOR"
+      ],
+      "directScanoutTo": "0",
+      "directScanoutBlockedBy": [
+        "USER",
+        "CANDIDATE"
+      ],
+      "disabled": false,
+      "currentFormat": "XRGB8888",
+      "mirrorOf": "none",
+      "availableModes": [],
+      "colorManagementPreset": "srgb",
+      "sdrBrightness": 1,
+      "sdrSaturation": 1,
+      "sdrMinLuminance": 0.2,
+      "sdrMaxLuminance": 80,
+      "hardwareCursorsInUse": true
+    },
+    {
+      "id": 1,
+      "name": "HEADLESS-1",
+      "description": "",
+      "make": "",
+      "model": "",
+      "serial": "",
+      "width": 1920,
+      "height": 1080,
+      "physicalWidth": 0,
+      "physicalHeight": 0,
+      "refreshRate": 60.0,
+      "x": 2000,
+      "y": 0,
+      "activeWorkspace": {
+        "id": 2,
+        "name": "2"
+      },
+      "specialWorkspace": {
+        "id": 0,
+        "name": ""
+      },
+      "reserved": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "scale": 1,
+      "transform": 0,
+      "focused": true,
+      "dpmsStatus": true,
+      "vrr": false,
+      "solitary": "0",
+      "solitaryBlockedBy": [
+        "NOTIFICATION",
+        "WINDOWED",
+        "CANDIDATE"
+      ],
+      "activelyTearing": false,
+      "tearingBlockedBy": [
+        "NOT_TORN",
+        "USER",
+        "SUPPORT",
+        "CANDIDATE"
+      ],
+      "directScanoutTo": "0",
+      "directScanoutBlockedBy": [
+        "USER",
+        "SW",
+        "CANDIDATE"
+      ],
+      "disabled": false,
+      "currentFormat": "XRGB8888",
+      "mirrorOf": "none",
+      "availableModes": [
+        "1920x1080@60.00Hz"
+      ],
+      "colorManagementPreset": "srgb",
+      "sdrBrightness": 1,
+      "sdrSaturation": 1,
+      "sdrMinLuminance": 0.2,
+      "sdrMaxLuminance": 80,
+      "hardwareCursorsInUse": true
+    }
+  ],
+  "screenshot": {
+    "result": "PASS",
+    "checks": [
+      "real Print opens selection; Q and Escape cancel without PNG or capture worker",
+      "Enter captures full current output after unmap; native preview floats; PNG copied before preview and survives Q",
+      "real reverse drag waits for Enter; cropped PNG has exact dimensions; F saves identical bytes with mode 0600",
+      ":screenshot uses real launcher input; W captures the original active window; Enter saves preview",
+      "compositor animations do not retain dimmer in capture; Escape closes preview and preserves clipboard",
+      "soft reload 1: Print captures clean PNG, clipboard survives and runtime has no warnings",
+      "hard reload 1: Print captures clean PNG, clipboard survives and runtime has no warnings",
+      "compositor reload 1: Print captures clean PNG, clipboard survives and runtime has no warnings",
+      "soft reload 2: Print captures clean PNG, clipboard survives and runtime has no warnings",
+      "hard reload 2: Print captures clean PNG, clipboard survives and runtime has no warnings",
+      "compositor reload 2: Print captures clean PNG, clipboard survives and runtime has no warnings",
+      "fractional scale and negative monitor origin preserve native output pixel dimensions",
+      "removing the selected monitor cancels the overlay without capturing another output or replacing clipboard"
+    ],
+    "captures": [
+      "screenshot-baseline.png",
+      "screenshot-selection.png",
+      "screenshot-full.png",
+      "screenshot-preview.png",
+      "screenshot-region-selection.png",
+      "screenshot-animations.png",
+      "screenshot-reload-soft-1-baseline.png",
+      "screenshot-reload-soft-1.png",
+      "screenshot-reload-hard-1-baseline.png",
+      "screenshot-reload-hard-1.png",
+      "screenshot-reload-compositor-1-baseline.png",
+      "screenshot-reload-compositor-1.png",
+      "screenshot-reload-soft-2-baseline.png",
+      "screenshot-reload-soft-2.png",
+      "screenshot-reload-hard-2-baseline.png",
+      "screenshot-reload-hard-2.png",
+      "screenshot-reload-compositor-2-baseline.png",
+      "screenshot-reload-compositor-2.png"
+    ],
+    "timings": [
+      {
+        "mode": "screen",
+        "confirm_to_observed_preview_ms": 408
+      }
+    ],
+    "final": {
+      "phase": "idle",
+      "source": "",
+      "width": 1920,
+      "selectionReady": false,
+      "previewReady": false,
+      "height": 1080,
+      "window": "55f08bf57cc0",
+      "selection": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "left": 0,
+        "right": 0,
+        "top": 0,
+        "bottom": 0
+      },
+      "saved": "",
+      "error": "",
+      "busy": false
+    },
+    "isolation": "private Wayland, clipboard, XDG and buses; hardware/session mocks"
+  },
+  "result": "PASS",
+  "process_exit_codes": [
+    0,
+    -15
+  ],
+  "remaining_child_pids": [],
+  "elapsed_s": 19.24580970399984
+}

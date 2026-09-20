@@ -1,0 +1,12 @@
+PASS: native BarWindow/WallpaperWindow/InteractivePanelWindow mapped; initial panel keyboard focus; real output capture
+PASS: separate Wayland application receives hjkl before and during native OSD/toast; overlays do not steal focus
+PASS: real private virtual-pointer click outside panel closes it and returns input to the separate application
+PASS: ten overlapping passive-overlay destruction and panel openings retain keyboard focus and release it afterwards
+PASS: explicit notification navigation accepts Escape and outside click; passive toast remains and foreign input returns
+PASS: complete hjkl/Enter journey on native surfaces: workspace, both accents/save, audio, brightness, PSK, Bluetooth, DND, critical toast, Power cancellation and returned bar focus
+PASS: fortieth tray item is keyboard reachable and revealed; real panel submenu opens and activates once
+PASS: two physical sizes x four native output scales; panel fits and keyboard reveals bottom controls; one bar and 32 px reservation per output
+PASS: mixed native scales, focused-monitor panel/audio IPC; hotplug during Wi-Fi scanning, appearance draft, tray submenu and Power confirmation releases surfaces and temporary state
+PASS: 20 native panel cycles release all created views, Wi-Fi scan leases and drafts; no discovery/session calls
+PASS: native soft/hard reload while scan or appearance draft is open; saved appearance persists
+PASS

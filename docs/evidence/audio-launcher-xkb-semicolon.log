@@ -1,0 +1,10 @@
+keysym: semicolon (0x003b)
+
+=== Direct access ===
+
+KEYCODE  KEY NAME  LAYOUT   LAYOUT NAME          LEVEL#  MODIFIERS
+47       AC10      1        Polish               1       [ ]
+
+=== Access via Compose sequences ===
+
+#  KEYSYM                         KEYCODE  KEY NAME  LAYOUT   LAYOUT NAME          LEVEL#  MODIFIERS

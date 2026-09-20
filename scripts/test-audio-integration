@@ -1,0 +1,295 @@
+#!/usr/bin/env python3
+"""Production audio/IPC on a private, hardware-free PipeWire; real OSD LazyLoader."""
+
+import argparse
+from datetime import datetime, timezone
+import importlib.machinery
+import importlib.util
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
+import time
+import traceback
+
+from _common import ROOT, ipc_reply, ipc_json, isolated_environment, qml_errors, stop_process_group, tool
+
+loader = importlib.machinery.SourceFileLoader("putkin_measure_idle", str(ROOT / "scripts/measure-idle"))
+spec = importlib.util.spec_from_loader(loader.name, loader)
+measurement = importlib.util.module_from_spec(spec)
+loader.exec_module(measurement)
+
+
+def eventually(read, predicate, description, seconds=7):
+    deadline = time.monotonic() + seconds
+    last = None
+    while time.monotonic() < deadline:
+        last = read()
+        if predicate(last):
+            return last
+        time.sleep(0.025)
+    raise AssertionError(f"{description}: {last}")
+
+
+def run(output, idle):
+    quickshell, dbus, pipewire = tool("quickshell"), tool("dbus-run-session"), tool("pipewire")
+    cli, metadata = tool("pw-cli"), tool("pw-metadata")
+    entrypoint = str(ROOT / "audio-test.qml")
+    output.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="pk-") as directory:
+        env = isolated_environment(directory)
+        # Native reconnect watches pipewire-0 in PIPEWIRE_RUNTIME_DIR; a custom
+        # PIPEWIRE_REMOTE disables that mechanism in Quickshell 0.3.1.
+        del env["PIPEWIRE_REMOTE"]
+        env["PIPEWIRE_RUNTIME_DIR"] = env["XDG_RUNTIME_DIR"]
+        env.update(PUTKIN_SCENARIO="closed", PUTKIN_LIVE_CLOCK="1", QS_NO_RELOAD_POPUP="1")
+        daemon_config = Path(directory) / "putkin-test.conf"
+        daemon_config.write_bytes((ROOT / "tests/pipewire.conf").read_bytes())
+        daemon_env = dict(env, PIPEWIRE_CONFIG_DIR=directory)
+        with tempfile.TemporaryFile(mode="w+") as log, tempfile.TemporaryFile(mode="w+") as daemon_log:
+            process = subprocess.Popen([dbus, "--", quickshell, "--no-color", "--path", entrypoint], env=env,
+                                       stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+            daemon = None
+
+            def command(executable, *args):
+                result = subprocess.run([executable, *map(str, args)], env=env, text=True, capture_output=True, timeout=5)
+                assert result.returncode == 0, f"{Path(executable).name} {args}: {result.stderr} {result.stdout}"
+                return result.stdout.strip()
+
+            def ipc(target, method, *args, starting=False):
+                result = subprocess.run([quickshell, "ipc", "--path", entrypoint, "call", target, method, *map(str, args)],
+                                        env=env, text=True, capture_output=True, timeout=4)
+                return ipc_reply(result, process, log, starting=starting)
+
+            def state():
+                value = ipc("probe", "snapshot", starting=True)
+                return ipc_json(value)
+
+            def start_daemon():
+                return subprocess.Popen([pipewire, "-c", str(daemon_config)], env=daemon_env,
+                                        stdout=daemon_log, stderr=subprocess.STDOUT, start_new_session=True)
+
+            def default(name):
+                command(metadata, "-n", "default", "0", "default.audio.sink", json.dumps({"name": name}), "Spa:String:JSON")
+
+            def default_input(name):
+                command(metadata, "-n", "default", "0", "default.audio.source", json.dumps({"name": name}), "Spa:String:JSON")
+
+            def input_settled(percent=None, muted=None):
+                return eventually(state, lambda s: s.get("inputAvailable") and not s.get("inputBusy") and not s.get("inputRefreshing")
+                                  and not s.get("inputError") and (percent is None or abs(s["inputVolume"] - percent) < 0.1)
+                                  and (muted is None or s["inputMuted"] == muted), "confirmed microphone state")
+
+            def settled(percent=None, muted=None):
+                return eventually(state, lambda s: s.get("available") and not s.get("busy") and not s.get("refreshing")
+                                  and not s.get("error") and (percent is None or abs(s["volume"] - percent) < 0.1)
+                                  and (muted is None or s["muted"] == muted), "confirmed audio state")
+
+            try:
+                initial = eventually(state, lambda s: "available" in s, "IPC ready without PipeWire")
+                assert not initial["ready"] and not initial["available"] and not initial["osd"], initial
+                assert ipc("audio", "setVolume", 40) != "accepted"
+                daemon = start_daemon()
+                connected = eventually(state, lambda s: s.get("ready") and len(s.get("outputs", [])) == 2, "PipeWire starts later")
+                assert not connected["available"] and not connected["osd"], connected
+                speakers = next(node["id"] for node in connected["outputs"] if node["name"] == "putkin-test-speakers")
+                headphones = next(node["id"] for node in connected["outputs"] if node["name"] == "putkin-test-headphones")
+                default("putkin-test-speakers")
+                baseline = eventually(state, lambda s: s.get("available"), "tracker initial sample")
+                assert not baseline["osd"] and baseline["tracked"] == 1, baseline
+                assert ipc("audio", "setVolume", 35) == "accepted"
+                settled(35)
+                eventually(state, lambda s: s.get("osdLoaded"), "OSD loads after confirmation")
+                assert ipc("audio", "toggleMute") == "accepted"
+                settled(35, True)
+                assert ipc("audio", "setMuted", "false") == "accepted"
+                settled(35, False)
+                for value in [0, 100]:
+                    assert ipc("audio", "setVolume", value) == "accepted"
+                    settled(value)
+                assert ipc("audio", "setVolume", 101) != "accepted"
+                assert state()["volume"] == 100
+                assert ipc("audio", "setVolume", 20) == "accepted"
+                settled(20)
+                for _ in range(8):
+                    assert ipc("audio", "changeVolume", 5) == "accepted"
+                settled(60)
+                # A separate client modifies the real server's Props (cubic volume).
+                command(cli, "set-param", speakers, "Props", "{ channelVolumes: [ 0.125 0.125 ] }")
+                eventually(state, lambda s: abs(s.get("volume", -1) - 50) < 0.1, "external volume event")
+                assert ipc("ui", "openQuickSettings") == "ok"
+                eventually(state, lambda s: s.get("focus") == "audioVolume" and not s.get("osdLoaded"), "panel suppression")
+                assert ipc("audio", "changeVolume", 5) == "accepted"
+                settled(55)
+                assert not state()["osd"], state()
+                # No policy manager: configured preference must not pretend to
+                # have become the default. Then emulate policy via metadata.
+                assert ipc("probe", "selectOutput", "putkin-test-headphones") == "true"
+                assert state()["output"] == "putkin-test-speakers"
+                refused = eventually(state, lambda s: not s.get("busy") and s.get("error"), "selection timeout")
+                assert refused["output"] == "putkin-test-speakers"
+                assert ipc("probe", "selectOutput", "putkin-test-headphones") == "true"
+                default("putkin-test-headphones")
+                settled()
+                assert state()["output"] == "putkin-test-headphones"
+                # Two source nodes use the same native tracker/confirmation contract.
+                sources = state()["inputs"]
+                assert len(sources) == 2 and not state()["inputAvailable"], sources
+                microphone = next(node["id"] for node in sources if node["name"] == "putkin-test-microphone")
+                usb_microphone = next(node["id"] for node in sources if node["name"] == "putkin-test-usb-microphone")
+                default_input("putkin-test-microphone")
+                input_settled()
+                assert state()["inputTracked"] == 1
+                assert ipc("ui", "openAudio") == "ok"
+                eventually(state, lambda s: s.get("panel") == "audio" and s.get("focus") == "audioVolume", "separate audio panel")
+                output_volume = state()["volume"]
+                for level in [0, 100, 45]:
+                    assert ipc("probe", "setInputVolume", level) == "true"
+                    input_settled(level)
+                assert ipc("probe", "toggleInputMute") == "true"
+                input_settled(45, True)
+                assert state()["volume"] == output_volume and not state()["osd"]
+                command(cli, "set-param", microphone, "Props", "{ channelVolumes: [ 0.125 0.125 ] }")
+                eventually(state, lambda s: abs(s.get("inputVolume", -1) - 50) < .1, "external microphone event")
+                assert ipc("probe", "selectInput", "putkin-test-usb-microphone") == "true"
+                refused = eventually(state, lambda s: not s.get("inputBusy") and s.get("inputError"), "input preference timeout")
+                assert refused["input"] == "putkin-test-microphone"
+                assert ipc("probe", "selectInput", "putkin-test-usb-microphone") == "true"
+                default_input("putkin-test-usb-microphone")
+                input_settled()
+                assert state()["input"] == "putkin-test-usb-microphone"
+                command(cli, "destroy", usb_microphone)
+                eventually(state, lambda s: not s.get("inputAvailable"), "removed input")
+                assert state()["available"]
+                default_input("putkin-test-microphone")
+                input_settled()
+                assert ipc("audio", "setVolume", 40) == "accepted"
+                settled(40)
+                assert not state()["osd"], state()
+                ipc("ui", "closePanels")
+                eventually(state, lambda s: s.get("panel") == "", "panel close")
+                ipc("probe", "setMonitor", "TEST-2")
+                assert ipc("audio", "setVolume", 25) == "accepted"
+                settled(25)
+                assert state()["screen"] == "TEST-2", state()
+                ipc("probe", "removeSecond")
+                eventually(state, lambda s: not s.get("osdLoaded"), "removed output releases OSD")
+                command(cli, "destroy", headphones)
+                eventually(state, lambda s: not s.get("available"), "removed sink")
+                default("putkin-test-speakers")
+                eventually(state, lambda s: s.get("available"), "fallback output")
+                stop_process_group(daemon)
+                stopped = eventually(state, lambda s: not s.get("ready") and not s.get("available"), "server stopped")
+                assert not stopped["osd"] and stopped["outputs"] == [], stopped
+                assert not stopped["inputAvailable"] and stopped["inputs"] == [] and stopped["inputTracked"] == 0, stopped
+                daemon = start_daemon()
+                eventually(state, lambda s: s.get("ready") and len(s.get("outputs", [])) == 2, "server restarted")
+                default("putkin-test-speakers")
+                default_input("putkin-test-microphone")
+                restarted = eventually(state, lambda s: s.get("available"), "restart sample")
+                assert not restarted["osd"], restarted
+                for hard in ["false", "true"]:
+                    ipc("probe", "reload", hard)
+                    eventually(state, lambda s: s.get("available") and s.get("tracked") == 1
+                               and s.get("inputAvailable") and s.get("inputTracked") == 1, "reload sample")
+                    time.sleep(0.15)
+                    assert not state()["osd"], state()
+
+                # Leave time for two IPC round trips after confirmation, also
+                # under load. The test still observes actual expiry/unloading.
+                ipc("probe", "timeout", 400)
+                tree = measurement.process_tree(process.pid)
+                shells = [p for p in tree if p["parent"] == process.pid and
+                          b"--path" in Path(f"/proc/{p['pid']}/cmdline").read_bytes().split(b"\0")]
+                assert len(shells) == 1, tree
+                pid = shells[0]["pid"]
+                cycles = []
+                for cycle in range(20):
+                    assert ipc("audio", "setVolume", 30 + cycle) == "accepted"
+                    settled(30 + cycle)
+                    eventually(state, lambda s: s.get("osdLoaded"), "cycle OSD open")
+                    closed = eventually(state, lambda s: not s.get("osdLoaded") and s.get("created") == s.get("destroyed"), "cycle OSD destroyed")
+                    cycles.append({"cycle": cycle + 1, **measurement.snapshot(pid)})
+
+                report = {"timestamp_utc": datetime.now(timezone.utc).isoformat(),
+                          "quickshell": command(quickshell, "--version"), "pipewire": command(pipewire, "--version"),
+                          "mode": "offscreen/software; production PipewireBackend + AudioService + IPC; two virtual sinks and two virtual sources; no hardware or session manager",
+                          "cycles": cycles, "final": state()}
+                if idle:
+                    # Match the earlier idle baseline: a fresh process with
+                    # two seconds of warm-up, not the one warmed by 20 cycles.
+                    stop_process_group(process)
+                    process = subprocess.Popen([dbus, "--", quickshell, "--no-color", "--path", entrypoint], env=env,
+                                               stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+                    warmup = time.monotonic()
+                    eventually(state, lambda s: s.get("available") and not s.get("osdLoaded"), "fresh idle process")
+                    time.sleep(max(0, warmup + 2 - time.monotonic()))
+                    tree = measurement.process_tree(process.pid)
+                    shells = [p for p in tree if p["parent"] == process.pid and
+                              b"--path" in Path(f"/proc/{p['pid']}/cmdline").read_bytes().split(b"\0")]
+                    assert len(shells) == 1, tree
+                    pid = shells[0]["pid"]
+                    start = time.monotonic()
+                    samples = [{"elapsed_s": 0, **measurement.snapshot(pid)}]
+                    print("Audio idle: 60 s, 1920x1080, 30 workspace, minute clock, unloaded panel/OSD.", flush=True)
+                    for second in range(1, 61):
+                        time.sleep(max(0, start + second - time.monotonic()))
+                        samples.append({"elapsed_s": time.monotonic() - start, **measurement.snapshot(pid)})
+                        if second % 20 == 0:
+                            print(f"{second}/60 s", flush=True)
+                    cpu = (samples[-1]["cpu_ticks"] - samples[0]["cpu_ticks"]) / os.sysconf("SC_CLK_TCK")
+                    report["idle"] = {"samples": samples, "duration_s": samples[-1]["elapsed_s"],
+                                      "warmup_s": 2, "initial_process_tree": tree,
+                                      "cpu_seconds": cpu, "cpu_percent_one_core": cpu / samples[-1]["elapsed_s"] * 100,
+                                      "rss_kib": {"start": samples[0]["rss_kib"], "end": samples[-1]["rss_kib"],
+                                                  "min": min(s["rss_kib"] for s in samples), "max": max(s["rss_kib"] for s in samples)},
+                                      "process_tree": measurement.process_tree(process.pid),
+                                      "private_pipewire": measurement.snapshot(daemon.pid)}
+                log.seek(0)
+                logs = log.read()
+                errors = qml_errors(logs, allow_offscreen_masks=True)
+                expected = {
+                    "ERROR quickshell.service.pipewire.loop: Failed to connect pipewire context. Errno: 112",
+                    "WARN quickshell.service.pipewire.loop: Pipewire error on object 0 with code -32 connection error",
+                }
+                # These two faults were deliberately injected and their state
+                # transitions/recovery asserted above. Keep diagnostics visible.
+                observed = [line.strip() for line in errors if line.strip() in expected]
+                assert sorted(observed) == sorted(expected), errors
+                unexpected = [line for line in errors if line.strip() not in expected]
+                assert not unexpected, "\n".join(unexpected)
+                for line in observed:
+                    print(line)
+                report["expected_diagnostics"] = observed
+                daemon_log.seek(0)
+                assert not daemon_log.read().strip(), "Unexpected private PipeWire diagnostic; see .pipewire.log"
+                output.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n")
+                print(f"PASS: audio/IPC/OSD, private PipeWire, restart, hot reload, 20 loader cycles; {output}")
+            finally:
+                stop_process_group(process)
+                if daemon:
+                    stop_process_group(daemon)
+                log.seek(0)
+                output.with_suffix(".log").write_text(log.read())
+                daemon_log.seek(0)
+                output.with_suffix(".pipewire.log").write_text(daemon_log.read())
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, default=ROOT / "artifacts/audio-integration.json")
+    parser.add_argument("--idle", action="store_true", help="Also measure 60 s with the production audio service")
+    args = parser.parse_args()
+    try:
+        run(args.output.resolve(), args.idle)
+    except (AssertionError, OSError, subprocess.SubprocessError) as error:
+        traceback.print_exc()
+        print(f"FAIL: {error}; logs: {args.output.with_suffix('.log')}", file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

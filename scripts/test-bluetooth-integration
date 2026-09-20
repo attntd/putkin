@@ -1,0 +1,299 @@
+#!/usr/bin/env python3
+"""Native Quickshell Bluetooth on a private D-Bus BlueZ fixture."""
+import argparse
+from datetime import datetime, timezone
+import importlib.machinery
+import importlib.util
+import json
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
+import time
+
+from _common import ROOT, ipc_reply, ipc_json, isolated_environment, qml_errors, stop_process_group, tool
+
+loader = importlib.machinery.SourceFileLoader("putkin_measure_idle", str(ROOT / "scripts/measure-idle"))
+spec = importlib.util.spec_from_loader(loader.name, loader)
+measurement = importlib.util.module_from_spec(spec)
+loader.exec_module(measurement)
+
+
+def eventually(read, predicate, description):
+    deadline = time.monotonic() + 7
+    last = None
+    while time.monotonic() < deadline:
+        last = read()
+        if predicate(last):
+            return last
+        time.sleep(0.025)
+    raise AssertionError(f"{description}: {last}")
+
+
+def run(output, idle):
+    import dbus
+    quickshell = tool("quickshell")
+    entrypoint = str(ROOT / "bluetooth-test.qml")
+    output.parent.mkdir(parents=True, exist_ok=True)
+    report = {"timestamp_utc": datetime.now(timezone.utc).isoformat(), "checks": [], "cycles": []}
+    with tempfile.TemporaryDirectory(prefix="pk-") as directory:
+        base = Path(directory)
+        env = isolated_environment(directory)
+        address = f"unix:path={base}/bus"
+        env.update(DBUS_SESSION_BUS_ADDRESS=address, DBUS_SYSTEM_BUS_ADDRESS=address,
+                   PUTKIN_SCENARIO="closed", PUTKIN_PREVIEW_WIDTH="1920", PUTKIN_PREVIEW_HEIGHT="1080",
+                   QS_NO_RELOAD_POPUP="1", PUTKIN_TEST_MARKER=str(base / "test-only"))
+        (base / "test-only").touch()
+        # Only allow the three backend helpers. A host Blueman installation
+        # must never be launched by the unavailable-manager scenario.
+        manager_bin = base / 'bin'
+        manager_bin.mkdir()
+        for helper in ['sh', 'busctl', 'gdbus']:
+            (manager_bin / helper).symlink_to(tool(helper))
+        env['PATH'] = str(manager_bin)
+        processes, logs, combined = [], [], []
+        seen_pids = set()
+
+        def start(command, name):
+            log = (base / f"{name}.log").open("w+")
+            logs.append((name, log))
+            process = subprocess.Popen(command, env=env, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+            processes.append(process)
+            seen_pids.add(process.pid)
+            return process
+
+        def stop(process):
+            if process.poll() is None:
+                seen_pids.update(p["pid"] for p in measurement.process_tree(process.pid))
+            stop_process_group(process)
+
+        def ipc(target, method, *args, starting=False):
+            result = subprocess.run([quickshell, "ipc", "--path", entrypoint, "call", target, method, *map(str, args)],
+                                    env=env, capture_output=True, text=True, timeout=4)
+            return ipc_reply(result, shell, logs, starting=starting)
+
+        def state():
+            value = ipc("probe", "snapshot", starting=True)
+            return ipc_json(value)
+
+        def connected(snapshot, name):
+            return any(d['name'] == name and d['connected'] for d in snapshot.get('devices', []))
+
+        def device(snapshot, name):
+            return next((d for d in snapshot.get('devices', []) if d['name'] == name), {})
+
+        def open_list():
+            ipc('ui', 'openBluetooth')
+            eventually(state, lambda s: s.get('loaded'), 'panel loaded')
+            ipc('probe', 'expand')
+            return state()
+
+        try:
+            start([tool('dbus-daemon'), '--session', '--nofork', f'--address={address}'], 'bus')
+            eventually(lambda: (base / 'bus').is_socket(), bool, 'private bus')
+            start([sys.executable, str(ROOT / 'tests/bluetooth_dbus_fake.py')], 'fake')
+            bus = dbus.bus.BusConnection(address)
+            eventually(lambda: bus.name_has_owner('org.putkin.BluetoothTest'), bool, 'fake BlueZ')
+            control = dbus.Interface(bus.get_object('org.putkin.BluetoothTest', '/Test'), 'org.putkin.BluetoothTest')
+
+            def command(op, **kwargs):
+                return json.loads(str(control.Command(json.dumps({'op': op, **kwargs}))))
+
+            shell = start([quickshell, '--no-color', '--path', entrypoint], 'native')
+            first = eventually(state, lambda s: s.get('available') and len(s.get('devices', [])) == 2, 'native paired list')
+            assert first['backendErrors'] == [], 'A healthy backend must not emit a startup error toast'
+            assert first['selected'] == 'hci0' and len(first['adapters']) == 2, first
+            assert device(first, 'Headphones')['batteryAvailable'] and device(first, 'Headphones')['battery'] == 0.72, first
+            assert all(d['name'] != 'Nearby' for d in first['devices'])
+            open_list()
+            command('battery', value=39)
+            eventually(state, lambda s: device(s, 'Headphones').get('battery') == 0.39, 'native battery signal')
+            command('battery', value=None)
+            eventually(state, lambda s: device(s, 'Headphones').get('batteryAvailable') is False, 'native Battery1 removal')
+            command('battery', value=55)
+            eventually(state, lambda s: device(s, 'Headphones').get('batteryAvailable') and device(s, 'Headphones').get('battery') == 0.55, 'native Battery1 return')
+            report['checks'].append('native adapters and paired/unpaired devices; Battery1 add/change/remove; no discovery')
+
+            for name in ['Headphones', 'Keyboard']:
+                ipc('probe', 'activate', name)
+                eventually(state, lambda s: connected(s, name) and not s['busy'], 'confirmed Connect')
+                ipc('probe', 'activate', name)
+                eventually(state, lambda s: not connected(s, name) and not s['busy'], 'confirmed Disconnect')
+            command('mode', value='deny')
+            ipc('probe', 'activate', 'Keyboard')
+            failed = eventually(state, lambda s: not s.get('busy') and 'odrzucił' in s.get('error', ''), 'rejected connection')
+            assert not connected(failed, 'Keyboard')
+            command('mode', value='hold')
+            before = len(command('snapshot')['events'])
+            ipc('probe', 'activate', 'Keyboard')
+            eventually(state, lambda s: s.get('busy'), 'pending Connect')
+            ipc('probe', 'activate', 'Keyboard')
+            ipc('probe', 'activate', 'Headphones')
+            assert len(command('snapshot')['events']) == before + 1, 'rapid requests must serialize'
+            assert not connected(state(), 'Keyboard')
+            ipc('probe', 'select', 'hci1')
+            assert state()['selected'] == 'hci1'
+            command('release', mode='deny')
+            settled = eventually(state, lambda s: not s.get('busy'), 'old operation finishes')
+            assert settled['selected'] == 'hci1' and not settled['error'], settled
+            command('mode', value='ok')
+            ipc('probe', 'activate', 'Mouse')
+            eventually(state, lambda s: connected(s, 'Mouse') and not s['busy'], 'new adapter action')
+            ipc('probe', 'select', 'hci0')
+            report['checks'].append('confirmed Connect/Disconnect; rejection and retry; serialized rapid requests; adapter selection survives late rejection')
+
+            ipc('probe', 'radio', 'false')
+            eventually(state, lambda s: s.get('radio') is False and not s['busy'], 'confirmed radio off')
+            command('mode', value='deny')
+            ipc('probe', 'radio', 'true')
+            denied = eventually(state, lambda s: not s.get('busy') and 'odrzucił' in s.get('error', ''), 'denied Powered')
+            assert not denied['radio']
+            command('mode', value='ignore')
+            ipc('probe', 'radio', 'true')
+            expired = eventually(state, lambda s: not s.get('busy') and 'Nie potwierdzono' in s.get('error', ''), 'Powered without confirmation')
+            assert not expired['radio']
+            command('properties', path='/org/bluez/hci0', interface='org.bluez.Adapter1', values={'PowerState': 'off-blocked'})
+            eventually(state, lambda s: s.get('blocked'), 'native blocked state')
+            before = len(command('snapshot')['events'])
+            ipc('probe', 'radio', 'true')
+            assert len(command('snapshot')['events']) == before
+            command('properties', path='/org/bluez/hci0', interface='org.bluez.Adapter1', values={'PowerState': 'off'})
+            command('mode', value='ok')
+            eventually(state, lambda s: not s.get('blocked'), 'unblock')
+            ipc('probe', 'radio', 'true')
+            eventually(state, lambda s: s.get('radio') and not s['busy'], 'radio retry')
+            report['checks'].append('Powered confirmation, rejected/ignored write, timeout, rfkill guard, retry without optimistic success')
+
+            command('mode', value='hold')
+            ipc('probe', 'activate', 'Keyboard')
+            eventually(state, lambda s: s.get('busy'), 'pending removal')
+            command('remove', path='/org/bluez/hci0/dev_00_11_22_33_44_02')
+            eventually(state, lambda s: not s.get('busy') and len(s.get('devices', [])) == 1, 'device loss clears pending')
+            command('release')
+            command('remove', path='/org/bluez/hci0')
+            eventually(state, lambda s: s.get('selected') == 'hci1', 'adapter fallback')
+            command('remove', path='/org/bluez/hci1')
+            eventually(state, lambda s: s.get('status') == 'Brak adaptera Bluetooth' and not s['devices'], 'no adapters')
+            command('adapter', id='hci1')
+            eventually(state, lambda s: s.get('selected') == 'hci1', 'hotplug hci1')
+            command('adapter', id='hci0')
+            eventually(state, lambda s: len(s.get('adapters', [])) == 2, 'hotplug hci0')
+            assert state()['selected'] == 'hci1', 'retained choice must not jump after hotplug'
+            ipc('probe', 'select', 'hci0')
+            command('mode', value='hold')
+            ipc('probe', 'activate', 'Keyboard')
+            eventually(state, lambda s: s.get('busy'), 'pending timeout')
+            eventually(state, lambda s: not s.get('busy') and 'Nie potwierdzono' in s.get('error', ''), 'device deadline')
+            command('release')
+            eventually(state, lambda s: connected(s, 'Keyboard'), 'late physical state remains authoritative')
+            report['checks'].append('device disappearance, adapter removal/fallback/hotplug, empty adapter set, bounded timeout and late confirmed state')
+
+            ipc('ui', 'closePanels')
+            eventually(state, lambda s: not s.get('loaded') and s['created'] == s['destroyed'], 'surface destroyed')
+            for cycle in range(20):
+                open_list()
+                ipc('ui', 'closePanels')
+                eventually(state, lambda s: not s.get('loaded') and s['created'] == s['destroyed'], 'cycle destroyed')
+                report['cycles'].append({'cycle': cycle + 1, **measurement.snapshot(shell.pid)})
+            for hard in [False, True]:
+                open_list()
+                command('mode', value='hold')
+                ipc('probe', 'activate', 'Headphones')
+                eventually(state, lambda s: s.get('busy') and s.get('actionPid', 0) > 0, 'pending before reload')
+                before = state()
+                seen_pids.add(before['watcherPid'])
+                seen_pids.add(before['actionPid'])
+                ipc('probe', 'reload', str(hard).lower())
+                reloaded = eventually(state, lambda s: s.get('generation') != before['generation'] and not s.get('loaded')
+                    and (s.get('available') if not hard else 'ponownie' in s.get('backendError', '')), 'hot reload')
+                if hard:
+                    assert not reloaded['available']
+                command('release', mode='deny')
+                eventually(lambda: Path(f"/proc/{before['watcherPid']}").exists(), lambda value: not value, 'old watcher reaped')
+                eventually(lambda: Path(f"/proc/{before['actionPid']}").exists(), lambda value: not value, 'old action reaped')
+            report['checks'].append('20 LazyLoader cycles, soft/hard reload; closed surfaces and reaped observers; no discovery or pairing calls')
+
+            ipc('probe', 'manager')
+            eventually(state, lambda s: 'Brak blueman-manager' in s.get('managerError', ''), 'missing optional manager')
+            stop(shell)
+            manager = manager_bin / 'blueman-manager'
+            manager.write_text('#!/bin/sh\nprintf opened > "$XDG_RUNTIME_DIR/manager-opened"\n')
+            manager.chmod(0o700)
+            shell = start([quickshell, '--no-color', '--path', entrypoint], 'manager')
+            eventually(state, lambda s: s.get('available'), 'fresh manager shell')
+            open_list()
+            ipc('probe', 'manager')
+            eventually(lambda: (Path(env['XDG_RUNTIME_DIR']) / 'manager-opened').exists(), bool, 'fake manager launched')
+            eventually(state, lambda s: not s.get('loaded'), 'panel yields to manager')
+            report['checks'].append('missing Blueman handled; available fake executable launches; panel closes for external window')
+
+            command('owner', value=False)
+            eventually(state, lambda s: s.get('available') is False and not s.get('devices'), 'lost BlueZ')
+            command('owner', value=True)
+            eventually(state, lambda s: 'ponownie' in s.get('backendError', ''), 'restart guard')
+            assert not state()['available']
+            for hard in [False, True]:
+                before = state()
+                seen_pids.add(before['watcherPid'])
+                ipc('probe', 'reload', str(hard).lower())
+                eventually(state, lambda s: s.get('generation') != before['generation'] and 'ponownie' in s.get('backendError', ''), 'restart guard retained')
+                assert not state()['available']
+            stop(shell)
+            command('owner', value=False)
+            shell = start([quickshell, '--no-color', '--path', entrypoint], 'absent')
+            eventually(state, lambda s: s.get('available') is False and s.get('backendError'), 'absent at startup')
+            command('owner', value=True)
+            eventually(state, lambda s: 'ponownie' in s.get('backendError', ''), 'late BlueZ')
+            stop(shell)
+            report['checks'].append('absent/lost/restarted/late BlueZ; native lifecycle limitation exposed; stale models never actionable')
+
+            if idle:
+                env['PUTKIN_LIVE_CLOCK'] = '1'
+                shell = start([quickshell, '--no-color', '--path', entrypoint], 'idle')
+                eventually(state, lambda s: s.get('available'), 'fresh idle shell')
+                time.sleep(2)
+                before = command('snapshot')
+                tree_before = measurement.process_tree(shell.pid)
+                begin = time.monotonic()
+                samples = [{'second': 0, **measurement.snapshot(shell.pid)}]
+                for second in range(1, 61):
+                    time.sleep(max(0, begin + second - time.monotonic()))
+                    samples.append({'second': second, **measurement.snapshot(shell.pid)})
+                after = command('snapshot')
+                assert after['reads'] == before['reads'] and after['events'] == before['events'], (before, after)
+                report['idle'] = {'duration_seconds': time.monotonic() - begin, 'samples': samples,
+                    'tree_before': tree_before, 'tree_after': measurement.process_tree(shell.pid), 'new_reads': 0, 'new_calls': 0}
+            assert command('snapshot')['forbidden'] == [], command('snapshot')
+        finally:
+            for process in reversed(processes):
+                stop(process)
+            for name, log in logs:
+                log.seek(0); combined.append((name, log.read())); log.close()
+            output.with_suffix('.log').write_text('\n'.join(f'[{name}]\n{log}' for name, log in combined))
+        diagnostics = [line.strip() for _, log in combined for line in qml_errors(log, allow_offscreen_masks=True)]
+        expected = 'WARN quickshell.dbus.objectmanager: Failed to create DBusObjectManagerInterface for "org.bluez" "/" : QDBusError("", "")'
+        assert all(name == 'absent' and line.strip() == expected for name, log in combined
+                   for line in qml_errors(log, allow_offscreen_masks=True)), diagnostics
+        report['expected_diagnostics'] = diagnostics
+        for pid in seen_pids:
+            assert not Path(f'/proc/{pid}').exists(), f'leaked process {pid}'
+        report['processes_cleaned'] = sorted(seen_pids)
+    output.write_text(json.dumps(report, indent=2, ensure_ascii=False) + '\n')
+    print(f"PASS: native Bluetooth, {len(report['checks'])} checks, 20 cycles; {output}")
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--output', type=Path, default=ROOT / 'artifacts/bluetooth.json')
+    parser.add_argument('--idle', action='store_true')
+    args = parser.parse_args()
+    try:
+        run(args.output.resolve(), args.idle)
+    except (AssertionError, OSError, subprocess.SubprocessError) as error:
+        print(f"FAIL: {error}; log: {args.output.with_suffix('.log')}", file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())

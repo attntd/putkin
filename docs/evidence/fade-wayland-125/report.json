@@ -1,0 +1,10 @@
+{
+  "scale": "1.25",
+  "checks": [
+    "tst_fade.qml",
+    "tst_visual_contract.qml"
+  ],
+  "result": "PASS",
+  "isolation": "private PID/network/mount namespaces, XDG, D-Bus and Wayland; hardware services absent",
+  "compositor_reaped": true
+}

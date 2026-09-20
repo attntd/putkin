@@ -1,0 +1,22 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::DesktopExtras::initTestCase()
+PASS   : qmltestrunner::DesktopExtras::test_absent_backend_has_no_switch_and_recovers()
+PASS   : qmltestrunner::DesktopExtras::test_confirmation_no_optimism_or_double_write()
+PASS   : qmltestrunner::DesktopExtras::test_existing_state_no_start_or_write()
+PASS   : qmltestrunner::DesktopExtras::test_failure(timeout)
+PASS   : qmltestrunner::DesktopExtras::test_failure(denied)
+PASS   : qmltestrunner::DesktopExtras::test_failure(restart)
+PASS   : qmltestrunner::DesktopExtras::test_failure(version)
+PASS   : qmltestrunner::DesktopExtras::test_failure(protocol)
+PASS   : qmltestrunner::DesktopExtras::test_failure(unconfirmed)
+PASS   : qmltestrunner::DesktopExtras::test_keyboard_temperature_and_section_order()
+PASS   : qmltestrunner::DesktopExtras::test_restart_rejects_stale_action_without_retry()
+PASS   : qmltestrunner::DesktopExtras::test_small_panel_scroll_and_lifecycle()
+PASS   : qmltestrunner::DesktopExtras::test_temperature_bounds_and_external_refresh()
+PASS   : qmltestrunner::DesktopExtras::test_wallpaper_fallback_path_and_input()
+PASS   : qmltestrunner::DesktopExtras::test_wallpaper_image_load_and_release()
+PASS   : qmltestrunner::DesktopExtras::test_wallpaper_missing_file_falls_back()
+PASS   : qmltestrunner::DesktopExtras::cleanupTestCase()
+Totals: 18 passed, 0 failed, 0 skipped, 0 blacklisted, 2957ms
+********* Finished testing of qmltestrunner *********

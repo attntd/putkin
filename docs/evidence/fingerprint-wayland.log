@@ -1,0 +1,4 @@
+PASS: native BarWindow/WallpaperWindow/InteractivePanelWindow mapped; initial panel keyboard focus; real output capture
+PASS: GPU pixels follow one top-left to bottom-right gradient across the complete bar, panel frame and three tiles
+PASS: real Hyprlock: fingerprint glyph, typed password, red/reset and green/unlock on private fprintd/PAM fixtures
+PASS smoke only

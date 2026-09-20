@@ -1,0 +1,16 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::Launcher::initTestCase()
+PASS   : qmltestrunner::Launcher::test_all_prefixes_paste_and_literal_colon()
+PASS   : qmltestrunner::Launcher::test_chips_and_backspace_with_real_text_input()
+PASS   : qmltestrunner::Launcher::test_debounce_stale_search_and_close_cancellation()
+PASS   : qmltestrunner::Launcher::test_escape_vim_enter_once_and_text_return()
+PASS   : qmltestrunner::Launcher::test_exclusivity_monitor_hotplug_and_cycles()
+PASS   : qmltestrunner::Launcher::test_late_activation_cannot_close_reopened_panel()
+PASS   : qmltestrunner::Launcher::test_missing_backend_and_clipboard_are_not_empty_success()
+PASS   : qmltestrunner::Launcher::test_recent_default_rank_and_filters()
+PASS   : qmltestrunner::Launcher::test_small_screen_and_last_result_reachable()
+PASS   : qmltestrunner::Launcher::test_tab_mouse_clipboard_and_pending_failure()
+PASS   : qmltestrunner::Launcher::cleanupTestCase()
+Totals: 12 passed, 0 failed, 0 skipped, 0 blacklisted, 10107ms
+********* Finished testing of qmltestrunner *********

@@ -1,0 +1,2 @@
+# Separate conversation: scanning never blocks entry of a password.
+auth required pam_fprintd.so max-tries=3 timeout=30

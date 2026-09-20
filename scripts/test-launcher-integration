@@ -1,0 +1,180 @@
+#!/usr/bin/env python3
+"""Real DesktopEntries/Process/IPC/LazyLoader with private files and clipboard fixtures."""
+import argparse
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
+import time
+
+from _common import ROOT, isolated_environment, ipc_reply, ipc_json, qml_errors, runtime_log, stop_process_group, tool
+
+
+def eventually(read, predicate, description):
+    deadline = time.monotonic() + 6
+    value = None
+    while time.monotonic() < deadline:
+        value = read()
+        if predicate(value): return value
+        time.sleep(.03)
+    raise AssertionError(f'{description}: {value}')
+
+
+def run(output):
+    output.parent.mkdir(parents=True, exist_ok=True)
+    checks = []
+    with tempfile.TemporaryDirectory(prefix='pk-launcher-') as directory:
+        root = Path(directory)
+        env = isolated_environment(directory)
+        env.update(HOME=str(root), PUTKIN_LAUNCHER_FIXTURE=str(root), PUTKIN_SCENARIO='closed',
+                   PUTKIN_PREVIEW_WIDTH='1000', PUTKIN_PREVIEW_HEIGHT='700', QS_NO_RELOAD_POPUP='1')
+        binary = root / 'bin'; binary.mkdir()
+        for name in ('wl-paste', 'wl-copy', 'xdg-open', 'fake-app', 'kitty'):
+            executable = binary / name
+            executable.write_bytes((ROOT / 'tests/launcher_tools.py').read_bytes()); executable.chmod(0o700)
+        for mime in ('text', 'image'):
+            os.mkfifo(root / (mime + '.fifo'))
+        env['PATH'] = str(binary) + ':' + env['PATH']
+        apps = Path(env['XDG_DATA_HOME']) / 'applications'; apps.mkdir()
+        fixture = (ROOT / 'tests/fixtures/launcher-icon.svg').read_bytes()
+        absolute_icon = root / 'absolute icon.svg'; absolute_icon.write_bytes(fixture)
+        (apps / 'putkin-demo.desktop').write_text(f'[Desktop Entry]\nType=Application\nName=Demo Launcher\nGenericName=Fixture\nIcon=terminal\nCategories=TerminalEmulator;\nExec={binary}/fake-app literal-argument %U\nPath={root}\n')
+        for name, icon in [('absolute', str(absolute_icon)), ('missing', 'putkin-nonexistent-icon'), ('empty', '')]:
+            (apps / f'icon-{name}.desktop').write_text(f'[Desktop Entry]\nType=Application\nName=Icon {name}\nIcon={icon}\nExec={binary}/fake-app\n')
+        (apps / 'hidden.desktop').write_text('[Desktop Entry]\nType=Application\nName=Hidden\nExec=false\nNoDisplay=true\n')
+        target = root / 'plan $(touch INJECTED).md'; target.touch()
+        quickshell, dbus = tool('quickshell'), tool('dbus-run-session')
+        entrypoint = str(ROOT / 'launcher-test.qml')
+        process = None
+        with tempfile.TemporaryFile(mode='w+') as log:
+            def ipc(target, method, *args, starting=False):
+                result = subprocess.run([quickshell, 'ipc', '--path', entrypoint, 'call', target, method,
+                    *[str(arg).lower() if isinstance(arg, bool) else str(arg) for arg in args]], env=env,
+                    capture_output=True, text=True, timeout=4)
+                return ipc_reply(result, process, log, starting=starting)
+            def state(): return ipc_json(ipc('probe', 'snapshot', starting=True))
+            def open_launcher():
+                assert ipc('launcher', 'open') == 'ok'
+                return eventually(state, lambda value: value.get('focus') == 'launcherSearch', 'launcher focus')
+            def close_launcher():
+                ipc('launcher', 'close')
+                eventually(state, lambda value: value.get('loaded') is False, 'launcher release')
+            def clip(data, mime='text', status='data'):
+                (root / (mime + '.data')).write_bytes(data)
+                fd = os.open(root / (mime + '.fifo'), os.O_WRONLY | os.O_NONBLOCK)
+                with os.fdopen(fd, 'w') as stream: stream.write(status + '\n')
+            try:
+                process = subprocess.Popen([dbus, '--', quickshell, '--no-color', '--path', entrypoint],
+                    env=env, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+                snapshot = eventually(state, lambda value: value.get('ready'), 'launcher ready')
+                assert sorted(snapshot['applications']) == ['icon-absolute', 'icon-empty', 'icon-missing', 'putkin-demo'], snapshot
+                assert ipc('launcher', 'openCommands') == 'ok'
+                result = eventually(state, lambda value: value.get('focus') == 'launcherSearch', 'command mode focus')
+                assert result['text'] == '' and result['mode'] == 'command' and result['commandInput'] and result['results'] == [], result
+                assert ipc('launcher', 'openClipboard') == 'ok'
+                result = state()
+                assert result['mode'] == 'clipboard' and result['text'] == '' and not result['commandInput'], result
+                close_launcher()
+                assert ipc('launcher', 'openClipboard') == 'ok'
+                result = eventually(state, lambda value: value.get('focus') == 'launcherSearch', 'clipboard focus')
+                assert result['mode'] == 'clipboard', result
+                close_launcher()
+                checks.append('production IPC opens commands and clipboard directly, including switching an open launcher')
+                open_launcher()
+                ipc('probe', 'edit', ':a ')
+                for query, symbol in [('demo', 'terminal'), ('icon absolute', 'apps'), ('icon missing', 'apps'), ('icon empty', 'apps')]:
+                    ipc('probe', 'edit', query)
+                    eventually(state, lambda value: len(value.get('results', [])) == 1, 'icon result')
+                    icon_state = eventually(lambda: ipc_json(ipc('probe', 'iconSnapshot')),
+                        lambda value: len(value.get('icons', [])) == 1 and value['icons'][0].get('ready'),
+                        'rendered vector icon ' + query)
+                    icon = icon_state['icons'][0]
+                    assert icon['visible'] and icon['symbol'] == symbol, icon_state
+                    assert icon['width'] == icon['height'] == 32, icon_state
+                    assert icon['size'] == 24 and icon['padding'] == 4, icon_state
+                checks.append('native desktop categories map to Material Symbols; named, absolute bitmap, missing and empty icons use local vectors; equal 24 px canvases and 4 px padding')
+                ipc('probe', 'edit', 'demo')
+                result = eventually(state, lambda value: len(value.get('results', [])) == 1, 'desktop entry')
+                assert result['results'][0]['title'] == 'Demo Launcher', result
+                assert ipc('probe', 'activate', 0) == 'true'
+                eventually(state, lambda value: not value.get('active', True), 'app launch closes')
+                saved = Path(env['XDG_STATE_HOME']) / 'putkin/launcher.json'
+                assert json.loads(saved.read_text())['records'][0]['id'] == 'putkin-demo'
+                assert json.loads((root / 'actions.jsonl').read_text().splitlines()[0])['argv'] == ['literal-argument']
+                checks.append('native DesktopEntries, hidden entry, argv launch, MRU persisted')
+                open_launcher()
+                ipc('probe', 'edit', ':f $(touch INJECTED)')
+                result = eventually(state, lambda value: not value.get('searching') and value.get('results'), 'fd result')
+                assert result['results'][0]['id'] == str(target), result
+                assert not (root / 'INJECTED').exists()
+                assert ipc('probe', 'activate', 0) == 'true'
+                eventually(state, lambda value: not value.get('active', True), 'file launch')
+                assert json.loads((root / 'actions.jsonl').read_text().splitlines()[-1])['argv'] == [str(target)]
+                checks.append('real fd, literal query/path with shell syntax, xdg-open argv')
+                open_launcher(); ipc('probe', 'edit', ':c ')
+                text = ('  clipboard fixture <b>hjkl</b>\n' + 'second line with preserved whitespace\n' * 12).encode()
+                clip(text)
+                result = eventually(state, lambda value: len(value.get('clips', [])) == 1, 'clipboard watcher')
+                assert result['results'][0]['kind'] == 'clipboard', result
+                eventually(state, lambda value: value.get('previewText') == text.decode(), 'decoded multiline clipboard preview')
+                assert not (root / 'copied').exists()
+                assert ipc('probe', 'activate', 0) == 'true'
+                eventually(state, lambda value: not value.get('active', True), 'copy closes')
+                assert (root / 'copied').read_bytes() == text
+                assert 'clipboard' not in saved.read_text()
+                open_launcher(); ipc('probe', 'edit', ':c ')
+                clip(b'should never be stored', status='sensitive'); time.sleep(.15)
+                assert len(state()['clips']) == 1
+                checks.append('watcher -> real cliphist -> exact wl-copy bytes; sensitive skip; no persistent clipboard')
+                image = (ROOT / 'tests/fixtures/launcher-preview.png').read_bytes()
+                clip(image, mime='image')
+                eventually(state, lambda value: len(value.get('clips', [])) == 2, 'image watcher')
+                ipc('probe', 'select', 0)
+                result = eventually(state, lambda value: value.get('previewImage') is True, 'decoded image preview')
+                assert result['previewText'] == ''
+                frame = eventually(lambda: ipc_json(ipc('probe', 'previewSnapshot')),
+                    lambda value: value.get('imageReady'), 'real Qt image decoding')
+                assert frame['width'] == frame['height'] == 320 and frame['y'] == 0 and frame['x'] == 648, frame
+                assert abs(frame['paintedWidth'] / frame['paintedHeight'] - 640 / 360) < .01, frame
+                assert (root / 'copied').read_bytes() == text
+                ipc('probe', 'select', 1)
+                eventually(state, lambda value: value.get('previewText') == text.decode() and not value.get('previewImage'), 'image to text preview')
+                close_launcher()
+                result = state()
+                assert result['previewText'] == '' and not result['previewImage'] and result['previewId'] == '', result
+                checks.append('selected cliphist entry -> decoded multiline text or real PNG with exact aspect; square at launcher top; preview never copies; close clears preview')
+                generation = state()['generation']
+                ipc('probe', 'reloadShell', False)
+                eventually(state, lambda value: value.get('ready') and value.get('generation') != generation, 'soft reload')
+                open_launcher()
+                assert state()['history'][0]['id'] == str(target)
+                assert state()['clips'] == []
+                close_launcher()
+                for _ in range(20): open_launcher(); close_launcher()
+                snapshot = state()
+                assert snapshot['created'] == snapshot['destroyed'], snapshot
+                checks.append('soft reload preserves file/app MRU, releases clipboard; 20 lazy panel cycles')
+                logs = runtime_log(log)
+                assert not qml_errors(logs, allow_offscreen_masks=True), logs
+            finally:
+                if process: stop_process_group(process)
+                output.with_suffix('.log').write_text(runtime_log(log))
+            # Detached watcher groups are reaped by the helper's EOF/SIGTERM path.
+            eventually(lambda: list(Path(env['XDG_RUNTIME_DIR']).glob('putkin-clipboard-*')), lambda paths: not paths, 'private clipboard cleanup')
+    output.write_text(json.dumps(dict(status='PASS', checks=checks), indent=2) + '\n')
+    print(f'PASS: launcher — {len(checks)} grup integracji; {output}')
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--output', type=Path, default=ROOT / 'artifacts/launcher.json')
+    args = parser.parse_args()
+    try: run(args.output.resolve())
+    except (AssertionError, OSError, subprocess.SubprocessError) as error:
+        print(f'FAIL: {error}', file=sys.stderr); return 1
+    return 0
+
+
+if __name__ == '__main__': sys.exit(main())

@@ -1,0 +1,1 @@
+PASS: real panel IPC + LazyLoader, 20 cycles, 0 live surfaces; RSS {'start': 119136, 'end': 118656, 'min': 118656, 'max': 119264}

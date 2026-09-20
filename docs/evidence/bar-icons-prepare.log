@@ -1,0 +1,24 @@
+{
+  "release": "/home/attntd/.local/share/putkin/releases/20260920-bar-icons-399655afcfb6",
+  "runtime_files": 260,
+  "changed_runtime": [
+    "core/Metrics.qml",
+    "modules/bar/BarView.qml",
+    "modules/bar/BatteryButton.qml",
+    "modules/bar/WorkspaceStrip.qml",
+    "modules/tray/TrayButton.qml",
+    "modules/tray/TrayStrip.qml"
+  ],
+  "configurations": [
+    "/home/attntd/.config/hypr/hyprland.lua",
+    "/home/attntd/.local/share/chezmoi/dot_config/hypr/hyprland.lua",
+    "/home/attntd/.config/hypr/autostart.lua",
+    "/home/attntd/.local/share/chezmoi/dot_config/hypr/autostart.lua",
+    "/home/attntd/.config/hypr/modules/system_binds.lua",
+    "/home/attntd/.local/share/chezmoi/dot_config/hypr/modules/system_binds.lua",
+    "/home/attntd/.config/hypr/hypridle.conf",
+    "/home/attntd/.local/share/chezmoi/dot_config/hypr/hypridle.conf"
+  ],
+  "preserved_chezmoi_status": "MM .config/hypr/hyprland.lua\nMM .config/zen/r82xc5xh.Default (release)/chrome/zen-themes.css",
+  "restore": "/home/attntd/.local/state/putkin/update-20260920-bar-icons-399655afcfb6/restore"
+}

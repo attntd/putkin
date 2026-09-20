@@ -1,0 +1,18 @@
+{
+  "release": "/home/attntd/.local/share/putkin/releases/20260920-toggle-tiles-7a84bdec0b46",
+  "runtime_files": 164,
+  "changes": [
+    "/home/attntd/.config/hypr/hyprland.lua",
+    "/home/attntd/.local/share/chezmoi/dot_config/hypr/hyprland.lua",
+    "/home/attntd/.config/hypr/autostart.lua",
+    "/home/attntd/.local/share/chezmoi/dot_config/hypr/autostart.lua",
+    "/home/attntd/.config/hypr/modules/system_binds.lua",
+    "/home/attntd/.local/share/chezmoi/dot_config/hypr/modules/system_binds.lua"
+  ],
+  "restore": "/home/attntd/.local/state/putkin/update-20260920-toggle-tiles-7a84bdec0b46/restore"
+}
+PASS: Hyprland --verify-config with staged Lua and private XDG
+Przywrócono poprzedni shell i jego autostart.
+Przywrócono poprzedni shell i jego autostart.
+PASS: rollback restores all 6 files, is repeatable and protects later edits before stopping shell
+PASS: staged runtime matches all 164 source files

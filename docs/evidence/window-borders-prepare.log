@@ -1,0 +1,5 @@
+PASS: Hyprland --verify-config with staged Lua and private XDG
+Przywrócono poprzedni shell i jego autostart.
+Przywrócono poprzedni shell i jego autostart.
+PASS: rollback restores all 6 files, is repeatable and protects later edits before stopping shell
+PASS: staged runtime matches all 169 source files

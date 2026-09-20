@@ -1,0 +1,7 @@
+BarWindow 1.0 BarWindow.qml
+BarView 1.0 BarView.qml
+BarIpc 1.0 BarIpc.qml
+WorkspaceStrip 1.0 WorkspaceStrip.qml
+WorkspaceButton 1.0 WorkspaceButton.qml
+Clock 1.0 Clock.qml
+BatteryButton 1.0 BatteryButton.qml

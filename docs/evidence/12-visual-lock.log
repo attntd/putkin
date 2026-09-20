@@ -1,0 +1,3 @@
+PASS: native BarWindow/WallpaperWindow/InteractivePanelWindow mapped; initial panel keyboard focus; real output capture
+PASS: actual Hyprlock renders on the private compositor with deny-only fixture PAM and fingerprint disabled
+PASS smoke only

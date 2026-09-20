@@ -1,0 +1,15 @@
+[bus]
+
+[fake]
+PUTKIN_STATUS_FAKE_READY
+
+[native]
+  INFO: Launching config: "/home/attntd/projects/putkin/status-test.qml"
+  INFO: Shell ID: "e834319fb85aa1c49b30a60554f30c4e" Path ID "e834319fb85aa1c49b30a60554f30c4e"
+  INFO: Saving logs to "/tmp/pk-1drbgbf0/runtime/quickshell/by-id/li15p5xnlt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+  WARN scene: @services/SignalTrayState.qml[686891760:-1]: RangeError: Maximum call stack size exceeded.
+  WARN scene: @services/SignalTrayState.qml[686888832:-1]: RangeError: Maximum call stack size exceeded.
+  WARN scene: @services/SignalTrayState.qml[686882352:-1]: RangeError: Maximum call stack size exceeded.

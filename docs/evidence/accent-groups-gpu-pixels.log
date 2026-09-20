@@ -1,0 +1,14 @@
+PASS: native BarWindow/WallpaperWindow/InteractivePanelWindow mapped; initial panel keyboard focus; real output capture
+Traceback (most recent call last):
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 534, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 487, in main
+    inside(args.inside, args.smoke, args.idle, args.lock_wallpaper)
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 186, in inside
+    for point in ipc_json(ipc('probe', 'accentSamples')):
+                 ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/putkin/scripts/_common.py", line 49, in ipc_json
+    raise AssertionError(f"Expected an IPC object, received: {value!r}")
+AssertionError: Expected an IPC object, received: '[{"label":"frame","x":1553,"y":41,"localX":1.5,"localY":1.5,"width":360,"height":432},{"label":"frame","x":1910,"y":41,"localX":358.5,"localY":1.5,"width":360,"height":432},{"label":"frame","x":1553,"y":470,"localX":1.5,"localY":430.5,"width":360,"height":432},{"label":"frame","x":1910,"y":470,"localX":358.5,"localY":430.5,"width":360,"height":432},{"label":"wifiRadio","x":1718,"y":192,"localX":166.5,"localY":152.5,"width":360,"height":432},{"label":"bluetoothRadio","x":1892,"y":192,"localX":340.5,"localY":152.5,"width":360,"height":432},{"label":"nightLightToggle","x":1892,"y":256,"localX":340.5,"localY":216.5,"width":360,"height":432},{"label":"whole-bar","x":1712,"y":4,"localX":1712.765625,"localY":4.5,"width":1920,"height":32}]'

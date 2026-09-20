@@ -1,0 +1,16 @@
+PASS: quick-1920x1080-1.png: (1920, 1080), logical 1920x1080 @ 1
+PASS: quick-1920x1080-1.25.png: (1920, 1080), logical 1536x864 @ 1.25
+PASS: quick-1920x1080-1.5.png: (1920, 1080), logical 1280x720 @ 1.5
+PASS: quick-1920x1080-2.png: (1920, 1080), logical 960x540 @ 2
+PASS: quick-1366x768-1.png: (1366, 768), logical 1366x768 @ 1
+PASS: quick-1366x768-1.25.png: (1366, 768), logical 1093x614 @ 1.25
+PASS: quick-1366x768-1.5.png: (1367, 768), logical 911x512 @ 1.5
+PASS: quick-1366x768-2.png: (1366, 768), logical 683x384 @ 2
+PASS: settings-mauve.png: (1366, 768), logical 1093x614 @ 1.25
+PASS: settings-teal.png: (1366, 768), logical 1093x614 @ 1.25
+PASS: audio-osd.png: (1920, 1080), logical 1920x1080 @ 1
+PASS: brightness-osd.png: (1367, 768), logical 911x512 @ 1.5
+PASS: notification-long.png: (1366, 768), logical 683x384 @ 2
+PASS: power-cancel.png: (1366, 768), logical 1093x614 @ 1.25
+PASS: tray-overflow.png: (1366, 768), logical 683x384 @ 2
+PASS: night-light-absent.png: (1367, 768), logical 911x512 @ 1.5

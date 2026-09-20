@@ -1,0 +1,14 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::Session::initTestCase()
+PASS   : qmltestrunner::Session::test_centered_geometry_and_twenty_cycles()
+PASS   : qmltestrunner::Session::test_confirmation_discarded_hotplug_replacement_and_reopen()
+PASS   : qmltestrunner::Session::test_disabled_actions_and_small_centered_menu()
+PASS   : qmltestrunner::Session::test_escape_returns_to_menu_then_bar()
+PASS   : qmltestrunner::Session::test_lock_confirm_suspend_and_resume_brightness()
+PASS   : qmltestrunner::Session::test_navigation_confirmation_cancel_and_single_request()
+PASS   : qmltestrunner::Session::test_quicksettings_lock_power_settings_and_errors()
+PASS   : qmltestrunner::Session::test_timeout_late_completion_and_backend_loss()
+PASS   : qmltestrunner::Session::cleanupTestCase()
+Totals: 10 passed, 0 failed, 0 skipped, 0 blacklisted, 5342ms
+********* Finished testing of qmltestrunner *********

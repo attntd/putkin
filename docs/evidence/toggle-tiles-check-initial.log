@@ -1,0 +1,5 @@
+FAIL [imports/types, exit=255] /home/attntd/projects/putkin/modules/quicksettings/QuickSettingsView.qml
+Warning: /home/attntd/projects/putkin/modules/quicksettings/QuickSettingsView.qml:52:39: Member "focusReason" not found on type "QQuickItem" [missing-property]
+        const reason = focusedControl.focusReason;
+                                      ^^^^^^^^^^^
+FAIL: 181 plików QML, 1 z błędami.

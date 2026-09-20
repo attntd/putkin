@@ -1,0 +1,10 @@
+keysym: colon (0x003a)
+
+=== Direct access ===
+
+KEYCODE  KEY NAME  LAYOUT   LAYOUT NAME          LEVEL#  MODIFIERS
+47       AC10      1        Polish               2       [ Shift ]
+
+=== Access via Compose sequences ===
+
+#  KEYSYM                         KEYCODE  KEY NAME  LAYOUT   LAYOUT NAME          LEVEL#  MODIFIERS

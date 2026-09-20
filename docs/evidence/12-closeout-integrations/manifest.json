@@ -1,0 +1,30 @@
+{
+  "run": "Final stage 12 closeout, scripts/test exit 0",
+  "files": {
+    "panels-cycles.json": "5dbdc31b2753ba5c214ba2a9ec4a9aa34cfd21a7856d4699cdb232173c27ea5a",
+    "panels-cycles.log": "201e1b20c2502d597b67a2714fe30d649888b67c17b694e3bda4e24da3eafeb3",
+    "settings-integration.json": "6d0e6c68b303a602c20b975f972677b343d058231e1c6df285cb3127a1e336ba",
+    "settings-integration.log": "88eeb57a93e637fc78c035bca9bdf91292dfde74707c003f43e5048ee3d2843b",
+    "audio-integration.json": "8067c9489b1a3e7c0f979e1b91c9417633bf5fe3ce1caf8c1e5284dcc45e09b6",
+    "audio-integration.log": "9b06926b8d34fb76c36e4459d5e9771f80466b520f9830d935106da88d6a1f57",
+    "audio-integration.pipewire.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "brightness-integration.json": "22b5a058bc4d94bdb09309c685ae693d8bfed4e5fc0db56f1ff976ea37762a7f",
+    "brightness-integration.log": "92223f1f998dc496609885577e2b421e46b514a770ad938bca4e14c0fc8a88e3",
+    "status.json": "be4f5952425aac962e819e4376c2df5d1cef64bc1458492afc1bb15800fcd43d",
+    "status.log": "f381c5921547e05703e5d1fce88ae7db9db828404eb0f0937c956f0067f06ecd",
+    "network.json": "b7f55001c9cadfec0bc0a21ee8c089b5df645f8b7c45ad90d6c02e14cebe4631",
+    "network.log": "30641d8bfa2d00d093e334163a130ff8943d72f040f4d371db37ff6442ea60d0",
+    "bluetooth.json": "7f2b20c253d16894c079d376b9df155820898492b3328f4bf181a6d7aa104769",
+    "bluetooth.log": "b14a9e48984eed83c1c28561f909d6135d19e832b6804ebf32e5a9af499d0b6a",
+    "notifications.json": "cbc7260827d439f26af9de90f249035213d445201521383f4995c55e18263b3d",
+    "notifications.log": "4188a2d5b2814e880b17791b798a6d60d57938d0952bbe05717edc76bb2fa4b7",
+    "session.json": "6a84cdddcc8ebf70e15be788f6f255d2c8c9ca55f63ab477313533817af13250",
+    "session.log": "3566dd1507b39017f2ab1dbb2b9574bb9f411130c942a724d47b2d9d9e0b8b16",
+    "desktop.json": "d0ab9db7fb56743d7dbe33a410c3d564d0049bc25c64d56f4618f9d490003882",
+    "desktop.log": "f2047e746eb6242714eefad2d43834c6ae1f10ed23409b9f76f61e100889c909",
+    "validation.json": "435de5a8c60141af3d97bdd41c43e31798eb9e08ffc01769165b974ab481b359",
+    "validation.log": "fb99274dee9f2b84efcc68b19f197761261b7183251772e63c0075ca935e92b5",
+    "bar-integration-hyprlang.log": "6f19205a9016bd4ab3928caa9af973ab1c156bbe63bd1fc51cf6d0c1c187ac14",
+    "bar-integration-lua.log": "a65333baa9dd6616cfe37e1e1f97bf0d4892681fadab62811b810e43fa979097"
+  }
+}

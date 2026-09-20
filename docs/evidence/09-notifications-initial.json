@@ -1,0 +1,123 @@
+{
+  "timestamp_utc": "2026-09-16T16:46:39.424566+00:00",
+  "checks": [
+    "single native owner; exact capabilities; missing data; passive arrival; dismiss=2",
+    "default -1=6000 ms; zero remains; CloseNotification=3; unknown ID; identical replace resets timer; expired ID creates new notification",
+    "real ActionInvoked; nonresident closes; resident survives; transient; changed/removed action labels using same ID",
+    "production DND IPC; no replay; critical bypasses DND and never auto-expires; explicit keyboard entry/leave",
+    "one target per arrival; monitor fallback/hotplug preserves IDs; last screen removal closes; no duplication",
+    "100-event flood bounded to 3 visible + 12 queued; deterministic oldest queued eviction; queue timeout from arrival",
+    "8 MiB raw image; bounded title/body and native image provider; no payload in argv, logs, cache or XDG files",
+    "client disconnect and new D-Bus connection; replace retained ID and client close after return"
+  ],
+  "cycles": [
+    {
+      "cycle": 1,
+      "pid": 200720,
+      "name": "quickshell",
+      "parent": 200716,
+      "cpu_ticks": 78,
+      "rss_kib": 138044
+    },
+    {
+      "cycle": 2,
+      "pid": 200720,
+      "name": "quickshell",
+      "parent": 200716,
+      "cpu_ticks": 79,
+      "rss_kib": 138044
+    },
+    {
+      "cycle": 3,
+      "pid": 200720,
+      "name": "quickshell",
+      "parent": 200716,
+      "cpu_ticks": 79,
+      "rss_kib": 138044
+    },
+    {
+      "cycle": 4,
+      "pid": 200720,
+      "name": "quickshell",
+      "parent": 200716,
+      "cpu_ticks": 80,
+      "rss_kib": 138044
+    },
+    {
+      "cycle": 5,
+      "pid": 200720,
+      "name": "quickshell",
+      "parent": 200716,
+      "cpu_ticks": 81,
+      "rss_kib": 138044
+    },
+    {
+      "cycle": 6,
+      "pid": 200720,
+      "name": "quickshell",
+      "parent": 200716,
+      "cpu_ticks": 82,
+      "rss_kib": 138044
+    },
+    {
+      "cycle": 7,
+      "pid": 200720,
+      "name": "quickshell",
+      "parent": 200716,
+      "cpu_ticks": 89,
+      "rss_kib": 154260
+    },
+    {
+      "cycle": 8,
+      "pid": 200720,
+      "name": "quickshell",
+      "parent": 200716,
+      "cpu_ticks": 97,
+      "rss_kib": 162568
+    },
+    {
+      "cycle": 9,
+      "pid": 200720,
+      "name": "quickshell",
+      "parent": 200716,
+      "cpu_ticks": 106,
+      "rss_kib": 168712
+    },
+    {
+      "cycle": 10,
+      "pid": 200720,
+      "name": "quickshell",
+      "parent": 200716,
+      "cpu_ticks": 112,
+      "rss_kib": 177000
+    },
+    {
+      "cycle": 11,
+      "pid": 200720,
+      "name": "quickshell",
+      "parent": 200716,
+      "cpu_ticks": 119,
+      "rss_kib": 183068
+    }
+  ],
+  "error": "toast LazyLoader created: {'generation': 1789577213645, 'available': False, 'error': 'Utracono serwer powiadomień. Uruchom ponownie Putkin.', 'phase': 'failed', 'serverLoaded': True, 'watcherPid': 0, 'dnd': False, 'tracked': 0, 'loaded': False, 'created': 0, 'destroyed': 0, 'keyboard': '', 'entries': []}",
+  "unexpected_diagnostics": [
+    "  WARN scene: QML NotificationIpc at @notifications-test.qml[15:5]: Signal detected: \"serviceChanged\"",
+    "  WARN scene: QML NotificationIpc at @notifications-test.qml[15:5]: Signal detected: \"controllerChanged\"",
+    "  WARN scene: QML NotificationIpc at @notifications-test.qml[15:5]: Error parsing property \"service\": Type QVariant cannot be used across IPC.",
+    "  WARN scene: QML NotificationIpc at @notifications-test.qml[15:5]: Error parsing property \"controller\": Type QVariant cannot be used across IPC.",
+    "  WARN: QEventLoop: Cannot be used without QCoreApplication",
+    " ERROR: Quickshell has crashed under pid 200917 (Coredumps will be available under that pid.)",
+    " ERROR: Further crash information is stored under \"/tmp/pk-sp94ut3t/cache/quickshell/crashes/kva4rluglt\"",
+    " ERROR: Quickshell has been restarted.",
+    "  WARN scene: QML NotificationIpc at @notifications-test.qml[15:5]: Signal detected: \"serviceChanged\"",
+    "  WARN scene: QML NotificationIpc at @notifications-test.qml[15:5]: Signal detected: \"controllerChanged\"",
+    "  WARN scene: QML NotificationIpc at @notifications-test.qml[15:5]: Error parsing property \"service\": Type QVariant cannot be used across IPC.",
+    "  WARN scene: QML NotificationIpc at @notifications-test.qml[15:5]: Error parsing property \"controller\": Type QVariant cannot be used across IPC.",
+    "  WARN quickshell.service.notifications: Could not register notification server at org.freedesktop.Notifications, presumably because one is already registered.",
+    "  WARN quickshell.service.notifications: Registration will be attempted again if the active service is unregistered."
+  ],
+  "remaining_pids": [],
+  "tracked_processes": 5,
+  "passed": false
+}

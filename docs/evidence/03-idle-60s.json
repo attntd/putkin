@@ -1,0 +1,621 @@
+{
+  "timestamp_utc": "2026-09-16T11:29:40.775833+00:00",
+  "quickshell": "Quickshell 0.3.1 (revision , distributed by Arch Linux)",
+  "qt": "6.11.2",
+  "kernel": "7.2.4-arch1-2",
+  "mode": "offscreen / software / basic render loop / scale 1 / 1920x1080 bar, 30 workspaces, minute clock, unloaded panel host",
+  "displays": "1 virtual Qt offscreen screen; no real Wayland output",
+  "isolation": "private XDG and session D-Bus; mock-only imports; no host display or hardware buses",
+  "warmup_s": 2,
+  "duration_s": 60.000274,
+  "sample_interval_s": 1,
+  "cpu_clock_ticks_per_s": 100,
+  "cpu_seconds": 0.0,
+  "cpu_percent_one_core": 0.0,
+  "rss_kib": {
+    "start": 91996,
+    "end": 92124,
+    "min": 91996,
+    "max": 92124,
+    "mean": 92063.14754098361
+  },
+  "process_count_min": 3,
+  "process_count_max": 3,
+  "initial_process_tree": [
+    {
+      "pid": 128396,
+      "name": "dbus-run-sessio",
+      "parent": 128395,
+      "cpu_ticks": 0,
+      "rss_kib": 2124
+    },
+    {
+      "pid": 128397,
+      "name": "dbus-daemon",
+      "parent": 128396,
+      "cpu_ticks": 0,
+      "rss_kib": 3368
+    },
+    {
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 91996
+    }
+  ],
+  "final_process_tree": [
+    {
+      "pid": 128396,
+      "name": "dbus-run-sessio",
+      "parent": 128395,
+      "cpu_ticks": 0,
+      "rss_kib": 2124
+    },
+    {
+      "pid": 128397,
+      "name": "dbus-daemon",
+      "parent": 128396,
+      "cpu_ticks": 0,
+      "rss_kib": 3368
+    },
+    {
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124
+    }
+  ],
+  "samples": [
+    {
+      "elapsed_s": 0.0,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 91996,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 1.000276,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 91996,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 2.000244,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 91996,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 3.000149,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 91996,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 4.000141,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 91996,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 5.000173,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 91996,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 6.00026,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 91996,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 7.000122,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 91996,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 8.000244,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 91996,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 9.00024,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 91996,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 10.000298,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 91996,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 11.000295,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 91996,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 12.000237,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 91996,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 13.000243,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 91996,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 14.00015,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 91996,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 15.000245,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 91996,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 16.000262,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 91996,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 17.000242,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 91996,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 18.000138,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 91996,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 19.000237,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 91996,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 20.000256,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 91996,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 21.000147,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 91996,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 22.00023,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 91996,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 23.000294,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 91996,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 24.000243,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 91996,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 25.000241,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 91996,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 26.000248,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 91996,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 27.000236,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 91996,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 28.000168,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 91996,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 29.000239,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 30.000238,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 31.000237,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 32.000225,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 33.000234,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 34.000237,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 35.000258,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 36.000139,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 37.000138,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 38.000246,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 39.000132,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 40.00013,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 41.000141,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 42.000251,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 43.000144,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 44.000257,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 45.000257,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 46.000128,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 47.000259,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 48.000251,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 49.000252,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 50.000262,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 51.000295,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 52.000133,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 53.000263,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 54.000267,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 55.000301,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 56.000247,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 57.000244,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 58.000214,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 59.000224,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    },
+    {
+      "elapsed_s": 60.000274,
+      "pid": 128398,
+      "name": "quickshell",
+      "parent": 128396,
+      "cpu_ticks": 22,
+      "rss_kib": 92124,
+      "process_count": 3
+    }
+  ]
+}

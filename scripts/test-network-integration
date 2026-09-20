@@ -1,0 +1,286 @@
+#!/usr/bin/env python3
+"""Native Quickshell Networking on a private D-Bus NetworkManager fixture."""
+import argparse
+from datetime import datetime, timezone
+import importlib.machinery
+import importlib.util
+import json
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
+import time
+
+from _common import ROOT, ipc_reply, ipc_json, isolated_environment, qml_errors, stop_process_group, tool
+
+loader = importlib.machinery.SourceFileLoader("putkin_measure_idle", str(ROOT / "scripts/measure-idle"))
+spec = importlib.util.spec_from_loader(loader.name, loader)
+measurement = importlib.util.module_from_spec(spec)
+loader.exec_module(measurement)
+
+
+def eventually(read, predicate, description):
+    deadline = time.monotonic() + 7
+    last = None
+    while time.monotonic() < deadline:
+        last = read()
+        if predicate(last):
+            return last
+        time.sleep(0.025)
+    raise AssertionError(f"{description}: {last}")
+
+
+def run(output, idle):
+    import dbus
+    quickshell = tool("quickshell")
+    entrypoint = str(ROOT / "network-test.qml")
+    output.parent.mkdir(parents=True, exist_ok=True)
+    report = {"timestamp_utc": datetime.now(timezone.utc).isoformat(), "checks": [], "cycles": []}
+    with tempfile.TemporaryDirectory(prefix="pk-") as directory:
+        base = Path(directory)
+        env = isolated_environment(directory)
+        address = f"unix:path={base}/bus"
+        env.update(DBUS_SESSION_BUS_ADDRESS=address, DBUS_SYSTEM_BUS_ADDRESS=address,
+                   PUTKIN_SCENARIO="closed", PUTKIN_PREVIEW_WIDTH="1920", PUTKIN_PREVIEW_HEIGHT="1080",
+                   QS_NO_RELOAD_POPUP="1", PUTKIN_TEST_MARKER=str(base / "test-only"))
+        (base / "test-only").touch()
+        processes, logs, combined = [], [], []
+        seen_pids = set()
+
+        def start(command, name):
+            log = (base / f"{name}.log").open("w+")
+            logs.append((name, log))
+            process = subprocess.Popen(command, env=env, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+            processes.append(process)
+            seen_pids.add(process.pid)
+            return process
+
+        def stop(process):
+            if process.poll() is None:
+                seen_pids.update(p["pid"] for p in measurement.process_tree(process.pid))
+            stop_process_group(process)
+
+        def ipc(target, method, *args, starting=False):
+            result = subprocess.run([quickshell, "ipc", "--path", entrypoint, "call", target, method, *map(str, args)],
+                                    env=env, capture_output=True, text=True, timeout=4)
+            return ipc_reply(result, shell, logs, starting=starting)
+
+        def state():
+            value = ipc("probe", "snapshot", starting=True)
+            return ipc_json(value)
+
+        def networks(snapshot):
+            return [n for d in snapshot.get("devices", []) if d["type"] == 1 for n in d["networks"]]
+
+        def connected(snapshot, name):
+            return any(n["name"] == name and n["state"] == 2 for n in networks(snapshot))
+
+        def open_list():
+            ipc("ui", "openNetwork")
+            eventually(state, lambda s: s.get("loaded"), "panel loaded")
+            ipc("probe", "expand")
+            return eventually(state, lambda s: s.get("scanRequests") == 1 and len(networks(s)) == 4, "native scan/list")
+
+        try:
+            start([tool("dbus-daemon"), "--session", "--nofork", f"--address={address}"], "bus")
+            eventually(lambda: (base / "bus").is_socket(), bool, "bus socket")
+            start([sys.executable, str(ROOT / "tests/network_dbus_fake.py")], "fake")
+            bus = dbus.bus.BusConnection(address)
+            eventually(lambda: bus.name_has_owner("org.putkin.NetworkTest"), bool, "fake NM")
+            control = dbus.Interface(bus.get_object("org.putkin.NetworkTest", "/Test"), "org.putkin.NetworkTest")
+
+            def command(op, **kwargs):
+                return json.loads(str(control.Command(json.dumps({"op": op, **kwargs}))))
+
+            shell = start([quickshell, "--no-color", "--path", entrypoint], "native")
+            eventually(state, lambda s: s.get("available") and len(s.get("devices", [])) == 2, "native devices")
+            assert command("snapshot")["scans"] == 0, "bar must not scan"
+            first = open_list()
+            assert len([n for n in networks(first) if n["name"] == "Open"]) == 1, first
+            assert any(n["name"] == "<b>hjkl & goście</b>" for n in networks(first)), first
+            command("strength", value=28)
+            eventually(state, lambda s: any(n["name"] == "Saved" and n["strength"] == 0.28 for n in networks(s)), "native signal strength")
+            report["checks"].append("native devices/APs; duplicate SSID grouped by upstream; literal UTF-8; strength signals; bar never scans")
+
+            for name in ["Saved", "Open"]:
+                ipc("probe", "activate", name)
+                eventually(state, lambda s: connected(s, name) and not s["phase"], "saved/open connection")
+                ipc("probe", "activate", name)
+                eventually(state, lambda s: not connected(s, name) and not s["phase"], "disconnect")
+            ipc("probe", "activate", "PSK")
+            eventually(state, lambda s: s.get("phase") == "password", "native NoSecrets prompt")
+            ipc("probe", "submitTestPassword", "false")
+            retry = eventually(state, lambda s: s.get("phase") == "password", "wrong PSK")
+            assert retry["passwordLength"] == 0
+            ipc("probe", "submitTestPassword", "true")
+            success = eventually(state, lambda s: connected(s, "PSK") and not s["phase"], "PSK success")
+            assert success["passwordLength"] == 0
+            assert command("snapshot")["updates"] == 2, "PSK must use native Update, not argv"
+            assert command("snapshot")["update_pids"] == [shell.pid, shell.pid], "secret calls must originate in Quickshell, not helpers"
+            report["checks"].append("saved ActivateConnection; open AddAndActivateConnection; NoSecrets; wrong/correct PSK via native Update; field cleared")
+
+            for value, expected in [(2, "Portal"), (3, "Ograniczony"), (0, "stan nieznany"), (4, "Dostęp do internetu")]:
+                command("properties", values={"Connectivity": value})
+                eventually(state, lambda s: expected in s.get("internet", ""), "connectivity distinction")
+            command("ethernet", value=True)
+            both = eventually(state, lambda s: s.get("ethernet") and connected(s, "PSK"), "Ethernet + Wi-Fi")
+            assert "Ethernet" in both["status"]
+            ipc("probe", "checkInternet")
+            eventually(lambda: command("snapshot")["events"], lambda e: ["check"] in e, "explicit connectivity check")
+            report["checks"].append("Ethernet + Wi-Fi; unknown/limited/portal/full internet; explicit CheckConnectivity")
+
+            ipc("probe", "radio", "false")
+            eventually(state, lambda s: s.get("wifi") is False and s.get("radioBusy") is False and s.get("scanRequests") == 0, "radio off releases scan")
+            command("radioMode", mode="deny")
+            ipc("probe", "radio", "true")
+            denied = eventually(state, lambda s: s.get("radioBusy") is False and "Nie można" in s.get("error", ""), "denied radio")
+            assert denied["wifi"] is False
+            command("radioMode", mode="ignore")
+            ipc("probe", "radio", "true")
+            eventually(state, lambda s: s.get("radioBusy") is False and "Nie potwierdzono" in s.get("error", ""), "unconfirmed radio timeout")
+            command("radioMode", mode="ok")
+            command("properties", values={"WirelessHardwareEnabled": False})
+            eventually(state, lambda s: s.get("hardware") is False, "rfkill")
+            before = len(command("snapshot")["events"])
+            ipc("probe", "radio", "true")
+            assert len(command("snapshot")["events"]) == before, "hardware block must not write"
+            command("properties", values={"WirelessHardwareEnabled": True})
+            eventually(state, lambda s: s.get("hardware"), "unblock")
+            ipc("probe", "radio", "true")
+            eventually(state, lambda s: s.get("wifi") and not s.get("radioBusy") and s.get("scanRequests") == 1, "radio retry/list")
+            report["checks"].append("confirmed radio; denied + ignored writes; retries; hardware rfkill; scanner release and resume")
+
+            command("hold", value=True)
+            ipc("probe", "activate", "Open")
+            eventually(state, lambda s: s.get("phase") == "connecting", "pending connection")
+            ipc("probe", "activate", "Saved")
+            eventually(state, lambda s: not s.get("phase") and "Przekroczono czas" in s.get("error", ""), "timeout after changing target")
+            ipc("probe", "activate", "Open")
+            ipc("probe", "cancel")
+            assert not state()["phase"]
+            ipc("probe", "activate", "Open")
+            eventually(state, lambda s: s.get("phase") == "connecting", "pending before adapter removal")
+            command("wifiDevice", value=False)
+            eventually(state, lambda s: s.get("scanRequests") == 0 and not s.get("phase") and all(d["type"] != 1 for d in s.get("devices", [])), "adapter removed during connection")
+            command("hold", value=False)
+            command("wifiDevice", value=True)
+            eventually(state, lambda s: s.get("scanRequests") == 1 and len(networks(s)) == 4, "adapter returns")
+            report["checks"].append("pending cancellation and target change; bounded timeout; native adapter removal/return")
+
+            ipc("ui", "closePanels")
+            eventually(state, lambda s: s.get("loaded") is False and s["created"] == s["destroyed"], "surface destroyed")
+            for cycle in range(20):
+                open_list()
+                ipc("ui", "closePanels")
+                closed = eventually(state, lambda s: not s.get("loaded") and s["created"] == s["destroyed"], "cycle destroyed")
+                assert closed["scanRequests"] == 0 and all(not d["scanning"] for d in closed["devices"]), closed
+                report["cycles"].append({"cycle": cycle+1, **measurement.snapshot(shell.pid)})
+            for hard in [False, True]:
+                open_list()
+                before = state()
+                seen_pids.add(before["watcherPid"])
+                ipc("probe", "reload", str(hard).lower())
+                reloaded = eventually(state, lambda s: s.get("generation") != before["generation"] and not s.get("scanRequests")
+                    and (s.get("available") if not hard else "ponownie" in s.get("backendError", "")), "reload releases scanner")
+                assert reloaded["nativeScanners"] == 0
+                if hard:
+                    assert not reloaded["available"], "hard reload cannot trust discarded owner history"
+                eventually(lambda: Path(f"/proc/{before['watcherPid']}").exists(), lambda exists: not exists, "old watcher reaped")
+            report["checks"].append("20 native LazyLoader cycles; soft reload preserves owner; hard reload requests process restart; scanners/views/watchers released")
+
+            ipc("probe", "editor")
+            eventually(state, lambda s: "Brak nm-connection-editor" in s.get("editorError", ""), "missing optional editor")
+            # A fake executable is the only editor launched by this test.
+            stop(shell)
+            editor_bin = base / "bin"
+            editor_bin.mkdir()
+            editor = editor_bin / "nm-connection-editor"
+            editor.write_text('#!/bin/sh\nprintf opened > "$XDG_RUNTIME_DIR/editor-opened"\n')
+            editor.chmod(0o700)
+            env["PATH"] = str(editor_bin) + ":" + env["PATH"]
+            shell = start([quickshell, "--no-color", "--path", entrypoint], "editor")
+            eventually(state, lambda s: s.get("available"), "editor shell")
+            ipc("probe", "editor")
+            eventually(lambda: (Path(env["XDG_RUNTIME_DIR"]) / "editor-opened").exists(), bool, "fake editor executed")
+            report["checks"].append("missing optional editor message; available editor invokes controlled fake executable")
+
+            command("owner", value=False)
+            eventually(state, lambda s: s.get("available") is False and not s.get("devices"), "NM disappearance clears state")
+            command("owner", value=True)
+            eventually(state, lambda s: "ponownie" in s.get("backendError", ""), "explicit native restart limitation")
+            assert state()["available"] is False
+            for hard in [False, True]:
+                before = state()
+                seen_pids.add(before["watcherPid"])
+                ipc("probe", "reload", str(hard).lower())
+                eventually(state, lambda s: s.get("generation") != before["generation"] and "ponownie" in s.get("backendError", ""), "reload preserves invalid singleton guard")
+                assert state()["available"] is False
+            stop(shell)
+            command("owner", value=False)
+            shell = start([quickshell, "--no-color", "--path", entrypoint], "absent")
+            eventually(state, lambda s: s.get("available") is False and s.get("backendError"), "absent at startup")
+            command("owner", value=True)
+            eventually(state, lambda s: "ponownie" in s.get("backendError", ""), "late NM requires restart")
+            stop(shell)
+            report["checks"].append("missing/lost/restarted NM; stale state hidden; upstream reconnect limitation stated in UI")
+
+            if idle:
+                env["PUTKIN_LIVE_CLOCK"] = "1"
+                shell = start([quickshell, "--no-color", "--path", entrypoint], "idle")
+                eventually(state, lambda s: s.get("available"), "fresh idle shell")
+                time.sleep(2)
+                before = command("snapshot")
+                tree_before = measurement.process_tree(shell.pid)
+                begin = time.monotonic()
+                samples = [{"second": 0, **measurement.snapshot(shell.pid)}]
+                for second in range(1, 61):
+                    time.sleep(max(0, begin + second - time.monotonic()))
+                    samples.append({"second": second, **measurement.snapshot(shell.pid)})
+                after = command("snapshot")
+                assert after["reads"] == before["reads"] and after["scans"] == before["scans"], (before, after)
+                report["idle"] = {"duration_seconds":time.monotonic()-begin, "samples":samples,
+                    "tree_before":tree_before, "tree_after":measurement.process_tree(shell.pid), "new_reads":0, "new_scans":0}
+
+            secret_markers = [("putkin-" + "private-" + "psk-07").encode(), ("incorrect-" + "test-value").encode()]
+            for process in processes:
+                if process.poll() is None:
+                    for child in measurement.process_tree(process.pid):
+                        seen_pids.add(child["pid"])
+                        argv = Path(f"/proc/{child['pid']}/cmdline").read_bytes()
+                        assert all(secret not in argv for secret in secret_markers), "secret in argv"
+            for path in base.rglob("*"):
+                if path.is_file() and not path.is_socket():
+                    assert all(secret not in path.read_bytes() for secret in secret_markers), f"secret in file {path.name}"
+            report["checks"].append("no test secrets in private XDG/files/logs or process argv; private system/session bus; no host hardware")
+        finally:
+            for process in reversed(processes):
+                stop(process)
+            for name, log in logs:
+                log.seek(0); combined.append((name, log.read())); log.close()
+            output.with_suffix(".log").write_text("\n".join(f"[{name}]\n{log}" for name, log in combined))
+        diagnostics = [line.strip() for _, log in combined for line in qml_errors(log, allow_offscreen_masks=True)]
+        expected = {"ERROR quickshell.network: Network will not work. Could not find an available backend."}
+        assert all(line in expected for line in diagnostics), diagnostics
+        report["expected_diagnostics"] = diagnostics
+        for pid in seen_pids:
+            assert not Path(f"/proc/{pid}").exists(), f"leaked process {pid}"
+        report["processes_cleaned"] = sorted(seen_pids)
+    output.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n")
+    print(f"PASS: native Networking, {len(report['checks'])} checks, 20 cycles; {output}")
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, default=ROOT / "artifacts/network.json")
+    parser.add_argument("--idle", action="store_true")
+    args = parser.parse_args()
+    try:
+        run(args.output.resolve(), args.idle)
+    except (AssertionError, OSError, subprocess.SubprocessError) as error:
+        print(f"FAIL: {error}; log: {args.output.with_suffix('.log')}", file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

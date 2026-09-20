@@ -1,0 +1,186 @@
+{
+  "timestamp_utc": "2026-09-16T20:51:26.992184+00:00",
+  "checks": [
+    "single native owner; exact capabilities; missing data; passive arrival; dismiss=2",
+    "default -1=6000 ms; zero remains; CloseNotification=3; unknown ID; identical replace resets timer; expired ID creates new notification",
+    "real ActionInvoked; nonresident closes; resident survives; transient; changed/removed action labels using same ID",
+    "production DND IPC; no replay; critical bypasses DND and never auto-expires; explicit keyboard entry/leave",
+    "one target per arrival; monitor fallback/hotplug preserves IDs; last screen removal closes; no duplication",
+    "100-event flood bounded to 3 visible + 12 queued; deterministic oldest queued eviction; queue timeout from arrival",
+    "8 MiB raw image; bounded title/body and native image provider; no payload in argv, logs, cache or XDG files",
+    "client disconnect and new D-Bus connection; replace retained ID and client close after return",
+    "20 real LazyLoader lifecycles; soft/hard reload clears native visible/queued objects with reason=1; DND resets; old observers reaped",
+    "replaceable existing owner remains untouched; server is never constructed on conflict; releasing owner does not activate blocked instance",
+    "observer failure is visible; stale content released and new arrivals expired; recovery requires process restart",
+    "missing observer executable is visible and prevents server construction/name acquisition"
+  ],
+  "cycles": [
+    {
+      "cycle": 1,
+      "pid": 304602,
+      "name": "quickshell",
+      "parent": 304600,
+      "cpu_ticks": 83,
+      "rss_kib": 138076
+    },
+    {
+      "cycle": 2,
+      "pid": 304602,
+      "name": "quickshell",
+      "parent": 304600,
+      "cpu_ticks": 84,
+      "rss_kib": 138076
+    },
+    {
+      "cycle": 3,
+      "pid": 304602,
+      "name": "quickshell",
+      "parent": 304600,
+      "cpu_ticks": 84,
+      "rss_kib": 138076
+    },
+    {
+      "cycle": 4,
+      "pid": 304602,
+      "name": "quickshell",
+      "parent": 304600,
+      "cpu_ticks": 85,
+      "rss_kib": 138076
+    },
+    {
+      "cycle": 5,
+      "pid": 304602,
+      "name": "quickshell",
+      "parent": 304600,
+      "cpu_ticks": 86,
+      "rss_kib": 138076
+    },
+    {
+      "cycle": 6,
+      "pid": 304602,
+      "name": "quickshell",
+      "parent": 304600,
+      "cpu_ticks": 86,
+      "rss_kib": 138076
+    },
+    {
+      "cycle": 7,
+      "pid": 304602,
+      "name": "quickshell",
+      "parent": 304600,
+      "cpu_ticks": 87,
+      "rss_kib": 138076
+    },
+    {
+      "cycle": 8,
+      "pid": 304602,
+      "name": "quickshell",
+      "parent": 304600,
+      "cpu_ticks": 88,
+      "rss_kib": 138076
+    },
+    {
+      "cycle": 9,
+      "pid": 304602,
+      "name": "quickshell",
+      "parent": 304600,
+      "cpu_ticks": 88,
+      "rss_kib": 138076
+    },
+    {
+      "cycle": 10,
+      "pid": 304602,
+      "name": "quickshell",
+      "parent": 304600,
+      "cpu_ticks": 89,
+      "rss_kib": 138076
+    },
+    {
+      "cycle": 11,
+      "pid": 304602,
+      "name": "quickshell",
+      "parent": 304600,
+      "cpu_ticks": 90,
+      "rss_kib": 138076
+    },
+    {
+      "cycle": 12,
+      "pid": 304602,
+      "name": "quickshell",
+      "parent": 304600,
+      "cpu_ticks": 90,
+      "rss_kib": 138076
+    },
+    {
+      "cycle": 13,
+      "pid": 304602,
+      "name": "quickshell",
+      "parent": 304600,
+      "cpu_ticks": 92,
+      "rss_kib": 138076
+    },
+    {
+      "cycle": 14,
+      "pid": 304602,
+      "name": "quickshell",
+      "parent": 304600,
+      "cpu_ticks": 92,
+      "rss_kib": 138076
+    },
+    {
+      "cycle": 15,
+      "pid": 304602,
+      "name": "quickshell",
+      "parent": 304600,
+      "cpu_ticks": 93,
+      "rss_kib": 137648
+    },
+    {
+      "cycle": 16,
+      "pid": 304602,
+      "name": "quickshell",
+      "parent": 304600,
+      "cpu_ticks": 94,
+      "rss_kib": 137648
+    },
+    {
+      "cycle": 17,
+      "pid": 304602,
+      "name": "quickshell",
+      "parent": 304600,
+      "cpu_ticks": 95,
+      "rss_kib": 134016
+    },
+    {
+      "cycle": 18,
+      "pid": 304602,
+      "name": "quickshell",
+      "parent": 304600,
+      "cpu_ticks": 95,
+      "rss_kib": 134016
+    },
+    {
+      "cycle": 19,
+      "pid": 304602,
+      "name": "quickshell",
+      "parent": 304600,
+      "cpu_ticks": 96,
+      "rss_kib": 134016
+    },
+    {
+      "cycle": 20,
+      "pid": 304602,
+      "name": "quickshell",
+      "parent": 304600,
+      "cpu_ticks": 96,
+      "rss_kib": 133876
+    }
+  ],
+  "unexpected_diagnostics": [],
+  "expected_diagnostics": [
+    "  WARN: Process failed to start, likely because the binary could not be found. Command: QList(\"python3\", \"-B\", \"/home/attntd/projects/putkin/services/notification-watch.py\")"
+  ],
+  "remaining_pids": [],
+  "tracked_processes": 9,
+  "passed": true
+}

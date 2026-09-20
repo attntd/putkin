@@ -1,0 +1,486 @@
+test_all_files_are_checked_even_after_failures (test_check.CheckGate.test_all_files_are_checked_even_after_failures) ... ok
+test_bad_syntax_fails (test_check.CheckGate.test_bad_syntax_fails) ... ok
+test_empty_or_missing_input_fails (test_check.CheckGate.test_empty_or_missing_input_fails) ... ok
+test_missing_import_fails (test_check.CheckGate.test_missing_import_fails) ... ok
+test_missing_tools_are_distinct_from_qml_failure (test_check.CheckGate.test_missing_tools_are_distinct_from_qml_failure) ... ok
+test_valid_file_with_spaces_passes_without_modification (test_check.CheckGate.test_valid_file_with_spaces_passes_without_modification) ... ok
+test_current_version_and_active_owner (test_night_light.NightLightOwner.test_current_version_and_active_owner) ... ok
+test_foreign_executable_is_never_run (test_night_light.NightLightOwner.test_foreign_executable_is_never_run) ... ok
+test_foreign_or_inactive_unit (test_night_light.NightLightOwner.test_foreign_or_inactive_unit) ... ok
+test_invalid_arguments_do_not_connect (test_night_light.NightLightOwner.test_invalid_arguments_do_not_connect) ... ok
+test_missing_backend_is_structured (test_night_light.NightLightOwner.test_missing_backend_is_structured) ... ok
+test_old_version_is_rejected_before_ipc (test_night_light.NightLightOwner.test_old_version_is_rejected_before_ipc) ... ok
+test_process_token_and_session_scope (test_night_light.NightLightOwner.test_process_token_and_session_scope) ... ok
+test_unknown_version_is_rejected (test_night_light.NightLightOwner.test_unknown_version_is_rejected) ... ok
+test_clis_report_missing_qml_import (test_runtime.RuntimeDiagnostics.test_clis_report_missing_qml_import) ... ok
+test_log_reader_preserves_child_offset (test_runtime.RuntimeDiagnostics.test_log_reader_preserves_child_offset) ... ok
+test_only_absent_startup_reply_is_retryable (test_runtime.RuntimeDiagnostics.test_only_absent_startup_reply_is_retryable) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 8.875s
+
+OK
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::Audio::initTestCase()
+PASS   : qmltestrunner::Audio::test_bar_wheel_and_navigation()
+PASS   : qmltestrunner::Audio::test_burst_delay_rejection_and_timeout()
+PASS   : qmltestrunner::Audio::test_external_update_shared_state_and_identity()
+PASS   : qmltestrunner::Audio::test_invalid_delta_mute_and_stale_output()
+PASS   : qmltestrunner::Audio::test_invalid_values(negative)
+PASS   : qmltestrunner::Audio::test_invalid_values(over)
+PASS   : qmltestrunner::Audio::test_invalid_values(nan)
+PASS   : qmltestrunner::Audio::test_invalid_values(infinity)
+PASS   : qmltestrunner::Audio::test_invalid_values(string)
+PASS   : qmltestrunner::Audio::test_invalid_values(null)
+PASS   : qmltestrunner::Audio::test_no_startup_or_reconnect_osd()
+PASS   : qmltestrunner::Audio::test_output_preference_is_not_actual_and_removal()
+PASS   : qmltestrunner::Audio::test_slider_arrow_burst_with_delayed_backend_and_failed_write()
+PASS   : qmltestrunner::Audio::test_slider_vim_arrows_mouse_mute_and_selection()
+PASS   : qmltestrunner::Audio::test_small_panel_keyboard_reveals_controls_and_skips_missing()
+PASS   : qmltestrunner::Audio::test_timeout_renewal_monitor_removal_theme_and_focus()
+PASS   : qmltestrunner::Audio::cleanupTestCase()
+PASS   : qmltestrunner::Bar::initTestCase()
+PASS   : qmltestrunner::Bar::test_action_waits_for_monitor_and_times_out()
+PASS   : qmltestrunner::Bar::test_click_uses_clicked_monitor_and_swaps_visible_workspace()
+PASS   : qmltestrunner::Bar::test_disconnect_clears_stale_state_and_keyboard_mode()
+PASS   : qmltestrunner::Bar::test_global_numbers_and_monitor_states()
+PASS   : qmltestrunner::Bar::test_ipc_controller_fallback_and_hotplug_state()
+PASS   : qmltestrunner::Bar::test_keypad_enter_and_escape()
+PASS   : qmltestrunner::Bar::test_locale_clock_tooltip_and_minute_change()
+PASS   : qmltestrunner::Bar::test_model_updates_preserve_delegate_and_selection()
+PASS   : qmltestrunner::Bar::test_overflow_mouse_and_narrow_layout()
+PASS   : qmltestrunner::Bar::test_text_input_does_not_navigate_bar()
+PASS   : qmltestrunner::Bar::test_vim_overflow_enter_once_and_focus()
+PASS   : qmltestrunner::Bar::cleanupTestCase()
+PASS   : qmltestrunner::Bluetooth::initTestCase()
+PASS   : qmltestrunner::Bluetooth::test_available_adapter_off_block_and_empty()
+PASS   : qmltestrunner::Bluetooth::test_close_paths(escape)
+PASS   : qmltestrunner::Bluetooth::test_close_paths(outside)
+PASS   : qmltestrunner::Bluetooth::test_close_paths(replace)
+PASS   : qmltestrunner::Bluetooth::test_close_paths(monitor)
+PASS   : qmltestrunner::Bluetooth::test_close_paths(destroy)
+PASS   : qmltestrunner::Bluetooth::test_close_paths(disabled)
+PASS   : qmltestrunner::Bluetooth::test_connect_disconnect_and_rejection()
+PASS   : qmltestrunner::Bluetooth::test_device_loss_service_restart_and_timeout()
+PASS   : qmltestrunner::Bluetooth::test_keyboard_tooltip_manager_and_small_panel()
+PASS   : qmltestrunner::Bluetooth::test_multiple_adapters_and_late_operation()
+PASS   : qmltestrunner::Bluetooth::test_radio_requests_are_confirmed_and_serial()
+PASS   : qmltestrunner::Bluetooth::test_stable_focus_model_literal_names_and_battery()
+PASS   : qmltestrunner::Bluetooth::test_twenty_cycles()
+PASS   : qmltestrunner::Bluetooth::cleanupTestCase()
+PASS   : qmltestrunner::Brightness::initTestCase()
+PASS   : qmltestrunner::Brightness::test_coalescing_and_late_replies()
+PASS   : qmltestrunner::Brightness::test_invalid_delta()
+PASS   : qmltestrunner::Brightness::test_invalid_input(zero)
+PASS   : qmltestrunner::Brightness::test_invalid_input(negative)
+PASS   : qmltestrunner::Brightness::test_invalid_input(over)
+PASS   : qmltestrunner::Brightness::test_invalid_input(nan)
+PASS   : qmltestrunner::Brightness::test_invalid_input(infinity)
+PASS   : qmltestrunner::Brightness::test_invalid_input(string)
+PASS   : qmltestrunner::Brightness::test_invalid_input(null)
+PASS   : qmltestrunner::Brightness::test_lost_device_focus_and_small_panel()
+PASS   : qmltestrunner::Brightness::test_panel_reopen_refresh_and_no_idle_poll()
+PASS   : qmltestrunner::Brightness::test_permission_error_and_unconfirmed_write_no_success()
+PASS   : qmltestrunner::Brightness::test_read_error_is_diagnostic_not_zero()
+PASS   : qmltestrunner::Brightness::test_refresh_reply_cannot_overwrite_new_intent()
+PASS   : qmltestrunner::Brightness::test_selection_stable_and_device_disappears()
+PASS   : qmltestrunner::Brightness::test_shared_osd_switches_kind_color_monitor_and_timer()
+PASS   : qmltestrunner::Brightness::test_timeout_result_retains_confirmed_level()
+PASS   : qmltestrunner::Brightness::test_unavailable_or_invalid_range(absent)
+PASS   : qmltestrunner::Brightness::test_unavailable_or_invalid_range(zero-max)
+PASS   : qmltestrunner::Brightness::test_unavailable_or_invalid_range(unknown-max)
+PASS   : qmltestrunner::Brightness::test_unavailable_or_invalid_range(outside-range)
+PASS   : qmltestrunner::Brightness::test_unavailable_or_invalid_range(wildcard-name)
+PASS   : qmltestrunner::Brightness::test_vim_standard_input_and_final_drag()
+PASS   : qmltestrunner::Brightness::test_zero_observed_and_small_range_never_write_zero()
+PASS   : qmltestrunner::Brightness::cleanupTestCase()
+PASS   : qmltestrunner::DesktopExtras::initTestCase()
+PASS   : qmltestrunner::DesktopExtras::test_absent_backend_has_no_switch_and_recovers()
+PASS   : qmltestrunner::DesktopExtras::test_confirmation_no_optimism_or_double_write()
+PASS   : qmltestrunner::DesktopExtras::test_existing_state_no_start_or_write()
+PASS   : qmltestrunner::DesktopExtras::test_failure(timeout)
+PASS   : qmltestrunner::DesktopExtras::test_failure(denied)
+PASS   : qmltestrunner::DesktopExtras::test_failure(restart)
+PASS   : qmltestrunner::DesktopExtras::test_failure(version)
+PASS   : qmltestrunner::DesktopExtras::test_failure(protocol)
+PASS   : qmltestrunner::DesktopExtras::test_failure(unconfirmed)
+PASS   : qmltestrunner::DesktopExtras::test_keyboard_temperature_and_section_order()
+PASS   : qmltestrunner::DesktopExtras::test_restart_rejects_stale_action_without_retry()
+PASS   : qmltestrunner::DesktopExtras::test_small_panel_scroll_and_lifecycle()
+PASS   : qmltestrunner::DesktopExtras::test_temperature_bounds_and_external_refresh()
+PASS   : qmltestrunner::DesktopExtras::test_wallpaper_fallback_path_and_input()
+PASS   : qmltestrunner::DesktopExtras::test_wallpaper_image_load_and_release()
+PASS   : qmltestrunner::DesktopExtras::test_wallpaper_missing_file_falls_back()
+PASS   : qmltestrunner::DesktopExtras::cleanupTestCase()
+PASS   : qmltestrunner::Foundation::initTestCase()
+PASS   : qmltestrunner::Foundation::test_button_keyboard_mouse_and_disabled()
+PASS   : qmltestrunner::Foundation::test_slider_keyboard_bounds_and_reset_binding()
+PASS   : qmltestrunner::Foundation::test_slider_mouse_updates_model()
+PASS   : qmltestrunner::Foundation::test_tab_skips_disabled_and_focus_is_visible()
+PASS   : qmltestrunner::Foundation::test_tooltip_and_accessible_name()
+PASS   : qmltestrunner::Foundation::cleanupTestCase()
+PASS   : qmltestrunner::Network::initTestCase()
+PASS   : qmltestrunner::Network::test_close_paths(escape)
+PASS   : qmltestrunner::Network::test_close_paths(outside)
+PASS   : qmltestrunner::Network::test_close_paths(button)
+PASS   : qmltestrunner::Network::test_close_paths(replace)
+PASS   : qmltestrunner::Network::test_close_paths(monitor)
+PASS   : qmltestrunner::Network::test_close_paths(destroy)
+PASS   : qmltestrunner::Network::test_close_paths(radio)
+PASS   : qmltestrunner::Network::test_close_paths(hardware)
+PASS   : qmltestrunner::Network::test_close_paths(adapter)
+PASS   : qmltestrunner::Network::test_close_paths(unavailable)
+PASS   : qmltestrunner::Network::test_close_paths(disabled)
+PASS   : qmltestrunner::Network::test_keyboard_editor_and_small_geometry()
+PASS   : qmltestrunner::Network::test_managed_devices_release_independently()
+PASS   : qmltestrunner::Network::test_open_saved_and_disconnect()
+PASS   : qmltestrunner::Network::test_psk_retry_clear_and_no_text_navigation()
+PASS   : qmltestrunner::Network::test_scans_are_owned_and_stop_on_unavailable()
+PASS   : qmltestrunner::Network::test_stable_delegate_literal_ssid_empty_and_duplicates()
+PASS   : qmltestrunner::Network::test_status_and_internet(unknown)
+PASS   : qmltestrunner::Network::test_status_and_internet(none)
+PASS   : qmltestrunner::Network::test_status_and_internet(portal)
+PASS   : qmltestrunner::Network::test_status_and_internet(limited)
+PASS   : qmltestrunner::Network::test_status_and_internet(full)
+PASS   : qmltestrunner::Network::test_timeout_switch_target_and_stale_result()
+PASS   : qmltestrunner::Network::test_twenty_cycles()
+PASS   : qmltestrunner::Network::test_unavailable_no_wifi_blocked_and_radio_confirmation()
+PASS   : qmltestrunner::Network::cleanupTestCase()
+PASS   : qmltestrunner::Notifications::initTestCase()
+PASS   : qmltestrunner::Notifications::test_arrival_mouse_close_and_action_preserve_focus()
+PASS   : qmltestrunner::Notifications::test_backend_loss_and_disabled_dnd()
+PASS   : qmltestrunner::Notifications::test_dnd_discards_without_replay_and_critical_does_not_expire()
+PASS   : qmltestrunner::Notifications::test_flood_bounds_fifo_and_critical_priority()
+PASS   : qmltestrunner::Notifications::test_identical_replacement_restarts_deadline_and_retains_card()
+PASS   : qmltestrunner::Notifications::test_keyboard_hjkl_enter_escape_and_tooltip()
+PASS   : qmltestrunner::Notifications::test_keyboard_pause_and_focus_repair()
+PASS   : qmltestrunner::Notifications::test_missing_data_plain_text_and_limits()
+PASS   : qmltestrunner::Notifications::test_monitor_routing_hotplug_and_geometry()
+PASS   : qmltestrunner::Notifications::test_quick_settings_dnd_and_intentional_handoff()
+PASS   : qmltestrunner::Notifications::test_replaced_actions_and_client_close()
+PASS   : qmltestrunner::Notifications::test_resident_transient_and_nonresident_actions()
+PASS   : qmltestrunner::Notifications::test_screen_resize_rebalances_without_duplicate_views()
+PASS   : qmltestrunner::Notifications::test_small_screen_bounds_images_scroll_and_queue()
+PASS   : qmltestrunner::Notifications::test_small_screen_critical_queue_rejects_normal_before_tracking()
+PASS   : qmltestrunner::Notifications::test_timeout_default_zero_and_queue_deadline()
+PASS   : qmltestrunner::Notifications::test_twenty_lifecycles()
+PASS   : qmltestrunner::Notifications::cleanupTestCase()
+PASS   : qmltestrunner::Panels::initTestCase()
+PASS   : qmltestrunner::Panels::test_close_before_async_load_and_switch_monitor_hotplug()
+PASS   : qmltestrunner::Panels::test_directions_enter_keypad_space_and_escape_layers()
+PASS   : qmltestrunner::Panels::test_disabled_tab_arrows_and_text_editing()
+PASS   : qmltestrunner::Panels::test_keyboard_bar_entry_and_return_focus()
+PASS   : qmltestrunner::Panels::test_long_content_and_resize_preserve_visible_focus()
+PASS   : qmltestrunner::Panels::test_mouse_active_indicator_tooltip_and_outside_consumption()
+PASS   : qmltestrunner::Panels::test_reject_unknown_surface_and_missing_screen()
+PASS   : qmltestrunner::Panels::test_settings_replaces_page_and_keeps_local_state_local()
+PASS   : qmltestrunner::Panels::test_small_screen_scroll_and_visible_focus()
+PASS   : qmltestrunner::Panels::test_twenty_cycles_and_reopen_during_fade()
+PASS   : qmltestrunner::Panels::cleanupTestCase()
+PASS   : qmltestrunner::Session::initTestCase()
+PASS   : qmltestrunner::Session::test_centered_geometry_and_twenty_cycles()
+PASS   : qmltestrunner::Session::test_confirmation_discarded_hotplug_replacement_and_reopen()
+PASS   : qmltestrunner::Session::test_disabled_actions_and_small_centered_menu()
+PASS   : qmltestrunner::Session::test_escape_returns_to_menu_then_bar()
+PASS   : qmltestrunner::Session::test_lock_confirm_suspend_and_resume_brightness()
+PASS   : qmltestrunner::Session::test_navigation_confirmation_cancel_and_single_request()
+PASS   : qmltestrunner::Session::test_quicksettings_lock_power_settings_and_errors()
+PASS   : qmltestrunner::Session::test_timeout_late_completion_and_backend_loss()
+PASS   : qmltestrunner::Session::cleanupTestCase()
+PASS   : qmltestrunner::Settings::initTestCase()
+PASS   : qmltestrunner::Settings::test_all_dismissal_routes_discard_preview(cancel)
+PASS   : qmltestrunner::Settings::test_all_dismissal_routes_discard_preview(close)
+PASS   : qmltestrunner::Settings::test_all_dismissal_routes_discard_preview(escape)
+PASS   : qmltestrunner::Settings::test_all_dismissal_routes_discard_preview(back)
+PASS   : qmltestrunner::Settings::test_all_dismissal_routes_discard_preview(outside)
+PASS   : qmltestrunner::Settings::test_all_dismissal_routes_discard_preview(replace)
+PASS   : qmltestrunner::Settings::test_all_dismissal_routes_discard_preview(monitor)
+PASS   : qmltestrunner::Settings::test_all_dismissal_routes_discard_preview(hotplug)
+PASS   : qmltestrunner::Settings::test_all_dismissal_routes_discard_preview(bar)
+PASS   : qmltestrunner::Settings::test_all_dismissal_routes_discard_preview(early)
+PASS   : qmltestrunner::Settings::test_contrast_and_reduced_motion()
+PASS   : qmltestrunner::Settings::test_corrupt_file_preserves_last_good_state_and_future_version_is_read_only()
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(optional appearance)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(optional colors)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(valid)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(malformed)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(null)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(array)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(missing version)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(future)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(old)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(string version)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(short color)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(transparent)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(named color)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(null appearance)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(boolean type)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(unknown option)
+PASS   : qmltestrunner::Settings::test_disabled_save_is_skipped_with_vim_and_tab()
+PASS   : qmltestrunner::Settings::test_external_changes_keep_draft_panel_cursor_and_focus_twenty_times()
+PASS   : qmltestrunner::Settings::test_hex_validation_keeps_letters_and_visible_focus()
+PASS   : qmltestrunner::Settings::test_presets_navigation_and_live_controls()
+PASS   : qmltestrunner::Settings::test_save_is_confirmed_reset_is_only_a_draft_and_retry()
+PASS   : qmltestrunner::Settings::cleanupTestCase()
+PASS   : qmltestrunner::BatteryTray::initTestCase()
+PASS   : qmltestrunner::BatteryTray::test_absent_peripheral_unavailable_and_return()
+PASS   : qmltestrunner::BatteryTray::test_bar_activation_secondary_menu_tooltip_fallback()
+PASS   : qmltestrunner::BatteryTray::test_bar_keyboard_and_only_menu()
+PASS   : qmltestrunner::BatteryTray::test_battery_states(charging)
+PASS   : qmltestrunner::BatteryTray::test_battery_states(discharging)
+PASS   : qmltestrunner::BatteryTray::test_battery_states(full)
+PASS   : qmltestrunner::BatteryTray::test_battery_states(unknown)
+PASS   : qmltestrunner::BatteryTray::test_battery_states(empty)
+PASS   : qmltestrunner::BatteryTray::test_battery_states(pendingCharge)
+PASS   : qmltestrunner::BatteryTray::test_battery_states(pendingDischarge)
+PASS   : qmltestrunner::BatteryTray::test_invalid_percent_unknown_time_and_warning_keeps_semantics()
+PASS   : qmltestrunner::BatteryTray::test_layouts_preserve_main_controls()
+PASS   : qmltestrunner::BatteryTray::test_menu_live_update_removes_submenu_and_recovers_focus()
+PASS   : qmltestrunner::BatteryTray::test_menu_vim_standard_keys_submenu_and_trigger()
+PASS   : qmltestrunner::BatteryTray::test_overflow_all_items_scrolling_back_and_escape_restore()
+PASS   : qmltestrunner::BatteryTray::test_removal_with_focus_and_active_menu()
+PASS   : qmltestrunner::BatteryTray::test_return_after_invoker_removed_and_keyboard_context_menu()
+PASS   : qmltestrunner::BatteryTray::test_surface_exclusion_settings_cancel_and_monitor()
+PASS   : qmltestrunner::BatteryTray::test_updates_do_not_take_focus_from_header_and_passive_skips()
+PASS   : qmltestrunner::BatteryTray::cleanupTestCase()
+PASS   : qmltestrunner::ReleaseValidation::initTestCase()
+PASS   : qmltestrunner::ReleaseValidation::test_all_services_unavailable_and_return_in_one_panel()
+PASS   : qmltestrunner::ReleaseValidation::test_complete_keyboard_journey()
+PASS   : qmltestrunner::ReleaseValidation::test_passive_overlays_leave_text_input_alone()
+PASS   : qmltestrunner::ReleaseValidation::test_small_logical_screens(1920x1080@1)
+PASS   : qmltestrunner::ReleaseValidation::test_small_logical_screens(1920x1080@1.25)
+PASS   : qmltestrunner::ReleaseValidation::test_small_logical_screens(1920x1080@1.5)
+PASS   : qmltestrunner::ReleaseValidation::test_small_logical_screens(1920x1080@2)
+PASS   : qmltestrunner::ReleaseValidation::test_small_logical_screens(1366x768@1)
+PASS   : qmltestrunner::ReleaseValidation::test_small_logical_screens(1366x768@1.25)
+PASS   : qmltestrunner::ReleaseValidation::test_small_logical_screens(1366x768@1.5)
+PASS   : qmltestrunner::ReleaseValidation::test_small_logical_screens(1366x768@2)
+PASS   : qmltestrunner::ReleaseValidation::cleanupTestCase()
+Totals: 235 passed, 0 failed, 0 skipped, 0 blacklisted, 67441ms
+********* Finished testing of qmltestrunner *********
+  WARN : Failed to create wl_display (No such file or directory)
+  WARN: Compositor does not support hyprland-toplevel-mapping-v1.It will not be possible to derive hyprland addresses from toplevels.
+  WARN quickshell.io.socket: Socket error for Socket(0x7f17f3fe6f80) QLocalSocket::PeerClosedError
+  WARN: Hyprland event socket error: QLocalSocket::PeerClosedError
+PASS: native Hyprland (Hyprlang), typed IPC, actions, hotplug events, disconnect
+  WARN : Failed to create wl_display (No such file or directory)
+  WARN: Compositor does not support hyprland-toplevel-mapping-v1.It will not be possible to derive hyprland addresses from toplevels.
+  WARN quickshell.io.socket: Socket error for Socket(0x7fd92b5e4f80) QLocalSocket::PeerClosedError
+  WARN: Hyprland event socket error: QLocalSocket::PeerClosedError
+PASS: native Hyprland (Lua), typed IPC, actions, hotplug events, disconnect
+PASS: real panel IPC + LazyLoader, 20 cycles, 0 live surfaces; RSS {'start': 115980, 'end': 116028, 'min': 115772, 'max': 116028}
+  WARN : inotify_add_watch(/tmp/pk-settings-ne61_lcm/config/putkin/settings.json) failed: (Permission denied)
+  WARN : inotify_add_watch(/tmp/pk-settings-ne61_lcm/config/putkin/settings.json) failed: (Permission denied)
+  WARN : inotify_add_watch(/tmp/pk-settings-ne61_lcm/config/putkin/settings.json) failed: (Permission denied)
+PASS: settings FileView integration; 10 groups, 20 reload cycles, restart and soft/hard reload
+ERROR quickshell.service.pipewire.loop: Failed to connect pipewire context. Errno: 112
+WARN quickshell.service.pipewire.loop: Pipewire error on object 0 with code -32 connection error
+PASS: audio/IPC/OSD, private PipeWire, restart, hot reload, 20 loader cycles; /home/attntd/projects/putkin/artifacts/audio-integration.json
+WARN: Process failed to start, likely because the binary could not be found. Command: QList("/tmp/pk-fxdb54l4/missing-brightnessctl", "--class=backlight", "--machine-readable", "--list")
+PASS: brightness Process/IPC, readback, errors, timeout/kill, reload, 20 OSD cycles; /home/attntd/projects/putkin/artifacts/brightness-integration.json
+PASS: native UPower/SNI/DBusMenu, 7 checks, 20 cycles; /home/attntd/projects/putkin/artifacts/status.json
+PASS: native Networking, 9 checks, 20 cycles; /home/attntd/projects/putkin/artifacts/network.json
+PASS: native Bluetooth, 7 checks, 20 cycles; /home/attntd/projects/putkin/artifacts/bluetooth.json
+{
+  "timestamp_utc": "2026-09-16T19:54:34.364909+00:00",
+  "checks": [
+    "single native owner; exact capabilities; missing data; passive arrival; dismiss=2",
+    "default -1=6000 ms; zero remains; CloseNotification=3; unknown ID; identical replace resets timer; expired ID creates new notification",
+    "real ActionInvoked; nonresident closes; resident survives; transient; changed/removed action labels using same ID",
+    "production DND IPC; no replay; critical bypasses DND and never auto-expires; explicit keyboard entry/leave",
+    "one target per arrival; monitor fallback/hotplug preserves IDs; last screen removal closes; no duplication",
+    "100-event flood bounded to 3 visible + 12 queued; deterministic oldest queued eviction; queue timeout from arrival",
+    "8 MiB raw image; bounded title/body and native image provider; no payload in argv, logs, cache or XDG files",
+    "client disconnect and new D-Bus connection; replace retained ID and client close after return",
+    "20 real LazyLoader lifecycles; soft/hard reload clears native visible/queued objects with reason=1; DND resets; old observers reaped",
+    "replaceable existing owner remains untouched; server is never constructed on conflict; releasing owner does not activate blocked instance",
+    "observer failure is visible; stale content released and new arrivals expired; recovery requires process restart",
+    "missing observer executable is visible and prevents server construction/name acquisition"
+  ],
+  "cycles": [
+    {
+      "cycle": 1,
+      "pid": 289585,
+      "name": "quickshell",
+      "parent": 289583,
+      "cpu_ticks": 74,
+      "rss_kib": 136204
+    },
+    {
+      "cycle": 2,
+      "pid": 289585,
+      "name": "quickshell",
+      "parent": 289583,
+      "cpu_ticks": 75,
+      "rss_kib": 136204
+    },
+    {
+      "cycle": 3,
+      "pid": 289585,
+      "name": "quickshell",
+      "parent": 289583,
+      "cpu_ticks": 75,
+      "rss_kib": 136204
+    },
+    {
+      "cycle": 4,
+      "pid": 289585,
+      "name": "quickshell",
+      "parent": 289583,
+      "cpu_ticks": 76,
+      "rss_kib": 136204
+    },
+    {
+      "cycle": 5,
+      "pid": 289585,
+      "name": "quickshell",
+      "parent": 289583,
+      "cpu_ticks": 76,
+      "rss_kib": 136204
+    },
+    {
+      "cycle": 6,
+      "pid": 289585,
+      "name": "quickshell",
+      "parent": 289583,
+      "cpu_ticks": 78,
+      "rss_kib": 136204
+    },
+    {
+      "cycle": 7,
+      "pid": 289585,
+      "name": "quickshell",
+      "parent": 289583,
+      "cpu_ticks": 78,
+      "rss_kib": 136204
+    },
+    {
+      "cycle": 8,
+      "pid": 289585,
+      "name": "quickshell",
+      "parent": 289583,
+      "cpu_ticks": 79,
+      "rss_kib": 136204
+    },
+    {
+      "cycle": 9,
+      "pid": 289585,
+      "name": "quickshell",
+      "parent": 289583,
+      "cpu_ticks": 80,
+      "rss_kib": 136204
+    },
+    {
+      "cycle": 10,
+      "pid": 289585,
+      "name": "quickshell",
+      "parent": 289583,
+      "cpu_ticks": 80,
+      "rss_kib": 136204
+    },
+    {
+      "cycle": 11,
+      "pid": 289585,
+      "name": "quickshell",
+      "parent": 289583,
+      "cpu_ticks": 81,
+      "rss_kib": 136204
+    },
+    {
+      "cycle": 12,
+      "pid": 289585,
+      "name": "quickshell",
+      "parent": 289583,
+      "cpu_ticks": 82,
+      "rss_kib": 136204
+    },
+    {
+      "cycle": 13,
+      "pid": 289585,
+      "name": "quickshell",
+      "parent": 289583,
+      "cpu_ticks": 83,
+      "rss_kib": 136204
+    },
+    {
+      "cycle": 14,
+      "pid": 289585,
+      "name": "quickshell",
+      "parent": 289583,
+      "cpu_ticks": 83,
+      "rss_kib": 136204
+    },
+    {
+      "cycle": 15,
+      "pid": 289585,
+      "name": "quickshell",
+      "parent": 289583,
+      "cpu_ticks": 84,
+      "rss_kib": 136204
+    },
+    {
+      "cycle": 16,
+      "pid": 289585,
+      "name": "quickshell",
+      "parent": 289583,
+      "cpu_ticks": 86,
+      "rss_kib": 136204
+    },
+    {
+      "cycle": 17,
+      "pid": 289585,
+      "name": "quickshell",
+      "parent": 289583,
+      "cpu_ticks": 86,
+      "rss_kib": 135760
+    },
+    {
+      "cycle": 18,
+      "pid": 289585,
+      "name": "quickshell",
+      "parent": 289583,
+      "cpu_ticks": 87,
+      "rss_kib": 135760
+    },
+    {
+      "cycle": 19,
+      "pid": 289585,
+      "name": "quickshell",
+      "parent": 289583,
+      "cpu_ticks": 88,
+      "rss_kib": 135760
+    },
+    {
+      "cycle": 20,
+      "pid": 289585,
+      "name": "quickshell",
+      "parent": 289583,
+      "cpu_ticks": 89,
+      "rss_kib": 135760
+    }
+  ],
+  "unexpected_diagnostics": [],
+  "expected_diagnostics": [
+    "  WARN: Process failed to start, likely because the binary could not be found. Command: QList(\"python3\", \"-B\", \"/home/attntd/projects/putkin/services/notification-watch.py\")"
+  ],
+  "remaining_pids": [],
+  "tracked_processes": 9,
+  "passed": true
+}
+PASS: capabilities and explicit current session
+PASS: confirmation cancellation makes no system call
+PASS: lock requested -> protocol confirmation -> one Suspend
+PASS: paired login1 PrepareForSleep resumes brightness once
+PASS: no confirmation, late signal and duplicate launcher cannot suspend
+PASS: denial, timeout and late reply have no implicit retry
+PASS: own session only, logind no and challenge capabilities
+PASS: observer loss invalidates pending lock transaction
+PASS: soft/hard reload cancels waiting helper and preserves one external locker
+PASS: locker exit zero is not readiness
+PASS: 20 power menu LazyLoader cycles release their views
+PASS: production rejects unverified ScreenSaver owner
+PASS: logind loss and return update capabilities
+PASS: session integration; no live fixture processes
+PASS: desktop examples, Night Light IPC/Process, 20 cycles; /home/attntd/projects/putkin/artifacts/desktop.json
+PASS: combined validation; 20 cycles; /home/attntd/projects/putkin/artifacts/validation.json

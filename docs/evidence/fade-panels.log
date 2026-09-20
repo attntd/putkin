@@ -1,0 +1,6 @@
+  INFO: Launching config: "/home/attntd/projects/putkin/panels-test.qml"
+  INFO: Shell ID: "d16c74698317e7ceb0587113867128e3" Path ID "d16c74698317e7ceb0587113867128e3"
+  INFO: Saving logs to "/tmp/pk-0m_p954e/runtime/quickshell/by-id/kpc6ba5olt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY

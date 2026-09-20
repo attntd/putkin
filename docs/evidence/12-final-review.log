@@ -1,0 +1,7 @@
+PASS: SHA-256 matches all 204 recorded source files.
+PASS: Python AST syntax, 24 files; proposed Wayland script was only parsed, NOT executed.
+PASS: 271 local link targets in five updated documents.
+PASS: no recorded test processes remain for 12-baseline-idle.json: [258473, 258474, 258475].
+PASS: no recorded test processes remain for 12-combined-idle.json: [258573, 258575, 258576].
+PASS: no recorded test processes remain for 12-validation.json: [257520, 257522, 257523].
+PASS: visual manifest is readable (dict); sixteen renders were visually inspected during the run.

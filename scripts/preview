@@ -1,0 +1,133 @@
+#!/usr/bin/env python3
+"""Render the mock-only preview offscreen with private XDG and session D-Bus."""
+
+import argparse
+import json
+from pathlib import Path
+import re
+import subprocess
+import sys
+import tempfile
+
+from _common import ROOT, isolated_environment, qml_errors, stop_process_group, tool
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--screenshot", type=Path, default=ROOT / "artifacts/foundation.png")
+    parser.add_argument("--seconds", type=float, default=3)
+    parser.add_argument("--bar", action="store_true", help="Pasek etapu 01 na atrapach")
+    parser.add_argument("--panels", action="store_true", help="Panele etapu 02 na atrapach")
+    parser.add_argument("--audio", action="store_true", help="Panele, audio i OSD na atrapach etapu 04")
+    parser.add_argument("--brightness", action="store_true", help="Panele, audio, jasność i wspólny OSD na atrapach etapu 05")
+    parser.add_argument("--status", action="store_true", help="Bateria i tray etapu 06 na atrapach")
+    parser.add_argument("--bluetooth", action="store_true", help="Bluetooth etapu 08 na atrapach")
+    parser.add_argument("--notifications", action="store_true", help="Toasty i DND etapu 09 na atrapach")
+    parser.add_argument("--network", action="store_true", help="Sieć i Wi-Fi etapu 07 na atrapach")
+    parser.add_argument("--session", action="store_true", help="Menu sesji etapu 10, wyłącznie atrapy bez PAM")
+    parser.add_argument("--desktop", action="store_true", help="Night Light etapu 11 na atrapach")
+    parser.add_argument("--wallpaper", help="solid albo bezwzględna ścieżka do czystej tapety; tylko podgląd")
+    parser.add_argument("--scale", type=float, choices=[1, 1.25, 1.5, 2], default=1)
+    parser.add_argument("--accent", help="Akcent #RRGGBB w prywatnym pliku ustawień podglądu paneli")
+    parser.add_argument("--secondary", help="Drugi akcent #RRGGBB w podglądzie paneli")
+    parser.add_argument("--size", default="1920x1080", help="Rozmiar podglądu paska, np. 1366x768")
+    parser.add_argument("--scenario", choices=["audioPanel", "audioPanelUnavailable", "audioPanelNoInput", "launcherCommands", "launcherIncomplete", "battery", "batteryFull", "batteryNoTime", "batteryNoProfiles", "launcher", "launcherApps", "launcherFiles", "launcherClipboard", "launcherClipboardText", "launcherClipboardImage", "launcherWorkspace", "launcherMove", "validation", "basic", "overflow", "focus", "unavailable", "quickSettings", "settings", "closed", "osd", "audioUnavailable", "brightnessOsd", "brightnessUnavailable", "brightnessDenied", "brightnessFocus", "batteryLow", "batteryAbsent", "batteryCharging", "trayOverflow", "trayMenu", "networkUnavailable", "networkBlocked", "networkOff", "networkEmpty", "networkPortal", "networkPassword", "bluetoothUnavailable", "bluetoothNoAdapter", "bluetoothOff", "bluetoothEmpty", "bluetoothMultiple", "bluetoothPending", "bluetoothManagerMissing", "bluetoothDeviceFocus", "notification", "notificationLong", "notificationDnd", "notificationCritical", "notificationUnavailable", "power", "powerConfirm", "powerUnavailable", "sessionActions", "errorToast", "nightLight", "nightLightAbsent", "nightLightOff", "nightLightDenied"], default="basic")
+    args = parser.parse_args()
+    if args.scenario.startswith("audioPanel"):
+        args.audio = True
+    if args.scenario.startswith("battery"):
+        args.status = True
+    if args.scenario.startswith("launcher"):
+        args.panels = True
+    if args.desktop:
+        args.session = True
+        if args.scenario == "basic": args.scenario = "nightLight"
+    if args.wallpaper:
+        args.panels = True
+        if args.wallpaper != "solid" and not Path(args.wallpaper).is_absolute():
+            parser.error("--wallpaper wymaga solid albo bezwzględnej ścieżki")
+    if args.session:
+        args.notifications = True
+        if args.scenario == "basic": args.scenario = "power"
+    if args.notifications:
+        args.bluetooth = True
+        if args.scenario == "basic": args.scenario = "notification"
+    if args.bluetooth:
+        args.network = True
+    if args.network:
+        args.status = True
+    if args.status:
+        args.brightness = True
+    if args.brightness:
+        args.audio = True
+    if args.audio:
+        args.panels = True
+    for value in [args.accent, args.secondary]:
+        if value is not None and (not args.panels or not re.fullmatch(r"#[0-9a-fA-F]{6}", value)):
+            parser.error("--accent/--secondary wymagają --panels i koloru #RRGGBB")
+    if args.seconds < 1:
+        parser.error("--seconds musi wynosić co najmniej 1")
+    try:
+        width, height = map(int, args.size.split("x"))
+        if width < 320 or height < 32:
+            raise ValueError()
+    except ValueError:
+        parser.error("--size wymaga szerokośćxwysokość, co najmniej 320x32")
+    try:
+        quickshell, dbus = tool("quickshell"), tool("dbus-run-session")
+    except FileNotFoundError as error:
+        print(error, file=sys.stderr)
+        return 2
+    screenshot = args.screenshot.resolve()
+    screenshot.parent.mkdir(parents=True, exist_ok=True)
+    # A stale image must not make a failed run pass.
+    with tempfile.TemporaryDirectory(prefix="pk-") as directory:
+        env = isolated_environment(directory)
+        env["QT_SCALE_FACTOR"] = str(args.scale)
+        env["PUTKIN_BLUETOOTH"] = "1" if args.bluetooth else "0"
+        env["PUTKIN_NOTIFICATIONS"] = "1" if args.notifications else "0"
+        env["PUTKIN_SESSION"] = "1" if args.session else "0"
+        env["PUTKIN_NIGHT_LIGHT"] = "1" if args.desktop else "0"
+        env["PUTKIN_WALLPAPER"] = args.wallpaper or ("solid" if args.desktop else "")
+        env["PUTKIN_NETWORK"] = "1" if args.network else "0"
+        env["PUTKIN_STATUS"] = "1" if args.status else "0"
+        env["PUTKIN_AUDIO"] = "1" if args.audio else "0"
+        env["PUTKIN_BRIGHTNESS"] = "1" if args.brightness else "0"
+        if args.accent or args.secondary:
+            # Start from the documented example, never the host's configuration.
+            settings = json.loads((ROOT / "config/settings.example.json").read_text())
+            for argument, key in [(args.accent, "accent"), (args.secondary, "accentSecondary")]:
+                if argument:
+                    settings["appearance"][key] = argument.lower()
+            path = Path(env["XDG_CONFIG_HOME"]) / "putkin/settings.json"
+            path.parent.mkdir()
+            path.write_text(json.dumps(settings) + "\n")
+        temporary_image = Path(directory) / "preview.png"
+        env["PUTKIN_SCREENSHOT"] = str(temporary_image)
+        env.update(PUTKIN_PREVIEW_WIDTH=str(width), PUTKIN_PREVIEW_HEIGHT=str(height), PUTKIN_SCENARIO=args.scenario)
+        entrypoint = ROOT / ("panels-preview.qml" if args.panels else "bar-preview.qml" if args.bar else "preview.qml")
+        with tempfile.TemporaryFile(mode="w+") as log:
+            process = subprocess.Popen([dbus, "--", quickshell, "--no-color", "--path", str(entrypoint)], env=env,
+                                       stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+            premature = False
+            try:
+                process.wait(timeout=args.seconds)
+                premature = True
+            except subprocess.TimeoutExpired:
+                pass
+            finally:
+                stop_process_group(process)
+            log.seek(0)
+            output = log.read()
+        screenshot.with_suffix(".log").write_text(output)
+        print(output, end="")
+        if premature or qml_errors(output, allow_offscreen_masks=True) or "PUTKIN_SCREENSHOT_SAVED" not in output or not temporary_image.is_file():
+            print("FAIL: Podgląd nie przeszedł odbioru renderowania.", file=sys.stderr)
+            return 1
+        screenshot.write_bytes(temporary_image.read_bytes())
+    print(f"PASS: podgląd offscreen — {screenshot}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

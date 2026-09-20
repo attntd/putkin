@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "checks": [
+    "native DesktopEntries, hidden entry, argv launch, MRU persisted",
+    "real fd, literal query/path with shell syntax, xdg-open argv",
+    "watcher -> real cliphist -> exact wl-copy bytes; sensitive skip; no persistent clipboard",
+    "soft reload preserves file/app MRU, releases clipboard; 20 lazy panel cycles"
+  ]
+}

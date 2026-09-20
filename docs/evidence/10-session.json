@@ -1,0 +1,215 @@
+{
+  "timestamp": "2026-09-16T17:46:00.567710+00:00",
+  "checks": [
+    "capabilities and explicit current session",
+    "confirmation cancellation makes no system call",
+    "lock requested -> protocol confirmation -> one Suspend",
+    "paired login1 PrepareForSleep resumes brightness once",
+    "no confirmation, late signal and duplicate launcher cannot suspend",
+    "denial, timeout and late reply have no implicit retry",
+    "own session only, logind no and challenge capabilities",
+    "observer loss invalidates pending lock transaction",
+    "soft/hard reload cancels waiting helper and preserves one external locker",
+    "locker exit zero is not readiness",
+    "20 power menu LazyLoader cycles release their views",
+    "production rejects unverified ScreenSaver owner",
+    "logind loss and return update capabilities",
+    "60 second idle measurement"
+  ],
+  "cycles": [
+    {
+      "pid": 226272,
+      "name": "quickshell",
+      "parent": 226257,
+      "cpu_ticks": 98,
+      "rss_kib": 135980
+    },
+    {
+      "pid": 226272,
+      "name": "quickshell",
+      "parent": 226257,
+      "cpu_ticks": 100,
+      "rss_kib": 136236
+    },
+    {
+      "pid": 226272,
+      "name": "quickshell",
+      "parent": 226257,
+      "cpu_ticks": 103,
+      "rss_kib": 136364
+    },
+    {
+      "pid": 226272,
+      "name": "quickshell",
+      "parent": 226257,
+      "cpu_ticks": 106,
+      "rss_kib": 136620
+    },
+    {
+      "pid": 226272,
+      "name": "quickshell",
+      "parent": 226257,
+      "cpu_ticks": 110,
+      "rss_kib": 136432
+    },
+    {
+      "pid": 226272,
+      "name": "quickshell",
+      "parent": 226257,
+      "cpu_ticks": 112,
+      "rss_kib": 136276
+    },
+    {
+      "pid": 226272,
+      "name": "quickshell",
+      "parent": 226257,
+      "cpu_ticks": 116,
+      "rss_kib": 128108
+    },
+    {
+      "pid": 226272,
+      "name": "quickshell",
+      "parent": 226257,
+      "cpu_ticks": 119,
+      "rss_kib": 128108
+    },
+    {
+      "pid": 226272,
+      "name": "quickshell",
+      "parent": 226257,
+      "cpu_ticks": 122,
+      "rss_kib": 128108
+    },
+    {
+      "pid": 226272,
+      "name": "quickshell",
+      "parent": 226257,
+      "cpu_ticks": 124,
+      "rss_kib": 128108
+    },
+    {
+      "pid": 226272,
+      "name": "quickshell",
+      "parent": 226257,
+      "cpu_ticks": 128,
+      "rss_kib": 128236
+    },
+    {
+      "pid": 226272,
+      "name": "quickshell",
+      "parent": 226257,
+      "cpu_ticks": 131,
+      "rss_kib": 128364
+    },
+    {
+      "pid": 226272,
+      "name": "quickshell",
+      "parent": 226257,
+      "cpu_ticks": 134,
+      "rss_kib": 128492
+    },
+    {
+      "pid": 226272,
+      "name": "quickshell",
+      "parent": 226257,
+      "cpu_ticks": 138,
+      "rss_kib": 127948
+    },
+    {
+      "pid": 226272,
+      "name": "quickshell",
+      "parent": 226257,
+      "cpu_ticks": 140,
+      "rss_kib": 127948
+    },
+    {
+      "pid": 226272,
+      "name": "quickshell",
+      "parent": 226257,
+      "cpu_ticks": 143,
+      "rss_kib": 127948
+    },
+    {
+      "pid": 226272,
+      "name": "quickshell",
+      "parent": 226257,
+      "cpu_ticks": 147,
+      "rss_kib": 127948
+    },
+    {
+      "pid": 226272,
+      "name": "quickshell",
+      "parent": 226257,
+      "cpu_ticks": 149,
+      "rss_kib": 127948
+    },
+    {
+      "pid": 226272,
+      "name": "quickshell",
+      "parent": 226257,
+      "cpu_ticks": 152,
+      "rss_kib": 127948
+    },
+    {
+      "pid": 226272,
+      "name": "quickshell",
+      "parent": 226257,
+      "cpu_ticks": 155,
+      "rss_kib": 128204
+    }
+  ],
+  "isolation": "private system+session D-Bus and XDG; offscreen; fake locker; observer identity substituted only in fixture helper",
+  "idle": {
+    "seconds": 60.000703096004145,
+    "before": {
+      "shell": {
+        "pid": 227086,
+        "name": "quickshell",
+        "parent": 226257,
+        "cpu_ticks": 40,
+        "rss_kib": 98232
+      },
+      "helper": {
+        "pid": 227106,
+        "name": "python3",
+        "parent": 227086,
+        "cpu_ticks": 17,
+        "rss_kib": 30936
+      }
+    },
+    "after": {
+      "shell": {
+        "pid": 227086,
+        "name": "quickshell",
+        "parent": 226257,
+        "cpu_ticks": 40,
+        "rss_kib": 98616
+      },
+      "helper": {
+        "pid": 227106,
+        "name": "python3",
+        "parent": 227086,
+        "cpu_ticks": 17,
+        "rss_kib": 30936
+      }
+    },
+    "processes": [
+      {
+        "pid": 227086,
+        "name": "quickshell",
+        "parent": 226257,
+        "cpu_ticks": 40,
+        "rss_kib": 98616
+      },
+      {
+        "pid": 227106,
+        "name": "python3",
+        "parent": 227086,
+        "cpu_ticks": 17,
+        "rss_kib": 30936
+      }
+    ]
+  },
+  "passed": true,
+  "remaining_pids": []
+}

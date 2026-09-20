@@ -1,0 +1,21 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::Bluetooth::initTestCase()
+PASS   : qmltestrunner::Bluetooth::test_available_adapter_off_block_and_empty()
+PASS   : qmltestrunner::Bluetooth::test_close_paths(escape)
+PASS   : qmltestrunner::Bluetooth::test_close_paths(outside)
+PASS   : qmltestrunner::Bluetooth::test_close_paths(replace)
+PASS   : qmltestrunner::Bluetooth::test_close_paths(monitor)
+PASS   : qmltestrunner::Bluetooth::test_close_paths(destroy)
+PASS   : qmltestrunner::Bluetooth::test_close_paths(disabled)
+PASS   : qmltestrunner::Bluetooth::test_connect_disconnect_and_rejection()
+PASS   : qmltestrunner::Bluetooth::test_device_loss_service_restart_and_timeout()
+PASS   : qmltestrunner::Bluetooth::test_keyboard_tooltip_manager_and_small_panel()
+PASS   : qmltestrunner::Bluetooth::test_multiple_adapters_and_late_operation()
+PASS   : qmltestrunner::Bluetooth::test_radio_requests_are_confirmed_and_serial()
+PASS   : qmltestrunner::Bluetooth::test_stable_focus_model_literal_names_and_battery()
+PASS   : qmltestrunner::Bluetooth::test_twenty_cycles()
+PASS   : qmltestrunner::Bluetooth::cleanupTestCase()
+Totals: 16 passed, 0 failed, 0 skipped, 0 blacklisted, 7233ms
+********* Finished testing of qmltestrunner *********
+

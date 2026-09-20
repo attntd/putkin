@@ -1,0 +1,47 @@
+{
+  "date": "2026-09-16",
+  "source": "User reports in this conversation after activation of Putkin",
+  "reports": [
+    {
+      "areas": [
+        "brightness",
+        "audio",
+        "bluetooth",
+        "wifi",
+        "battery",
+        "monitors"
+      ],
+      "statement": "jregulacja jasnosci audio bluetooth, wifi, bateria, monitory dzialaja.",
+      "result": "PASS: basic operation confirmed by user"
+    },
+    {
+      "areas": [
+        "screen_lock"
+      ],
+      "statement": "dziala",
+      "context": "Reply after instructions for Super+Shift+L or Quick Settings / Blokada; entry path not distinguished",
+      "result": "PASS: basic screen lock confirmed by user"
+    },
+    {
+      "areas": [
+        "suspend",
+        "resume"
+      ],
+      "statement": "uśpienie i wybudzenie potwierdzone",
+      "result": "PASS: suspend/resume confirmed by user"
+    },
+    {
+      "areas": [
+        "night_light"
+      ],
+      "statement": "Tak, włączenie i wyłączenie działa",
+      "context": "Answer to whether enabling warms display colors and disabling restores normal colors",
+      "result": "PASS: visual on/off confirmed by user"
+    }
+  ],
+  "not_claimed": [
+    "Independent tests of both lock entry paths",
+    "Physical failure injection or PAM security audit",
+    "Every GPU, driver or radio/security variant"
+  ]
+}

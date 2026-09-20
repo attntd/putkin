@@ -1,0 +1,188 @@
+#!/usr/bin/env python3
+"""Production session bridge on private buses; native lock state is an explicit mock."""
+import argparse
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
+import time
+
+from _common import ROOT, ipc_reply, ipc_json, isolated_environment, qml_errors, runtime_log, stop_process_group, tool
+
+
+def eventually(read, predicate, description, timeout=6):
+    deadline = time.monotonic() + timeout
+    last = None
+    while time.monotonic() < deadline:
+        last = read()
+        if predicate(last): return last
+        time.sleep(.025)
+    raise AssertionError(f"{description}: {last}")
+
+
+def run(output, idle=False):
+    import dbus
+    output.parent.mkdir(parents=True, exist_ok=True)
+    report = {"checks": [], "isolation": "private system/session D-Bus, XDG; offscreen Qt; explicit mock lock; no PAM or hardware"}
+    entry = str(ROOT / "session-test.qml")
+    processes, logs = [], []
+    with tempfile.TemporaryDirectory(prefix="pk-session-") as directory:
+        base = Path(directory)
+        env = isolated_environment(directory)
+        address = "unix:path=" + str(base / "bus")
+        marker = base / "test-only"; marker.touch()
+        env.update(DBUS_SESSION_BUS_ADDRESS=address, DBUS_SYSTEM_BUS_ADDRESS=address,
+                   PUTKIN_TEST_MARKER=str(marker), XDG_SESSION_ID="test-session",
+                   PUTKIN_SESSION_HELPER=str(ROOT / "tests/session_backend_fixture.py"), QS_NO_RELOAD_POPUP="1")
+        def start(command, name):
+            log = (base / (name + ".log")).open("w+"); logs.append((name, log))
+            process = subprocess.Popen(command, env=env, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+            processes.append(process); return process
+        def ipc(target, method, *args, starting=False):
+            result = subprocess.run([tool("quickshell"), "ipc", "--path", entry, "call", target, method, *map(str, args)],
+                                    env=env, capture_output=True, text=True, timeout=5)
+            return ipc_reply(result, shell, logs, starting=starting)
+        def state(): return ipc_json(ipc("probe", "snapshot", starting=True))
+        def settled(): return eventually(state, lambda s: s.get("busy") is False, "operation settled")
+        def check(name): report["checks"].append(name); print("PASS: " + name, flush=True)
+        def release(): ipc("probe", "release"); eventually(state, lambda s: not s.get("secure"), "unlocked")
+        try:
+            start([tool("dbus-daemon"), "--session", "--nofork", "--address=" + address], "bus")
+            eventually(lambda: (base / "bus").exists(), bool, "private bus")
+            start([sys.executable, "-B", str(ROOT / "tests/session_dbus_fake.py")], "login1")
+            bus = dbus.bus.BusConnection(address)
+            eventually(lambda: bus.name_has_owner("org.putkin.SessionFixture"), bool, "fake login1")
+            fixture = dbus.Interface(bus.get_object("org.putkin.SessionFixture", "/org/freedesktop/login1"), "org.putkin.SessionFixture")
+            def events(): return json.loads(fixture.Snapshot())
+            def leases(): return json.loads(fixture.Leases())
+            shell = start([tool("quickshell"), "--no-color", "--path", entry], "shell")
+            ready = eventually(state, lambda s: s.get("ready") and s.get("confirmation"), "native handshake")
+            assert ready["sessionId"] == "test-session" and ready["idleReady"] and not ready["idleInhibited"]
+            eventually(leases, lambda v: v == [["sleep", "delay"]], "delay inhibitor acquired")
+            check("native handshake, explicit own session and real delay inhibitor FD")
+
+            assert ipc("session", "openPower") == "ok"
+            eventually(state, lambda s: s.get("loaded"), "power loaded")
+            ipc("probe", "choose", "poweroff"); ipc("probe", "cancel")
+            assert not events(); ipc("ui", "closePanels")
+            check("power confirmation cancellation has no system side effect")
+
+            assert ipc("probe", "request", "suspend") == "true"
+            pending = state(); assert pending["locked"] and pending["hold"] and not pending["secure"]
+            assert ipc("session", "lock") == "busy" and not events()
+            ipc("probe", "stale", pending["token"] - 1)
+            assert state()["busy"] and not events()
+            ipc("probe", "confirm")
+            assert not settled()["error"] and events() == [["suspend", True]]
+            check("only current compositor secure confirmation permits one Suspend call")
+            release(); fixture.Clear()
+            assert ipc("probe", "request", "idleSuspend") == "true"
+            assert not events() and state()["hold"]
+            ipc("probe", "confirm")
+            assert not settled()["error"] and events() == [["suspendThenHibernate", True]]
+            check("automatic sleep preserves SuspendThenHibernate after secure confirmation")
+            release(); fixture.Clear()
+            ipc("probe", "request", "suspend")
+            assert "Nie potwierdzono" in settled()["error"]
+            ipc("probe", "confirm"); time.sleep(.08)
+            assert not events()
+            check("timeout and late secure state never send Suspend")
+
+            saver = dbus.Interface(bus.get_object("org.freedesktop.ScreenSaver", "/org/freedesktop/ScreenSaver"), "org.freedesktop.ScreenSaver")
+            assert saver.GetActive() and not saver.SetActive(False) and saver.GetActive()
+            release(); fixture.LockSession()
+            eventually(state, lambda s: s.get("locked"), "loginctl Lock signal")
+            check("ScreenSaver state and login1 Lock work; SetActive(false) cannot unlock")
+
+            release(); before = state()["refreshes"]
+            forged = dbus.lowlevel.SignalMessage("/org/freedesktop/login1", "org.freedesktop.login1.Manager", "PrepareForSleep")
+            forged.append(dbus.Boolean(True), signature="b"); bus.send_message(forged); bus.flush(); time.sleep(.08)
+            assert not state()["hold"]
+            fixture.Sleep(True)
+            eventually(state, lambda s: s.get("hold") and s.get("locked"), "external sleep lock")
+            assert leases() == [["sleep", "delay"]]
+            ipc("probe", "confirm")
+            eventually(leases, lambda v: not v, "release delay only after secure")
+            fixture.Sleep(False)
+            eventually(state, lambda s: not s.get("hold") and s.get("refreshes", 0) > before, "resume")
+            eventually(leases, lambda v: v == [["sleep", "delay"]], "rearm delay after resume")
+            check("external sleep holds FD until secure, spoofed sender ignored, resume rearms and refreshes brightness")
+
+            client = dbus.bus.BusConnection(address)
+            app = dbus.Interface(client.get_object("org.freedesktop.ScreenSaver", "/ScreenSaver"), "org.freedesktop.ScreenSaver")
+            cookie = app.Inhibit("test", "video")
+            eventually(state, lambda s: s.get("idleInhibited"), "application inhibitor")
+            saver.UnInhibit(cookie); assert state()["idleInhibited"]
+            client.close()
+            eventually(state, lambda s: not s.get("idleInhibited"), "disconnected inhibitor owner")
+            fixture.Capability("suspend", "inhibited")
+            fixture.Inhibitors("sleep"); eventually(state, lambda s: s.get("sleepInhibited") and not s.get("idleInhibited"), "background")
+            eventually(state, lambda s: not s["capabilities"]["idleSuspend"]["available"], "inhibited sleep capability")
+            assert "inhibitor" in state()["capabilities"]["idleSuspend"]["reason"]
+            fixture.Inhibitors("idle:sleep"); eventually(state, lambda s: s.get("idleInhibited"), "presentation")
+            fixture.Capability("suspend", "yes")
+            fixture.Inhibitors(""); eventually(state, lambda s: not s.get("idleInhibited") and not s.get("sleepInhibited"), "off")
+            eventually(state, lambda s: s["capabilities"]["idleSuspend"]["available"], "sleep capability restores without opening UI")
+            check("D-Bus inhibitor ownership/disconnect and systemd idle:sleep vs sleep semantics")
+
+            release(); fixture.Clear(); fixture.Mode("deny")
+            ipc("probe", "request", "reboot"); assert "odrzucił" in settled()["error"]
+            fixture.Clear(); fixture.Mode("timeout"); ipc("probe", "request", "reboot")
+            assert "Nie ponowiono" in settled()["error"]
+            fixture.CompleteLate(); time.sleep(.08); assert events() == [["reboot", True]]
+            fixture.Mode("ok")
+            fixture.OwnSession(False); ipc("probe", "refresh")
+            eventually(state, lambda s: not s["capabilities"]["logout"]["available"], "foreign session")
+            assert ipc("probe", "request", "logout") == "false"
+            fixture.OwnSession(True); ipc("probe", "refresh")
+            eventually(state, lambda s: s["capabilities"]["logout"]["available"], "own session restored")
+            check("denial, timeout, late replies and foreign session remain safe")
+
+            fixture.Clear(); ipc("probe", "request", "suspend")
+            fixture.Owner("org.freedesktop.login1", False)
+            assert settled()["error"]
+            fixture.Owner("org.freedesktop.login1", True)
+            eventually(state, lambda s: s["capabilities"]["suspend"]["available"], "logind returned")
+            ipc("probe", "confirm"); assert not events(); release()
+            for hard in ("false", "true"):
+                old = state()["pid"]
+                ipc("probe", "reload", hard)
+                eventually(state, lambda s: s.get("confirmation") and s.get("idleReady") and s.get("pid") != old, "reload")
+                eventually(lambda: Path(f"/proc/{old}").exists(), lambda v: not v, "old bridge reaped")
+                eventually(leases, lambda v: v == [["sleep", "delay"]], "one delay FD after reload")
+            check("logind loss invalidates transactions; unlocked reload replaces bridge without duplicate FD")
+            for _ in range(20):
+                ipc("session", "openPower"); eventually(state, lambda s: s.get("loaded"), "open")
+                ipc("ui", "closePanels"); eventually(state, lambda s: not s.get("loaded") and s.get("created") == s.get("destroyed"), "close")
+            check("20 power menu cycles release their views")
+            if idle:
+                time.sleep(60)
+                check("60 seconds without automatic session actions")
+            report["passed"] = True
+        finally:
+            for process in reversed(processes): stop_process_group(process)
+            combined = runtime_log(logs)
+            output.with_suffix(".log").write_text(combined)
+            report["remaining_pids"] = [p.pid for p in processes if Path(f"/proc/{p.pid}").exists()]
+            output.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n")
+            for _, log in logs: log.close()
+        assert not report["remaining_pids"]
+        assert not qml_errors(combined, allow_offscreen_masks=True), combined
+    print("PASS: session integration", flush=True)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, default=ROOT / "artifacts/session.json")
+    parser.add_argument("--idle", action="store_true")
+    args = parser.parse_args()
+    try: run(args.output.resolve(), args.idle)
+    except Exception as error:
+        import traceback
+        traceback.print_exc(); print(f"FAIL: {error}", file=sys.stderr); return 1
+    return 0
+
+
+if __name__ == "__main__": sys.exit(main())

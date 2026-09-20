@@ -1,0 +1,201 @@
+{
+  "timestamp_utc": "2026-09-20T09:32:29.312042+00:00",
+  "checks": [
+    "battery panel; 3 typed PPD writes/readback; refusal, ignored write, unavailable profile, external change, degradation, owner loss/recovery",
+    "native UPower 0..100 to 0..1; peripheral excluded",
+    "states/absent/service loss and return with event-driven recovery",
+    "real SNI pixmap provider: Signal grayscale, other icon colors, centered 20 px icon",
+    "16 native SNI clients; activate/secondary; DBusMenu AboutToShow/opened, disabled/separator/check/hidden, submenu/action",
+    "native layout updates, removed menu owner, focused removal, passive status and stable title updates",
+    "20 menu/submenu cycles; all surfaces destroyed; native opened/closed balanced",
+    "soft/hard reload; fresh start without UPower then late service start",
+    "private XDG/system+session bus; no host hardware or compositor"
+  ],
+  "cycles": [
+    {
+      "cycle": 1,
+      "pid": 176822,
+      "name": "quickshell",
+      "parent": 176795,
+      "cpu_ticks": 161,
+      "rss_kib": 154540
+    },
+    {
+      "cycle": 2,
+      "pid": 176822,
+      "name": "quickshell",
+      "parent": 176795,
+      "cpu_ticks": 177,
+      "rss_kib": 154540
+    },
+    {
+      "cycle": 3,
+      "pid": 176822,
+      "name": "quickshell",
+      "parent": 176795,
+      "cpu_ticks": 197,
+      "rss_kib": 152484
+    },
+    {
+      "cycle": 4,
+      "pid": 176822,
+      "name": "quickshell",
+      "parent": 176795,
+      "cpu_ticks": 217,
+      "rss_kib": 153792
+    },
+    {
+      "cycle": 5,
+      "pid": 176822,
+      "name": "quickshell",
+      "parent": 176795,
+      "cpu_ticks": 236,
+      "rss_kib": 152844
+    },
+    {
+      "cycle": 6,
+      "pid": 176822,
+      "name": "quickshell",
+      "parent": 176795,
+      "cpu_ticks": 257,
+      "rss_kib": 153648
+    },
+    {
+      "cycle": 7,
+      "pid": 176822,
+      "name": "quickshell",
+      "parent": 176795,
+      "cpu_ticks": 277,
+      "rss_kib": 152984
+    },
+    {
+      "cycle": 8,
+      "pid": 176822,
+      "name": "quickshell",
+      "parent": 176795,
+      "cpu_ticks": 295,
+      "rss_kib": 153676
+    },
+    {
+      "cycle": 9,
+      "pid": 176822,
+      "name": "quickshell",
+      "parent": 176795,
+      "cpu_ticks": 312,
+      "rss_kib": 152584
+    },
+    {
+      "cycle": 10,
+      "pid": 176822,
+      "name": "quickshell",
+      "parent": 176795,
+      "cpu_ticks": 331,
+      "rss_kib": 153256
+    },
+    {
+      "cycle": 11,
+      "pid": 176822,
+      "name": "quickshell",
+      "parent": 176795,
+      "cpu_ticks": 350,
+      "rss_kib": 152736
+    },
+    {
+      "cycle": 12,
+      "pid": 176822,
+      "name": "quickshell",
+      "parent": 176795,
+      "cpu_ticks": 371,
+      "rss_kib": 153428
+    },
+    {
+      "cycle": 13,
+      "pid": 176822,
+      "name": "quickshell",
+      "parent": 176795,
+      "cpu_ticks": 391,
+      "rss_kib": 152460
+    },
+    {
+      "cycle": 14,
+      "pid": 176822,
+      "name": "quickshell",
+      "parent": 176795,
+      "cpu_ticks": 413,
+      "rss_kib": 153032
+    },
+    {
+      "cycle": 15,
+      "pid": 176822,
+      "name": "quickshell",
+      "parent": 176795,
+      "cpu_ticks": 435,
+      "rss_kib": 152352
+    },
+    {
+      "cycle": 16,
+      "pid": 176822,
+      "name": "quickshell",
+      "parent": 176795,
+      "cpu_ticks": 455,
+      "rss_kib": 152892
+    },
+    {
+      "cycle": 17,
+      "pid": 176822,
+      "name": "quickshell",
+      "parent": 176795,
+      "cpu_ticks": 477,
+      "rss_kib": 152160
+    },
+    {
+      "cycle": 18,
+      "pid": 176822,
+      "name": "quickshell",
+      "parent": 176795,
+      "cpu_ticks": 499,
+      "rss_kib": 152872
+    },
+    {
+      "cycle": 19,
+      "pid": 176822,
+      "name": "quickshell",
+      "parent": 176795,
+      "cpu_ticks": 518,
+      "rss_kib": 152188
+    },
+    {
+      "cycle": 20,
+      "pid": 176822,
+      "name": "quickshell",
+      "parent": 176795,
+      "cpu_ticks": 538,
+      "rss_kib": 152868
+    }
+  ],
+  "menu_lifecycle": {
+    "root_opened": 20,
+    "root_closed": 20,
+    "submenu_opened": 20,
+    "submenu_closed": 20
+  },
+  "expected_diagnostics": [
+    "WARN quickshell.service.sni.item: Unable to create pixmap for tray icon qs::service::sni::StatusNotifierItem(0x7fc666bc4900)",
+    "WARN quickshell.dbus: Could not launch service org.freedesktop.UPower: QDBusError(org.freedesktop.DBus.Error.ServiceUnknown, The name org.freedesktop.UPower was not provided by any .service files)",
+    "WARN quickshell.service.upower: Could not start UPower. The UPower service will not work."
+  ],
+  "processes_cleaned": [
+    176808,
+    176812,
+    176822,
+    176854,
+    176855,
+    177742,
+    177743,
+    177764,
+    177765,
+    177778,
+    177789,
+    177790
+  ]
+}

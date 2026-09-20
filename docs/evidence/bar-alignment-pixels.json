@@ -1,0 +1,30 @@
+{
+  "bar-icons": {
+    "bluetooth": {
+      "top": 8,
+      "bottom_to_separator": 6
+    },
+    "battery": {
+      "top": 11,
+      "bottom_to_separator": 9
+    },
+    "clock": {
+      "top": 11,
+      "bottom_to_separator": 10
+    }
+  },
+  "bar-alignment": {
+    "bluetooth": {
+      "top": 7,
+      "bottom_to_separator": 7
+    },
+    "battery": {
+      "top": 10,
+      "bottom_to_separator": 10
+    },
+    "clock": {
+      "top": 10,
+      "bottom_to_separator": 11
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "timestamp": "2026-09-16T17:30:12.424552+00:00",
+  "checks": [],
+  "cycles": [],
+  "isolation": "private system+session D-Bus and XDG; offscreen; fake locker; observer identity substituted only in fixture helper",
+  "remaining_pids": []
+}

@@ -1,0 +1,19 @@
+PASS: native BarWindow/WallpaperWindow/InteractivePanelWindow mapped; initial panel keyboard focus; real output capture
+PASS: separate Wayland application receives hjkl before and during native OSD/toast; overlays do not steal focus
+PASS: real private virtual-pointer click outside panel closes it and returns input to the separate application
+PASS: explicit notification navigation accepts Escape and outside click; passive toast remains and foreign input returns
+Traceback (most recent call last):
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 482, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 435, in main
+    inside(args.inside, args.smoke, args.idle, args.lock_wallpaper)
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 270, in inside
+    press('j','j','l','l'); focused('accentPreset5'); press('Return')
+                            ~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 188, in focused
+    return eventually(lambda: control(name), lambda c: c.get('focus'), 'keyboard focus: '+name)
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 42, in eventually
+    raise AssertionError(f"{description}: {last}")
+AssertionError: keyboard focus: accentPreset5: {'name': 'accentPreset5', 'focus': False, 'enabled': True, 'visible': True, 'y': 214, 'height': 36, 'viewportHeight': 622}

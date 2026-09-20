@@ -1,0 +1,343 @@
+{
+  "family": "Material Symbols Outlined",
+  "style": {
+    "fill": 0,
+    "weight": 400,
+    "grade": 0,
+    "optical_size": 24
+  },
+  "icons": {
+    "apps": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/apps/default/24px.svg",
+      "sha256": "824f6fadf9f5378bd494ba98ebc8d08ca4992892ab6a3ba9dbdb633b8121a947"
+    },
+    "balance": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/balance/default/24px.svg",
+      "sha256": "fb06db38564cc79dd25aea6619d870e57b7a30a4bf9942b76beb72253b0d2c30"
+    },
+    "battery_android_0": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/battery_android_0/default/24px.svg",
+      "sha256": "c12b2d5cf4086cf1f9d1c70d006730bc2a31a4ffc63bac45224f656d07bebfbe"
+    },
+    "battery_android_1": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/battery_android_1/default/24px.svg",
+      "sha256": "afb67378acb70e235502a84ca7aef9c8948254139e02a3407b919a656e28e325"
+    },
+    "battery_android_2": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/battery_android_2/default/24px.svg",
+      "sha256": "acb06b80b994b32400b4d0aeef6f36ef98d2c1024d5b229190fc44b802c10080"
+    },
+    "battery_android_3": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/battery_android_3/default/24px.svg",
+      "sha256": "d21504820874172a5df0999ccdc5327c32cfbcfe5f05b53d599ec1ac0a32cc06"
+    },
+    "battery_android_4": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/battery_android_4/default/24px.svg",
+      "sha256": "8b08282b2b2f23da2573ab4849e9c347532cf267b4d910f7558c78fc8a605994"
+    },
+    "battery_android_5": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/battery_android_5/default/24px.svg",
+      "sha256": "07af15123b2de7589659409dc2e9133f12d87aef36b69f40a376c15b1f94bce2"
+    },
+    "battery_android_6": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/battery_android_6/default/24px.svg",
+      "sha256": "cd7894524392966f8dc0e3e51b29ccb73380ab04365859d5a098fb1e13ed18da"
+    },
+    "battery_android_full": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/battery_android_full/default/24px.svg",
+      "sha256": "d4eb154f93474358e9fcdfe329ec7d614a5e52bf6bc387c2c704705929bf2a6f"
+    },
+    "battery_android_question": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/battery_android_question/default/24px.svg",
+      "sha256": "ec4e959598883f7a216e57322946dfeec5f5746f8f3bda4af25bae8be597e00a"
+    },
+    "battery_charging_20_2": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/battery_charging_20_2/default/24px.svg",
+      "sha256": "620ff72d52790862b78894f90cc38869ac2d43638b5456909eefce50a3ebbeaa"
+    },
+    "battery_charging_30_2": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/battery_charging_30_2/default/24px.svg",
+      "sha256": "194bc8d3e47a5c4418dc76f52aedc29377fed615dee18a4a2a47b66ed2817ef5"
+    },
+    "battery_charging_50_2": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/battery_charging_50_2/default/24px.svg",
+      "sha256": "9b0bcbce83f5c4a10ed3f3899da452bc3f1f57af16dcee70e86ef22665d78f73"
+    },
+    "battery_charging_60_2": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/battery_charging_60_2/default/24px.svg",
+      "sha256": "66397f47c61b489351a0ae79a02c6089c1da63afef0a6c969dd91908c043c295"
+    },
+    "battery_charging_80_2": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/battery_charging_80_2/default/24px.svg",
+      "sha256": "f3688a6132a80c7c095ce79535fb73ba59e4566bd1d481cca204d94f4029c0c0"
+    },
+    "battery_charging_full_2": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/battery_charging_full_2/default/24px.svg",
+      "sha256": "199bb1394d5363230b57dea04254ef3b614d3700d0ab22566e088750a1e6dfd6"
+    },
+    "bedtime": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/bedtime/default/24px.svg",
+      "sha256": "02c69b9d776990d17e85c1034a3eac3be3cbe0e4f6b8390bd2d57990552503e9"
+    },
+    "bluetooth": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/bluetooth/default/24px.svg",
+      "sha256": "1c34c68ee9a4c8f8bfea7894c6466a64344fa28d2ee6b792188589b03888204c"
+    },
+    "bluetooth_disabled": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/bluetooth_disabled/default/24px.svg",
+      "sha256": "a6ade873757ab2dfd56ffe28cbb1bcdc8b1ab2bf6f388e9db359913b0166570a"
+    },
+    "bolt": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/bolt/default/24px.svg",
+      "sha256": "efc632df3302b78537d07d8fd674a66cb911b132515cd4f84c6a6a995ecff8e7"
+    },
+    "brightness_6": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/brightness_6/default/24px.svg",
+      "sha256": "a2225fc569b3b80961726b6c6097ddde4853c4ece80881f33a92b4a445e676a1"
+    },
+    "chat": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/chat/default/24px.svg",
+      "sha256": "54cec1588b002959077443b4f673df171413cc567113d9b755ac2654f6f2f2eb"
+    },
+    "chat_bubble": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/chat_bubble/default/24px.svg",
+      "sha256": "b00b6523bc09b56a40ff255fb5e7cc49dfa2262d1e2e567531831eb5382f44ce"
+    },
+    "check": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/check/default/24px.svg",
+      "sha256": "01edd53418816632be08e9565b8ca40d9028c230a8a67baaf4b8a1de20db00e6"
+    },
+    "check_box": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/check_box/default/24px.svg",
+      "sha256": "9c599b30ed93d5c24cbedae05f9d359290043ed92f7b20e41acbd7424b5127cb"
+    },
+    "check_box_outline_blank": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/check_box_outline_blank/default/24px.svg",
+      "sha256": "a3ac8bc69e7a016205cd07bd74b7ce8626e8fc4b20848aaeb96cd4954d0d0d87"
+    },
+    "chevron_right": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/chevron_right/default/24px.svg",
+      "sha256": "f6b777ee0ce9059b5f8eea987d813ab12c4f309ba431063153841c742e668ac0"
+    },
+    "close": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/close/default/24px.svg",
+      "sha256": "a82592b0faa0b104a4d4b0530bb05c6a4bfed5728f5aad03ae8e7a19f32b5511"
+    },
+    "code": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/code/default/24px.svg",
+      "sha256": "c143cc75a602f8d003d3d1aea63e20a11a713af876f0926659f67af04f7cc026"
+    },
+    "coffee": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/coffee/default/24px.svg",
+      "sha256": "e3a17f838cce3c4ed869aa4aec98c37d92b4756aaddd7e38efd0e442d16a721b"
+    },
+    "content_paste": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/content_paste/default/24px.svg",
+      "sha256": "5d716f9d4a627ac350507322aead0fb1dec36e02c444bddea1ef67042889b897"
+    },
+    "description": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/description/default/24px.svg",
+      "sha256": "65e2c1ac1ca2d0a894c8d8d89e530cb5df940d7ff0effbeb8c5f4b234a477670"
+    },
+    "desktop_windows": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/desktop_windows/default/24px.svg",
+      "sha256": "b226ae01b3c9b9a4267560caa401ea34cb066c9dd756fa63552ac5d4b6f3175c"
+    },
+    "developer_board": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/developer_board/default/24px.svg",
+      "sha256": "6248e2ccac1676e75cf648eafc8028c1427c8277b77ad7b5173aeee58ac2294f"
+    },
+    "device_thermostat": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/device_thermostat/default/24px.svg",
+      "sha256": "546d9a60a65cbdbb3f4541fd5b8998f334d3a1ed31f82acdc534b73d6593b8db"
+    },
+    "devices": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/devices/default/24px.svg",
+      "sha256": "15a61c3215d3245f13902d6139f88b140c36664574277f31d5f907dcf21e2437"
+    },
+    "eco": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/eco/default/24px.svg",
+      "sha256": "431d078cfca80a20d1e7aab4d68fea51383659f1c3b8fa6863585b9d840d4488"
+    },
+    "expand_more": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/expand_more/default/24px.svg",
+      "sha256": "6760bd2307f7ec3c1a5f2905af907aa7a12ad5ad7448289c8624f5d5ec6057e4"
+    },
+    "fingerprint": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/fingerprint/default/24px.svg",
+      "sha256": "d56d1636d06ec56cba3d2c9734c7ab1026906d990f625c6a01f730027b1c5980"
+    },
+    "folder": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/folder/default/24px.svg",
+      "sha256": "79fb2fcbc1c00108eefe7f9fcff7537ea9fe812bc00e1c8cba6050cf69f3e087"
+    },
+    "font_download": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/font_download/default/24px.svg",
+      "sha256": "493605e313535e1080fc5f70ba225b566e335310b7aec4600f8056512b98bbca"
+    },
+    "graphic_eq": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/graphic_eq/default/24px.svg",
+      "sha256": "6c3e0539f00b3388c124c488caef9cb3a02c13141a6438add8ad9048d6822f6d"
+    },
+    "help": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/help/default/24px.svg",
+      "sha256": "bad6ba4cb57dcf37758c8bf3abc6eb860a0a6a01be3ffb0f63133f9df7e26fb3"
+    },
+    "indeterminate_check_box": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/indeterminate_check_box/default/24px.svg",
+      "sha256": "9b337c97f481998fb15b5496584d00e762bf540c56d58592d88d37ed94fcb3e3"
+    },
+    "language": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/language/default/24px.svg",
+      "sha256": "71b28a5c798ba00c4b3b331835a24c80dbfca40036ad90183bca759f19ee0862"
+    },
+    "link": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/link/default/24px.svg",
+      "sha256": "efb400f168006f886e4f9e653c686928561403308d4a68aedb954ffac8288fb2"
+    },
+    "lock": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/lock/default/24px.svg",
+      "sha256": "24df2c46c1e8f764acb6e78257f6f3626e60a557622c0d486fe7b1e484bc7811"
+    },
+    "logout": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/logout/default/24px.svg",
+      "sha256": "6d43fb408a015dc2879dfc0e30e55e83e7a686011e482fccde5d5f754be861aa"
+    },
+    "mic": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/mic/default/24px.svg",
+      "sha256": "c10b2f675216392c3871af3eae2e0afa5e6ee51843a5855a7df4ccabc11791c1"
+    },
+    "mic_off": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/mic_off/default/24px.svg",
+      "sha256": "1d2dad86c2c18bc133f837bfefd99acd0f3bd17c9a3edfc7e5620a5df1f4b813"
+    },
+    "monitoring": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/monitoring/default/24px.svg",
+      "sha256": "436ec6895417dc7ed12521f77476d7b46b02dac82c04c6d8da00bfc8e533de1c"
+    },
+    "more_horiz": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/more_horiz/default/24px.svg",
+      "sha256": "498ade89fbbdd4f4ab9b90bb49bae4cc6b2dc0ff0f019b6b051ac641a7bd5872"
+    },
+    "movie": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/movie/default/24px.svg",
+      "sha256": "b037f2324951459f7ef1f78ac0c7a9d0e57848e5cf88160757aeafafc51d758c"
+    },
+    "music_note": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/music_note/default/24px.svg",
+      "sha256": "3c606c696a9030472c815b431df11293240fedb7036361541fd98637379522f6"
+    },
+    "network_wifi": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/network_wifi/default/24px.svg",
+      "sha256": "d7e24c10c74c6994b04c00e76ac9755ad9608ab48b4c5609caf1ccda3a359d78"
+    },
+    "network_wifi_1_bar": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/network_wifi_1_bar/default/24px.svg",
+      "sha256": "dba97e4477d10ddec74b1585a99d4cee53418c431d1456ccf82ef2c23affa8b2"
+    },
+    "network_wifi_2_bar": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/network_wifi_2_bar/default/24px.svg",
+      "sha256": "2219dd8937d0555a2fe376bc4929060f3658658c535d6a319f9ce4bcb4468d8b"
+    },
+    "network_wifi_3_bar": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/network_wifi_3_bar/default/24px.svg",
+      "sha256": "983662299554e7c5d27eda20d990c829269ad4a83d7e3220ede641f30faac38a"
+    },
+    "notifications": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/notifications/default/24px.svg",
+      "sha256": "f6e1380c76f85851dbeafde7f8eb106c799d72232cd046bf30fabae4f0a0c821"
+    },
+    "notifications_off": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/notifications_off/default/24px.svg",
+      "sha256": "8eafc5e090d51b9b938a44139fc28faefed7dbee85a43a89fd262fd3782fafa8"
+    },
+    "notifications_unread": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/notifications_unread/default/24px.svg",
+      "sha256": "f5c0ae8428b3aea8f164a27400a6ea946ed03b6e17ae8344faa2dc9f18db63ed"
+    },
+    "open_in_new": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/open_in_new/default/24px.svg",
+      "sha256": "8b464b3779cc1d22fe0a84d722d6bc0f7fb425e7dafa46298636d376a3808458"
+    },
+    "palette": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/palette/default/24px.svg",
+      "sha256": "66b356824699db041160ab04225e11ed243ad3f2e95a780adf851ef13c90a163"
+    },
+    "power_settings_new": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/power_settings_new/default/24px.svg",
+      "sha256": "46916311478d381c8b8339b57cab1cd1b0fdb01e66f14fa52d1343008211f083"
+    },
+    "print": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/print/default/24px.svg",
+      "sha256": "1c2ef44901d767bdaafdc4204eb67d55a2d4af0b7185c6342a426b05b9f74dbb"
+    },
+    "radio_button_checked": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/radio_button_checked/default/24px.svg",
+      "sha256": "6f5837385cecfddbbd923ddeb452a154bfb209789ac14498e47f267231650043"
+    },
+    "radio_button_unchecked": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/radio_button_unchecked/default/24px.svg",
+      "sha256": "870df9ce188e633c2ce9d8409f524976c6b78796d58d53753ac8de0940e3d159"
+    },
+    "refresh": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/refresh/default/24px.svg",
+      "sha256": "e56d7ee330abd6d410cca7778419c524cebacf300c3b6e1b97ca9d0f3c3c1f7c"
+    },
+    "restart_alt": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/restart_alt/default/24px.svg",
+      "sha256": "3a6c6c3ebcfe7f5c4bdf85d3c67f50c557d69b49c409ed001177d818a396c18d"
+    },
+    "search": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/search/default/24px.svg",
+      "sha256": "46d4ab85eba6eb4fe7c9a9a4c4db2fdf8fa9cc74c1f398ac72e7d872d490dd4c"
+    },
+    "settings": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/settings/default/24px.svg",
+      "sha256": "6aebb4a88b40a5bf1ce378ca532e4a885aedc402a0574562c6ed4ded03360fd2"
+    },
+    "settings_ethernet": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/settings_ethernet/default/24px.svg",
+      "sha256": "58a8a0109c3a99495c584d883368d26e2044b0b722de0567ab098927eec9a93f"
+    },
+    "share": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/share/default/24px.svg",
+      "sha256": "e9e1c5403291029f683791e125c821f291925ea2be8a565fe235c2fc4d9c356b"
+    },
+    "signal_wifi_0_bar": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/signal_wifi_0_bar/default/24px.svg",
+      "sha256": "776961a3876bc476773a1c500c48361c5f1544b209f358b0acf61ac68911b37e"
+    },
+    "signal_wifi_off": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/signal_wifi_off/default/24px.svg",
+      "sha256": "2c7d9f48b2d4d93762176e6b49fe8ac0001b402f15f3539004ac1dd8d0852472"
+    },
+    "sync": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/sync/default/24px.svg",
+      "sha256": "1b47b89b3d9dde46cf7d2329286f95ddcfa7f060dabc740f22169c53c72f624c"
+    },
+    "terminal": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/terminal/default/24px.svg",
+      "sha256": "02d50185ce66a04950f8b7eed976005aec13442b818e693247c2d3a791febaa8"
+    },
+    "translate": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/translate/default/24px.svg",
+      "sha256": "d565f616c3f4115c00f3742f07dc1379691374f7c07a23dd482728d0b6565e18"
+    },
+    "tune": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/tune/default/24px.svg",
+      "sha256": "b1a4320c966b3f7c421bf3dad47cabdb1ac8a18c1dfff1d8a51236beb2aa697e"
+    },
+    "videocam": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/videocam/default/24px.svg",
+      "sha256": "c08eb2f9cabf43eda0aed18b7f928ea8a29118259342d262d2639d414120e233"
+    },
+    "volume_off": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/volume_off/default/24px.svg",
+      "sha256": "196492ec299a22b1a7fe38840bf99cd3e1c04359e3a567234cc342508c90f53c"
+    },
+    "volume_up": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/volume_up/default/24px.svg",
+      "sha256": "53e1499625a35bba9a86ae6650845357e937709b1f872d7bae1d513c4ef0dc5f"
+    }
+  }
+}

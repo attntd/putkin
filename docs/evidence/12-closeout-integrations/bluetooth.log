@@ -1,0 +1,44 @@
+[bus]
+
+[fake]
+
+[native]
+  INFO: Launching config: "/home/attntd/projects/putkin/bluetooth-test.qml"
+  INFO: Shell ID: "083216c3fb20ae85618c8b95034bfc49" Path ID "083216c3fb20ae85618c8b95034bfc49"
+  INFO: Saving logs to "/tmp/pk-ifvc2_c1/runtime/quickshell/by-id/yji69x5hlt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+  INFO: Reloading configuration...
+  WARN: This plugin does not support setting window masks
+  INFO: Configuration Loaded
+  INFO qml: PUTKIN_PREVIEW_READY
+  INFO: Reloading configuration...
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+
+[manager]
+  INFO: Launching config: "/home/attntd/projects/putkin/bluetooth-test.qml"
+  INFO: Shell ID: "083216c3fb20ae85618c8b95034bfc49" Path ID "083216c3fb20ae85618c8b95034bfc49"
+  INFO: Saving logs to "/tmp/pk-ifvc2_c1/runtime/quickshell/by-id/tyi6ox5hlt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+  INFO: Reloading configuration...
+  WARN: This plugin does not support setting window masks
+  INFO: Configuration Loaded
+  INFO qml: PUTKIN_PREVIEW_READY
+  INFO: Reloading configuration...
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+
+[absent]
+  INFO: Launching config: "/home/attntd/projects/putkin/bluetooth-test.qml"
+  INFO: Shell ID: "083216c3fb20ae85618c8b95034bfc49" Path ID "083216c3fb20ae85618c8b95034bfc49"
+  INFO: Saving logs to "/tmp/pk-ifvc2_c1/runtime/quickshell/by-id/p0j6qx5hlt/log.qslog"
+  WARN quickshell.dbus.objectmanager: Failed to create DBusObjectManagerInterface for "org.bluez" "/" : QDBusError("", "")
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY

@@ -1,0 +1,6 @@
+PASS: 136 plików QML, 0 z błędami.
+install: INFO: Launching config: "/home/attntd/.config/quickshell/shell.qml"
+  INFO: Shell ID: "770bba0d0f619c4ab3ab0453a539d542" Path ID "770bba0d0f619c4ab3ab0453a539d542"
+  INFO: Saving logs to "/run/user/1000/quickshell/by-id/17f61g5olt/log.qslog"
+  INFO: Configuration Loaded
+  WARN quickshell.hyprland.ipc: Dispatch request "function() if _G.putkin_screenshot_rule then _G.putkin_screenshot_rule:remove() end _G.putkin_screenshot_rule = hl.layer_rule({name=\"putkin-screenshot\",match={namespace=\"^putkin-screenshot$\"},no_anim=true,blur=false,dim_around=false}) end" failed with error "error: return hl.dispatch(function() if _G.putkin_screenshot_rule then _G.putkin_screenshot_rule:remove() end _G.putkin_screenshot_rule = hl.layer_rule({name=\"putkin-screenshot\",match={namespace=\"^putkin-screenshot$\"},no_anim=true,blur=false,dim_around=false}) end):1: hl.dispatch: [string \"return hl.dispatch(function() if _G.putkin_sc...\"]:1: attempt to call a nil value (method 'remove')"

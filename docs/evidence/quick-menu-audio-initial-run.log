@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/home/attntd/projects/putkin/scripts/test-audio-integration", line 286, in main
+    run(args.output.resolve(), args.idle)
+    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/putkin/scripts/test-audio-integration", line 262, in run
+    assert not unexpected, "\n".join(unexpected)
+           ^^^^^^^^^^^^^^
+AssertionError:   WARN: QQuickItem: Cannot set activeFocusOnTab to false once item is the active focus item.
+FAIL:   WARN: QQuickItem: Cannot set activeFocusOnTab to false once item is the active focus item.; logs: docs/evidence/quick-menu-audio.log

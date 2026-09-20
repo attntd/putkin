@@ -1,0 +1,12 @@
+Przywrócono poprzedni shell i jego autostart.
+Traceback (most recent call last):
+  File "/tmp/putkin-launcher-release/restore", line 140, in <module>
+    if sys.argv[1:] == ['--apply']: apply()
+                                    ~~~~~^^
+  File "/tmp/putkin-launcher-release/restore", line 134, in apply
+    complete_switch()
+    ~~~~~~~~~~~~~~~^^
+  File "/tmp/putkin-launcher-release/restore", line 89, in complete_switch
+    assert len(launcher_binds) == 1 and PLAN['entry'] in launcher_binds[0]['arg'] and 'launcher toggle' in launcher_binds[0]['arg'], launcher_binds
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [{'locked': False, 'mouse': False, 'release': False, 'repeat': False, 'longPress': False, 'non_consuming': False, 'auto_consuming': False, 'has_description': True, 'modmask': 64, 'submap': '', 'submap_universal': 'false', 'key': 'SPACE', 'keycode': 0, 'catch_all': False, 'description': '[Putkin] Launcher', 'allow_input_capture': False, 'dispatcher': '__lua', 'arg': '32'}]

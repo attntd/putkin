@@ -1,0 +1,375 @@
+{
+  "chezmoi_status": "clean",
+  "bar_focus": "eDP-1",
+  "keyboard": {
+    "ready": true,
+    "busy": false,
+    "applied": true,
+    "error": "",
+    "shortcuts": 7,
+    "commands": 0
+  },
+  "settings_window": {
+    "address": "0x560644609ac0",
+    "mapped": true,
+    "hidden": false,
+    "visible": true,
+    "acceptsInput": true,
+    "at": [
+      4796,
+      1716
+    ],
+    "size": [
+      720,
+      680
+    ],
+    "workspace": {
+      "id": 1,
+      "name": "1"
+    },
+    "floating": true,
+    "monitor": 0,
+    "class": "org.quickshell",
+    "title": "Ustawienia",
+    "initialClass": "org.quickshell",
+    "initialTitle": "Ustawienia",
+    "pid": 141443,
+    "xwayland": false,
+    "pinned": false,
+    "pinFullscreened": false,
+    "fullscreen": 0,
+    "fullscreenClient": 0,
+    "fullscreenHandler": "default",
+    "allowedOverFullscreen": true,
+    "grouped": [],
+    "tags": [],
+    "swallowing": "0x0",
+    "focusHistoryID": 0,
+    "inhibitingIdle": false,
+    "xdgTag": "",
+    "xdgDescription": "",
+    "contentType": "none",
+    "tearingHint": false,
+    "stableId": "18000033"
+  },
+  "panel_ipc": {
+    "openAudio": [
+      [
+        "eDP-1",
+        {
+          "address": "0x560644d40470",
+          "x": 5748,
+          "y": 1440,
+          "w": 368,
+          "h": 444,
+          "alpha": 1,
+          "namespace": "putkin-panel",
+          "pid": 141443
+        }
+      ]
+    ],
+    "openNotifications": [
+      [
+        "eDP-1",
+        {
+          "address": "0x560643570b30",
+          "x": 5748,
+          "y": 1440,
+          "w": 368,
+          "h": 130,
+          "alpha": 1,
+          "namespace": "putkin-panel",
+          "pid": 141443
+        }
+      ]
+    ],
+    "openCommands": [
+      [
+        "eDP-1",
+        {
+          "address": "0x560644d40470",
+          "x": 4836,
+          "y": 1440,
+          "w": 1280,
+          "h": 674,
+          "alpha": 1,
+          "namespace": "putkin-panel",
+          "pid": 141443
+        }
+      ]
+    ],
+    "openClipboard": [
+      [
+        "eDP-1",
+        {
+          "address": "0x560643570b30",
+          "x": 4836,
+          "y": 1440,
+          "w": 1280,
+          "h": 674,
+          "alpha": 1,
+          "namespace": "putkin-panel",
+          "pid": 141443
+        }
+      ]
+    ],
+    "openQuickSettings": [
+      [
+        "eDP-1",
+        {
+          "address": "0x560644d40470",
+          "x": 5748,
+          "y": 1440,
+          "w": 368,
+          "h": 424,
+          "alpha": 1,
+          "namespace": "putkin-panel",
+          "pid": 141443
+        }
+      ]
+    ]
+  },
+  "audio_toggle": true,
+  "audio_before": {
+    "available": true,
+    "output": "Wbudowane g\u0142o\u015bniki",
+    "volume": 60.003662109375,
+    "muted": false,
+    "busy": false,
+    "error": ""
+  },
+  "audio_after": {
+    "available": true,
+    "output": "Wbudowane g\u0142o\u015bniki",
+    "volume": 60.003662109375,
+    "muted": false,
+    "busy": false,
+    "error": ""
+  },
+  "launcher_binds": [
+    {
+      "locked": false,
+      "mouse": false,
+      "release": false,
+      "repeat": false,
+      "longPress": false,
+      "non_consuming": false,
+      "auto_consuming": false,
+      "has_description": true,
+      "modmask": 64,
+      "submap": "",
+      "submap_universal": "false",
+      "key": "SPACE",
+      "keycode": 0,
+      "catch_all": false,
+      "description": "Putkin:launcher",
+      "allow_input_capture": false,
+      "dispatcher": "__lua",
+      "arg": "30"
+    },
+    {
+      "locked": false,
+      "mouse": false,
+      "release": false,
+      "repeat": false,
+      "longPress": false,
+      "non_consuming": false,
+      "auto_consuming": false,
+      "has_description": true,
+      "modmask": 64,
+      "submap": "",
+      "submap_universal": "false",
+      "key": "V",
+      "keycode": 0,
+      "catch_all": false,
+      "description": "Putkin:clipboard",
+      "allow_input_capture": false,
+      "dispatcher": "__lua",
+      "arg": "48"
+    },
+    {
+      "locked": false,
+      "mouse": false,
+      "release": false,
+      "repeat": false,
+      "longPress": false,
+      "non_consuming": false,
+      "auto_consuming": false,
+      "has_description": true,
+      "modmask": 65,
+      "submap": "",
+      "submap_universal": "false",
+      "key": "semicolon",
+      "keycode": 0,
+      "catch_all": false,
+      "description": "Putkin:commands",
+      "allow_input_capture": false,
+      "dispatcher": "__lua",
+      "arg": "95"
+    }
+  ],
+  "instance": {
+    "config_path": "/home/attntd/.local/share/putkin/releases/20260920-caffeinate-focus-5367ba0cec0c/shell.qml",
+    "id": "z413n1onlt",
+    "launch_time": "2026-09-20T11:08:11",
+    "pid": 141443,
+    "shell_id": "05b681e3cb2400656e7c1100aa6c4f20"
+  },
+  "notification_pid": 141443,
+  "monitors": [
+    {
+      "id": 0,
+      "name": "eDP-1",
+      "description": "Samsung Display Corp. ATNA40HQ09-0  0x0000003B",
+      "make": "Samsung Display Corp.",
+      "model": "ATNA40HQ09-0 ",
+      "serial": "0x0000003B",
+      "width": 2880,
+      "height": 1800,
+      "physicalWidth": 300,
+      "physicalHeight": 190,
+      "refreshRate": 120.0,
+      "x": 4196,
+      "y": 1440,
+      "activeWorkspace": {
+        "id": 1,
+        "name": "1"
+      },
+      "specialWorkspace": {
+        "id": 0,
+        "name": ""
+      },
+      "reserved": [
+        0,
+        32,
+        0,
+        0
+      ],
+      "scale": 1.5,
+      "transform": 0,
+      "focused": true,
+      "dpmsStatus": true,
+      "vrr": false,
+      "solitary": "0",
+      "solitaryBlockedBy": [
+        "WINDOWED",
+        "CANDIDATE"
+      ],
+      "activelyTearing": false,
+      "tearingBlockedBy": [
+        "NOT_TORN",
+        "USER",
+        "CANDIDATE",
+        "HW_CURSOR"
+      ],
+      "directScanoutTo": "0",
+      "directScanoutBlockedBy": [
+        "USER",
+        "CANDIDATE"
+      ],
+      "disabled": false,
+      "currentFormat": "XRGB8888",
+      "mirrorOf": "none",
+      "availableModes": [
+        "2880x1800@120.00Hz",
+        "2880x1800@60.00Hz"
+      ],
+      "colorManagementPreset": "srgb",
+      "sdrBrightness": 1,
+      "sdrSaturation": 1,
+      "sdrMinLuminance": 0.2,
+      "sdrMaxLuminance": 80,
+      "hardwareCursorsInUse": true
+    }
+  ],
+  "layers": {
+    "eDP-1": {
+      "levels": {
+        "0": [
+          {
+            "address": "0x560644cf6910",
+            "x": 4196,
+            "y": 1440,
+            "w": 1920,
+            "h": 1200,
+            "alpha": 1,
+            "namespace": "putkin-wallpaper",
+            "pid": 141443
+          }
+        ],
+        "1": [],
+        "2": [
+          {
+            "address": "0x56064460b850",
+            "x": 4196,
+            "y": 1440,
+            "w": 1920,
+            "h": 32,
+            "alpha": 1,
+            "namespace": "putkin-bar",
+            "pid": 141443
+          }
+        ],
+        "3": []
+      }
+    }
+  },
+  "caffeinate": {
+    "active": false,
+    "mode": "off",
+    "busy": false,
+    "preventDisplaySleep": false,
+    "preventLock": false,
+    "preventSleep": false,
+    "error": ""
+  },
+  "audio": {
+    "available": true,
+    "output": "Wbudowane g\u0142o\u015bniki",
+    "volume": 60.003662109375,
+    "muted": false,
+    "busy": false,
+    "error": ""
+  },
+  "brightness": {
+    "available": true,
+    "device": "intel_backlight",
+    "percent": 80.64516129032258,
+    "busy": false,
+    "error": "",
+    "diagnostic": "Urz\u0105dzenie: intel_backlight \u00b7 zakres 0\u2013496. Stan od\u015bwie\u017ca si\u0119 po otwarciu panelu i w\u0142asnej zmianie."
+  },
+  "session": {
+    "busy": false,
+    "phase": "",
+    "error": "",
+    "result": "",
+    "capabilities": {
+      "reboot": {
+        "available": true,
+        "reason": ""
+      },
+      "poweroff": {
+        "available": true,
+        "reason": ""
+      },
+      "suspend": {
+        "available": true,
+        "reason": ""
+      },
+      "logout": {
+        "available": true,
+        "reason": ""
+      },
+      "lock": {
+        "available": true,
+        "reason": ""
+      }
+    }
+  },
+  "settings_unchanged": true,
+  "configerrors": "",
+  "runtime_manifest_verified": true,
+  "restore": "/home/attntd/.local/state/putkin/update-20260920-caffeinate-focus-5367ba0cec0c/restore",
+  "runtime_files": 169
+}

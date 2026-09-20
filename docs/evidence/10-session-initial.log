@@ -1,0 +1,15 @@
+
+bus
+
+fake
+
+shell
+  INFO: Launching config: "/home/attntd/projects/putkin/session-test.qml"
+  INFO: Shell ID: "11497c7f6c2eb802fbdb4f8ea745fa66" Path ID "11497c7f6c2eb802fbdb4f8ea745fa66"
+  INFO: Saving logs to "/tmp/pk-session-ws9zv992/runtime/quickshell/by-id/5mj4cmwglt/log.qslog"
+  WARN: --- WARNING ---
+  WARN: WAYLAND_DISPLAY is present but QT_QPA_PLATFORM is "offscreen"
+  WARN: If you are actually running wayland, set QT_QPA_PLATFORM to "wayland" or most functionality will be broken.
+ ERROR: Failed to load configuration
+ ERROR:   caused by @session-test.qml[13:5]: Type PanelPreviewWindow unavailable
+ ERROR:   caused by @preview/PanelPreviewWindow.qml[21:5]: MockSessionBackend is not a type

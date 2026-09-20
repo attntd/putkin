@@ -1,0 +1,66 @@
+--- /home/attntd/.config/hypr/hyprland.lua (before)
++++ /home/attntd/.config/hypr/hyprland.lua (after)
+@@ -16 +16 @@
+-dofile("/home/attntd/.local/share/putkin/releases/20260920-toggle-tiles-7a84bdec0b46/config/menu-keybinds.lua")(bindings.bind, "/home/attntd/.local/share/putkin/releases/20260920-toggle-tiles-7a84bdec0b46/shell.qml")
++dofile("/home/attntd/.local/share/putkin/releases/20260920-accent-groups-be2213f6b4c0/config/menu-keybinds.lua")(bindings.bind, "/home/attntd/.local/share/putkin/releases/20260920-accent-groups-be2213f6b4c0/shell.qml")
+@@ -323 +323 @@
+-dofile("/home/attntd/.local/share/putkin/releases/20260920-toggle-tiles-7a84bdec0b46/config/shell-layers.lua")
++dofile("/home/attntd/.local/share/putkin/releases/20260920-accent-groups-be2213f6b4c0/config/shell-layers.lua")
+--- /home/attntd/.local/share/chezmoi/dot_config/hypr/hyprland.lua (before)
++++ /home/attntd/.local/share/chezmoi/dot_config/hypr/hyprland.lua (after)
+@@ -16 +16 @@
+-dofile("/home/attntd/.local/share/putkin/releases/20260920-toggle-tiles-7a84bdec0b46/config/menu-keybinds.lua")(bindings.bind, "/home/attntd/.local/share/putkin/releases/20260920-toggle-tiles-7a84bdec0b46/shell.qml")
++dofile("/home/attntd/.local/share/putkin/releases/20260920-accent-groups-be2213f6b4c0/config/menu-keybinds.lua")(bindings.bind, "/home/attntd/.local/share/putkin/releases/20260920-accent-groups-be2213f6b4c0/shell.qml")
+@@ -323 +323 @@
+-dofile("/home/attntd/.local/share/putkin/releases/20260920-toggle-tiles-7a84bdec0b46/config/shell-layers.lua")
++dofile("/home/attntd/.local/share/putkin/releases/20260920-accent-groups-be2213f6b4c0/config/shell-layers.lua")
+--- /home/attntd/.config/hypr/autostart.lua (before)
++++ /home/attntd/.config/hypr/autostart.lua (after)
+@@ -2 +2 @@
+-  hl.exec_cmd("uwsm app -- env PUTKIN_WALLPAPER=/home/attntd/.config/hypr/backgrounds/Cloudsnight.jpg quickshell --no-duplicate --daemonize --path /home/attntd/.local/share/putkin/releases/20260920-toggle-tiles-7a84bdec0b46/shell.qml")
++  hl.exec_cmd("uwsm app -- env PUTKIN_WALLPAPER=/home/attntd/.config/hypr/backgrounds/Cloudsnight.jpg quickshell --no-duplicate --daemonize --path /home/attntd/.local/share/putkin/releases/20260920-accent-groups-be2213f6b4c0/shell.qml")
+--- /home/attntd/.local/share/chezmoi/dot_config/hypr/autostart.lua (before)
++++ /home/attntd/.local/share/chezmoi/dot_config/hypr/autostart.lua (after)
+@@ -2 +2 @@
+-  hl.exec_cmd("uwsm app -- env PUTKIN_WALLPAPER=/home/attntd/.config/hypr/backgrounds/Cloudsnight.jpg quickshell --no-duplicate --daemonize --path /home/attntd/.local/share/putkin/releases/20260920-toggle-tiles-7a84bdec0b46/shell.qml")
++  hl.exec_cmd("uwsm app -- env PUTKIN_WALLPAPER=/home/attntd/.config/hypr/backgrounds/Cloudsnight.jpg quickshell --no-duplicate --daemonize --path /home/attntd/.local/share/putkin/releases/20260920-accent-groups-be2213f6b4c0/shell.qml")
+--- /home/attntd/.config/hypr/modules/system_binds.lua (before)
++++ /home/attntd/.config/hypr/modules/system_binds.lua (after)
+@@ -65 +65 @@
+-    bind(main_mod .. " + TAB", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260920-toggle-tiles-7a84bdec0b46/shell.qml call bar focus"), {
++    bind(main_mod .. " + TAB", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260920-accent-groups-be2213f6b4c0/shell.qml call bar focus"), {
+@@ -83 +83 @@
+-    bind(main_mod .. " + N", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260920-toggle-tiles-7a84bdec0b46/shell.qml call notifications focus"), { description = "[Notifications] Toggle center" }, "toggle notification center")
++    bind(main_mod .. " + N", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260920-accent-groups-be2213f6b4c0/shell.qml call notifications focus"), { description = "[Notifications] Toggle center" }, "toggle notification center")
+@@ -136,3 +136,3 @@
+-    bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260920-toggle-tiles-7a84bdec0b46/shell.qml call audio changeVolume 5"), { repeating = true, description = "[Hardware] Volume up" }, "volume up")
+-    bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260920-toggle-tiles-7a84bdec0b46/shell.qml call audio changeVolume -5"), { repeating = true, description = "[Hardware] Volume down" }, "volume down")
+-    bind("XF86AudioMute", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260920-toggle-tiles-7a84bdec0b46/shell.qml call audio toggleMute"), { repeating = true, description = "[Hardware] Toggle audio mute" }, "toggle audio mute")
++    bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260920-accent-groups-be2213f6b4c0/shell.qml call audio changeVolume 5"), { repeating = true, description = "[Hardware] Volume up" }, "volume up")
++    bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260920-accent-groups-be2213f6b4c0/shell.qml call audio changeVolume -5"), { repeating = true, description = "[Hardware] Volume down" }, "volume down")
++    bind("XF86AudioMute", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260920-accent-groups-be2213f6b4c0/shell.qml call audio toggleMute"), { repeating = true, description = "[Hardware] Toggle audio mute" }, "toggle audio mute")
+@@ -140,2 +140,2 @@
+-    bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260920-toggle-tiles-7a84bdec0b46/shell.qml call brightness change 5"), { repeating = true, description = "[Hardware] Brightness up" }, "brightness up")
+-    bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260920-toggle-tiles-7a84bdec0b46/shell.qml call brightness change -5"), { repeating = true, description = "[Hardware] Brightness down" }, "brightness down")
++    bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260920-accent-groups-be2213f6b4c0/shell.qml call brightness change 5"), { repeating = true, description = "[Hardware] Brightness up" }, "brightness up")
++    bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260920-accent-groups-be2213f6b4c0/shell.qml call brightness change -5"), { repeating = true, description = "[Hardware] Brightness down" }, "brightness down")
+--- /home/attntd/.local/share/chezmoi/dot_config/hypr/modules/system_binds.lua (before)
++++ /home/attntd/.local/share/chezmoi/dot_config/hypr/modules/system_binds.lua (after)
+@@ -65 +65 @@
+-    bind(main_mod .. " + TAB", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260920-toggle-tiles-7a84bdec0b46/shell.qml call bar focus"), {
++    bind(main_mod .. " + TAB", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260920-accent-groups-be2213f6b4c0/shell.qml call bar focus"), {
+@@ -83 +83 @@
+-    bind(main_mod .. " + N", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260920-toggle-tiles-7a84bdec0b46/shell.qml call notifications focus"), { description = "[Notifications] Toggle center" }, "toggle notification center")
++    bind(main_mod .. " + N", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260920-accent-groups-be2213f6b4c0/shell.qml call notifications focus"), { description = "[Notifications] Toggle center" }, "toggle notification center")
+@@ -136,3 +136,3 @@
+-    bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260920-toggle-tiles-7a84bdec0b46/shell.qml call audio changeVolume 5"), { repeating = true, description = "[Hardware] Volume up" }, "volume up")
+-    bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260920-toggle-tiles-7a84bdec0b46/shell.qml call audio changeVolume -5"), { repeating = true, description = "[Hardware] Volume down" }, "volume down")
+-    bind("XF86AudioMute", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260920-toggle-tiles-7a84bdec0b46/shell.qml call audio toggleMute"), { repeating = true, description = "[Hardware] Toggle audio mute" }, "toggle audio mute")
++    bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260920-accent-groups-be2213f6b4c0/shell.qml call audio changeVolume 5"), { repeating = true, description = "[Hardware] Volume up" }, "volume up")
++    bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260920-accent-groups-be2213f6b4c0/shell.qml call audio changeVolume -5"), { repeating = true, description = "[Hardware] Volume down" }, "volume down")
++    bind("XF86AudioMute", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260920-accent-groups-be2213f6b4c0/shell.qml call audio toggleMute"), { repeating = true, description = "[Hardware] Toggle audio mute" }, "toggle audio mute")
+@@ -140,2 +140,2 @@
+-    bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260920-toggle-tiles-7a84bdec0b46/shell.qml call brightness change 5"), { repeating = true, description = "[Hardware] Brightness up" }, "brightness up")
+-    bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260920-toggle-tiles-7a84bdec0b46/shell.qml call brightness change -5"), { repeating = true, description = "[Hardware] Brightness down" }, "brightness down")
++    bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260920-accent-groups-be2213f6b4c0/shell.qml call brightness change 5"), { repeating = true, description = "[Hardware] Brightness up" }, "brightness up")
++    bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260920-accent-groups-be2213f6b4c0/shell.qml call brightness change -5"), { repeating = true, description = "[Hardware] Brightness down" }, "brightness down")

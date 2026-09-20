@@ -1,0 +1,33 @@
+[bus]
+dbus-daemon[200717]: [session uid=1000 pid=200717 pidfd=4] Connection :1.2 (uid=1000 pid=200731 comm="/usr/bin/busctl --user --json=short --match=type='") became a monitor.
+dbus-daemon[200717]: [session uid=1000 pid=200717 pidfd=4] Connection :1.11 (uid=1000 pid=200929 comm="/usr/bin/busctl --user --json=short --match=type='") became a monitor.
+dbus-daemon[200717]: [session uid=1000 pid=200717 pidfd=4] Monitoring connection :1.2 closed.
+dbus-daemon[200717]: [session uid=1000 pid=200717 pidfd=4] Monitoring connection :1.11 closed.
+
+[native]
+  INFO: Launching config: "/home/attntd/projects/putkin/notifications-test.qml"
+  INFO: Shell ID: "baaa508919dd09c1fdb0fe45f5dbe4c8" Path ID "baaa508919dd09c1fdb0fe45f5dbe4c8"
+  INFO: Saving logs to "/tmp/pk-sp94ut3t/runtime/quickshell/by-id/kva4rluglt/log.qslog"
+  WARN scene: QML NotificationIpc at @notifications-test.qml[15:5]: Signal detected: "serviceChanged"
+  WARN scene: QML NotificationIpc at @notifications-test.qml[15:5]: Signal detected: "controllerChanged"
+  WARN scene: QML NotificationIpc at @notifications-test.qml[15:5]: Error parsing property "service": Type QVariant cannot be used across IPC.
+  WARN scene: QML NotificationIpc at @notifications-test.qml[15:5]: Error parsing property "controller": Type QVariant cannot be used across IPC.
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+  WARN: QEventLoop: Cannot be used without QCoreApplication
+ ERROR: Quickshell has crashed under pid 200917 (Coredumps will be available under that pid.)
+ ERROR: Further crash information is stored under "/tmp/pk-sp94ut3t/cache/quickshell/crashes/kva4rluglt"
+ ERROR: Quickshell has been restarted.
+  INFO: Launching config: "/home/attntd/projects/putkin/notifications-test.qml"
+  INFO: Shell ID: "baaa508919dd09c1fdb0fe45f5dbe4c8" Path ID "baaa508919dd09c1fdb0fe45f5dbe4c8"
+  INFO: Saving logs to "/tmp/pk-sp94ut3t/runtime/quickshell/by-id/kva45muglt/log.qslog"
+  WARN scene: QML NotificationIpc at @notifications-test.qml[15:5]: Signal detected: "serviceChanged"
+  WARN scene: QML NotificationIpc at @notifications-test.qml[15:5]: Signal detected: "controllerChanged"
+  WARN scene: QML NotificationIpc at @notifications-test.qml[15:5]: Error parsing property "service": Type QVariant cannot be used across IPC.
+  WARN scene: QML NotificationIpc at @notifications-test.qml[15:5]: Error parsing property "controller": Type QVariant cannot be used across IPC.
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+  WARN quickshell.service.notifications: Could not register notification server at org.freedesktop.Notifications, presumably because one is already registered.
+  WARN quickshell.service.notifications: Registration will be attempted again if the active service is unregistered.

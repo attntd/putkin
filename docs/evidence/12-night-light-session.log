@@ -1,0 +1,16 @@
+Started An application to enable a blue-light filter on Hyprland..
+┏ hyprsunset v0.4.0 ━━╸
+┃
+┣ Loaded 0 profiles
+┣ Resetting the matrix (--identity passed)
+┃
+┣ Calculated the CTM to be [mat3x3: 1, 0, 0, 0, 1, 0, 0, 0, 1]
+┃
+┣ Running on Hyprland
+┣ Found hyprland-ctm-control-v1 supported with version 2, binding to v2
+┣ Found new output with ID 71, binding
+┣ Found 1 output(s), applying CTMs
+┣ Resetting the matrix (--identity passed)
+┃
+┣ Calculated the CTM to be [mat3x3: 1, 0, 0, 0, 1, 0, 0, 0, 1]
+┃

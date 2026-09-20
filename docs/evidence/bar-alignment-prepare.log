@@ -1,0 +1,34 @@
+{
+  "release": "/home/attntd/.local/share/putkin/releases/20260920-bar-alignment-221eccd10c8c",
+  "runtime_files": 268,
+  "changed_runtime": [
+    "assets/material/Paths.js",
+    "assets/material/README.md",
+    "assets/material/putkin_battery_android_0_charging.svg",
+    "assets/material/putkin_battery_android_1_charging.svg",
+    "assets/material/putkin_battery_android_2_charging.svg",
+    "assets/material/putkin_battery_android_3_charging.svg",
+    "assets/material/putkin_battery_android_4_charging.svg",
+    "assets/material/putkin_battery_android_5_charging.svg",
+    "assets/material/putkin_battery_android_6_charging.svg",
+    "assets/material/putkin_battery_android_full_charging.svg",
+    "components/Glyph.qml",
+    "core/Icons.js",
+    "core/Metrics.qml",
+    "modules/bar/BarView.qml",
+    "modules/bar/Clock.qml",
+    "modules/tray/TrayButton.qml"
+  ],
+  "configurations": [
+    "/home/attntd/.config/hypr/hyprland.lua",
+    "/home/attntd/.local/share/chezmoi/dot_config/hypr/hyprland.lua",
+    "/home/attntd/.config/hypr/autostart.lua",
+    "/home/attntd/.local/share/chezmoi/dot_config/hypr/autostart.lua",
+    "/home/attntd/.config/hypr/modules/system_binds.lua",
+    "/home/attntd/.local/share/chezmoi/dot_config/hypr/modules/system_binds.lua",
+    "/home/attntd/.config/hypr/hypridle.conf",
+    "/home/attntd/.local/share/chezmoi/dot_config/hypr/hypridle.conf"
+  ],
+  "preserved_chezmoi_status": "MM .config/hypr/hyprland.lua\nMM .config/zen/r82xc5xh.Default (release)/chrome/zen-themes.css",
+  "restore": "/home/attntd/.local/state/putkin/update-20260920-bar-alignment-221eccd10c8c/restore"
+}

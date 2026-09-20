@@ -1,0 +1,128 @@
+--- /home/attntd/.config/hypr/hyprland.lua
++++ prepared/hyprland.lua
+@@ -13,7 +13,7 @@
+ require("modules.system_binds").setup(bindings)
+ -- Putkin menus: Super+Space/B and Super+Shift+P/N/B/Q.
+ local qs_config = os.getenv("XDG_CONFIG_HOME") or (os.getenv("HOME") .. "/.config")
+-dofile("/home/attntd/.local/share/putkin/releases/20260917-settings-keyboard-cc7addc79750/config/menu-keybinds.lua")(bindings.bind, "/home/attntd/.local/share/putkin/releases/20260917-settings-keyboard-cc7addc79750/shell.qml")
++dofile("/home/attntd/.local/share/putkin/releases/20260919-mouse-focus-d40d745288bc/config/menu-keybinds.lua")(bindings.bind, "/home/attntd/.local/share/putkin/releases/20260919-mouse-focus-d40d745288bc/shell.qml")
+ 
+ -------------------
+ ---- AUTOSTART ----
+@@ -320,4 +320,4 @@
+ })
+ 
+ -- Putkin handles opacity and reduced motion itself.
+-dofile("/home/attntd/.local/share/putkin/releases/20260917-settings-keyboard-cc7addc79750/config/shell-layers.lua")
++dofile("/home/attntd/.local/share/putkin/releases/20260919-mouse-focus-d40d745288bc/config/shell-layers.lua")
+--- /home/attntd/.local/share/chezmoi/dot_config/hypr/hyprland.lua
++++ prepared/hyprland.lua
+@@ -13,7 +13,7 @@
+ require("modules.system_binds").setup(bindings)
+ -- Putkin menus: Super+Space/B and Super+Shift+P/N/B/Q.
+ local qs_config = os.getenv("XDG_CONFIG_HOME") or (os.getenv("HOME") .. "/.config")
+-dofile("/home/attntd/.local/share/putkin/releases/20260917-settings-keyboard-cc7addc79750/config/menu-keybinds.lua")(bindings.bind, "/home/attntd/.local/share/putkin/releases/20260917-settings-keyboard-cc7addc79750/shell.qml")
++dofile("/home/attntd/.local/share/putkin/releases/20260919-mouse-focus-d40d745288bc/config/menu-keybinds.lua")(bindings.bind, "/home/attntd/.local/share/putkin/releases/20260919-mouse-focus-d40d745288bc/shell.qml")
+ 
+ -------------------
+ ---- AUTOSTART ----
+@@ -320,4 +320,4 @@
+ })
+ 
+ -- Putkin handles opacity and reduced motion itself.
+-dofile("/home/attntd/.local/share/putkin/releases/20260917-settings-keyboard-cc7addc79750/config/shell-layers.lua")
++dofile("/home/attntd/.local/share/putkin/releases/20260919-mouse-focus-d40d745288bc/config/shell-layers.lua")
+--- /home/attntd/.config/hypr/autostart.lua
++++ prepared/autostart.lua
+@@ -1,5 +1,5 @@
+ hl.on("hyprland.start", function()
+-  hl.exec_cmd("uwsm app -- env PUTKIN_WALLPAPER=/home/attntd/.config/hypr/backgrounds/Cloudsnight.jpg quickshell --no-duplicate --daemonize --path /home/attntd/.local/share/putkin/releases/20260917-settings-keyboard-cc7addc79750/shell.qml")
++  hl.exec_cmd("uwsm app -- env PUTKIN_WALLPAPER=/home/attntd/.config/hypr/backgrounds/Cloudsnight.jpg quickshell --no-duplicate --daemonize --path /home/attntd/.local/share/putkin/releases/20260919-mouse-focus-d40d745288bc/shell.qml")
+ end)
+ 
+ --hl.on("hyprland.start", function ()
+--- /home/attntd/.local/share/chezmoi/dot_config/hypr/autostart.lua
++++ prepared/autostart.lua
+@@ -1,5 +1,5 @@
+ hl.on("hyprland.start", function()
+-  hl.exec_cmd("uwsm app -- env PUTKIN_WALLPAPER=/home/attntd/.config/hypr/backgrounds/Cloudsnight.jpg quickshell --no-duplicate --daemonize --path /home/attntd/.local/share/putkin/releases/20260917-settings-keyboard-cc7addc79750/shell.qml")
++  hl.exec_cmd("uwsm app -- env PUTKIN_WALLPAPER=/home/attntd/.config/hypr/backgrounds/Cloudsnight.jpg quickshell --no-duplicate --daemonize --path /home/attntd/.local/share/putkin/releases/20260919-mouse-focus-d40d745288bc/shell.qml")
+ end)
+ 
+ --hl.on("hyprland.start", function ()
+--- /home/attntd/.config/hypr/modules/system_binds.lua
++++ prepared/system_binds.lua
+@@ -62,7 +62,7 @@
+     local main_mod = "SUPER"
+     local lock_command = "env PUTKIN_WALLPAPER=/home/attntd/.config/hypr/backgrounds/Cloudsnight.jpg /home/attntd/.local/share/putkin/releases/20260917-icons-cd3b25f5725c/scripts/lock-session"
+ 
+-    bind(main_mod .. " + TAB", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260917-settings-keyboard-cc7addc79750/shell.qml call bar focus"), {
++    bind(main_mod .. " + TAB", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260919-mouse-focus-d40d745288bc/shell.qml call bar focus"), {
+         description = "[Putkin] Focus bar",
+     }, "focus Putkin bar")
+ 
+@@ -80,7 +80,7 @@
+     bind(main_mod .. " + P", hl.dsp.window.pseudo(), { description = "[Window] Toggle pseudo-tiling" }, "toggle pseudo-tiling")
+     bind(main_mod .. " + S", hl.dsp.layout("togglesplit"), { description = "[Layout] Toggle split" }, "toggle split")
+ 
+-    bind(main_mod .. " + N", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260917-settings-keyboard-cc7addc79750/shell.qml call notifications focus"), { description = "[Notifications] Toggle center" }, "toggle notification center")
++    bind(main_mod .. " + N", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260919-mouse-focus-d40d745288bc/shell.qml call notifications focus"), { description = "[Notifications] Toggle center" }, "toggle notification center")
+ 
+     bind(main_mod .. " + SHIFT + L", hl.dsp.exec_cmd(lock_command), { description = "[Session] Lock screen" }, "lock screen")
+ 
+@@ -133,12 +133,12 @@
+     bind(main_mod .. " + SHIFT + mouse:272", hl.dsp.window.drag(), { mouse = true, description = "[Mouse] Move window" }, "drag window")
+     bind(main_mod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true, description = "[Mouse] Resize window" }, "resize window")
+ 
+-    bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260917-settings-keyboard-cc7addc79750/shell.qml call audio changeVolume 5"), { repeating = true, description = "[Hardware] Volume up" }, "volume up")
+-    bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260917-settings-keyboard-cc7addc79750/shell.qml call audio changeVolume -5"), { repeating = true, description = "[Hardware] Volume down" }, "volume down")
+-    bind("XF86AudioMute", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260917-settings-keyboard-cc7addc79750/shell.qml call audio toggleMute"), { repeating = true, description = "[Hardware] Toggle audio mute" }, "toggle audio mute")
++    bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260919-mouse-focus-d40d745288bc/shell.qml call audio changeVolume 5"), { repeating = true, description = "[Hardware] Volume up" }, "volume up")
++    bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260919-mouse-focus-d40d745288bc/shell.qml call audio changeVolume -5"), { repeating = true, description = "[Hardware] Volume down" }, "volume down")
++    bind("XF86AudioMute", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260919-mouse-focus-d40d745288bc/shell.qml call audio toggleMute"), { repeating = true, description = "[Hardware] Toggle audio mute" }, "toggle audio mute")
+     bind("XF86AudioMicMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"), { locked = true, repeating = true, description = "[Hardware] Toggle microphone mute" }, "toggle microphone mute")
+-    bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260917-settings-keyboard-cc7addc79750/shell.qml call brightness change 5"), { repeating = true, description = "[Hardware] Brightness up" }, "brightness up")
+-    bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260917-settings-keyboard-cc7addc79750/shell.qml call brightness change -5"), { repeating = true, description = "[Hardware] Brightness down" }, "brightness down")
++    bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260919-mouse-focus-d40d745288bc/shell.qml call brightness change 5"), { repeating = true, description = "[Hardware] Brightness up" }, "brightness up")
++    bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260919-mouse-focus-d40d745288bc/shell.qml call brightness change -5"), { repeating = true, description = "[Hardware] Brightness down" }, "brightness down")
+ 
+     bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true, description = "[Media] Next" }, "next media")
+     bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true, description = "[Media] Play or pause" }, "pause media")
+--- /home/attntd/.local/share/chezmoi/dot_config/hypr/modules/system_binds.lua
++++ prepared/system_binds.lua
+@@ -62,7 +62,7 @@
+     local main_mod = "SUPER"
+     local lock_command = "env PUTKIN_WALLPAPER=/home/attntd/.config/hypr/backgrounds/Cloudsnight.jpg /home/attntd/.local/share/putkin/releases/20260917-icons-cd3b25f5725c/scripts/lock-session"
+ 
+-    bind(main_mod .. " + TAB", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260917-settings-keyboard-cc7addc79750/shell.qml call bar focus"), {
++    bind(main_mod .. " + TAB", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260919-mouse-focus-d40d745288bc/shell.qml call bar focus"), {
+         description = "[Putkin] Focus bar",
+     }, "focus Putkin bar")
+ 
+@@ -80,7 +80,7 @@
+     bind(main_mod .. " + P", hl.dsp.window.pseudo(), { description = "[Window] Toggle pseudo-tiling" }, "toggle pseudo-tiling")
+     bind(main_mod .. " + S", hl.dsp.layout("togglesplit"), { description = "[Layout] Toggle split" }, "toggle split")
+ 
+-    bind(main_mod .. " + N", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260917-settings-keyboard-cc7addc79750/shell.qml call notifications focus"), { description = "[Notifications] Toggle center" }, "toggle notification center")
++    bind(main_mod .. " + N", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260919-mouse-focus-d40d745288bc/shell.qml call notifications focus"), { description = "[Notifications] Toggle center" }, "toggle notification center")
+ 
+     bind(main_mod .. " + SHIFT + L", hl.dsp.exec_cmd(lock_command), { description = "[Session] Lock screen" }, "lock screen")
+ 
+@@ -133,12 +133,12 @@
+     bind(main_mod .. " + SHIFT + mouse:272", hl.dsp.window.drag(), { mouse = true, description = "[Mouse] Move window" }, "drag window")
+     bind(main_mod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true, description = "[Mouse] Resize window" }, "resize window")
+ 
+-    bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260917-settings-keyboard-cc7addc79750/shell.qml call audio changeVolume 5"), { repeating = true, description = "[Hardware] Volume up" }, "volume up")
+-    bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260917-settings-keyboard-cc7addc79750/shell.qml call audio changeVolume -5"), { repeating = true, description = "[Hardware] Volume down" }, "volume down")
+-    bind("XF86AudioMute", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260917-settings-keyboard-cc7addc79750/shell.qml call audio toggleMute"), { repeating = true, description = "[Hardware] Toggle audio mute" }, "toggle audio mute")
++    bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260919-mouse-focus-d40d745288bc/shell.qml call audio changeVolume 5"), { repeating = true, description = "[Hardware] Volume up" }, "volume up")
++    bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260919-mouse-focus-d40d745288bc/shell.qml call audio changeVolume -5"), { repeating = true, description = "[Hardware] Volume down" }, "volume down")
++    bind("XF86AudioMute", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260919-mouse-focus-d40d745288bc/shell.qml call audio toggleMute"), { repeating = true, description = "[Hardware] Toggle audio mute" }, "toggle audio mute")
+     bind("XF86AudioMicMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"), { locked = true, repeating = true, description = "[Hardware] Toggle microphone mute" }, "toggle microphone mute")
+-    bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260917-settings-keyboard-cc7addc79750/shell.qml call brightness change 5"), { repeating = true, description = "[Hardware] Brightness up" }, "brightness up")
+-    bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260917-settings-keyboard-cc7addc79750/shell.qml call brightness change -5"), { repeating = true, description = "[Hardware] Brightness down" }, "brightness down")
++    bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260919-mouse-focus-d40d745288bc/shell.qml call brightness change 5"), { repeating = true, description = "[Hardware] Brightness up" }, "brightness up")
++    bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("quickshell ipc --path /home/attntd/.local/share/putkin/releases/20260919-mouse-focus-d40d745288bc/shell.qml call brightness change -5"), { repeating = true, description = "[Hardware] Brightness down" }, "brightness down")
+ 
+     bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true, description = "[Media] Next" }, "next media")
+     bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true, description = "[Media] Play or pause" }, "pause media")

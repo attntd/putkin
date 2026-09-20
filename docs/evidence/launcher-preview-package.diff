@@ -1,0 +1,525 @@
+--- before/core/Metrics.qml
++++ after/core/Metrics.qml
+@@ -34,6 +34,9 @@
+     })
+     readonly property int tooltipDelay: 600
+     readonly property int launcherWidth: 640
++    readonly property int launcherPreviewSize: 320
++    readonly property int launcherPreviewMinimum: 160
++    readonly property int launcherClipboardRowHeight: 36
+     readonly property int screenshotWidth: 960
+     readonly property int screenshotHeight: 640
+     readonly property int screenshotMinWidth: 240
+--- before/core/PanelHost.qml
++++ after/core/PanelHost.qml
+@@ -30,7 +30,14 @@
+     readonly property real rightEdge: surfaceId === "trayMenu" || surfaceId === "trayOverflow"
+         ? anchorRight : screen ? screen.width - Metrics.panelGap : 0
+     readonly property int surfaceWidth: Math.min(surfaceId === "settings" ? Metrics.settingsWidth : surfaceId === "launcher" ? Metrics.launcherWidth : Metrics.panelWidth, availableWidth)
+-    readonly property real surfaceX: (surfaceId === "power" || surfaceId === "launcher" || surfaceId === "settings") && screen ? (screen.width - surfaceWidth) / 2
++    readonly property int launcherPreviewSize: {
++        if (surfaceId !== "launcher" || !launcher || !launcher.previewId) return 0;
++        const size = Math.min(Metrics.launcherPreviewSize, availableHeight, availableWidth - surfaceWidth - Metrics.panelGap);
++        return size >= Metrics.launcherPreviewMinimum ? size : 0;
++    }
++    readonly property int surfaceExtentWidth: surfaceWidth + (launcherPreviewSize ? Metrics.panelGap + launcherPreviewSize : 0)
++    readonly property real surfaceX: (surfaceId === "power" || surfaceId === "launcher" || surfaceId === "settings") && screen
++        ? Math.min((screen.width - surfaceWidth) / 2, screen.width - Metrics.panelGap - surfaceExtentWidth)
+         : Math.max(Metrics.panelGap, Math.min(availableWidth + Metrics.panelGap
+         - surfaceWidth, rightEdge - surfaceWidth))
+ 
+--- before/modules/launcher/LauncherPreview.qml
++++ after/modules/launcher/LauncherPreview.qml
+@@ -0,0 +1,81 @@
++import QtQuick
++import QtQuick.Controls.Basic as Controls
++import "../../core"
++import "../../components" as UI
++
++Controls.Control {
++    id: root
++    required property var service
++    required property var launcherView
++    objectName: "launcherPreview"
++    padding: Metrics.space12
++    focusPolicy: Qt.StrongFocus
++    Accessible.name: "Podgląd schowka"
++    Keys.forwardTo: [input]
++    UI.ControlInput { id: input; control: root }
++    KeyNavigation.tab: launcherView.firstControl
++    KeyNavigation.backtab: launcherView.resultsControl
++    Component.onDestruction: {
++        if (activeFocus && launcherView && launcherView.enabled) launcherView.focusResults();
++    }
++
++    function scroll(offset: real): void {
++        textView.contentY = Math.max(0, Math.min(textView.contentHeight - textView.height, textView.contentY + offset));
++    }
++    Keys.onPressed: event => {
++        if (event.modifiers !== Qt.NoModifier && event.modifiers !== Qt.KeypadModifier) return;
++        if (event.key === Qt.Key_H || event.key === Qt.Key_Left || event.key === Qt.Key_Escape) launcherView.focusResults();
++        else if (event.key === Qt.Key_J || event.key === Qt.Key_Down) scroll(Metrics.launcherClipboardRowHeight);
++        else if (event.key === Qt.Key_K || event.key === Qt.Key_Up) scroll(-Metrics.launcherClipboardRowHeight);
++        else if (event.key === Qt.Key_PageDown) scroll(textView.height);
++        else if (event.key === Qt.Key_PageUp) scroll(-textView.height);
++        else if (event.key === Qt.Key_Slash || event.key === Qt.Key_I) launcherView.focusInitial();
++        else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
++            if (!event.isAutoRepeat) launcherView.activate();
++        } else return;
++        event.accepted = true;
++    }
++    background: UI.AccentRectangle {
++        color: Theme.backgroundStrong
++        border.width: Metrics.borderWidth
++        border.color: Theme.accentBorder
++        accentOutline: true
++        UI.FocusIndicator { control: root; anchors.margins: Metrics.focusOffset }
++    }
++    contentItem: Item {
++        Image {
++            objectName: "launcherPreviewImage"
++            anchors.fill: parent
++            source: root.service.previewImage
++            sourceSize: Qt.size(Metrics.launcherPreviewSize * 2, Metrics.launcherPreviewSize * 2)
++            fillMode: Image.PreserveAspectFit
++            autoTransform: true
++            cache: false
++            visible: source.toString().length > 0
++        }
++        Controls.ScrollView {
++            anchors.fill: parent
++            visible: root.service.previewImage.length === 0
++            contentWidth: availableWidth
++            focusPolicy: Qt.NoFocus
++            Controls.ScrollBar.horizontal.policy: Controls.ScrollBar.AlwaysOff
++            Flickable {
++                id: textView
++                objectName: "launcherPreviewScroll"
++                clip: true
++                boundsBehavior: Flickable.StopAtBounds
++                contentWidth: width
++                contentHeight: content.implicitHeight
++                UI.PanelText {
++                    id: content
++                    objectName: "launcherPreviewText"
++                    width: textView.width
++                    text: root.service.previewText
++                    textFormat: Text.PlainText
++                    wrapMode: Text.Wrap
++                    onTextChanged: textView.contentY = 0
++                }
++            }
++        }
++    }
++}
+--- before/modules/launcher/LauncherView.qml
++++ after/modules/launcher/LauncherView.qml
+@@ -11,15 +11,20 @@
+     id: root
+     required property var service
+     property real maximumHeight: 520
++    property Item previewControl: null
+     property int selectedIndex: 0
+     property string selectedKey: ""
+     property bool destroying: false
+     property bool updateQueued: false
+     readonly property var firstControl: search
++    readonly property var resultsControl: results
+     readonly property bool navigating: results.activeFocus
+     readonly property int count: service ? service.results.length : 0
+-    implicitHeight: Math.min(maximumHeight, Metrics.controlHeight + Metrics.space12 + Metrics.space24
+-        + Math.max(1, Math.min(count, 7)) * Metrics.launcherRowHeight)
++    readonly property bool showHeading: service && service.historyView && !service.mode && !service.commandInput
++    readonly property real rowsHeight: count ? service.results.slice(0, 7).reduce((height, entry) =>
++        height + (entry.kind === "clipboard" ? Metrics.launcherClipboardRowHeight : Metrics.launcherRowHeight), 0) : Metrics.launcherRowHeight
++    implicitHeight: Math.min(maximumHeight, Metrics.controlHeight + Metrics.space8
++        + (showHeading ? heading.implicitHeight + Metrics.space12 : 0) + rowsHeight)
+     signal dismissed()
+     signal requested(string surface)
+     signal ensureVisible(Item item)
+@@ -28,8 +33,9 @@
+         return ({application: "Aplikacje", file: "Pliki", clipboard: "Schowek", recent: "Ostatnie", command: "Komenda", workspaceCommand: "Workspace"})[mode] || "";
+     }
+     function focusInitial(reason = Qt.TabFocusReason): void { search.forceActiveFocus(reason); search.cursorPosition = search.text.length; }
++    function focusResults(): void { results.focusReason = Qt.TabFocusReason; results.forceActiveFocus(Qt.TabFocusReason); }
+     function dismissOrCollapse(): void {
+-        if (search.activeFocus && count > 0) results.forceActiveFocus(Qt.TabFocusReason);
++        if (search.activeFocus && count > 0) focusResults();
+         else dismissed();
+     }
+     function select(offset: int): void {
+@@ -40,6 +46,7 @@
+     function rememberSelection(): void {
+         const entry = service && service.results[selectedIndex];
+         selectedKey = entry ? entry.kind + ":" + entry.id : "";
++        if (service) service.previewEntry(entry);
+     }
+     function reconcile(): void {
+         const index = service ? service.results.findIndex(entry => entry.kind + ":" + entry.id === selectedKey) : -1;
+@@ -65,11 +72,13 @@
+     }
+     function key(event: var): void {
+         if (event.modifiers !== Qt.NoModifier && event.modifiers !== Qt.KeypadModifier) return;
++        results.focusReason = Qt.TabFocusReason;
+         if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
+             if (!event.isAutoRepeat) activate();
+         } else if (event.key === Qt.Key_Down || (navigating && event.key === Qt.Key_J)) select(1);
+         else if (event.key === Qt.Key_Up || (navigating && event.key === Qt.Key_K)) select(-1);
+         else if (event.key === Qt.Key_Escape) dismissOrCollapse();
++        else if (navigating && event.key === Qt.Key_L && previewControl && previewControl.visible) previewControl.forceActiveFocus(Qt.TabFocusReason);
+         else if (navigating && (event.key === Qt.Key_L || event.key === Qt.Key_Slash || event.key === Qt.Key_I)) focusInitial();
+         else if (navigating && event.key === Qt.Key_H) {
+             if (chip.visible) chip.forceActiveFocus(Qt.TabFocusReason); else focusInitial();
+@@ -112,7 +121,7 @@
+                 Layout.maximumWidth: Math.max(80, root.width * 0.4)
+                 rightTarget: search
+                 downTarget: results
+-                onClicked: { root.service.removeFilter(false); root.focusInitial(); }
++                onClicked: { root.service.removeFilter(false); root.focusInitial(focusReason); }
+             }
+             UI.TextField {
+                 id: search
+@@ -129,17 +138,18 @@
+             }
+         }
+         UI.PanelText {
++            id: heading
+             Layout.fillWidth: true
+             Layout.topMargin: Metrics.space4
+             objectName: "launcherHeading"
+-            visible: !root.service || !root.service.commandInput
+-            text: root.service && root.service.historyView ? "Ostatnie"
+-                : root.label(root.service ? root.service.mode : "") || "Wyniki"
++            visible: root.showHeading
++            text: "Ostatnie"
+             color: Theme.textMuted
+             font.pixelSize: Metrics.smallFontSize
+         }
+         ListView {
+             id: results
++            property int focusReason: Qt.TabFocusReason
+             objectName: "launcherResults"
+             Layout.fillWidth: true
+             Layout.fillHeight: true
+@@ -150,8 +160,11 @@
+             currentIndex: -1
+             keyNavigationEnabled: false
+             activeFocusOnTab: true
+-            KeyNavigation.tab: chip.visible ? chip : search
++            onActiveFocusChanged: { if (activeFocus) focusReason = Qt.TabFocusReason; }
++            KeyNavigation.tab: root.previewControl && root.previewControl.visible ? root.previewControl : chip.visible ? chip : search
+             KeyNavigation.backtab: search
++            Keys.forwardTo: [resultsInput]
++            UI.ControlInput { id: resultsInput; control: results }
+             Keys.onPressed: event => root.key(event)
+             onHeightChanged: root.queueReconcile()
+             Controls.ScrollBar.vertical: Controls.ScrollBar { policy: Controls.ScrollBar.AsNeeded }
+@@ -159,23 +172,34 @@
+                 id: row
+                 required property var modelData
+                 required property int index
++                readonly property bool clipboard: modelData.kind === "clipboard"
+                 width: results.width
+-                height: Metrics.launcherRowHeight
++                height: clipboard ? Metrics.launcherClipboardRowHeight : Metrics.launcherRowHeight
+                 padding: Metrics.space8
+                 hoverEnabled: true
+                 focusPolicy: Qt.NoFocus
+                 Accessible.name: modelData.title + ", " + root.label(modelData.kind)
++                onPressedChanged: { if (pressed) results.focusReason = Qt.MouseFocusReason; }
+                 onClicked: { root.selectedIndex = index; root.rememberSelection(); root.activate(); }
++                HoverHandler {
++                    onPointChanged: {
++                        if (!hovered) return;
++                        results.focusReason = Qt.MouseFocusReason;
++                        root.selectedIndex = row.index;
++                        root.rememberSelection();
++                    }
++                }
+                 background: UI.AccentRectangle {
+                     color: root.selectedIndex === row.index ? Theme.surface : row.hovered ? Theme.background : "transparent"
+                     border.width: root.selectedIndex === row.index ? Metrics.borderWidth : 0
+-                    border.color: root.navigating ? Theme.accentBorder : Theme.border
+-                    accentOutline: root.navigating && root.selectedIndex === row.index
++                    border.color: Theme.border
++                    UI.FocusIndicator { control: results; shown: root.selectedIndex === row.index }
+                 }
+                 contentItem: RowLayout {
+                     spacing: Metrics.space12
+                     UI.Glyph {
+                         objectName: "launcherApplicationIcon"
++                        visible: !row.clipboard
+                         section: "launcher"
+                         Layout.preferredWidth: slotSize
+                         Layout.preferredHeight: slotSize
+@@ -184,8 +208,10 @@
+                     ColumnLayout {
+                         Layout.fillWidth: true
+                         spacing: 0
+-                        UI.PanelText { Layout.fillWidth: true; textFormat: Text.PlainText; text: row.modelData.title; elide: Text.ElideRight; maximumLineCount: 1 }
++                        UI.PanelText { objectName: "launcherRowTitle"; Layout.fillWidth: true; textFormat: Text.PlainText; text: row.modelData.title; elide: Text.ElideRight; maximumLineCount: 1; wrapMode: Text.NoWrap }
+                         UI.PanelText {
++                            objectName: "launcherRowSubtitle"
++                            visible: !row.clipboard
+                             Layout.fillWidth: true
+                             text: row.modelData.subtitle || root.label(row.modelData.kind)
+                             textFormat: Text.PlainText
+--- before/modules/launcher/qmldir
++++ after/modules/launcher/qmldir
+@@ -1 +1,2 @@
+ LauncherView 1.0 LauncherView.qml
++LauncherPreview 1.0 LauncherPreview.qml
+--- before/modules/quicksettings/InteractivePanelWindow.qml
++++ after/modules/quicksettings/InteractivePanelWindow.qml
+@@ -43,14 +43,20 @@
+     mask: Region {
+         x: surface.x
+         y: surface.y
+-        width: root.host.interactive ? surface.width : 0
+-        height: root.host.interactive ? surface.height : 0
++        width: root.host.interactive ? root.host.surfaceWidth : 0
++        height: root.host.interactive ? surface.primaryHeight : 0
++        Region {
++            x: surface.x + root.host.surfaceWidth + Metrics.panelGap
++            y: surface.y
++            width: root.host.interactive ? root.host.launcherPreviewSize : 0
++            height: width
++        }
+     }
+     PanelSurface {
+         id: surface
+         host: root.host
+         y: root.host.surfaceY(height)
+-        width: root.host.surfaceWidth
++        width: root.host.surfaceExtentWidth
+         height: Math.min(implicitHeight, root.host.availableHeight)
+     }
+     HyprlandFocusGrab {
+--- before/modules/quicksettings/PanelSurface.qml
++++ after/modules/quicksettings/PanelSurface.qml
+@@ -22,8 +22,9 @@
+     property int focusedReason: Qt.TabFocusReason
+     readonly property var page: pageLoader.item
+     readonly property alias viewport: flick
+-    implicitWidth: host.surfaceWidth
+-    implicitHeight: (page ? page.implicitHeight : 0) + Metrics.space12 * 2
++    readonly property real primaryHeight: Math.min(height, (page ? page.implicitHeight : 0) + Metrics.space12 * 2)
++    implicitWidth: host.surfaceExtentWidth
++    implicitHeight: Math.max((page ? page.implicitHeight : 0) + Metrics.space12 * 2, host.launcherPreviewSize)
+     enabled: host.interactive
+     shown: host.interactive
+ 
+@@ -83,15 +84,19 @@
+     }
+ 
+     UI.AccentRectangle {
+-        anchors.fill: parent
++        width: root.host.surfaceWidth
++        height: root.primaryHeight
+         color: Theme.backgroundStrong
+         border.color: Theme.accentBorder
+         border.width: Metrics.borderWidth
+         accentOutline: true
+     }
+     Controls.ScrollView {
+-        anchors.fill: parent
+-        anchors.margins: Metrics.space12 - Metrics.focusOffset - Metrics.focusWidth
++        readonly property real inset: Metrics.space12 - Metrics.focusOffset - Metrics.focusWidth
++        x: inset
++        y: inset
++        width: root.host.surfaceWidth - inset * 2
++        height: root.primaryHeight - inset * 2
+         contentWidth: availableWidth
+         Controls.ScrollBar.horizontal.policy: Controls.ScrollBar.AlwaysOff
+         Flickable {
+@@ -121,7 +126,15 @@
+         }
+     }
+     Component { id: quickPage; QuickSettingsView { caffeinate: root.host.caffeinate; nightLight: root.host.nightLight; sessionService: root.host.sessionService; audio: root.host.audio; brightness: root.host.brightness; battery: root.host.battery; network: root.host.network; bluetooth: root.host.bluetooth; notifications: root.host.notifications; notificationController: root.host.notificationController; onHandoffRequested: root.host.coordinator.close(false); monitor: root.host.screen ? root.host.screen.name : "" } }
+-    Component { id: launcherPage; LauncherView { service: root.host.launcher; maximumHeight: Math.max(1, root.host.availableHeight - Metrics.space12 * 2) } }
++    Loader {
++        id: previewLoader
++        active: root.host.launcherPreviewSize > 0 && root.page !== null
++        x: root.host.surfaceWidth + Metrics.panelGap
++        width: root.host.launcherPreviewSize
++        height: width
++        sourceComponent: LauncherPreview { service: root.host.launcher; launcherView: root.page }
++    }
++    Component { id: launcherPage; LauncherView { service: root.host.launcher; previewControl: previewLoader.item as Item; maximumHeight: Math.max(1, root.host.availableHeight - Metrics.space12 * 2) } }
+     Component { id: powerPage; PowerView { sessionService: root.host.sessionService } }
+     Component { id: batteryPage; BatteryView { battery: root.host.battery; powerProfiles: root.host.powerProfiles } }
+     Component { id: audioPage; AudioView { audio: root.host.audio; monitor: root.host.screen ? root.host.screen.name : "" } }
+--- before/services/LauncherBackend.qml
++++ after/services/LauncherBackend.qml
+@@ -16,6 +16,7 @@
+     property bool visible: false
+     signal searched(int revision, var entries, string error)
+     signal activated(int request, string error)
++    signal previewed(int revision, string key, string text, string image, string error)
+ 
+ 
+ 
+@@ -30,6 +31,9 @@
+     }
+     function search(revision: int, query: string): bool {
+         return send({op: "search", revision: revision, query: query});
++    }
++    function preview(revision: int, key: string): bool {
++        return send({op: "preview", revision: revision, key: key});
+     }
+     function activate(request: int, entry: var): bool {
+         const app = entry.application;
+@@ -56,6 +60,7 @@
+             clipboardError = data.error;
+         } else if (data.type === "files") searched(data.revision, data.entries, data.error);
+         else if (data.type === "activated") activated(data.request, data.error);
++        else if (data.type === "preview") previewed(data.revision, data.key, data.text, data.image, data.error);
+     }
+     readonly property Process process: Process {
+         command: [root.executable, root.helperPath]
+--- before/services/LauncherService.qml
++++ after/services/LauncherService.qml
+@@ -31,8 +31,22 @@
+     property int actionGeneration: -1
+     property bool workspaceAction: false
+     property string lastError: ""
++    property string previewId: ""
++    property string previewText: ""
++    property string previewImage: ""
++    property int previewRevision: 0
+     signal activated()
+     signal focusRequested()
++
++    function previewEntry(entry: var): void {
++        const key = active && backend.ready && entry && entry.kind === "clipboard" ? entry.id : "";
++        if (key === previewId) return;
++        previewId = key;
++        previewText = "";
++        previewImage = "";
++        previewRevision++;
++        backend.preview(previewRevision, key);
++    }
+ 
+ 
+ 
+@@ -73,6 +87,7 @@
+         if (active === value) return;
+         generation++;
+         active = value;
++        previewEntry(null);
+         if (value) {
+             chipMode = ""; text = ""; lastError = "";
+             commandMonitor = monitorName || (workspaceService ? workspaceService.focusedMonitorName : "");
+@@ -152,7 +167,7 @@
+     }
+     readonly property Connections changes: Connections {
+         target: root.backend
+-        function onReadyChanged(): void { root.schedule(); root.reportError(); }
++        function onReadyChanged(): void { if (!root.backend.ready) root.previewEntry(null); root.schedule(); root.reportError(); }
+         function onLastErrorChanged(): void { if (!root.backend.ready && !root.workspaceAction) { root.busy = false; root.actionDeadline.stop(); } root.reportError(); }
+         function onClipboardErrorChanged(): void { root.reportError(); }
+         function onHistoryErrorChanged(): void { root.reportError(); }
+@@ -165,6 +180,12 @@
+         function onActivated(value: int, error: string): void {
+             if (!root.workspaceAction) root.finish(value, error);
+         }
++        function onPreviewed(value: int, key: string, text: string, image: string, error: string): void {
++            if (!root.active || value !== root.previewRevision || key !== root.previewId) return;
++            root.previewText = text;
++            root.previewImage = image;
++            if (error) root.lastError = error;
++        }
+     }
+     readonly property Connections workspaceChanges: Connections {
+         target: root.workspaceService
+--- before/services/launcher_backend.py
++++ after/services/launcher_backend.py
+@@ -5,6 +5,7 @@
+ never interprets search text or filenames as shell commands.
+ """
+ import asyncio
++import base64
+ import json
+ import os
+ from pathlib import Path
+@@ -16,6 +17,7 @@
+ 
+ MAX_ITEMS = 100
+ MAX_BYTES = 2 * 1024 * 1024
++MAX_PREVIEW_CHARS = 32768
+ 
+ 
+ def valid_record(record):
+@@ -126,6 +128,7 @@
+         self.watchers = []
+         self.watch_tasks = []
+         self.search_task = None
++        self.preview_task = None
+         self.clip_lock = asyncio.Lock()
+         self.session_history = list(self.history.records)
+         self.closing = False
+@@ -195,12 +198,41 @@
+         except (OSError, RuntimeError, TimeoutError):
+             self.emit(type='files', revision=revision, entries=[], error='Nie można wyszukać plików (fd).')
+ 
+-    async def copy_clipboard(self, key):
++    async def decode_clipboard(self, key):
+         if not isinstance(key, str) or not key.isdecimal() or not any(entry['id'] == key for entry in self.clips):
+             raise ValueError('clipboard id')
+         data = await run_command(['cliphist', 'decode'], data=(key + '\t').encode(), env=self.env)
+         if len(data) > MAX_BYTES:
+             raise ValueError('clipboard size')
++        return data
++
++    async def preview_clipboard(self, request):
++        key = request.get('key', '')
++        if not self.visible or not key:
++            return
++        text, image, error = '', '', ''
++        try:
++            data = await self.decode_clipboard(key)
++            entry = next(entry for entry in self.clips if entry['id'] == key)
++            mime = (await run_command(['file', '--brief', '--mime-type', '-'], data=data)).decode().strip()
++            if mime.startswith('image/'):
++                image = 'data:' + mime + ';base64,' + base64.b64encode(data).decode('ascii')
++            elif entry['binary']:
++                text = entry['preview']
++            else:
++                text = data.decode('utf-8', 'replace')[:MAX_PREVIEW_CHARS]
++        except (OSError, RuntimeError, ValueError, TimeoutError, StopIteration):
++            error = 'Nie można odczytać podglądu schowka.'
++        self.emit(type='preview', revision=request['revision'], key=key, text=text, image=image, error=error)
++
++    async def cancel_preview(self):
++        if self.preview_task:
++            self.preview_task.cancel()
++            await asyncio.gather(self.preview_task, return_exceptions=True)
++            self.preview_task = None
++
++    async def copy_clipboard(self, key):
++        data = await self.decode_clipboard(key)
+         mime = (await run_command(['file', '--brief', '--mime-type', '-'], data=data)).decode().strip()
+         # Foreground ownership is intentional: the worker cleans it up on exit.
+         # wl-copy closes stdin after reading, then remains alive to serve Wayland.
+@@ -272,6 +304,12 @@
+                     self.visible = bool(request.get('value'))
+                     if self.visible:
+                         await self.refresh_clipboard()
++                    else:
++                        await self.cancel_preview()
++                elif operation == 'preview':
++                    await self.cancel_preview()
++                    if self.visible and request.get('key'):
++                        self.preview_task = asyncio.create_task(self.preview_clipboard(request))
+                 elif operation == 'search':
+                     if self.search_task:
+                         self.search_task.cancel()
+@@ -282,7 +320,7 @@
+         finally:
+             self.closing = True
+             transport.close()
+-            tasks = self.watch_tasks + ([self.search_task] if self.search_task else [])
++            tasks = self.watch_tasks + [task for task in (self.search_task, self.preview_task) if task]
+             for task in tasks:
+                 task.cancel()
+             await asyncio.gather(*tasks, return_exceptions=True)

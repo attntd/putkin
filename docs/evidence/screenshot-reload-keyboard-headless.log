@@ -1,0 +1,11 @@
+PASS: startup: eight owned bindings including Print, no duplicates or errors
+PASS: native square 2px window borders and shared diagonal GPU pixels
+PASS: real Super+Space / Super+: / Super+V keyboard input
+PASS: appearance preview changes window borders; cancel restores the saved palette
+PASS: real floating Settings window, preserved on focus loss, appearance persisted
+PASS: save applies changed shortcuts; old shortcut is removed
+PASS: configured colon aliases execute on Enter and hand off focus to destination
+PASS: configured native window and workspace actions use the captured target
+PASS: foreign shortcut conflict blocks write and preserves live bindings
+PASS: Hyprland and Quickshell reload retain settings and do not accumulate bindings
+PASS: ten native open/close cycles, resources released, no QML/import/config errors

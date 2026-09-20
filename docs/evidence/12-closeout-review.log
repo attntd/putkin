@@ -1,0 +1,12 @@
+PASS: stage 12 accepted for published version 20260916-5132708bd8f7.
+PASS: final executed scripts/check: 137 QML, 0 errors, exit 0.
+PASS: final executed scripts/test: 17 Python, 235 QtTest, 12 integration runners, exit 0.
+PASS: all 25 archived integration files match SHA-256; session 13 checks and notifications passed, fixtures reaped.
+PASS: published runtime and runtime archive match all 110 accepted SHA-256 values.
+PASS: prior native Wayland report, 20 cycles, 18 PNG hashes/dimensions and no remaining child processes.
+PASS: live read-only evidence identifies notification owner and trusted Hypridle; no QML warnings/errors in archived live log.
+PASS: 420 local links and 13 anchors in 7 closeout documents resolve.
+SOURCE INDEX: 252 accepted source entries: prior verified source/test hashes, published runtime, and final documentation.
+SCOPE: concurrent workspace redesign after 21:05 UTC is preserved and explicitly excluded by user; no PASS assigned to those edits.
+LIMITS: no PAM audit, exhaustive hardware fault injection, multi-hour/VRAM test, future-login proof or portable stage 13 installer.
+Recorded UTC: 2026-09-16T21:11:42.653579+00:00

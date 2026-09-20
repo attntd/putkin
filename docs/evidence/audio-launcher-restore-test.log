@@ -1,0 +1,1 @@
+PASS: staged runtime matches sources; restore copies original config, is repeatable, and refuses later user edits before stopping the shell.

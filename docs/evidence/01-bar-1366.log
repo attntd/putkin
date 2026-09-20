@@ -1,0 +1,7 @@
+  INFO: Launching config: "/home/attntd/projects/putkin/bar-preview.qml"
+  INFO: Shell ID: "68e2eb179a1a24000ca5d40de1198f4a" Path ID "68e2eb179a1a24000ca5d40de1198f4a"
+  INFO: Saving logs to "/tmp/pk-isnrwn29/runtime/quickshell/by-id/ekf2r5dglt/log.qslog"
+  INFO qml: PUTKIN_PREVIEW_READY
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_SCREENSHOT_SAVED

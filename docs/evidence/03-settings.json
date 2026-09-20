@@ -1,0 +1,159 @@
+{
+  "timestamp_utc": "2026-09-16T11:28:07.012221+00:00",
+  "checks": [
+    "missing file/parent, live preview/cancel, first atomic save, confirmation, identical save",
+    "restart persistence, reset without save/cancel, reset saved atomically",
+    "20 in-place/atomic external writes and reloads preserve panel, draft, focus, cursor; explicit conflict resolution",
+    "fresh read detects conflict before write without watcher; close cancels queued save",
+    "malformed JSON, future schema, invalid HEX preserve last-good state and block writes",
+    "real file chmod failure, failed parent creation, visible errors, preserved file, successful retries",
+    "read permission failure/recovery",
+    "file deletion/recreation and external creation of missing parent without polling",
+    "soft/hard Quickshell reload and hotplug discard preview; idle has no read/write loop",
+    "malformed file at startup uses defaults without overwriting it"
+  ],
+  "cycles": [
+    {
+      "cycle": 1,
+      "focus": "accentField",
+      "cursor": 7,
+      "created": 2,
+      "destroyed": 1
+    },
+    {
+      "cycle": 2,
+      "focus": "accentField",
+      "cursor": 7,
+      "created": 2,
+      "destroyed": 1
+    },
+    {
+      "cycle": 3,
+      "focus": "accentField",
+      "cursor": 7,
+      "created": 2,
+      "destroyed": 1
+    },
+    {
+      "cycle": 4,
+      "focus": "accentField",
+      "cursor": 7,
+      "created": 2,
+      "destroyed": 1
+    },
+    {
+      "cycle": 5,
+      "focus": "accentField",
+      "cursor": 7,
+      "created": 2,
+      "destroyed": 1
+    },
+    {
+      "cycle": 6,
+      "focus": "accentField",
+      "cursor": 7,
+      "created": 2,
+      "destroyed": 1
+    },
+    {
+      "cycle": 7,
+      "focus": "accentField",
+      "cursor": 7,
+      "created": 2,
+      "destroyed": 1
+    },
+    {
+      "cycle": 8,
+      "focus": "accentField",
+      "cursor": 7,
+      "created": 2,
+      "destroyed": 1
+    },
+    {
+      "cycle": 9,
+      "focus": "accentField",
+      "cursor": 7,
+      "created": 2,
+      "destroyed": 1
+    },
+    {
+      "cycle": 10,
+      "focus": "accentField",
+      "cursor": 7,
+      "created": 2,
+      "destroyed": 1
+    },
+    {
+      "cycle": 11,
+      "focus": "accentField",
+      "cursor": 7,
+      "created": 2,
+      "destroyed": 1
+    },
+    {
+      "cycle": 12,
+      "focus": "accentField",
+      "cursor": 7,
+      "created": 2,
+      "destroyed": 1
+    },
+    {
+      "cycle": 13,
+      "focus": "accentField",
+      "cursor": 7,
+      "created": 2,
+      "destroyed": 1
+    },
+    {
+      "cycle": 14,
+      "focus": "accentField",
+      "cursor": 7,
+      "created": 2,
+      "destroyed": 1
+    },
+    {
+      "cycle": 15,
+      "focus": "accentField",
+      "cursor": 7,
+      "created": 2,
+      "destroyed": 1
+    },
+    {
+      "cycle": 16,
+      "focus": "accentField",
+      "cursor": 7,
+      "created": 2,
+      "destroyed": 1
+    },
+    {
+      "cycle": 17,
+      "focus": "accentField",
+      "cursor": 7,
+      "created": 2,
+      "destroyed": 1
+    },
+    {
+      "cycle": 18,
+      "focus": "accentField",
+      "cursor": 7,
+      "created": 2,
+      "destroyed": 1
+    },
+    {
+      "cycle": 19,
+      "focus": "accentField",
+      "cursor": 7,
+      "created": 2,
+      "destroyed": 1
+    },
+    {
+      "cycle": 20,
+      "focus": "accentField",
+      "cursor": 7,
+      "created": 2,
+      "destroyed": 1
+    }
+  ],
+  "mode": "real Quickshell/FileView + private XDG/D-Bus; mock desktop/offscreen",
+  "expected_permission_diagnostics": 3
+}

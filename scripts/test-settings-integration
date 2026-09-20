@@ -1,0 +1,329 @@
+#!/usr/bin/env python3
+"""Exercise real FileView persistence/watch/errors/reloads under private XDG."""
+
+import argparse
+from datetime import datetime, timezone
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
+import time
+
+from _common import ROOT, ipc_reply, ipc_json, isolated_environment, qml_errors, stop_process_group, tool
+
+
+def eventually(read, predicate, description):
+    deadline = time.monotonic() + 6
+    last = None
+    while time.monotonic() < deadline:
+        last = read()
+        if predicate(last):
+            return last
+        time.sleep(0.025)
+    raise AssertionError(f"{description}: {last}")
+
+
+def document(accent="#cba6f7", secondary="#89b4fa"):
+    return {"schemaVersion": 1, "appearance": {
+        "accent": accent, "accentSecondary": secondary}}
+
+
+def run(output):
+    quickshell, dbus = tool("quickshell"), tool("dbus-run-session")
+    entrypoint = str(ROOT / "settings-test.qml")
+    output.parent.mkdir(parents=True, exist_ok=True)
+    checks = []
+    with tempfile.TemporaryDirectory(prefix="pk-settings-") as directory:
+        env = isolated_environment(directory)
+        env.update(PUTKIN_SCENARIO="closed", PUTKIN_PREVIEW_WIDTH="1000", PUTKIN_PREVIEW_HEIGHT="900",
+                   QS_NO_RELOAD_POPUP="1")
+        path = Path(env["XDG_CONFIG_HOME"]) / "putkin/settings.json"
+        process = None
+        with tempfile.TemporaryFile(mode="w+") as log:
+            def ipc(target, method, *args, starting=False):
+                result = subprocess.run([quickshell, "ipc", "--path", entrypoint, "call", target, method,
+                                         *[str(a).lower() if isinstance(a, bool) else str(a) for a in args]],
+                                        env=env, capture_output=True, text=True, timeout=4)
+                return ipc_reply(result, process, log, starting=starting)
+
+            def state():
+                raw = ipc("probe", "snapshot", starting=True)
+                return ipc_json(raw)
+
+            def start():
+                nonlocal process
+                process = subprocess.Popen([dbus, "--", quickshell, "--no-color", "--path", entrypoint],
+                                           env=env, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+                eventually(state, lambda s: s.get("ready"), "settings ready")
+                time.sleep(0.12)
+
+            def stop():
+                nonlocal process
+                if process:
+                    stop_process_group(process)
+                    process = None
+
+            def open_editor():
+                assert ipc("ui", "openSettings") == "ok"
+                return eventually(state, lambda s: s.get("focus") == "backButton", "editor focus")
+
+            def close_editor():
+                ipc("ui", "closePanels")
+                return eventually(state, lambda s: s.get("loaded") is False, "closed editor")
+
+            def save():
+                before = state()["persisted"]
+                immediate = json.loads(ipc("probe", "save"))
+                assert immediate["accepted"] and immediate["saving"], immediate
+                assert immediate["notice"] == "" and immediate["persisted"] == before, immediate
+                result = eventually(state, lambda s: not s.get("saving", True), "save complete")
+                assert result["notice"] == "Zapisano ustawienia." and not result["saveProblem"], result
+                assert json.loads(path.read_text()) == result["persisted"], "read actual on-disk file"
+                return result
+
+            def external(value, atomic=True):
+                text = value if isinstance(value, str) else json.dumps(value, indent=2) + "\n"
+                if atomic:
+                    temporary = path.with_suffix(".external")
+                    temporary.write_text(text)
+                    temporary.replace(path)
+                else:
+                    path.write_text(text)
+                return text
+
+            try:
+                start()
+                assert state()["path"] == str(path)
+                assert state()["persisted"] == document()
+                assert not path.parent.exists(), "opening settings must not create directories"
+                open_editor()
+                ipc("probe", "edit", "accent", "#123456")
+                assert state()["effective"]["accent"] == "#123456"
+                assert not path.parent.exists(), "preview must not persist"
+                close_editor()
+                assert state()["effective"]["accent"] == "#cba6f7"
+                open_editor()
+                ipc("probe", "edit", "accent", "#ABCDEF")
+                ipc("probe", "edit", "accentSecondary", "#010101")
+                first = save()
+                assert first["nativeSaves"] == 1 and path.parent.is_dir()
+                assert path.stat().st_size > 0
+                inode = path.stat().st_ino
+                stamp = path.stat().st_mtime_ns
+                time.sleep(0.15)
+                assert not state()["conflict"], "own watcher events must not conflict"
+                save()  # No-op is confirmed by a fresh read, never waits for a nonexistent saved signal.
+                assert state()["nativeSaves"] == 1 and path.stat().st_mtime_ns == stamp
+                checks.append("missing file/parent, live preview/cancel, first atomic save, confirmation, identical save")
+
+                stop()
+                start()
+                assert state()["persisted"] == document("#abcdef", "#010101")
+                open_editor()
+                ipc("probe", "reset")
+                assert state()["effective"] == document()["appearance"]
+                assert json.loads(path.read_text()) == document("#abcdef", "#010101")
+                close_editor()
+                assert state()["effective"]["accent"] == "#abcdef"
+                open_editor()
+                ipc("probe", "reset")
+                save()
+                assert path.stat().st_ino != inode, "atomic replace creates a new inode"
+                checks.append("restart persistence, reset without save/cancel, reset saved atomically")
+
+                for retired in [True, False]:
+                    close_editor()
+                    legacy = document("#abcdef", "#123456")
+                    legacy["appearance"]["reducedMotion"] = retired
+                    text = external(legacy)
+                    eventually(state, lambda s: s["token"] == "file:" + text, "legacy settings read")
+                    assert state()["persisted"] == document("#abcdef", "#123456")
+                    open_editor()
+                    assert path.read_text() == text, "reading must not rewrite the retired option"
+                    save()
+                    assert json.loads(path.read_text()) == document("#abcdef", "#123456")
+                checks.append("legacy reducedMotion true/false ignored, accents retained, retired field removed only on explicit save")
+
+                ipc("probe", "edit", "accent", "#102030")
+                ipc("probe", "focusField")
+                opened = state()
+                samples = []
+                for cycle in range(20):
+                    value = document("#fab387" if cycle % 2 else "#94e2d5")
+                    text = external(value, atomic=cycle % 2 == 0)
+                    current = eventually(state, lambda s: s.get("persisted") == value, "external file watch")
+                    ipc("probe", "refresh")
+                    assert current["conflict"] and not current["canSave"]
+                    assert current["draft"]["accent"] == "#102030" and current["effective"]["accent"] == "#102030"
+                    assert current["focus"] == "accentField" and current["cursor"] == opened["cursor"]
+                    assert current["created"] == opened["created"] and current["destroyed"] == opened["destroyed"]
+                    assert not json.loads(ipc("probe", "save"))["accepted"]
+                    assert path.read_text() == text
+                    samples.append({"cycle": cycle + 1, "focus": current["focus"], "cursor": current["cursor"],
+                                    "created": current["created"], "destroyed": current["destroyed"]})
+                ipc("probe", "useLatest")
+                assert not state()["conflict"] and state()["effective"]["accent"] == "#fab387"
+                checks.append("20 in-place/atomic external writes and reloads preserve panel, draft, focus, cursor; explicit conflict resolution")
+
+                # A save checks disk again even when a watcher has not delivered
+                # the event. Disabling it here makes that race deterministic.
+                ipc("probe", "watchFile", False)
+                ipc("probe", "edit", "accent", "#246810")
+                before_saves = state()["nativeSaves"]
+                text = external(document("#b4befe"))
+                assert json.loads(ipc("probe", "save"))["accepted"]
+                raced = eventually(state, lambda s: not s.get("saving", True), "preflight conflict")
+                assert raced["conflict"] and raced["saveProblem"] and raced["nativeSaves"] == before_saves
+                assert path.read_text() == text
+                ipc("probe", "watchFile", True)
+                ipc("probe", "useLatest")
+                ipc("probe", "edit", "accent", "#246811")
+                ipc("probe", "saveAndClose")
+                eventually(state, lambda s: not s.get("loaded", True), "cancel pending save")
+                assert path.read_text() == text and not state()["editing"]
+                assert state()["effective"]["accent"] == "#b4befe"
+                open_editor()
+                checks.append("fresh read detects conflict before write without watcher; close cancels queued save")
+
+                # Last-good state survives malformed/unsupported input. No automatic repair write.
+                for invalid in ["{", '{"schemaVersion":7,"future":true}', '{"schemaVersion":1,"appearance":{"accent":"#ff00"}}']:
+                    before = state()["persisted"]
+                    external(invalid)
+                    bad = eventually(state, lambda s: bool(s.get("readProblem")), "invalid file reported")
+                    assert bad["persisted"] == before
+                    ipc("probe", "useLatest")
+                    ipc("probe", "reset")
+                    assert not json.loads(ipc("probe", "save"))["accepted"]
+                    assert path.read_text() == invalid
+                    external(document("#fab387"))
+                    eventually(state, lambda s: not s.get("readProblem", True), "external repair")
+                    ipc("probe", "useLatest")
+                close_editor()
+                checks.append("malformed JSON, future schema, invalid HEX preserve last-good state and block writes")
+
+                # Failed writes to an existing file and to a missing app directory.
+                assert os.geteuid() != 0, "permission tests require an unprivileged user"
+                open_editor()
+                original = path.read_bytes()
+                path.chmod(0o444)
+                ipc("probe", "edit", "accent", "#111111")
+                assert json.loads(ipc("probe", "save"))["accepted"]
+                denied = eventually(state, lambda s: bool(s.get("saveProblem")), "save permission failure")
+                assert denied["nativeFailures"] > 0 and not denied["saving"]
+                assert denied["notice"] == "" and path.read_bytes() == original
+                path.chmod(0o600)
+                save()
+                close_editor()
+                stop()
+                path.unlink()
+                path.parent.rmdir()
+                config = Path(env["XDG_CONFIG_HOME"])
+                config.chmod(0o500)
+                start()
+                open_editor()
+                assert json.loads(ipc("probe", "save"))["accepted"]
+                denied = eventually(state, lambda s: bool(s.get("saveProblem")), "mkdir permission failure")
+                assert denied["nativeFailures"] == 1 and not path.parent.exists()
+                config.chmod(0o700)
+                save()
+                checks.append("real file chmod failure, failed parent creation, visible errors, preserved file, successful retries")
+
+                # Loss of read access also keeps the last-good state and cannot be saved over.
+                close_editor()
+                path.chmod(0o000)
+                ipc("probe", "refresh")
+                eventually(state, lambda s: bool(s.get("readProblem")), "read permission failure")
+                open_editor()
+                assert not json.loads(ipc("probe", "save"))["accepted"]
+                path.chmod(0o600)
+                ipc("probe", "refresh")
+                eventually(state, lambda s: not s.get("readProblem", True), "read permission recovery")
+                ipc("probe", "useLatest")
+                close_editor()
+                checks.append("read permission failure/recovery")
+
+                # Deletion, recreation and creation of a previously absent application directory.
+                path.unlink()
+                eventually(state, lambda s: s.get("token") == "missing", "deletion watch")
+                external(document("#94e2d5"))
+                eventually(state, lambda s: s.get("persisted") == document("#94e2d5"), "recreation watch")
+                stop()
+                path.unlink()
+                path.parent.rmdir()
+                start()
+                path.parent.mkdir()
+                external(document("#fab387"))
+                eventually(state, lambda s: s.get("persisted") == document("#fab387"), "parent creation watch")
+                checks.append("file deletion/recreation and external creation of missing parent without polling")
+
+                for hard in [False, True]:
+                    open_editor()
+                    ipc("probe", "edit", "accent", "#000001")
+                    generation = state()["generation"]
+                    ipc("probe", "reloadShell", hard)
+                    current = eventually(state, lambda s: s.get("ready") and s.get("generation") != generation, "shell reload")
+                    assert not current["editing"] and current["effective"]["accent"] == "#fab387"
+                    assert json.loads(path.read_text()) == document("#fab387")
+                    time.sleep(0.12)
+                open_editor()
+                ipc("probe", "edit", "accent", "#000002")
+                ipc("probe", "removeScreen")
+                eventually(state, lambda s: not s.get("loaded", True), "hotplug discards draft")
+                assert state()["effective"]["accent"] == "#fab387"
+                reads = state()["reads"]
+                writes = state()["nativeSaves"]
+                mtime = path.stat().st_mtime_ns
+                time.sleep(0.3)
+                assert state()["reads"] == reads and state()["nativeSaves"] == writes
+                assert path.stat().st_mtime_ns == mtime, "no write/reload feedback loop"
+                checks.append("soft/hard Quickshell reload and hotplug discard preview; idle has no read/write loop")
+
+                stop()
+                external("{")
+                start()
+                assert state()["persisted"] == document() and state()["readProblem"]
+                open_editor()
+                assert not json.loads(ipc("probe", "save"))["accepted"] and path.read_text() == "{"
+                checks.append("malformed file at startup uses defaults without overwriting it")
+                report = {"timestamp_utc": datetime.now(timezone.utc).isoformat(), "checks": checks,
+                          "cycles": samples, "mode": "real Quickshell/FileView + private XDG/D-Bus; mock desktop/offscreen"}
+                stop()
+                log.seek(0)
+                logs = log.read()
+                # Qt's watcher reports the intentionally chmod(000) file. Keep
+                # the exact path-scoped diagnostic visible; other warnings fail.
+                denied_watch = f"WARN : inotify_add_watch({path}) failed: (Permission denied)"
+                diagnostics = qml_errors(logs, allow_offscreen_masks=True)
+                assert not [line for line in diagnostics if line.strip() != denied_watch], logs
+                expected = [line for line in diagnostics if line.strip() == denied_watch]
+                for line in expected:
+                    print(line)
+                report["expected_permission_diagnostics"] = len(expected)
+                output.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n")
+                print(f"PASS: settings FileView integration; {len(checks)} groups, 20 reload cycles, restart and soft/hard reload")
+            finally:
+                stop()
+                # Ensure failed permission assertions cannot hinder cleanup.
+                Path(env["XDG_CONFIG_HOME"]).chmod(0o700)
+                if path.exists():
+                    path.chmod(0o600)
+                log.seek(0)
+                output.with_suffix(".log").write_text(log.read())
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, default=ROOT / "artifacts/settings-integration.json")
+    args = parser.parse_args()
+    try:
+        run(args.output.resolve())
+    except (AssertionError, OSError, subprocess.SubprocessError) as error:
+        print(f"FAIL: {error}; log: {args.output.with_suffix('.log')}", file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -1,0 +1,9 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::BatteryTray::initTestCase()
+PASS   : qmltestrunner::BatteryTray::test_tray_icon_center_and_signal_color(signal)
+PASS   : qmltestrunner::BatteryTray::test_tray_icon_center_and_signal_color(signalId)
+PASS   : qmltestrunner::BatteryTray::test_tray_icon_center_and_signal_color(other)
+PASS   : qmltestrunner::BatteryTray::cleanupTestCase()
+Totals: 5 passed, 0 failed, 0 skipped, 0 blacklisted, 425ms
+********* Finished testing of qmltestrunner *********

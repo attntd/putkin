@@ -1,0 +1,1 @@
+PASS: 169 runtime files equal source manifest; six configuration files change only release path; restore, repeated restore and protection of later edits verified on temporary files.

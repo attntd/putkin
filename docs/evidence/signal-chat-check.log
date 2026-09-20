@@ -1,0 +1,57 @@
+FAIL [imports/types, exit=255] /home/attntd/projects/putkin/modules/lock/LockHost.qml
+Warning: /home/attntd/projects/putkin/modules/lock/LockHost.qml:27:55: Unqualified access [unqualified]
+            LockView { anchors.fill: parent; service: root.service; wallpaper: root.wallpaper; date: clock.date }
+                                                      ^^^^
+Info: Set "pragma ComponentBehavior: Bound" in order to use IDs from outer components in nested components.
+pragma ComponentBehavior: Bound
+import QtQuick
+Warning: /home/attntd/projects/putkin/modules/lock/LockHost.qml:27:80: Unqualified access [unqualified]
+            LockView { anchors.fill: parent; service: root.service; wallpaper: root.wallpaper; date: clock.date }
+                                                                               ^^^^
+Info: Set "pragma ComponentBehavior: Bound" in order to use IDs from outer components in nested components.
+pragma ComponentBehavior: Bound
+import QtQuick
+Warning: /home/attntd/projects/putkin/modules/lock/LockHost.qml:27:102: Unqualified access [unqualified]
+            LockView { anchors.fill: parent; service: root.service; wallpaper: root.wallpaper; date: clock.date }
+                                                                                                     ^^^^^
+Info: Set "pragma ComponentBehavior: Bound" in order to use IDs from outer components in nested components.
+pragma ComponentBehavior: Bound
+import QtQuick
+FAIL [imports/types, exit=255] /home/attntd/projects/putkin/modules/lock/LockView.qml
+Warning: /home/attntd/projects/putkin/modules/lock/LockView.qml:25:59: Unqualified access [unqualified]
+            UI.AccentCoordinates { id: clockAccent; item: parent }
+                                                          ^^^^^^
+Info: parent is a member of a parent element.
+      You can qualify the access with its id to avoid this warning.
+
+            UI.AccentCoordinates { id: clockAccent; item: root.parent }
+                                                          ^^^^^
+FAIL [imports/types, exit=255] /home/attntd/projects/putkin/modules/tray/TrayButton.qml
+Warning: /home/attntd/projects/putkin/modules/tray/TrayButton.qml:12:78: Member "unread" not found on type "QObject" [missing-property]
+    readonly property bool signalUnread: signalState.item ? signalState.item.unread : false
+                                                                             ^^^^^^
+Warning: /home/attntd/projects/putkin/modules/tray/TrayButton.qml:33:21: Unqualified access [unqualified]
+            source: root.trayItem ? root.trayItem.icon : ""
+                    ^^^^
+Info: Set "pragma ComponentBehavior: Bound" in order to use IDs from outer components in nested components.
+pragma ComponentBehavior: Bound
+import QtQuick
+Warning: /home/attntd/projects/putkin/modules/tray/TrayButton.qml:33:37: Unqualified access [unqualified]
+            source: root.trayItem ? root.trayItem.icon : ""
+                                    ^^^^
+Info: Set "pragma ComponentBehavior: Bound" in order to use IDs from outer components in nested components.
+pragma ComponentBehavior: Bound
+import QtQuick
+Warning: /home/attntd/projects/putkin/modules/tray/TrayButton.qml:34:24: Unqualified access [unqualified]
+            attention: root.trayItem !== null && root.trayItem.status === 2
+                       ^^^^
+Info: Set "pragma ComponentBehavior: Bound" in order to use IDs from outer components in nested components.
+pragma ComponentBehavior: Bound
+import QtQuick
+Warning: /home/attntd/projects/putkin/modules/tray/TrayButton.qml:34:50: Unqualified access [unqualified]
+            attention: root.trayItem !== null && root.trayItem.status === 2
+                                                 ^^^^
+Info: Set "pragma ComponentBehavior: Bound" in order to use IDs from outer components in nested components.
+pragma ComponentBehavior: Bound
+import QtQuick
+FAIL: 203 plików QML, 3 z błędami.

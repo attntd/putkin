@@ -1,0 +1,38 @@
+{
+  "base_release": "/home/attntd/.local/share/putkin/releases/20260920-charging-material-41a71d98cd09",
+  "build": "/tmp/putkin-signal-chat-validation",
+  "changed_runtime": [
+    "assets/material/Paths.js",
+    "assets/material/README.md",
+    "assets/material/manifest.json",
+    "assets/material/chat_bubble.svg",
+    "core/Icons.js",
+    "modules/tray/TrayButton.qml",
+    "services/SignalTrayState.qml"
+  ],
+  "removed_runtime": [
+    "assets/material/putkin_signal.svg"
+  ],
+  "changed_checksums": {
+    "assets/material/Paths.js": "8c95e1de105a7683d3be9c5b0268b341bf2274e30b6c6f0e5161423d707ce631",
+    "assets/material/README.md": "ff3c9116541f81b4cec91e2f7fc7ebede5cb64ad83ba957172d968fadbad49ba",
+    "assets/material/manifest.json": "5bb539aca93c8a8235f5e943576f66ee2ca20446003bd82eae36b1ab8d65b5cc",
+    "assets/material/chat_bubble.svg": "b00b6523bc09b56a40ff255fb5e7cc49dfa2262d1e2e567531831eb5382f44ce",
+    "core/Icons.js": "58497c9baa902dac111d9b3c8a2f45723da21e9f47e71f50b219ce4018e5de0d",
+    "modules/tray/TrayButton.qml": "65723778ee82a38193ccc8db94666605c07de8fa7ee127b1255076f7d00cc805",
+    "services/SignalTrayState.qml": "006786a666d6db92aa37d09f0318d489fe383d92a72a375c87f0c73c05d6742b"
+  },
+  "excluded_workspace_changes": [
+    "scripts/lock-session",
+    "services/SessionBackend.qml",
+    "services/qmldir",
+    "services/session_backend.py",
+    "shell.qml",
+    "config/pam.d",
+    "modules/lock",
+    "services/IdleBackend.qml",
+    "services/IdleService.qml",
+    "services/LockService.qml",
+    "services/PamBackend.qml"
+  ]
+}

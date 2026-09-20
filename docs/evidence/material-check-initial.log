@@ -1,0 +1,8 @@
+FAIL [imports/types, exit=255] /home/attntd/projects/putkin/tests/qml/tst_visual_contract.qml
+Warning: /home/attntd/projects/putkin/tests/qml/tst_visual_contract.qml:96:70: Member "text" not found on type "Glyph" [missing-property]
+            verify((preview.bar.audioButton.contentItem as UI.Glyph).text.indexOf("%") < 0);
+                                                                     ^^^^
+Info: Did you mean "left"?
+            verify((preview.bar.audioButton.contentItem as UI.Glyph).left.indexOf("%") < 0);
+                                                                     ^^^^
+FAIL: 194 plików QML, 1 z błędami.

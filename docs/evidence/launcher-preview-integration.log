@@ -1,0 +1,10 @@
+  INFO: Launching config: "/home/attntd/projects/putkin/launcher-test.qml"
+  INFO: Shell ID: "aab3373ca7efe6efeafe23ec260887ab" Path ID "aab3373ca7efe6efeafe23ec260887ab"
+  INFO: Saving logs to "/tmp/pk-launcher-5h_kover/runtime/quickshell/by-id/wm763p4olt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+  INFO: Reloading configuration...
+  WARN: This plugin does not support setting window masks
+  INFO: Configuration Loaded
+  INFO qml: PUTKIN_PREVIEW_READY

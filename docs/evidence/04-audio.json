@@ -1,0 +1,755 @@
+{
+  "timestamp_utc": "2026-09-16T12:05:52.040622+00:00",
+  "quickshell": "Quickshell 0.3.1 (revision , distributed by Arch Linux)",
+  "pipewire": "/usr/bin/pipewire\nCompiled with libpipewire 1.6.8\nLinked with libpipewire 1.6.8",
+  "mode": "offscreen/software; production PipewireBackend + AudioService + IPC; two virtual sinks; no hardware or session manager",
+  "cycles": [
+    {
+      "cycle": 1,
+      "pid": 138059,
+      "name": "quickshell",
+      "parent": 138056,
+      "cpu_ticks": 70,
+      "rss_kib": 134692
+    },
+    {
+      "cycle": 2,
+      "pid": 138059,
+      "name": "quickshell",
+      "parent": 138056,
+      "cpu_ticks": 71,
+      "rss_kib": 134692
+    },
+    {
+      "cycle": 3,
+      "pid": 138059,
+      "name": "quickshell",
+      "parent": 138056,
+      "cpu_ticks": 72,
+      "rss_kib": 134692
+    },
+    {
+      "cycle": 4,
+      "pid": 138059,
+      "name": "quickshell",
+      "parent": 138056,
+      "cpu_ticks": 72,
+      "rss_kib": 134692
+    },
+    {
+      "cycle": 5,
+      "pid": 138059,
+      "name": "quickshell",
+      "parent": 138056,
+      "cpu_ticks": 73,
+      "rss_kib": 134548
+    },
+    {
+      "cycle": 6,
+      "pid": 138059,
+      "name": "quickshell",
+      "parent": 138056,
+      "cpu_ticks": 74,
+      "rss_kib": 134360
+    },
+    {
+      "cycle": 7,
+      "pid": 138059,
+      "name": "quickshell",
+      "parent": 138056,
+      "cpu_ticks": 74,
+      "rss_kib": 134360
+    },
+    {
+      "cycle": 8,
+      "pid": 138059,
+      "name": "quickshell",
+      "parent": 138056,
+      "cpu_ticks": 75,
+      "rss_kib": 134360
+    },
+    {
+      "cycle": 9,
+      "pid": 138059,
+      "name": "quickshell",
+      "parent": 138056,
+      "cpu_ticks": 76,
+      "rss_kib": 134360
+    },
+    {
+      "cycle": 10,
+      "pid": 138059,
+      "name": "quickshell",
+      "parent": 138056,
+      "cpu_ticks": 76,
+      "rss_kib": 126236
+    },
+    {
+      "cycle": 11,
+      "pid": 138059,
+      "name": "quickshell",
+      "parent": 138056,
+      "cpu_ticks": 78,
+      "rss_kib": 126236
+    },
+    {
+      "cycle": 12,
+      "pid": 138059,
+      "name": "quickshell",
+      "parent": 138056,
+      "cpu_ticks": 78,
+      "rss_kib": 126236
+    },
+    {
+      "cycle": 13,
+      "pid": 138059,
+      "name": "quickshell",
+      "parent": 138056,
+      "cpu_ticks": 79,
+      "rss_kib": 126236
+    },
+    {
+      "cycle": 14,
+      "pid": 138059,
+      "name": "quickshell",
+      "parent": 138056,
+      "cpu_ticks": 79,
+      "rss_kib": 126236
+    },
+    {
+      "cycle": 15,
+      "pid": 138059,
+      "name": "quickshell",
+      "parent": 138056,
+      "cpu_ticks": 80,
+      "rss_kib": 126236
+    },
+    {
+      "cycle": 16,
+      "pid": 138059,
+      "name": "quickshell",
+      "parent": 138056,
+      "cpu_ticks": 81,
+      "rss_kib": 126236
+    },
+    {
+      "cycle": 17,
+      "pid": 138059,
+      "name": "quickshell",
+      "parent": 138056,
+      "cpu_ticks": 82,
+      "rss_kib": 126236
+    },
+    {
+      "cycle": 18,
+      "pid": 138059,
+      "name": "quickshell",
+      "parent": 138056,
+      "cpu_ticks": 83,
+      "rss_kib": 126236
+    },
+    {
+      "cycle": 19,
+      "pid": 138059,
+      "name": "quickshell",
+      "parent": 138056,
+      "cpu_ticks": 83,
+      "rss_kib": 126236
+    },
+    {
+      "cycle": 20,
+      "pid": 138059,
+      "name": "quickshell",
+      "parent": 138056,
+      "cpu_ticks": 84,
+      "rss_kib": 126236
+    }
+  ],
+  "final": {
+    "ready": true,
+    "available": true,
+    "volume": 49.000000953674316,
+    "muted": false,
+    "output": "putkin-test-speakers",
+    "outputs": [
+      {
+        "id": 16,
+        "name": "putkin-test-headphones"
+      },
+      {
+        "id": 11,
+        "name": "putkin-test-speakers"
+      }
+    ],
+    "busy": false,
+    "error": "",
+    "refreshing": false,
+    "tracked": 1,
+    "osd": false,
+    "osdLoaded": false,
+    "created": 20,
+    "destroyed": 20,
+    "screen": "",
+    "panel": "",
+    "focus": ""
+  },
+  "idle": {
+    "samples": [
+      {
+        "elapsed_s": 0,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98336
+      },
+      {
+        "elapsed_s": 1.0001672889993642,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98336
+      },
+      {
+        "elapsed_s": 2.0001645860029384,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98336
+      },
+      {
+        "elapsed_s": 3.00019595699996,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98336
+      },
+      {
+        "elapsed_s": 4.000124689002405,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98336
+      },
+      {
+        "elapsed_s": 5.000195442000404,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98336
+      },
+      {
+        "elapsed_s": 6.000160764000611,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98336
+      },
+      {
+        "elapsed_s": 7.000178642003448,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98336
+      },
+      {
+        "elapsed_s": 8.000178702000994,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98336
+      },
+      {
+        "elapsed_s": 9.000177021000127,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98336
+      },
+      {
+        "elapsed_s": 10.000106956002128,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98336
+      },
+      {
+        "elapsed_s": 11.000216003005335,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98336
+      },
+      {
+        "elapsed_s": 12.000100848999864,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98336
+      },
+      {
+        "elapsed_s": 13.000176609006303,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98336
+      },
+      {
+        "elapsed_s": 14.000168417005625,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98336
+      },
+      {
+        "elapsed_s": 15.000162620002811,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98336
+      },
+      {
+        "elapsed_s": 16.000182339004823,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98336
+      },
+      {
+        "elapsed_s": 17.000190319005924,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98336
+      },
+      {
+        "elapsed_s": 18.00010351200035,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98336
+      },
+      {
+        "elapsed_s": 19.000208456003747,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98336
+      },
+      {
+        "elapsed_s": 20.000175261004188,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98336
+      },
+      {
+        "elapsed_s": 21.000179065005796,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98336
+      },
+      {
+        "elapsed_s": 22.000174608001544,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98336
+      },
+      {
+        "elapsed_s": 23.000189607999346,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98336
+      },
+      {
+        "elapsed_s": 24.000178967005922,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98336
+      },
+      {
+        "elapsed_s": 25.000177401001565,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98336
+      },
+      {
+        "elapsed_s": 26.000258192005276,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98336
+      },
+      {
+        "elapsed_s": 27.000179413000296,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98336
+      },
+      {
+        "elapsed_s": 28.000103964004666,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98336
+      },
+      {
+        "elapsed_s": 29.00017752200074,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98308
+      },
+      {
+        "elapsed_s": 30.000218019005843,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98308
+      },
+      {
+        "elapsed_s": 31.000177901005372,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98308
+      },
+      {
+        "elapsed_s": 32.00017708900123,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98308
+      },
+      {
+        "elapsed_s": 33.000178390000656,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98308
+      },
+      {
+        "elapsed_s": 34.0001775310011,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98308
+      },
+      {
+        "elapsed_s": 35.000179309005034,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 99588
+      },
+      {
+        "elapsed_s": 36.000101253004686,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 99588
+      },
+      {
+        "elapsed_s": 37.00017856700288,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 99588
+      },
+      {
+        "elapsed_s": 38.00017585500609,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 99588
+      },
+      {
+        "elapsed_s": 39.00010360500164,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 99588
+      },
+      {
+        "elapsed_s": 40.00010342300084,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 99588
+      },
+      {
+        "elapsed_s": 41.000200872003916,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 99588
+      },
+      {
+        "elapsed_s": 42.00009521500033,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 99588
+      },
+      {
+        "elapsed_s": 43.000177273999725,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 99588
+      },
+      {
+        "elapsed_s": 44.00016611200408,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 99588
+      },
+      {
+        "elapsed_s": 45.00018658400222,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 99588
+      },
+      {
+        "elapsed_s": 46.000165602999914,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 99588
+      },
+      {
+        "elapsed_s": 47.00011637900025,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 99588
+      },
+      {
+        "elapsed_s": 48.00016328399943,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 99588
+      },
+      {
+        "elapsed_s": 49.00017585400201,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 99588
+      },
+      {
+        "elapsed_s": 50.000164959004906,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 99588
+      },
+      {
+        "elapsed_s": 51.00017540100089,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 99588
+      },
+      {
+        "elapsed_s": 52.00023180900462,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 99588
+      },
+      {
+        "elapsed_s": 53.00018097300199,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 99588
+      },
+      {
+        "elapsed_s": 54.000105324004835,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 99588
+      },
+      {
+        "elapsed_s": 55.000091544003226,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 99588
+      },
+      {
+        "elapsed_s": 56.00010681999993,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 99588
+      },
+      {
+        "elapsed_s": 57.00018230600108,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 99588
+      },
+      {
+        "elapsed_s": 58.000179239003046,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 99588
+      },
+      {
+        "elapsed_s": 59.000121498000226,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 99588
+      },
+      {
+        "elapsed_s": 60.000177487003384,
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 99588
+      }
+    ],
+    "duration_s": 60.000177487003384,
+    "warmup_s": 2,
+    "initial_process_tree": [
+      {
+        "pid": 138471,
+        "name": "dbus-run-sessio",
+        "parent": 138055,
+        "cpu_ticks": 0,
+        "rss_kib": 2280
+      },
+      {
+        "pid": 138473,
+        "name": "dbus-daemon",
+        "parent": 138471,
+        "cpu_ticks": 0,
+        "rss_kib": 4268
+      },
+      {
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 98336
+      }
+    ],
+    "cpu_seconds": 0.0,
+    "cpu_percent_one_core": 0.0,
+    "rss_kib": {
+      "start": 98336,
+      "end": 99588,
+      "min": 98308,
+      "max": 99588
+    },
+    "process_tree": [
+      {
+        "pid": 138471,
+        "name": "dbus-run-sessio",
+        "parent": 138055,
+        "cpu_ticks": 0,
+        "rss_kib": 2280
+      },
+      {
+        "pid": 138473,
+        "name": "dbus-daemon",
+        "parent": 138471,
+        "cpu_ticks": 0,
+        "rss_kib": 4268
+      },
+      {
+        "pid": 138474,
+        "name": "quickshell",
+        "parent": 138471,
+        "cpu_ticks": 24,
+        "rss_kib": 99588
+      }
+    ],
+    "private_pipewire": {
+      "pid": 138243,
+      "name": "pipewire",
+      "parent": 138055,
+      "cpu_ticks": 0,
+      "rss_kib": 6632
+    }
+  },
+  "expected_diagnostics": [
+    "ERROR quickshell.service.pipewire.loop: Failed to connect pipewire context. Errno: 112",
+    "WARN quickshell.service.pipewire.loop: Pipewire error on object 0 with code -32 connection error"
+  ]
+}

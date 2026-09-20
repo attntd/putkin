@@ -1,0 +1,11 @@
+[bus]
+
+[fake]
+PUTKIN_STATUS_FAKE_READY
+
+[native]
+  INFO: Launching config: "/home/attntd/projects/putkin/status-test.qml"
+  INFO: Shell ID: "e834319fb85aa1c49b30a60554f30c4e" Path ID "e834319fb85aa1c49b30a60554f30c4e"
+  INFO: Saving logs to "/tmp/pk-xhri4iwz/runtime/quickshell/by-id/huk7o7chlt/log.qslog"
+ ERROR: Failed to load configuration
+ ERROR:   caused by @status-test.qml[13:5]: PowerProfileService is not a type

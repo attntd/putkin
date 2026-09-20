@@ -1,0 +1,37 @@
+test_all_files_are_checked_even_after_failures (test_check.CheckGate.test_all_files_are_checked_even_after_failures) ... ok
+test_bad_syntax_fails (test_check.CheckGate.test_bad_syntax_fails) ... ok
+test_empty_or_missing_input_fails (test_check.CheckGate.test_empty_or_missing_input_fails) ... ok
+test_missing_import_fails (test_check.CheckGate.test_missing_import_fails) ... ok
+test_missing_tools_are_distinct_from_qml_failure (test_check.CheckGate.test_missing_tools_are_distinct_from_qml_failure) ... ok
+test_valid_file_with_spaces_passes_without_modification (test_check.CheckGate.test_valid_file_with_spaces_passes_without_modification) ... ok
+test_conflicts_include_case_aliases_and_physical_keys (test_keyboard.KeyboardTest.test_conflicts_include_case_aliases_and_physical_keys) ... ok
+test_duplicate_and_invalid_shortcuts (test_keyboard.KeyboardTest.test_duplicate_and_invalid_shortcuts) ... ok
+test_lua_rebinds_remove_old_keys_without_accumulation (test_keyboard.KeyboardTest.test_lua_rebinds_remove_old_keys_without_accumulation) ... ok
+test_lua_registration_failure_restores_previous (test_keyboard.KeyboardTest.test_lua_registration_failure_restores_previous) ... ok
+test_own_keys_can_be_changed_but_shared_submap_keys_are_protected (test_keyboard.KeyboardTest.test_own_keys_can_be_changed_but_shared_submap_keys_are_protected) ... ok
+test_preflight_is_read_only_and_refusal_prevents_apply (test_keyboard.KeyboardTest.test_preflight_is_read_only_and_refusal_prevents_apply) ... ok
+test_application_file_launch_and_failed_action_history (test_launcher.BackendTests.test_application_file_launch_and_failed_action_history) ... ok
+test_cliphist_sensitive_limit_exact_text_and_binary_roundtrip (test_launcher.BackendTests.test_cliphist_sensitive_limit_exact_text_and_binary_roundtrip) ... ok
+test_launched_application_survives_worker_event_loop (test_launcher.BackendTests.test_launched_application_survives_worker_event_loop) ... ok
+test_real_fd_literal_paths_limits_and_no_shell (test_launcher.BackendTests.test_real_fd_literal_paths_limits_and_no_shell) ... ok
+test_search_timeout_and_cancellation_reap_process (test_launcher.BackendTests.test_search_timeout_and_cancellation_reap_process) ... ok
+test_clipboard_never_persisted_and_foreign_history_preserved (test_launcher.HistoryTests.test_clipboard_never_persisted_and_foreign_history_preserved) ... ok
+test_private_atomic_mru_roundtrip_and_limit (test_launcher.HistoryTests.test_private_atomic_mru_roundtrip_and_limit) ... ok
+test_invalid_preferences_fall_back_without_config_injection (test_lock_appearance.LockAppearanceTests.test_invalid_preferences_fall_back_without_config_injection) ... ok
+test_saved_preferences_private_output_and_auth_source (test_lock_appearance.LockAppearanceTests.test_saved_preferences_private_output_and_auth_source) ... ok
+test_current_version_and_active_owner (test_night_light.NightLightOwner.test_current_version_and_active_owner) ... ok
+test_foreign_executable_is_never_run (test_night_light.NightLightOwner.test_foreign_executable_is_never_run) ... ok
+test_foreign_or_inactive_unit (test_night_light.NightLightOwner.test_foreign_or_inactive_unit) ... ok
+test_invalid_arguments_do_not_connect (test_night_light.NightLightOwner.test_invalid_arguments_do_not_connect) ... ok
+test_missing_backend_is_structured (test_night_light.NightLightOwner.test_missing_backend_is_structured) ... ok
+test_old_version_is_rejected_before_ipc (test_night_light.NightLightOwner.test_old_version_is_rejected_before_ipc) ... ok
+test_process_token_and_session_scope (test_night_light.NightLightOwner.test_process_token_and_session_scope) ... ok
+test_unknown_version_is_rejected (test_night_light.NightLightOwner.test_unknown_version_is_rejected) ... ok
+test_clis_report_missing_qml_import (test_runtime.RuntimeDiagnostics.test_clis_report_missing_qml_import) ... ok
+test_log_reader_preserves_child_offset (test_runtime.RuntimeDiagnostics.test_log_reader_preserves_child_offset) ... ok
+test_only_absent_startup_reply_is_retryable (test_runtime.RuntimeDiagnostics.test_only_absent_startup_reply_is_retryable) ... ok
+
+----------------------------------------------------------------------
+Ran 32 tests in 12.573s
+
+OK

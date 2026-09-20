@@ -1,0 +1,31 @@
+2026-09-16 — History: initial native UI rejection, then explicit full authorization.
+
+Rejected command:
+scripts/test-wayland --nested --smoke --output docs/evidence/12-wayland-smoke
+
+Reviewer reason (verbatim):
+This is a new, broader action than the previously approved 12-second compositor probe: it runs Putkin’s production windows in a nested compositor with access to the active Wayland socket and GPU for up to 300 seconds, conflicting with AGENTS.md’s prohibition and lacking explicit authorization for these added side effects.
+
+No retry or indirect execution of this UI action. The only subsequent
+Wayland launch was a repeat of the already authorized, 12-second
+compositor-only probe with a shorter private runtime path. It launched
+no Putkin, input client or capture client; automatic review allowed it.
+
+After rejection, the UI runner was completed as a reviewable proposal.
+Its smoke deadline became 45 seconds and its full scenario deadline
+600 seconds per invocation. At that point it was still unexecuted. The full scenario
+adds virtual keyboard input, captures of private HEADLESS outputs,
+mixed scales, hotplug, reload, 20 cycles and optional 60-second idle.
+Hardware/session backends remain explicit mocks, with no PAM, physical
+radio/audio/backlight changes, lock, suspend, logout or host compositor IPC.
+
+The user was then asked to authorize the complete further native UI
+acceptance, including necessary repetitions, production Putkin windows
+with domain mocks, virtual input, private-output captures, mixed scales,
+hotplug, reload, cycles and idle measurements, up to 10 minutes per run,
+sharing the parent Wayland socket and GPU render node.
+The user explicitly replied "tak". This supersedes the earlier narrow
+12-second authorization for these tests. Subsequent native UI runs are
+authorized; the earlier rejection is retained as history, not a current
+block. Execution logs are in 12-wayland-smoke-1 and 12-wayland-run*.
+No host hardware/session actions were added to the authorized scope.

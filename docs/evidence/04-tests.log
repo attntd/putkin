@@ -1,0 +1,118 @@
+test_all_files_are_checked_even_after_failures (test_check.CheckGate.test_all_files_are_checked_even_after_failures) ... ok
+test_bad_syntax_fails (test_check.CheckGate.test_bad_syntax_fails) ... ok
+test_empty_or_missing_input_fails (test_check.CheckGate.test_empty_or_missing_input_fails) ... ok
+test_missing_import_fails (test_check.CheckGate.test_missing_import_fails) ... ok
+test_missing_tools_are_distinct_from_qml_failure (test_check.CheckGate.test_missing_tools_are_distinct_from_qml_failure) ... ok
+test_valid_file_with_spaces_passes_without_modification (test_check.CheckGate.test_valid_file_with_spaces_passes_without_modification) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 1.632s
+
+OK
+  WARN : Failed to create wl_display (No such file or directory)
+  WARN: Compositor does not support hyprland-toplevel-mapping-v1.It will not be possible to derive hyprland addresses from toplevels.
+  WARN quickshell.io.socket: Socket error for Socket(0x7fe99cd9fbc0) QLocalSocket::PeerClosedError
+  WARN: Hyprland event socket error: QLocalSocket::PeerClosedError
+PASS: native Hyprland (Hyprlang), typed IPC, actions, hotplug events, disconnect
+  WARN : Failed to create wl_display (No such file or directory)
+  WARN: Compositor does not support hyprland-toplevel-mapping-v1.It will not be possible to derive hyprland addresses from toplevels.
+  WARN quickshell.io.socket: Socket error for Socket(0x7f8dda99fbc0) QLocalSocket::PeerClosedError
+  WARN: Hyprland event socket error: QLocalSocket::PeerClosedError
+PASS: native Hyprland (Lua), typed IPC, actions, hotplug events, disconnect
+PASS: real panel IPC + LazyLoader, 20 cycles, 0 live surfaces; RSS {'start': 111844, 'end': 111472, 'min': 111472, 'max': 112100}
+  WARN : inotify_add_watch(/tmp/pk-settings-wyke2hg1/config/putkin/settings.json) failed: (Permission denied)
+  WARN : inotify_add_watch(/tmp/pk-settings-wyke2hg1/config/putkin/settings.json) failed: (Permission denied)
+  WARN : inotify_add_watch(/tmp/pk-settings-wyke2hg1/config/putkin/settings.json) failed: (Permission denied)
+PASS: settings FileView integration; 10 groups, 20 reload cycles, restart and soft/hard reload
+ERROR quickshell.service.pipewire.loop: Failed to connect pipewire context. Errno: 112
+WARN quickshell.service.pipewire.loop: Pipewire error on object 0 with code -32 connection error
+PASS: audio/IPC/OSD, private PipeWire, restart, hot reload, 20 loader cycles; /home/attntd/projects/putkin/artifacts/audio-integration.json
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::Audio::initTestCase()
+PASS   : qmltestrunner::Audio::test_bar_wheel_and_navigation()
+PASS   : qmltestrunner::Audio::test_burst_delay_rejection_and_timeout()
+PASS   : qmltestrunner::Audio::test_external_update_shared_state_and_identity()
+PASS   : qmltestrunner::Audio::test_invalid_delta_mute_and_stale_output()
+PASS   : qmltestrunner::Audio::test_invalid_values(negative)
+PASS   : qmltestrunner::Audio::test_invalid_values(over)
+PASS   : qmltestrunner::Audio::test_invalid_values(nan)
+PASS   : qmltestrunner::Audio::test_invalid_values(infinity)
+PASS   : qmltestrunner::Audio::test_invalid_values(string)
+PASS   : qmltestrunner::Audio::test_invalid_values(null)
+PASS   : qmltestrunner::Audio::test_no_startup_or_reconnect_osd()
+PASS   : qmltestrunner::Audio::test_output_preference_is_not_actual_and_removal()
+PASS   : qmltestrunner::Audio::test_slider_arrow_burst_with_delayed_backend_and_failed_write()
+PASS   : qmltestrunner::Audio::test_slider_vim_arrows_mouse_mute_and_selection()
+PASS   : qmltestrunner::Audio::test_small_panel_keyboard_reveals_controls_and_skips_missing()
+PASS   : qmltestrunner::Audio::test_timeout_renewal_monitor_removal_theme_and_focus()
+PASS   : qmltestrunner::Audio::cleanupTestCase()
+PASS   : qmltestrunner::Bar::initTestCase()
+PASS   : qmltestrunner::Bar::test_action_waits_for_monitor_and_times_out()
+PASS   : qmltestrunner::Bar::test_click_uses_clicked_monitor_and_swaps_visible_workspace()
+PASS   : qmltestrunner::Bar::test_disconnect_clears_stale_state_and_keyboard_mode()
+PASS   : qmltestrunner::Bar::test_global_numbers_and_monitor_states()
+PASS   : qmltestrunner::Bar::test_ipc_controller_fallback_and_hotplug_state()
+PASS   : qmltestrunner::Bar::test_keypad_enter_and_escape()
+PASS   : qmltestrunner::Bar::test_locale_clock_tooltip_and_minute_change()
+PASS   : qmltestrunner::Bar::test_model_updates_preserve_delegate_and_selection()
+PASS   : qmltestrunner::Bar::test_overflow_mouse_and_narrow_layout()
+PASS   : qmltestrunner::Bar::test_text_input_does_not_navigate_bar()
+PASS   : qmltestrunner::Bar::test_vim_overflow_enter_once_and_focus()
+PASS   : qmltestrunner::Bar::cleanupTestCase()
+PASS   : qmltestrunner::Foundation::initTestCase()
+PASS   : qmltestrunner::Foundation::test_button_keyboard_mouse_and_disabled()
+PASS   : qmltestrunner::Foundation::test_slider_keyboard_bounds_and_reset_binding()
+PASS   : qmltestrunner::Foundation::test_slider_mouse_updates_model()
+PASS   : qmltestrunner::Foundation::test_tab_skips_disabled_and_focus_is_visible()
+PASS   : qmltestrunner::Foundation::test_tooltip_and_accessible_name()
+PASS   : qmltestrunner::Foundation::cleanupTestCase()
+PASS   : qmltestrunner::Panels::initTestCase()
+PASS   : qmltestrunner::Panels::test_close_before_async_load_and_switch_monitor_hotplug()
+PASS   : qmltestrunner::Panels::test_directions_enter_keypad_space_and_escape_layers()
+PASS   : qmltestrunner::Panels::test_disabled_tab_arrows_and_text_editing()
+PASS   : qmltestrunner::Panels::test_keyboard_bar_entry_and_return_focus()
+PASS   : qmltestrunner::Panels::test_long_content_and_resize_preserve_visible_focus()
+PASS   : qmltestrunner::Panels::test_mouse_active_indicator_tooltip_and_outside_consumption()
+PASS   : qmltestrunner::Panels::test_reject_unknown_surface_and_missing_screen()
+PASS   : qmltestrunner::Panels::test_settings_replaces_page_and_keeps_local_state_local()
+PASS   : qmltestrunner::Panels::test_small_screen_scroll_and_visible_focus()
+PASS   : qmltestrunner::Panels::test_twenty_cycles_and_reopen_during_fade()
+PASS   : qmltestrunner::Panels::cleanupTestCase()
+PASS   : qmltestrunner::Settings::initTestCase()
+PASS   : qmltestrunner::Settings::test_all_dismissal_routes_discard_preview(cancel)
+PASS   : qmltestrunner::Settings::test_all_dismissal_routes_discard_preview(close)
+PASS   : qmltestrunner::Settings::test_all_dismissal_routes_discard_preview(escape)
+PASS   : qmltestrunner::Settings::test_all_dismissal_routes_discard_preview(back)
+PASS   : qmltestrunner::Settings::test_all_dismissal_routes_discard_preview(outside)
+PASS   : qmltestrunner::Settings::test_all_dismissal_routes_discard_preview(replace)
+PASS   : qmltestrunner::Settings::test_all_dismissal_routes_discard_preview(monitor)
+PASS   : qmltestrunner::Settings::test_all_dismissal_routes_discard_preview(hotplug)
+PASS   : qmltestrunner::Settings::test_all_dismissal_routes_discard_preview(bar)
+PASS   : qmltestrunner::Settings::test_all_dismissal_routes_discard_preview(early)
+PASS   : qmltestrunner::Settings::test_contrast_and_reduced_motion()
+PASS   : qmltestrunner::Settings::test_corrupt_file_preserves_last_good_state_and_future_version_is_read_only()
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(optional appearance)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(optional colors)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(valid)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(malformed)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(null)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(array)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(missing version)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(future)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(old)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(string version)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(short color)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(transparent)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(named color)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(null appearance)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(boolean type)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(unknown option)
+PASS   : qmltestrunner::Settings::test_disabled_save_is_skipped_with_vim_and_tab()
+PASS   : qmltestrunner::Settings::test_external_changes_keep_draft_panel_cursor_and_focus_twenty_times()
+PASS   : qmltestrunner::Settings::test_hex_validation_keeps_letters_and_visible_focus()
+PASS   : qmltestrunner::Settings::test_presets_navigation_and_live_controls()
+PASS   : qmltestrunner::Settings::test_save_is_confirmed_reset_is_only_a_draft_and_retry()
+PASS   : qmltestrunner::Settings::cleanupTestCase()
+Totals: 85 passed, 0 failed, 0 skipped, 0 blacklisted, 21591ms
+********* Finished testing of qmltestrunner *********

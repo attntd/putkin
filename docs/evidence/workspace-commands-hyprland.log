@@ -1,0 +1,10 @@
+  WARN : Failed to create wl_display (No such file or directory)
+  WARN: Compositor does not support hyprland-toplevel-mapping-v1.It will not be possible to derive hyprland addresses from toplevels.
+  WARN quickshell.io.socket: Socket error for Socket(0x7f7ed2bb0540) QLocalSocket::PeerClosedError
+  WARN: Hyprland event socket error: QLocalSocket::PeerClosedError
+PASS: native Hyprland (Hyprlang), bar + launcher workspace commands, captured window, hotplug, disconnect
+  WARN : Failed to create wl_display (No such file or directory)
+  WARN: Compositor does not support hyprland-toplevel-mapping-v1.It will not be possible to derive hyprland addresses from toplevels.
+  WARN quickshell.io.socket: Socket error for Socket(0x7f233c9b0540) QLocalSocket::PeerClosedError
+  WARN: Hyprland event socket error: QLocalSocket::PeerClosedError
+PASS: native Hyprland (Lua), bar + launcher workspace commands, captured window, hotplug, disconnect

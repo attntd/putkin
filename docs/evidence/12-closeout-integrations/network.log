@@ -1,0 +1,44 @@
+[bus]
+
+[fake]
+
+[native]
+  INFO: Launching config: "/home/attntd/projects/putkin/network-test.qml"
+  INFO: Shell ID: "39c4fb5cd5e98dd290728389d851b557" Path ID "39c4fb5cd5e98dd290728389d851b557"
+  INFO: Saving logs to "/tmp/pk-o14mj4hc/runtime/quickshell/by-id/w1i6qw5hlt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+  INFO: Reloading configuration...
+  WARN: This plugin does not support setting window masks
+  INFO: Configuration Loaded
+  INFO qml: PUTKIN_PREVIEW_READY
+  INFO: Reloading configuration...
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+
+[editor]
+  INFO: Launching config: "/home/attntd/projects/putkin/network-test.qml"
+  INFO: Shell ID: "39c4fb5cd5e98dd290728389d851b557" Path ID "39c4fb5cd5e98dd290728389d851b557"
+  INFO: Saving logs to "/tmp/pk-o14mj4hc/runtime/quickshell/by-id/xhi66x5hlt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+  INFO: Reloading configuration...
+  WARN: This plugin does not support setting window masks
+  INFO: Configuration Loaded
+  INFO qml: PUTKIN_PREVIEW_READY
+  INFO: Reloading configuration...
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+
+[absent]
+  INFO: Launching config: "/home/attntd/projects/putkin/network-test.qml"
+  INFO: Shell ID: "39c4fb5cd5e98dd290728389d851b557" Path ID "39c4fb5cd5e98dd290728389d851b557"
+  INFO: Saving logs to "/tmp/pk-o14mj4hc/runtime/quickshell/by-id/eji68x5hlt/log.qslog"
+ ERROR quickshell.network: Network will not work. Could not find an available backend.
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY

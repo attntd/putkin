@@ -1,0 +1,28 @@
+
+bus
+
+fake
+
+shell
+  INFO: Launching config: "/home/attntd/projects/putkin/session-test.qml"
+  INFO: Shell ID: "11497c7f6c2eb802fbdb4f8ea745fa66" Path ID "11497c7f6c2eb802fbdb4f8ea745fa66"
+  INFO: Saving logs to "/tmp/pk-session-a4fhs_86/runtime/quickshell/by-id/id94oxqnlt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+  INFO: Reloading configuration...
+  WARN: This plugin does not support setting window masks
+  INFO: Configuration Loaded
+  INFO qml: PUTKIN_PREVIEW_READY
+  INFO: Reloading configuration...
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+
+untrusted
+  INFO: Launching config: "/hPASS: session integration; no live fixture processes
+Shell ID: "11497c7f6c2eb802fbdb4f8ea745fa66" Path ID "11497c7f6c2eb802fbdb4f8ea745fa66"
+  INFO: Saving logs to "/tmp/pk-session-a4fhs_86/runtime/quickshell/by-id/kt940yqnlt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY

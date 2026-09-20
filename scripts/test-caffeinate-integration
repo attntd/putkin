@@ -1,0 +1,170 @@
+#!/usr/bin/env python3
+"""Exercise production QML/Process/login1 FD ownership on private D-Bus/XDG."""
+import argparse
+import json
+import os
+from pathlib import Path
+import select
+import signal
+import subprocess
+import sys
+import tempfile
+import time
+
+from _common import ROOT, ipc_json, ipc_reply, isolated_environment, qml_errors, runtime_log, stop_process_group, tool
+
+
+def eventually(read, predicate, description, seconds=8):
+    deadline = time.monotonic() + seconds
+    last = None
+    while time.monotonic() < deadline:
+        last = read()
+        if predicate(last):
+            return last
+        time.sleep(.025)
+    raise AssertionError(f"{description}: {last}")
+
+
+def run(output):
+    import dbus
+    report = {"checks": [], "isolation": "private system/session D-Bus and XDG; fake logind with real Unix FD; no hardware/PAM"}
+    output.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="pk-") as directory:
+        base = Path(directory)
+        env = isolated_environment(directory)
+        address = f"unix:path={base}/bus"
+        marker = base / "caffeinate-test-only"
+        marker.touch()
+        env.update(DBUS_SESSION_BUS_ADDRESS=address, DBUS_SYSTEM_BUS_ADDRESS=address,
+                   PUTKIN_TEST_MARKER=str(marker), QS_NO_RELOAD_POPUP="1")
+        processes, logs, helper_pids = [], [], set()
+        entrypoint = str(ROOT / "caffeinate-test.qml")
+
+        def start(command, name):
+            log = (base / (name + ".log")).open("w+")
+            logs.append((name, log))
+            process = subprocess.Popen(command, env=env, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+            processes.append(process)
+            return process
+
+        def ipc(target, method, *args, startup=False):
+            result = subprocess.run([tool("quickshell"), "ipc", "--path", entrypoint, "call", target, method, *map(str, args)],
+                                    env=env, capture_output=True, text=True, timeout=4)
+            return ipc_reply(result, shell, logs, starting=startup)
+
+        def snapshot():
+            value = ipc_json(ipc("probe", "snapshot", startup=True))
+            if value.get("pid", 0) > 0:
+                helper_pids.add(value["pid"])
+            return value
+
+        def settled(mode):
+            return eventually(snapshot, lambda s: s.get("mode") == mode and not s.get("busy", True), "confirmed " + mode)
+
+        def fixture():
+            return dbus.Interface(bus.get_object("org.freedesktop.login1", "/org/freedesktop/login1", introspect=False), "org.putkin.CaffeinateFixture")
+
+        def leases(expected):
+            return eventually(lambda: json.loads(fixture().Snapshot()), lambda s: sorted(s["leases"]) == sorted(expected), "FD leases " + str(expected))
+
+        def enable(mode):
+            assert ipc("caffeinate", "setMode", mode) == "accepted"
+            return settled(mode)
+
+        def off():
+            assert ipc("caffeinate", "setEnabled", "false") == "accepted"
+            settled("off"); leases([])
+
+        try:
+            bus_process = start([tool("dbus-daemon"), "--session", "--nofork", "--address=" + address], "bus")
+            eventually(lambda: (base / "bus").exists(), bool, "private bus")
+            bus = dbus.bus.BusConnection(address)
+            peer = start([sys.executable, str(ROOT / "tests/caffeinate_dbus_fake.py")], "login1")
+            eventually(lambda: bus.name_has_owner("org.freedesktop.login1"), bool, "private logind")
+            shell = start([tool("quickshell"), "--no-color", "--path", entrypoint], "quickshell")
+            state = settled("off"); assert state["pid"] == 0; leases([])
+            assert ipc("caffeinate", "setMode", "invalid") == "rejected"
+            report["checks"].append("off startup has no helper or inhibitor; invalid mode rejected")
+
+            enable("presentation"); leases(["idle:sleep"])
+            assert json.loads(ipc("caffeinate", "status"))["preventLock"]
+            enable("background")
+            lease = leases(["sleep"])
+            assert lease["events"][-2][0] == "request" and lease["events"][-2][3] == 1, lease
+            assert not json.loads(ipc("caffeinate", "status"))["preventLock"]
+            off()
+            assert ipc("caffeinate", "setEnabled", "true") == "accepted"
+            settled("background"); leases(["sleep"]); off()
+            report["checks"].append("presentation idle:sleep, background sleep; atomic mode handoff; remembered selection; off closes all FDs")
+
+            enable("presentation")
+            fixture().Configure("deny")
+            assert ipc("caffeinate", "setMode", "background") == "accepted"
+            state = eventually(snapshot, lambda s: bool(s.get("error")) and not s.get("busy"), "denial")
+            assert state["mode"] == "presentation"; leases(["idle:sleep"])
+            off()
+            assert ipc("caffeinate", "setEnabled", "true") == "accepted"
+            assert eventually(snapshot, lambda s: bool(s.get("error")) and not s.get("busy"), "startup denial")["mode"] == "off"
+            leases([])
+            fixture().Configure("timeout")
+            ipc("caffeinate", "setEnabled", "true")
+            assert eventually(snapshot, lambda s: bool(s.get("error")) and not s.get("busy"), "timeout")["mode"] == "off"
+            leases([]); fixture().Configure("ok")
+            report["checks"].append("denied handoff retains previous FD; startup denial and D-Bus timeout remain off")
+
+            for cycle in range(20):
+                enable("presentation" if cycle % 2 else "background"); off()
+            report["checks"].append("20 enable/disable cycles leave zero FDs")
+            for hard in ["false", "true"]:
+                state = enable("presentation")
+                old_pid = state["pid"]
+                ipc("probe", "reload", hard)
+                eventually(lambda: Path(f"/proc/{old_pid}").exists(), lambda exists: not exists, "reload reaps helper")
+                settled("off"); leases([])
+            report["checks"].append("soft and hard reload close/reap helper and do not reacquire")
+
+            state = enable("presentation")
+            os.kill(state["pid"], signal.SIGKILL)
+            assert eventually(snapshot, lambda s: s.get("mode") == "off" and bool(s.get("error")), "worker loss")["error"]
+            leases([])
+            enable("presentation")
+            stop_process_group(peer)
+            assert eventually(snapshot, lambda s: s.get("mode") == "off" and bool(s.get("error")), "owner loss")["error"]
+            peer = start([sys.executable, str(ROOT / "tests/caffeinate_dbus_fake.py")], "login1-restarted")
+            eventually(lambda: bus.name_has_owner("org.freedesktop.login1"), bool, "replacement logind")
+            settled("off"); leases([])
+            report["checks"].append("worker crash and logind owner loss turn off with an error; no automatic reacquire")
+
+            helper = subprocess.Popen([sys.executable, "-B", str(ROOT / "services/caffeinate_backend.py"), "background"],
+                                      env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, start_new_session=True)
+            processes.append(helper); helper_pids.add(helper.pid)
+            assert select.select([helper.stdout], [], [], 5)[0]
+            assert json.loads(helper.stdout.readline())["mode"] == "background"
+            leases(["sleep"]); helper.stdin.close(); helper.wait(timeout=4); leases([])
+            assert helper.returncode == 0 and not helper.stderr.read()
+            report["checks"].append("QML pipe EOF independently closes FD and exits")
+
+            state = enable("presentation")
+            stop_process_group(shell)
+            leases([])
+            eventually(lambda: Path(f'/proc/{state["pid"]}').exists(), lambda exists: not exists, "shell exit reaps worker")
+            report["checks"].append("shell termination closes FD and leaves no worker")
+        finally:
+            for process in reversed(processes):
+                stop_process_group(process)
+            for name, log in logs:
+                text = runtime_log(log)
+                (output.parent / (output.stem + "-" + name + ".log")).write_text(text)
+                log.close()
+                assert not qml_errors(text), text
+        report["helper_pids"] = sorted(helper_pids)
+        assert all(not Path(f"/proc/{pid}").exists() for pid in helper_pids), report
+        report["status"] = "PASS"
+        output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
+        print(json.dumps(report, ensure_ascii=False, indent=2))
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, default=ROOT / "artifacts/caffeinate.json")
+    run(parser.parse_args().output)

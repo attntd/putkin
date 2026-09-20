@@ -1,0 +1,2 @@
+systemd-analyze --user --man=no --generators=no verify <private>/hyprsunset.service
+exit=0

@@ -1,0 +1,65 @@
+{
+  "current": "/home/attntd/.local/share/putkin/releases/20260920-144910-c522126acd2f",
+  "instances": [
+    {
+      "config_path": "/home/attntd/.config/quickshell/shell.qml",
+      "id": "17f61g5olt",
+      "launch_time": "2026-09-20T17:24:01",
+      "pid": 299629,
+      "shell_id": "770bba0d0f619c4ab3ab0453a539d542"
+    }
+  ],
+  "session": {
+    "busy": false,
+    "phase": "",
+    "error": "",
+    "result": "",
+    "capabilities": {
+      "reboot": {
+        "available": true,
+        "reason": ""
+      },
+      "poweroff": {
+        "available": true,
+        "reason": ""
+      },
+      "suspend": {
+        "available": false,
+        "reason": "Operacj\u0119 wstrzymuje inhibitor aplikacji."
+      },
+      "idleSuspend": {
+        "available": false,
+        "reason": "Operacj\u0119 wstrzymuje inhibitor aplikacji."
+      },
+      "logout": {
+        "available": true,
+        "reason": ""
+      },
+      "lock": {
+        "available": true,
+        "reason": ""
+      }
+    },
+    "lock": {
+      "locked": false,
+      "secure": false
+    },
+    "idle": {
+      "ready": true,
+      "inhibited": false,
+      "sleepInhibited": true,
+      "dimmed": false,
+      "displaysOff": false,
+      "error": ""
+    }
+  },
+  "caffeinate": {
+    "active": true,
+    "mode": "background",
+    "busy": false,
+    "preventDisplaySleep": false,
+    "preventLock": false,
+    "preventSleep": true,
+    "error": ""
+  }
+}

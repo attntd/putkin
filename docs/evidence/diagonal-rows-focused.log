@@ -1,0 +1,86 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::AccentGroups::initTestCase()
+PASS   : qmltestrunner::AccentGroups::test_each_group_has_its_own_origin()
+PASS   : qmltestrunner::AccentGroups::test_live_palette_change_and_outline_contrast()
+PASS   : qmltestrunner::AccentGroups::test_one_diagonal_field_across_controls_and_frame()
+PASS   : qmltestrunner::AccentGroups::test_resize_move_and_scroll_update_shared_coordinates()
+PASS   : qmltestrunner::AccentGroups::test_wide_group_keeps_vertical_color_progression()
+PASS   : qmltestrunner::AccentGroups::cleanupTestCase()
+Totals: 7 passed, 0 failed, 0 skipped, 0 blacklisted, 69ms
+********* Finished testing of qmltestrunner *********
+
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::QuickMenu::initTestCase()
+PASS   : qmltestrunner::QuickMenu::test_audio_becoming_ready_keeps_row_focus()
+PASS   : qmltestrunner::QuickMenu::test_audio_is_one_keyboard_row()
+FAIL!  : qmltestrunner::QuickMenu::test_brightness_and_temperature_focus_span_the_row(brightness-slider) Compared values are not the same
+   Actual   (): 0
+   Expected (): 1
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_quick_menu.qml(156)]
+FAIL!  : qmltestrunner::QuickMenu::test_brightness_and_temperature_focus_span_the_row(brightness-details) Compared values are not the same
+   Actual   (): 0
+   Expected (): 1
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_quick_menu.qml(156)]
+FAIL!  : qmltestrunner::QuickMenu::test_brightness_and_temperature_focus_span_the_row(temperature) Compared values are not the same
+   Actual   (): 0
+   Expected (): 1
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_quick_menu.qml(156)]
+PASS   : qmltestrunner::QuickMenu::test_caffeinate_modes_keyboard_mouse_and_confirmed_state()
+PASS   : qmltestrunner::QuickMenu::test_caffeinate_rejection_only_notifies_and_keeps_previous_mode()
+PASS   : qmltestrunner::QuickMenu::test_center_mouse_dismiss_and_expired_action_recover_focus()
+PASS   : qmltestrunner::QuickMenu::test_center_small_panel_and_lifecycles()
+PASS   : qmltestrunner::QuickMenu::test_distinct_audio_names_follow_device_not_default()
+PASS   : qmltestrunner::QuickMenu::test_error_is_only_a_notification()
+PASS   : qmltestrunner::QuickMenu::test_history_keeps_expired_dnd_and_transient()
+PASS   : qmltestrunner::QuickMenu::test_history_replacements_limit_and_live_actions()
+PASS   : qmltestrunner::QuickMenu::test_night_light_temperature_has_no_refresh()
+PASS   : qmltestrunner::QuickMenu::test_notification_center_empty_and_mouse_focus()
+PASS   : qmltestrunner::QuickMenu::test_radio_modules_own_lists_and_scanning()
+PASS   : qmltestrunner::QuickMenu::test_small_grid_and_modes_remain_reachable()
+PASS   : qmltestrunner::QuickMenu::test_tiles_toggle_without_management_or_progress_messages()
+PASS   : qmltestrunner::QuickMenu::test_toggle_grid_geometry_focus_and_navigation()
+PASS   : qmltestrunner::QuickMenu::cleanupTestCase()
+Totals: 18 passed, 3 failed, 0 skipped, 0 blacklisted, 10616ms
+********* Finished testing of qmltestrunner *********
+
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::PointerFocus::initTestCase()
+PASS   : qmltestrunner::PointerFocus::test_bar(workspace)
+PASS   : qmltestrunner::PointerFocus::test_bar(tray)
+PASS   : qmltestrunner::PointerFocus::test_bar(tray-menu)
+PASS   : qmltestrunner::PointerFocus::test_bar(overflow)
+PASS   : qmltestrunner::PointerFocus::test_bar(network)
+PASS   : qmltestrunner::PointerFocus::test_bar(bluetooth)
+PASS   : qmltestrunner::PointerFocus::test_bar(audio)
+PASS   : qmltestrunner::PointerFocus::test_bar(battery)
+PASS   : qmltestrunner::PointerFocus::test_bar(notifications)
+PASS   : qmltestrunner::PointerFocus::test_bar(quick)
+PASS   : qmltestrunner::PointerFocus::test_keyboard_bar_entry_on_clicked_workspace()
+PASS   : qmltestrunner::PointerFocus::test_keyboard_entry_and_return_after_mouse()
+PASS   : qmltestrunner::PointerFocus::test_mouse_close_does_not_resume_bar_navigation()
+PASS   : qmltestrunner::PointerFocus::test_mouse_page_changes_and_power_confirmation()
+PASS   : qmltestrunner::PointerFocus::test_notification_entry_from_bar()
+PASS   : qmltestrunner::PointerFocus::test_quick_controls(audioMute)
+PASS   : qmltestrunner::PointerFocus::test_quick_controls(audioOutputs)
+PASS   : qmltestrunner::PointerFocus::test_quick_controls(brightnessDetails)
+PASS   : qmltestrunner::PointerFocus::test_quick_controls(wifiRadio)
+PASS   : qmltestrunner::PointerFocus::test_quick_controls(bluetoothRadio)
+PASS   : qmltestrunner::PointerFocus::test_quick_controls(nightLightToggle)
+PASS   : qmltestrunner::PointerFocus::test_quick_controls(notificationDnd)
+PASS   : qmltestrunner::PointerFocus::test_quick_controls(caffeinateToggle)
+PASS   : qmltestrunner::PointerFocus::test_quick_details_mouse_actions()
+PASS   : qmltestrunner::PointerFocus::test_shared_buttons(button)
+PASS   : qmltestrunner::PointerFocus::test_shared_buttons(navigation)
+PASS   : qmltestrunner::PointerFocus::test_shared_buttons(module)
+PASS   : qmltestrunner::PointerFocus::test_shared_buttons(tile)
+PASS   : qmltestrunner::PointerFocus::test_shared_buttons(icon)
+PASS   : qmltestrunner::PointerFocus::test_slider_and_text_keep_standard_input()
+PASS   : qmltestrunner::PointerFocus::test_tray_mouse_buttons_submenu_and_keyboard()
+PASS   : qmltestrunner::PointerFocus::test_wifi_password_and_cancel_keep_mouse_reason()
+PASS   : qmltestrunner::PointerFocus::cleanupTestCase()
+Totals: 34 passed, 0 failed, 0 skipped, 0 blacklisted, 10751ms
+********* Finished testing of qmltestrunner *********
+

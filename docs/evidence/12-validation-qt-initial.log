@@ -1,0 +1,18 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::ReleaseValidation::initTestCase()
+PASS   : qmltestrunner::ReleaseValidation::test_all_services_unavailable_and_return_in_one_panel()
+FAIL!  : qmltestrunner::ReleaseValidation::test_complete_keyboard_journey() 'verify()' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_validation.qml(110)]
+PASS   : qmltestrunner::ReleaseValidation::test_passive_overlays_leave_text_input_alone()
+PASS   : qmltestrunner::ReleaseValidation::test_small_logical_screens(1920x1080@1)
+PASS   : qmltestrunner::ReleaseValidation::test_small_logical_screens(1920x1080@1.25)
+PASS   : qmltestrunner::ReleaseValidation::test_small_logical_screens(1920x1080@1.5)
+PASS   : qmltestrunner::ReleaseValidation::test_small_logical_screens(1920x1080@2)
+PASS   : qmltestrunner::ReleaseValidation::test_small_logical_screens(1366x768@1)
+PASS   : qmltestrunner::ReleaseValidation::test_small_logical_screens(1366x768@1.25)
+PASS   : qmltestrunner::ReleaseValidation::test_small_logical_screens(1366x768@1.5)
+PASS   : qmltestrunner::ReleaseValidation::test_small_logical_screens(1366x768@2)
+PASS   : qmltestrunner::ReleaseValidation::cleanupTestCase()
+Totals: 12 passed, 1 failed, 0 skipped, 0 blacklisted, 3461ms
+********* Finished testing of qmltestrunner *********

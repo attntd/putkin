@@ -1,0 +1,16 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::Keyboard::initTestCase()
+PASS   : qmltestrunner::Keyboard::test_actions_route_to_shared_services()
+PASS   : qmltestrunner::Keyboard::test_command_captures_window_and_clear_chip()
+PASS   : qmltestrunner::Keyboard::test_command_chip_alias_and_panel_handoff()
+PASS   : qmltestrunner::Keyboard::test_compositor_conflict_and_write_failure()
+PASS   : qmltestrunner::Keyboard::test_duplicate_and_reserved_commands_do_not_write()
+PASS   : qmltestrunner::Keyboard::test_external_change_and_late_validation_cannot_save_closed_editor()
+PASS   : qmltestrunner::Keyboard::test_future_schema_preserved_and_backend_reload()
+PASS   : qmltestrunner::Keyboard::test_text_letters_and_draft_across_sections()
+PASS   : qmltestrunner::Keyboard::test_ui_keyboard_navigation_save_and_reopen()
+PASS   : qmltestrunner::Keyboard::cleanupTestCase()
+Totals: 11 passed, 0 failed, 0 skipped, 0 blacklisted, 1318ms
+********* Finished testing of qmltestrunner *********
+

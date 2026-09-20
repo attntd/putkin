@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "checks": [
+    "production IPC opens commands and clipboard directly, including switching an open launcher",
+    "native desktop categories map to Material Symbols; named, absolute bitmap, missing and empty icons use local vectors; equal 24 px canvases and 4 px padding",
+    "native DesktopEntries, hidden entry, argv launch, MRU persisted",
+    "real fd, literal query/path with shell syntax, xdg-open argv",
+    "watcher -> real cliphist -> exact wl-copy bytes; sensitive skip; no persistent clipboard",
+    "selected cliphist entry -> decoded multiline text or real PNG with exact aspect; square at launcher top; preview never copies; close clears preview",
+    "soft reload preserves file/app MRU, releases clipboard; 20 lazy panel cycles"
+  ]
+}

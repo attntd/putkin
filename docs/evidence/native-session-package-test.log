@@ -1,0 +1,4 @@
+Przywrócono poprzedni shell i jego autostart.
+Przywrócono poprzedni shell i jego autostart.
+Przywrócono poprzedni shell i jego autostart.
+PASS: 265 packaged runtime files equal checked sources; 6 config changes replace only release paths; Caffeinate modes preserved; rollback restores files and Hypridle autostart; repeat rollback, later-edit and locked-session guards pass.

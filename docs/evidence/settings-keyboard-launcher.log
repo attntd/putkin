@@ -1,0 +1,10 @@
+PASS: launcher — 5 grup integracji; /home/attntd/projects/putkin/docs/evidence/settings-keyboard-launcher.json
+e23ec260887ab" Path ID "aab3373ca7efe6efeafe23ec260887ab"
+  INFO: Saving logs to "/tmp/pk-launcher-f1awmnbn/runtime/quickshell/by-id/c1jl9ailt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+  INFO: Reloading configuration...
+  WARN: This plugin does not support setting window masks
+  INFO: Configuration Loaded
+  INFO qml: PUTKIN_PREVIEW_READY

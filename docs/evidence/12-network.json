@@ -1,0 +1,193 @@
+{
+  "timestamp_utc": "2026-09-16T18:45:10.243244+00:00",
+  "checks": [
+    "native devices/APs; duplicate SSID grouped by upstream; literal UTF-8; strength signals; bar never scans",
+    "saved ActivateConnection; open AddAndActivateConnection; NoSecrets; wrong/correct PSK via native Update; field cleared",
+    "Ethernet + Wi-Fi; unknown/limited/portal/full internet; explicit CheckConnectivity",
+    "confirmed radio; denied + ignored writes; retries; hardware rfkill; scanner release and resume",
+    "pending cancellation and target change; bounded timeout; native adapter removal/return",
+    "20 native LazyLoader cycles; soft reload preserves owner; hard reload requests process restart; scanners/views/watchers released",
+    "missing optional editor message; available editor invokes controlled fake executable",
+    "missing/lost/restarted NM; stale state hidden; upstream reconnect limitation stated in UI",
+    "no test secrets in private XDG/files/logs or process argv; private system/session bus; no host hardware"
+  ],
+  "cycles": [
+    {
+      "cycle": 1,
+      "pid": 254931,
+      "name": "quickshell",
+      "parent": 254928,
+      "cpu_ticks": 72,
+      "rss_kib": 131036
+    },
+    {
+      "cycle": 2,
+      "pid": 254931,
+      "name": "quickshell",
+      "parent": 254928,
+      "cpu_ticks": 75,
+      "rss_kib": 131164
+    },
+    {
+      "cycle": 3,
+      "pid": 254931,
+      "name": "quickshell",
+      "parent": 254928,
+      "cpu_ticks": 80,
+      "rss_kib": 131264
+    },
+    {
+      "cycle": 4,
+      "pid": 254931,
+      "name": "quickshell",
+      "parent": 254928,
+      "cpu_ticks": 84,
+      "rss_kib": 131392
+    },
+    {
+      "cycle": 5,
+      "pid": 254931,
+      "name": "quickshell",
+      "parent": 254928,
+      "cpu_ticks": 88,
+      "rss_kib": 131392
+    },
+    {
+      "cycle": 6,
+      "pid": 254931,
+      "name": "quickshell",
+      "parent": 254928,
+      "cpu_ticks": 92,
+      "rss_kib": 131392
+    },
+    {
+      "cycle": 7,
+      "pid": 254931,
+      "name": "quickshell",
+      "parent": 254928,
+      "cpu_ticks": 95,
+      "rss_kib": 131392
+    },
+    {
+      "cycle": 8,
+      "pid": 254931,
+      "name": "quickshell",
+      "parent": 254928,
+      "cpu_ticks": 100,
+      "rss_kib": 131392
+    },
+    {
+      "cycle": 9,
+      "pid": 254931,
+      "name": "quickshell",
+      "parent": 254928,
+      "cpu_ticks": 104,
+      "rss_kib": 131392
+    },
+    {
+      "cycle": 10,
+      "pid": 254931,
+      "name": "quickshell",
+      "parent": 254928,
+      "cpu_ticks": 108,
+      "rss_kib": 131648
+    },
+    {
+      "cycle": 11,
+      "pid": 254931,
+      "name": "quickshell",
+      "parent": 254928,
+      "cpu_ticks": 113,
+      "rss_kib": 131584
+    },
+    {
+      "cycle": 12,
+      "pid": 254931,
+      "name": "quickshell",
+      "parent": 254928,
+      "cpu_ticks": 118,
+      "rss_kib": 131288
+    },
+    {
+      "cycle": 13,
+      "pid": 254931,
+      "name": "quickshell",
+      "parent": 254928,
+      "cpu_ticks": 122,
+      "rss_kib": 131288
+    },
+    {
+      "cycle": 14,
+      "pid": 254931,
+      "name": "quickshell",
+      "parent": 254928,
+      "cpu_ticks": 125,
+      "rss_kib": 131288
+    },
+    {
+      "cycle": 15,
+      "pid": 254931,
+      "name": "quickshell",
+      "parent": 254928,
+      "cpu_ticks": 129,
+      "rss_kib": 131288
+    },
+    {
+      "cycle": 16,
+      "pid": 254931,
+      "name": "quickshell",
+      "parent": 254928,
+      "cpu_ticks": 133,
+      "rss_kib": 131288
+    },
+    {
+      "cycle": 17,
+      "pid": 254931,
+      "name": "quickshell",
+      "parent": 254928,
+      "cpu_ticks": 137,
+      "rss_kib": 131288
+    },
+    {
+      "cycle": 18,
+      "pid": 254931,
+      "name": "quickshell",
+      "parent": 254928,
+      "cpu_ticks": 142,
+      "rss_kib": 131416
+    },
+    {
+      "cycle": 19,
+      "pid": 254931,
+      "name": "quickshell",
+      "parent": 254928,
+      "cpu_ticks": 146,
+      "rss_kib": 131408
+    },
+    {
+      "cycle": 20,
+      "pid": 254931,
+      "name": "quickshell",
+      "parent": 254928,
+      "cpu_ticks": 151,
+      "rss_kib": 131244
+    }
+  ],
+  "expected_diagnostics": [
+    "ERROR quickshell.network: Network will not work. Could not find an available backend."
+  ],
+  "processes_cleaned": [
+    254929,
+    254930,
+    254931,
+    254939,
+    255432,
+    255451,
+    255462,
+    255471,
+    255495,
+    255507,
+    255515,
+    255524
+  ]
+}

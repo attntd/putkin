@@ -1,0 +1,30 @@
+{
+  "run": "../12-tests-final.log",
+  "files": [
+    "panels-cycles.json",
+    "panels-cycles.log",
+    "settings-integration.json",
+    "settings-integration.log",
+    "audio-integration.json",
+    "audio-integration.log",
+    "audio-integration.pipewire.log",
+    "brightness-integration.json",
+    "brightness-integration.log",
+    "status.json",
+    "status.log",
+    "network.json",
+    "network.log",
+    "bluetooth.json",
+    "bluetooth.log",
+    "notifications.json",
+    "notifications.log",
+    "session.json",
+    "session.log",
+    "desktop.json",
+    "desktop.log",
+    "validation.json",
+    "validation.log",
+    "bar-integration-hyprlang.log",
+    "bar-integration-lua.log"
+  ]
+}

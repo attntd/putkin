@@ -1,0 +1,79 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::AccentGroups::initTestCase()
+PASS   : qmltestrunner::AccentGroups::test_each_group_has_its_own_origin()
+PASS   : qmltestrunner::AccentGroups::test_live_palette_change_and_outline_contrast()
+PASS   : qmltestrunner::AccentGroups::test_one_diagonal_field_across_controls_and_frame()
+PASS   : qmltestrunner::AccentGroups::test_resize_move_and_scroll_update_shared_coordinates()
+PASS   : qmltestrunner::AccentGroups::cleanupTestCase()
+Totals: 6 passed, 0 failed, 0 skipped, 0 blacklisted, 57ms
+********* Finished testing of qmltestrunner *********
+
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::VisualContract::initTestCase()
+FAIL!  : qmltestrunner::VisualContract::test_active_modules_have_dark_icons(wifi) 'verify()' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_visual_contract.qml(121)]
+FAIL!  : qmltestrunner::VisualContract::test_active_modules_have_dark_icons(bluetooth) 'verify()' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_visual_contract.qml(121)]
+FAIL!  : qmltestrunner::VisualContract::test_active_modules_have_dark_icons(battery) 'verify()' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_visual_contract.qml(121)]
+PASS   : qmltestrunner::VisualContract::test_bar_icons_and_confirmed_connection_colors()
+PASS   : qmltestrunner::VisualContract::test_compact_layout_font_borders_and_no_hover_popup()
+PASS   : qmltestrunner::VisualContract::test_error_is_a_toast_with_panel_open_and_in_dnd()
+PASS   : qmltestrunner::VisualContract::test_fade_keeps_geometry_and_reduced_motion_is_immediate()
+PASS   : qmltestrunner::VisualContract::test_one_detail_section_and_keyboard_entry()
+PASS   : qmltestrunner::VisualContract::test_osd_horizontal_and_fade_retains_last_monitor()
+PASS   : qmltestrunner::VisualContract::cleanupTestCase()
+Totals: 8 passed, 3 failed, 0 skipped, 0 blacklisted, 18303ms
+********* Finished testing of qmltestrunner *********
+
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::Launcher::initTestCase()
+PASS   : qmltestrunner::Launcher::test_all_prefixes_paste_and_literal_colon()
+PASS   : qmltestrunner::Launcher::test_async_results_keep_selected_identity()
+PASS   : qmltestrunner::Launcher::test_chips_and_backspace_with_real_text_input()
+PASS   : qmltestrunner::Launcher::test_debounce_stale_search_and_close_cancellation()
+PASS   : qmltestrunner::Launcher::test_direct_modes_reset_query_and_focus()
+PASS   : qmltestrunner::Launcher::test_error_toast_beside_centered_launcher()
+PASS   : qmltestrunner::Launcher::test_escape_vim_enter_once_and_text_return()
+PASS   : qmltestrunner::Launcher::test_exclusivity_monitor_hotplug_and_cycles()
+PASS   : qmltestrunner::Launcher::test_late_activation_cannot_close_reopened_panel()
+PASS   : qmltestrunner::Launcher::test_missing_backend_and_clipboard_are_not_empty_success()
+PASS   : qmltestrunner::Launcher::test_monitor_handoff_invalidates_old_activation()
+PASS   : qmltestrunner::Launcher::test_recent_default_rank_and_filters()
+PASS   : qmltestrunner::Launcher::test_search_focus_colors_its_own_border()
+PASS   : qmltestrunner::Launcher::test_small_screen_and_last_result_reachable()
+PASS   : qmltestrunner::Launcher::test_tab_mouse_clipboard_and_pending_failure()
+PASS   : qmltestrunner::Launcher::test_workspace_commands(switch0)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(switch1)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(switch2)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(switch3)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(switch4)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(switch5)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(switch6)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(switch7)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(switch8)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(switch9)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(move0)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(move1)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(move2)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(move3)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(move4)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(move5)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(move6)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(move7)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(move8)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(move9)
+PASS   : qmltestrunner::Launcher::test_workspace_incomplete_and_invalid_commands()
+PASS   : qmltestrunner::Launcher::test_workspace_monitor_and_helper_unavailable()
+PASS   : qmltestrunner::Launcher::test_workspace_move_acknowledgement_and_duplicate_enter()
+PASS   : qmltestrunner::Launcher::test_workspace_move_closes_while_pending()
+PASS   : qmltestrunner::Launcher::test_workspace_move_missing_and_closed_window()
+PASS   : qmltestrunner::Launcher::test_workspace_text_in_filter_is_literal()
+PASS   : qmltestrunner::Launcher::test_workspace_timeout_disconnect_and_late_session()
+PASS   : qmltestrunner::Launcher::cleanupTestCase()
+Totals: 44 passed, 0 failed, 0 skipped, 0 blacklisted, 23467ms
+********* Finished testing of qmltestrunner *********
+

@@ -1,0 +1,157 @@
+#!/usr/bin/env python3
+"""Exercise native Hyprland models and real Quickshell IPC using private sockets."""
+
+import json
+from pathlib import Path
+import re
+import subprocess
+import sys
+import tempfile
+import time
+
+from _common import ROOT, ipc_reply, ipc_json, isolated_environment, qml_errors, stop_process_group, tool
+
+sys.path.insert(0, str(ROOT / "tests"))
+from hyprland_protocol import HyprlandPeer
+
+
+def eventually(read, predicate, description):
+    deadline = time.monotonic() + 6
+    last = None
+    while time.monotonic() < deadline:
+        last = read()
+        if predicate(last):
+            return last
+        time.sleep(0.03)
+    raise AssertionError(f"{description}: {last}")
+
+
+def scenario(lua):
+    quickshell, dbus = tool("quickshell"), tool("dbus-run-session")
+    with tempfile.TemporaryDirectory(prefix="pk-") as directory:
+        env = isolated_environment(directory)
+        env["HYPRLAND_INSTANCE_SIGNATURE"] = "putkin-test"
+        peer = HyprlandPeer(Path(env["XDG_RUNTIME_DIR"]) / "hypr/putkin-test", lua=lua)
+        with tempfile.TemporaryFile(mode="w+") as log:
+            process = subprocess.Popen([dbus, "--", quickshell, "--no-color", "--path", str(ROOT / "bar-test.qml")],
+                                       env=env, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+
+            def ipc(target, method, *args, starting=False):
+                result = subprocess.run([quickshell, "ipc", "--path", str(ROOT / "bar-test.qml"), "call", target, method, *map(str, args)],
+                                        env=env, capture_output=True, text=True, timeout=4)
+                return ipc_reply(result, process, log, starting=starting)
+
+            def state():
+                value = ipc("probe", "snapshot", starting=True)
+                return ipc_json(value)
+
+            try:
+                initial = eventually(state, lambda s: s.get("available") and len(s.get("rows", [])) == 7
+                                     and s["rows"][-1]["occupied"], "native model initialization")
+                assert [r["id"] for r in initial["rows"]] == [1, 2, 3, 4, 5, 9, 12]
+                assert initial["rows"][1]["visibleOn"] == "TEST-2"
+                assert initial["rows"][5]["visibleOn"] == "TEST-1"
+                assert len(peer.events) == 2, "one native stream and one shared EOF guard"
+                peer.send("urgent>>123")
+                eventually(state, lambda s: s["rows"][-1]["urgent"], "native urgency")
+                assert ipc("bar", "focus") == "TEST-1"
+                assert state()["navigationMonitor"] == "TEST-1"
+                ipc("bar", "close")
+                assert state()["navigationMonitor"] == ""
+                assert ipc("probe", "activate", 12, "TEST-2") == "true"
+                eventually(state, lambda s: not s.get("busy", True) and s["monitors"][1]["activeId"] == 12,
+                           "native monitor-aware action acknowledgement")
+                expected = ['dispatch hl.dsp.focus({ monitor = "1" })',
+                            'dispatch hl.dsp.focus({ workspace = "12", on_current_monitor = true })'] if lua else [
+                            "dispatch focusmonitor 1", "dispatch focusworkspaceoncurrentmonitor 12"]
+                assert [r for r in peer.requests if r.startswith("dispatch")] == expected
+                # Real command parser + native toplevel objects on private sockets.
+                peer.send("activewindowv2>>123")
+                eventually(state, lambda s: s["activeWindow"].removeprefix("0x") == "123", "native active window")
+                ipc("probe", "openLauncher")
+                assert ipc("probe", "command", ":w0") == "true"
+                eventually(state, lambda s: s["commandsCompleted"] == 1 and not s["launcherActive"]
+                           and s["monitors"][1]["activeId"] == 10, "command creates workspace 10")
+                expected.append('dispatch hl.dsp.focus({ workspace = "10", on_current_monitor = true })' if lua
+                                else "dispatch focusworkspaceoncurrentmonitor 10")
+                ipc("probe", "openLauncher")  # Capture 123 before focus moves elsewhere.
+                peer.clients.append(dict(address="0x456", workspace=dict(id=2, name="2"), monitor=1,
+                                         title="Other test window", **{"class": "test"}))
+                peer.send("openwindow>>456,2,test,Other test window")
+                eventually(state, lambda s: len(s["windows"]) == 2, "second native window")
+                peer.send("activewindowv2>>456")
+                eventually(state, lambda s: s["activeWindow"].removeprefix("0x") == "456", "changed native focus")
+                assert ipc("probe", "command", ":mw7") == "true"
+                moved = eventually(state, lambda s: s["commandsCompleted"] == 2 and not s["launcherBusy"],
+                                   "native move acknowledgement")
+                assert {w["address"].removeprefix("0x"): w["workspace"] for w in moved["windows"]} == {"123": 7, "456": 2}
+                assert moved["focusedMonitor"] == "TEST-2" and moved["monitors"][1]["activeId"] == 10
+                expected.append('dispatch hl.dsp.window.move({ workspace = "7", follow = false, window = "address:0x123" })' if lua
+                                else "dispatch movetoworkspacesilent 7,address:0x123")
+                assert [r for r in peer.requests if r.startswith("dispatch")] == expected
+                ipc("probe", "openLauncher")
+                peer.clients = peer.clients[:1]
+                peer.send("closewindow>>456")
+                eventually(state, lambda s: len(s["windows"]) == 1, "captured native object removed")
+                assert ipc("probe", "command", ":mw4") == "false"
+                assert state()["launcherError"] and state()["launcherActive"]
+                assert [r for r in peer.requests if r.startswith("dispatch")] == expected, "no fallback to another window"
+                assert ipc("bar", "focus") == "TEST-2"
+                peer.monitors = peer.monitors[:1]
+                peer.send("monitorremoved>>TEST-2")
+                eventually(state, lambda s: len(s["monitors"]) == 1 and s["navigationMonitor"] == "", "native monitor removal")
+                peer.monitors.append(peer.monitor(2, "TEST-3", 3, False))
+                peer.workspaces.append(dict(id=3, name="3", monitor="TEST-3", windows=0, hasfullscreen=False))
+                peer.send("createworkspacev2>>3,3")
+                peer.send("monitoraddedv2>>2,TEST-3,Private test output")
+                eventually(state, lambda s: len(s["monitors"]) == 2 and s["rows"][2]["visibleOn"] == "TEST-3", "native monitor addition")
+                assert len(peer.events) == 2, "hotplug must not add connection watchers"
+                count = len(peer.requests)
+                time.sleep(0.2)
+                assert len(peer.requests) == count, "no idle polling"
+                peer.disconnect()
+                lost = eventually(state, lambda s: s.get("available") is False, "EOF invalidates stale native state")
+                assert len(lost["rows"]) == 5 and all(not r["occupied"] and not r["visibleOn"] for r in lost["rows"])
+                assert ipc("probe", "activate", 1, "TEST-1") == "false"
+                assert not peer.failures, peer.failures
+                stop_process_group(process)
+                log.seek(0)
+                output = log.read()
+                # Exact, expected diagnostics from deliberately closing the native
+                # socket. All other warnings, including load/import errors, fail.
+                expected_warnings = {
+                    "WARN : Failed to create wl_display (No such file or directory)",
+                    "WARN: Compositor does not support hyprland-toplevel-mapping-v1.It will not be possible to derive hyprland addresses from toplevels.",
+                    "WARN: Hyprland event socket error: QLocalSocket::PeerClosedError",
+                    "WARN quickshell.hyprland.ipc: Hyprland event socket disconnected.",
+                }
+                socket_eof = r"WARN quickshell\.io\.socket: Socket error for Socket\(0x[0-9a-f]+\) QLocalSocket::PeerClosedError"
+                unexpected = [line for line in qml_errors(output) if line.strip() not in expected_warnings
+                              and not re.fullmatch(socket_eof, line.strip())]
+                assert not unexpected, "\n".join(unexpected)
+                for line in qml_errors(output):
+                    print(line)
+                print(f"PASS: native Hyprland ({'Lua' if lua else 'Hyprlang'}), bar + launcher workspace commands, captured window, hotplug, disconnect")
+                return output
+            finally:
+                stop_process_group(process)
+                peer.close()
+                log.seek(0)
+                output = log.read()
+                path = ROOT / "artifacts" / f"bar-integration-{'lua' if lua else 'hyprlang'}.log"
+                path.parent.mkdir(exist_ok=True)
+                path.write_text(output)
+
+
+def main():
+    try:
+        for lua in [False, True]:
+            scenario(lua)
+    except (AssertionError, OSError, subprocess.SubprocessError) as error:
+        print(f"FAIL: {error}; logs: artifacts/bar-integration-*.log", file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

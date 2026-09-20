@@ -1,0 +1,16 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::Fade::initTestCase()
+PASS   : qmltestrunner::Fade::test_close_during_preparation_and_replace_content()
+PASS   : qmltestrunner::Fade::test_column_preserves_outer_focus_ring()
+PASS   : qmltestrunner::Fade::test_group_pixels(quarter)
+PASS   : qmltestrunner::Fade::test_group_pixels(half)
+PASS   : qmltestrunner::Fade::test_group_pixels(three_quarters)
+PASS   : qmltestrunner::Fade::test_layer_preserves_opaque_pixels_and_position()
+PASS   : qmltestrunner::Fade::test_nested_content_enters_with_parent()
+PASS   : qmltestrunner::Fade::test_waits_for_content_and_stable_layout()
+PASS   : qmltestrunner::Fade::cleanupTestCase()
+QDEBUG : qmltestrunner::UnknownTestFunc() qt.scenegraph.general: Total time spent on pipeline creation during the lifetime of the QRhi 0x55dcfa434a60 was 45 ms
+QDEBUG : qmltestrunner::UnknownTestFunc() qt.scenegraph.general: Writing pipeline cache contents (44585 bytes) for QRhi 0x55dcfa434a60 to '/tmp/pf-kp7emqqm/cache/qmltestrunner/qtpipelinecache-x86_64-little_endian-lp64/qqpc_opengl'
+Totals: 10 passed, 0 failed, 0 skipped, 0 blacklisted, 3630ms
+********* Finished testing of qmltestrunner *********

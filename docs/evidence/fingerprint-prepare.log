@@ -1,0 +1,22 @@
+{
+  "release": "/home/attntd/.local/share/putkin/releases/20260920-fingerprint-603608293d62",
+  "runtime_files": 171,
+  "changed_runtime": [
+    "config/hyprlock.example.conf",
+    "services/lock_appearance.py",
+    "services/lock_indicator.py",
+    "services/session_lock.py"
+  ],
+  "configurations": [
+    "/home/attntd/.config/hypr/hyprland.lua",
+    "/home/attntd/.local/share/chezmoi/dot_config/hypr/hyprland.lua",
+    "/home/attntd/.config/hypr/autostart.lua",
+    "/home/attntd/.local/share/chezmoi/dot_config/hypr/autostart.lua",
+    "/home/attntd/.config/hypr/modules/system_binds.lua",
+    "/home/attntd/.local/share/chezmoi/dot_config/hypr/modules/system_binds.lua",
+    "/home/attntd/.config/hypr/hypridle.conf",
+    "/home/attntd/.local/share/chezmoi/dot_config/hypr/hypridle.conf"
+  ],
+  "preserved_chezmoi_status": "MM .config/hypr/hyprland.lua",
+  "restore": "/home/attntd/.local/state/putkin/update-20260920-fingerprint-603608293d62/restore"
+}

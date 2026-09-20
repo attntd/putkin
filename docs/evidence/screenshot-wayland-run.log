@@ -1,0 +1,8 @@
+PASS: real Print opens selection; Q and Escape cancel without PNG or capture worker
+PASS: Enter captures full current output after unmap; native preview floats; PNG copied before preview and survives Q
+PASS: real reverse drag waits for Enter; cropped PNG has exact dimensions; F saves identical bytes with mode 0600
+PASS: :screenshot uses real launcher input; W captures the original active window; Enter saves preview
+PASS: compositor animations do not retain dimmer in capture; Escape closes preview and preserves clipboard
+PASS: fractional scale and negative monitor origin preserve native output pixel dimensions
+PASS: removing the selected monitor cancels the overlay without capturing another output or replacing clipboard
+PASS: native screenshot selection, clipboard, preview and keyboard entry points

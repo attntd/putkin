@@ -1,0 +1,21 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::BarAlignment::initTestCase()
+PASS   : qmltestrunner::BarAlignment::test_charging_material_body_height_and_wider_frame(0)
+PASS   : qmltestrunner::BarAlignment::test_charging_material_body_height_and_wider_frame(10)
+PASS   : qmltestrunner::BarAlignment::test_charging_material_body_height_and_wider_frame(25)
+PASS   : qmltestrunner::BarAlignment::test_charging_material_body_height_and_wider_frame(40)
+PASS   : qmltestrunner::BarAlignment::test_charging_material_body_height_and_wider_frame(55)
+PASS   : qmltestrunner::BarAlignment::test_charging_material_body_height_and_wider_frame(70)
+PASS   : qmltestrunner::BarAlignment::test_charging_material_body_height_and_wider_frame(85)
+PASS   : qmltestrunner::BarAlignment::test_charging_material_body_height_and_wider_frame(100)
+PASS   : qmltestrunner::BarAlignment::test_clock_visible_glyphs_are_centered(pl_PL0)
+PASS   : qmltestrunner::BarAlignment::test_clock_visible_glyphs_are_centered(pl_PL1)
+PASS   : qmltestrunner::BarAlignment::test_clock_visible_glyphs_are_centered(pl_PL2)
+PASS   : qmltestrunner::BarAlignment::test_clock_visible_glyphs_are_centered(en_US0)
+PASS   : qmltestrunner::BarAlignment::test_clock_visible_glyphs_are_centered(en_US1)
+PASS   : qmltestrunner::BarAlignment::test_clock_visible_glyphs_are_centered(en_US2)
+PASS   : qmltestrunner::BarAlignment::test_equal_canvas_padding_above_separator()
+PASS   : qmltestrunner::BarAlignment::cleanupTestCase()
+Totals: 17 passed, 0 failed, 0 skipped, 0 blacklisted, 309ms
+********* Finished testing of qmltestrunner *********

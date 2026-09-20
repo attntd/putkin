@@ -1,0 +1,30 @@
+[bus]
+
+[fake]
+PUTKIN_STATUS_FAKE_READY
+
+[native]
+  INFO: Launching config: "/home/attntd/projects/putkin/status-test.qml"
+  INFO: Shell ID: "e834319fb85aa1c49b30a60554f30c4e" Path ID "e834319fb85aa1c49b30a60554f30c4e"
+  INFO: Saving logs to "/tmp/pk-8ssungrm/runtime/quickshell/by-id/ddg5x20hlt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+  WARN quickshell.service.sni.item: Unable to create pixmap for tray icon qs::service::sni::StatusNotifierItem(0x7f6707cdb100)
+  INFO: Reloading configuration...
+  WARN: This plugin does not support setting window masks
+  INFO: Configuration Loaded
+  INFO qml: PUTKIN_PREVIEW_READY
+  INFO: Reloading configuration...
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+
+[absent-start]
+  INFO: Launching config: "/home/attntd/projects/putkin/status-test.qml"
+  INFO: Shell ID: "e834319fb85aa1c49b30a60554f30c4e" Path ID "e834319fb85aa1c49b30a60554f30c4e"
+  INFO: Saving logs to "/tmp/pk-8ssungrm/runtime/quickshell/by-id/tog5930hlt/log.qslog"
+  INFO: Configuration Loaded
+  WARN quickshell.dbus: Could not launch service org.freedesktop.UPower: QDBusError(org.freedesktop.DBus.Error.ServiceUnknown, The name org.freedesktop.UPower was not provided by any .service files)
+  WARN quickshell.service.upower: Could not start UPower. The UPower service will not work.
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY

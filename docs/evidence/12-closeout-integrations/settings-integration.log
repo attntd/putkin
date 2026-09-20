@@ -1,0 +1,41 @@
+  INFO: Launching config: "/home/attntd/projects/putkin/settings-test.qml"
+  INFO: Shell ID: "6c48c53a5cef521a61ea745fd3fd3959" Path ID "6c48c53a5cef521a61ea745fd3fd3959"
+  INFO: Saving logs to "/tmp/pk-settings-6tupr4q6/runtime/quickshell/by-id/66g6uu5hlt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+  INFO: Launching config: "/home/attntd/projects/putkin/settings-test.qml"
+  INFO: Shell ID: "6c48c53a5cef521a61ea745fd3fd3959" Path ID "6c48c53a5cef521a61ea745fd3fd3959"
+  INFO: Saving logs to "/tmp/pk-settings-6tupr4q6/runtime/quickshell/by-id/u7g6wu5hlt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+  INFO: Launching config: "/home/attntd/projects/putkin/settings-test.qml"
+  INFO: Shell ID: "6c48c53a5cef521a61ea745fd3fd3959" Path ID "6c48c53a5cef521a61ea745fd3fd3959"
+  INFO: Saving logs to "/tmp/pk-settings-6tupr4q6/runtime/quickshell/by-id/ifg63v5hlt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+  WARN : inotify_add_watch(/tmp/pk-settings-6tupr4q6/config/putkin/settings.json) failed: (Permission denied)
+  WARN : inotify_add_watch(/tmp/pk-settings-6tupr4q6/config/putkin/settings.json) failed: (Permission denied)
+  WARN : inotify_add_watch(/tmp/pk-settings-6tupr4q6/config/putkin/settings.json) failed: (Permission denied)
+  INFO: Launching config: "/home/attntd/projects/putkin/settings-test.qml"
+  INFO: Shell ID: "6c48c53a5cef521a61ea745fd3fd3959" Path ID "6c48c53a5cef521a61ea745fd3fd3959"
+  INFO: Saving logs to "/tmp/pk-settings-6tupr4q6/runtime/quickshell/by-id/6hg65v5hlt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+  INFO: Reloading configuration...
+  WARN: This plugin does not support setting window masks
+  INFO: Configuration Loaded
+  INFO qml: PUTKIN_PREVIEW_READY
+  INFO: Reloading configuration...
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+  INFO: Launching config: "/home/attntd/projects/putkin/settings-test.qml"
+  INFO: Shell ID: "6c48c53a5cef521a61ea745fd3fd3959" Path ID "6c48c53a5cef521a61ea745fd3fd3959"
+  INFO: Saving logs to "/tmp/pk-settings-6tupr4q6/runtime/quickshell/by-id/1jg68v5hlt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY

@@ -1,0 +1,11 @@
+{
+  "timestamp_utc": "2026-09-19T21:57:55.460320+00:00",
+  "checks": [],
+  "cycles": [],
+  "error": "private bus: False",
+  "unexpected_diagnostics": [],
+  "expected_diagnostics": [],
+  "remaining_pids": [],
+  "tracked_processes": 1,
+  "passed": false
+}

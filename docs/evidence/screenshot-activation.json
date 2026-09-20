@@ -1,0 +1,104 @@
+{
+  "result": "PASS",
+  "build": "20260920-144910-c522126acd2f",
+  "previous": "/home/attntd/.local/share/putkin/releases/20260920-143123-526a551c6a9f",
+  "instance": {
+    "config_path": "/home/attntd/.config/quickshell/shell.qml",
+    "id": "ck365v3olt",
+    "launch_time": "2026-09-20T16:49:53",
+    "pid": 284556,
+    "shell_id": "770bba0d0f619c4ab3ab0453a539d542"
+  },
+  "unit": "ActiveState=active\nSubState=running\nMainPID=284556\nSlice=session-graphical.slice",
+  "keyboard": {
+    "ready": true,
+    "busy": false,
+    "applied": true,
+    "error": "",
+    "shortcuts": 8,
+    "commands": 1
+  },
+  "print": [
+    {
+      "locked": false,
+      "mouse": false,
+      "release": false,
+      "repeat": false,
+      "longPress": false,
+      "non_consuming": false,
+      "auto_consuming": false,
+      "has_description": true,
+      "modmask": 0,
+      "submap": "",
+      "submap_universal": "false",
+      "key": "Print",
+      "keycode": 0,
+      "catch_all": false,
+      "description": "Putkin:screenshot",
+      "allow_input_capture": false,
+      "dispatcher": "__lua",
+      "arg": "68"
+    }
+  ],
+  "session": {
+    "busy": false,
+    "phase": "",
+    "error": "",
+    "result": "",
+    "capabilities": {
+      "reboot": {
+        "available": true,
+        "reason": ""
+      },
+      "poweroff": {
+        "available": true,
+        "reason": ""
+      },
+      "suspend": {
+        "available": false,
+        "reason": "Operację wstrzymuje inhibitor aplikacji."
+      },
+      "idleSuspend": {
+        "available": false,
+        "reason": "Operację wstrzymuje inhibitor aplikacji."
+      },
+      "logout": {
+        "available": true,
+        "reason": ""
+      },
+      "lock": {
+        "available": true,
+        "reason": ""
+      }
+    },
+    "lock": {
+      "locked": false,
+      "secure": false
+    },
+    "idle": {
+      "ready": true,
+      "inhibited": false,
+      "sleepInhibited": true,
+      "dimmed": false,
+      "displaysOff": false,
+      "error": ""
+    }
+  },
+  "caffeinate": {
+    "active": true,
+    "mode": "background",
+    "busy": false,
+    "preventDisplaySleep": false,
+    "preventLock": false,
+    "preventSleep": true,
+    "error": ""
+  },
+  "retained": [
+    "20260920-144910-c522126acd2f",
+    "20260920-143123-526a551c6a9f",
+    "20260920-native-session-9a3db25af706",
+    "20260920-signal-chat-897d94e15725",
+    "20260920-charging-material-41a71d98cd09"
+  ],
+  "runtime_files": 272
+}

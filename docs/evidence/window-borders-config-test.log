@@ -1,0 +1,19 @@
+{
+  "appearance": {
+    "code": 0,
+    "output": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/pk-border-parser-2spabh_t/hyprland.lua'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is lua, loading lua mgr\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs (debug.enable_stdout_logs = 0). Further logs will be written to /hyprland.log\n\n\n======== Config parsing result:\n\nconfig ok\n"
+  },
+  "rollback": {
+    "code": 0,
+    "output": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/pk-border-parser-2spabh_t/hyprland.lua'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is lua, loading lua mgr\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs (debug.enable_stdout_logs = 0). Further logs will be written to /hyprland.log\n\n\n======== Config parsing result:\n\nconfig ok\n"
+  },
+  "hyprsunset_config": {
+    "code": 1,
+    "output": "\u250f hyprsunset v0.4.0 \u2501\u2501\u2578\n\u2503\n\u2523 Loaded 0 profiles\n\u2523 Resetting the matrix (--identity passed)\n\u2503\n\u2523 Calculated the CTM to be [mat3x3: 1, 0, 0, 0, 1, 0, 0, 0, 1]\n\u2503\n\u2716 Couldn't connect to a wayland compositor\n"
+  },
+  "hyprsunset_invalid_control": {
+    "code": 1,
+    "output": "\u250f hyprsunset v0.4.0 \u2501\u2501\u2578\n\u2503\n[ERR] Config has errors:\nConfig error in file /tmp/pk-border-parser-2spabh_t/config/hypr/hyprsunset.conf: Unclosed category at EOF\nProceeding ignoring faulty entries\n\u2523 Loaded 0 profiles\n\u2523 Resetting the matrix (--identity passed)\n\u2503\n\u2523 Calculated the CTM to be [mat3x3: 1, 0, 0, 0, 1, 0, 0, 0, 1]\n\u2503\n\u2716 Couldn't connect to a wayland compositor\n"
+  }
+}
+PASS: native configuration and rollback assertions

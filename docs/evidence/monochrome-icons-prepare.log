@@ -1,0 +1,14 @@
+Changed runtime files: components/ApplicationIcon.qml, components/qmldir, core/Theme.qml, modules/launcher/LauncherView.qml, modules/tray/TrayButton.qml
+{
+  "release": "/home/attntd/.local/share/putkin/releases/20260920-monochrome-icons-126a9cb93feb",
+  "runtime_files": 170,
+  "changes": [
+    "/home/attntd/.config/hypr/hyprland.lua",
+    "/home/attntd/.local/share/chezmoi/dot_config/hypr/hyprland.lua",
+    "/home/attntd/.config/hypr/autostart.lua",
+    "/home/attntd/.local/share/chezmoi/dot_config/hypr/autostart.lua",
+    "/home/attntd/.config/hypr/modules/system_binds.lua",
+    "/home/attntd/.local/share/chezmoi/dot_config/hypr/modules/system_binds.lua"
+  ],
+  "restore": "/home/attntd/.local/state/putkin/update-20260920-monochrome-icons-126a9cb93feb/restore"
+}

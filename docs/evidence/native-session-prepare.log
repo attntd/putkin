@@ -1,0 +1,48 @@
+{
+  "release": "/home/attntd/.local/share/putkin/releases/20260920-native-session-9a3db25af706",
+  "runtime_files": 265,
+  "changed": [
+    "config/pam.d/putkin-fingerprint",
+    "config/pam.d/putkin-password",
+    "modules/lock/LockHost.qml",
+    "modules/lock/LockView.qml",
+    "modules/lock/qmldir",
+    "scripts/lock-session",
+    "services/BrightnessService.qml",
+    "services/IdleBackend.qml",
+    "services/IdleService.qml",
+    "services/LockService.qml",
+    "services/PamBackend.qml",
+    "services/SessionBackend.qml",
+    "services/SessionIpc.qml",
+    "services/SessionService.qml",
+    "services/qmldir",
+    "services/session_backend.py",
+    "shell.qml"
+  ],
+  "removed": [
+    "config/hypridle.example.conf",
+    "config/hyprlock.example.conf",
+    "services/lock_appearance.py",
+    "services/lock_indicator.py",
+    "services/session_lock.py"
+  ],
+  "configurations": [
+    "/home/attntd/.config/hypr/hyprland.lua",
+    "/home/attntd/.local/share/chezmoi/dot_config/hypr/hyprland.lua",
+    "/home/attntd/.config/hypr/autostart.lua",
+    "/home/attntd/.local/share/chezmoi/dot_config/hypr/autostart.lua",
+    "/home/attntd/.config/hypr/modules/system_binds.lua",
+    "/home/attntd/.local/share/chezmoi/dot_config/hypr/modules/system_binds.lua"
+  ],
+  "caffeinate": {
+    "active": true,
+    "mode": "background",
+    "busy": false,
+    "preventDisplaySleep": false,
+    "preventLock": false,
+    "preventSleep": true,
+    "error": ""
+  },
+  "restore": "/home/attntd/.local/state/putkin/update-20260920-native-session-9a3db25af706/restore"
+}

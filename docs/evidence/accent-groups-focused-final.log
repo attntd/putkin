@@ -1,0 +1,30 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::VisualContract::initTestCase()
+FAIL!  : qmltestrunner::VisualContract::test_active_modules_have_dark_icons(wifi) 'Active icon must actually render black: wifi' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_visual_contract.qml(127)]
+FAIL!  : qmltestrunner::VisualContract::test_active_modules_have_dark_icons(bluetooth) 'Active icon must actually render black: bluetooth' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_visual_contract.qml(127)]
+FAIL!  : qmltestrunner::VisualContract::test_active_modules_have_dark_icons(battery) 'Active icon must actually render black: battery' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_visual_contract.qml(127)]
+PASS   : qmltestrunner::VisualContract::test_bar_icons_and_confirmed_connection_colors()
+PASS   : qmltestrunner::VisualContract::test_compact_layout_font_borders_and_no_hover_popup()
+PASS   : qmltestrunner::VisualContract::test_error_is_a_toast_with_panel_open_and_in_dnd()
+PASS   : qmltestrunner::VisualContract::test_fade_keeps_geometry_and_reduced_motion_is_immediate()
+PASS   : qmltestrunner::VisualContract::test_one_detail_section_and_keyboard_entry()
+PASS   : qmltestrunner::VisualContract::test_osd_horizontal_and_fade_retains_last_monitor()
+PASS   : qmltestrunner::VisualContract::cleanupTestCase()
+Totals: 8 passed, 3 failed, 0 skipped, 0 blacklisted, 3413ms
+********* Finished testing of qmltestrunner *********
+
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::AccentGroups::initTestCase()
+PASS   : qmltestrunner::AccentGroups::test_each_group_has_its_own_origin()
+PASS   : qmltestrunner::AccentGroups::test_live_palette_change_and_outline_contrast()
+PASS   : qmltestrunner::AccentGroups::test_one_diagonal_field_across_controls_and_frame()
+PASS   : qmltestrunner::AccentGroups::test_resize_move_and_scroll_update_shared_coordinates()
+PASS   : qmltestrunner::AccentGroups::cleanupTestCase()
+Totals: 6 passed, 0 failed, 0 skipped, 0 blacklisted, 60ms
+********* Finished testing of qmltestrunner *********
+

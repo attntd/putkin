@@ -1,0 +1,22 @@
+PASS: native BarWindow/WallpaperWindow/InteractivePanelWindow mapped; initial panel keyboard focus; real output capture
+PASS: Caffeinate i/j/Enter mode selection and on/off; inactive tile focus in native window
+PASS: separate Wayland application receives hjkl before and during native OSD/toast; overlays do not steal focus
+PASS: real private virtual-pointer click outside panel closes it and returns input to the separate application
+Traceback (most recent call last):
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 510, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 463, in main
+    inside(args.inside, args.smoke, args.idle, args.lock_wallpaper)
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 261, in inside
+    panel('quickSettings', 'audioVolume')
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 206, in panel
+    if focus: focused(focus)
+              ~~~~~~~^^^^^^^
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 188, in focused
+    return eventually(lambda: control(name), lambda c: c.get('focus'), 'keyboard focus: '+name)
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 42, in eventually
+    raise AssertionError(f"{description}: {last}")
+AssertionError: keyboard focus: audioVolume: {'name': 'audioVolume', 'focus': False, 'enabled': True, 'visible': True, 'y': 6, 'height': 36, 'viewportHeight': 420}

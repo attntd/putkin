@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/tmp/putkin-signal-chat-update/activate.py", line 249, in <module>
+    elif sys.argv[1:] == ['--apply']: apply()
+                                      ~~~~~^^
+  File "/tmp/putkin-signal-chat-update/activate.py", line 179, in apply
+    assert old_caffeinate['mode'] == 'off' and not old_caffeinate['active'], old_caffeinate
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'active': True, 'mode': 'background', 'busy': False, 'preventDisplaySleep': False, 'preventLock': False, 'preventSleep': True, 'error': ''}

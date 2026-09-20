@@ -1,0 +1,10 @@
+PASS: final scripts/check: 137 QML, exit 0.
+PASS: final scripts/test: 17 Python; 235 QtTest; 12 integration runners; exit 0.
+PASS: native run13: all checks and 18 visually inspected captures; exit 0; no remaining child PIDs.
+PASS: native cleanup: wrapper reaped and temporary directory removed.
+PASS: 37 Python scripts parsed.
+PASS: 490 local documentation link targets exist.
+PASS: SHA-256 manifest of 250 runtime, tests, contracts/prompts and reference image files.
+Only two of the 204 baseline source files changed: NotificationWindow.qml and InteractivePanelWindow.qml (focus fix).
+Production shell.qml: 95 lines.
+Physical hardware, PAM/lock/suspend and stage13: not performed.

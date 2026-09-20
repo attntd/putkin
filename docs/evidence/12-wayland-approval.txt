@@ -1,0 +1,18 @@
+2026-09-16 — action NOT executed; automatic approval review rejection.
+
+Proposed action: 12-second nested Hyprland inside bubblewrap, private XDG and D-Bus; parent Wayland socket and /dev/dri/renderD128 only; no Putkin shell, modesetting node, hardware services or PAM.
+
+Reviewer reason (verbatim):
+This launches a second full Hyprland shell against the active desktop’s Wayland socket and GPU render node, violating the trusted AGENTS.md instruction not to run another full shell on the active desktop and risking desktop disruption.
+
+No retry or indirect execution of the rejected action. Offscreen, private protocol tests and measurements continued.
+
+Subsequent explicit user approval: "tak", replying to the 12-second nested
+Hyprland permission question. The proposed compositor-only script was then
+executed. Startup passed; a long event socket path was found. A second probe
+within the same 12-second compositor-only scope used a short private runtime
+path and confirmed monitors IPC plus creation of the event socket.
+See 12-wayland-nested-result.json and 12-wayland-short-runtime.json.
+
+This approval does not cover the separately rejected Putkin UI run described
+in 12-wayland-ui-approval.txt. That broader action has not been executed.

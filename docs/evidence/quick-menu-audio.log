@@ -1,0 +1,16 @@
+  INFO: Launching config: "/home/attntd/projects/putkin/audio-test.qml"
+  INFO: Shell ID: "a1131e5e115fbf43e772f29f17147fc6" Path ID "a1131e5e115fbf43e772f29f17147fc6"
+  INFO: Saving logs to "/tmp/pk-tjfjn4hj/runtime/quickshell/by-id/nap14ssmlt/log.qslog"
+ ERROR quickshell.service.pipewire.loop: Failed to connect pipewire context. Errno: 112
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+  WARN quickshell.service.pipewire.loop: Pipewire error on object 0 with code -32 connection error
+  INFO: Reloading configuration...
+  WARN: This plugin does not support setting window masks
+  INFO: Configuration Loaded
+  INFO qml: PUTKIN_PREVIEW_READY
+  INFO: Reloading configuration...
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY

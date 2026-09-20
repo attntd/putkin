@@ -1,0 +1,1 @@
+PASS: existing file restored; new auth fragment removed; repeated restore safe; later edits protected before stop; all external commands mocked.

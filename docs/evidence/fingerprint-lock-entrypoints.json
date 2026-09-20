@@ -1,0 +1,18 @@
+{
+  "modules/system_binds.lua": "local lock_command = \"env PUTKIN_WALLPAPER=/home/attntd/.config/hypr/backgrounds/Cloudsnight.jpg /home/attntd/.local/share/putkin/releases/20260920-fingerprint-603608293d62/scripts/lock-session\"",
+  "hypridle.conf": "lock_cmd = env PUTKIN_WALLPAPER=/home/attntd/.config/hypr/backgrounds/Cloudsnight.jpg /home/attntd/.local/share/putkin/releases/20260920-fingerprint-603608293d62/scripts/lock-session",
+  "installed_appearance_generator": "PASS, private temporary output; real auth fragment referenced without modification",
+  "single_instance": {
+    "config_path": "/home/attntd/.local/share/putkin/releases/20260920-fingerprint-603608293d62/shell.qml",
+    "id": "89b4wernlt",
+    "launch_time": "2026-09-20T12:20:56",
+    "pid": 201212,
+    "shell_id": "1b2077a10d1a91e09f6d0f9b83aa3ddf"
+  },
+  "hypridle": {
+    "pid": 201167,
+    "active": true,
+    "screensaver_owner_verified": true
+  },
+  "host_authentication_test": "not run"
+}

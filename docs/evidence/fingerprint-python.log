@@ -1,0 +1,10 @@
+test_indicator_command_reads_literal_path_with_shell_metacharacters (test_lock_appearance.LockAppearanceTests.test_indicator_command_reads_literal_path_with_shell_metacharacters) ... ok
+test_invalid_preferences_fall_back_without_config_injection (test_lock_appearance.LockAppearanceTests.test_invalid_preferences_fall_back_without_config_injection) ... ok
+test_saved_preferences_private_output_and_auth_source (test_lock_appearance.LockAppearanceTests.test_saved_preferences_private_output_and_auth_source) ... ok
+test_missing_bus_or_optional_imports_still_runs_locker_and_preserves_exit (test_lock_indicator.LockIndicatorTests.test_missing_bus_or_optional_imports_still_runs_locker_and_preserves_exit) ... ok
+test_scanner_feedback_and_locker_lifecycle (test_lock_indicator.LockIndicatorTests.test_scanner_feedback_and_locker_lifecycle) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 7.288s
+
+OK

@@ -1,0 +1,58 @@
+#!/usr/bin/env python3
+"""Start the default Putkin through UWSM; forward CLI queries to Quickshell."""
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+
+
+def main():
+    quickshell = shutil.which("quickshell")
+    if not quickshell:
+        raise RuntimeError("Brak quickshell w PATH.")
+    # Preserve the upstream interface for IPC, logs, help and explicit configs.
+    if sys.argv[1:]:
+        os.execv(quickshell, [quickshell, *sys.argv[1:]])
+    config = Path(os.environ.get("XDG_CONFIG_HOME") or Path.home() / ".config")
+    entry = config / "quickshell/shell.qml"
+    if not entry.is_file():
+        raise RuntimeError("Brak domyślnego shell.qml; uruchom scripts/install.")
+    # This also recognizes the same release started before installing this command.
+    environment = {k: v for k, v in os.environ.items() if k not in ("QS_CONFIG_PATH", "QS_CONFIG_NAME", "QS_MANIFEST")}
+    result = subprocess.run([quickshell, "list", "--all", "--json"], env=environment, capture_output=True, text=True, check=True)
+    running = [] if result.stdout.strip() == "No running instances." else json.loads(result.stdout)
+    if any(Path(instance["config_path"]).resolve() == entry.resolve() for instance in running):
+        return 0
+    command = ["uwsm", "app", "-s", "s", "-t", "service", "-u", "putkin.service", "--", "env"]
+    # A service inherits the manager's environment. Pass the selected XDG config
+    # explicitly, and avoid a QS_CONFIG_* override silently selecting another shell.
+    command += ["-u", "QS_CONFIG_PATH", "-u", "QS_CONFIG_NAME", "-u", "QS_MANIFEST",
+                "XDG_CONFIG_HOME=" + str(config)]
+    for name in ("XDG_DATA_HOME", "XDG_STATE_HOME", "XDG_CACHE_HOME"):
+        if os.environ.get(name):
+            command.append(name + "=" + os.environ[name])
+    launch_file = config / "putkin/launch.json"
+    settings = json.loads(launch_file.read_text()) if launch_file.exists() else {}
+    wallpaper = os.environ.get("PUTKIN_WALLPAPER", settings.get("wallpaper"))
+    if wallpaper is not None:
+        if not isinstance(wallpaper, str):
+            raise ValueError("wallpaper w launch.json musi być tekstem.")
+        command.append("PUTKIN_WALLPAPER=" + wallpaper)
+    command += [quickshell, "--no-duplicate"]
+    result = subprocess.run(command)
+    if result.returncode:
+        # Concurrent invocations may race to create the same transient unit.
+        active = subprocess.run(["systemctl", "--user", "is-active", "--quiet", "putkin.service"])
+        if active.returncode == 0:
+            return 0
+    return result.returncode
+
+
+if __name__ == "__main__":
+    try:
+        sys.exit(main())
+    except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as error:
+        print(f"qs: {error}", file=sys.stderr)
+        sys.exit(1)

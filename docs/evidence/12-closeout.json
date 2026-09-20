@@ -1,0 +1,131 @@
+{
+  "timestamp_utc": "2026-09-16T20:55:07.228466+00:00",
+  "result": "PASS",
+  "scope": "Stage 12 accepted for published version 20260916-5132708bd8f7; later concurrent workspace redesign excluded by explicit user instruction; no stage 13 installer implementation",
+  "check": {
+    "exit_code": 0,
+    "qml_files": 137,
+    "errors": 0,
+    "log": "12-closeout-check.log"
+  },
+  "tests": {
+    "exit_code": 0,
+    "python_passed": 17,
+    "qt_passed": 235,
+    "qt_failed": 0,
+    "qt_duration_ms": 67494,
+    "integration_runners_passed": 12,
+    "archived_files": 25,
+    "log": "12-closeout-tests.log",
+    "integrations": "12-closeout-integrations/manifest.json"
+  },
+  "native_evidence": {
+    "report": "12-wayland-run13/report.json",
+    "review": "12-wayland-run13/review.json",
+    "captures_verified": 18,
+    "cycles": 20,
+    "result": "PASS",
+    "remaining_children": [],
+    "idle_s": 60.00002414699702,
+    "idle": {
+      "shell": {
+        "cpu_ticks": 2,
+        "percent_one_core": 0.03333331991834039,
+        "rss_start_kib": 203888,
+        "rss_end_kib": 203480
+      },
+      "compositor": {
+        "cpu_ticks": 57,
+        "percent_one_core": 0.949999617672701,
+        "rss_start_kib": 147796,
+        "rss_end_kib": 147796
+      }
+    }
+  },
+  "measurements": {
+    "baseline": "12-baseline-idle.json",
+    "baseline_s": 60.000206,
+    "baseline_cpu_percent": 0.0,
+    "combined": "12-combined-idle.json",
+    "combined_idle_s": 60.00013157400099,
+    "combined_cycles": 60
+  },
+  "user_reports": "12-user-acceptance.json",
+  "live_session": "12-closeout-live.json",
+  "verified_session_owner": "12-closeout-session-owner.json",
+  "wallpaper_review": {
+    "file": "/home/attntd/.config/hypr/backgrounds/Cloudsnight.jpg",
+    "sha256": "8c1bfd88a05541b81dd5c9affae6e22501fbab27512594d2866c331222497030",
+    "review": "Viewed local source: illustrated night sky/clouds and van, no baked shell UI. Personal wallpaper retained; compositor/application styling remains optional."
+  },
+  "source_manifest": "12-closeout-source-sha256.json",
+  "limitations": [
+    "No blanket claim about all physical hardware, drivers, security variants or PAM implementation",
+    "Failure injection and lock-confirmation/resume ordering tested on isolated native protocols and mock devices, not forced on active hardware",
+    "No multi-hour or VRAM measurement; required 60 s idle and panel cycles completed",
+    "Stage 13 portable installer and future-login verification are separate work",
+    "Later concurrent workspace redesign requires its own behavioral and visual acceptance; intentionally excluded by user"
+  ],
+  "accepted_version": "20260916-5132708bd8f7",
+  "accepted_code": {
+    "runtime_files": 110,
+    "matching_native_proof": 109,
+    "published_runtime_still_matches_manifest": true,
+    "repository_matched_published_runtime_at_test": true,
+    "test_log_completed_utc": "2026-09-16T20:52:43.094000+00:00",
+    "source_identity_verified_utc": "2026-09-16T20:55:07.228466+00:00",
+    "native_proof": "12-final-source-sha256.json",
+    "published_runtime": "13-runtime-sha256.json",
+    "runtime_archive": "12-closeout-runtime.tar.gz",
+    "runtime_archive_sha256": "06b9e67ea3faf63493ad8519b7910daa25f7e821e00be4cf10ac5e829c748a31",
+    "source_manifest_entries": 252,
+    "source_manifest_provenance": "Accepted runtime hashes from immutable published release, test/source hashes verified against native proof before concurrent edits, plus final closeout documentation. Not a hash claim for the subsequently modified workspace.",
+    "changed_from_native_manifest_in_accepted_sources": [
+      "README.md",
+      "ROADMAP.md",
+      "docs/desktop.md",
+      "docs/development.md",
+      "docs/status.md",
+      "docs/validation.md"
+    ],
+    "added_to_accepted_sources": [
+      "config/menu-keybinds.lua",
+      "docs/install.md"
+    ]
+  },
+  "parallel_work_excluded": {
+    "recorded_utc": "2026-09-16T21:10:07.548613+00:00",
+    "first_observed_edits_utc": "2026-09-16T21:05:44+00:00",
+    "user_instruction": "Tak — zamknij etap 12 dla działającej wersji",
+    "scope": "Later concurrent visual redesign; edits preserved; no PASS assigned to these changes",
+    "workspace_files_differing_from_accepted_candidate": {
+      "components/Button.qml": "2c528e370a775897e1be21e30d4a8b6de5befe4b5510811145407e7b9aad048c",
+      "components/Slider.qml": "271351252f9071babeb8d6da7a08782dd8a51d2d1598c00f7c6af85f3abe7e08",
+      "components/qmldir": "a1d940eadf5e61db2856c1caad510765096b91f79a79ba02afcc7676c18cc77a",
+      "core/Metrics.qml": "0f95b88b1960d1b0c13784448e6ecdc12ca055cf24508341efccde30d34eb4aa",
+      "core/Theme.qml": "90047065977120d4bb1c0ffbb1b6b09e1fffbdfd91fc77d7e69d672282b16f7f",
+      "modules/bar/BarView.qml": "7a6e118aa954363e81c9994500bc0f4f7f1884a8eb07f62935068cff0f3e99a4",
+      "modules/bar/BarWindow.qml": "53249bace55e122fdaa55d2f8d8018e3d97d1c7d6c9ca502f219f6a68bf12244",
+      "modules/bar/BatteryButton.qml": "a2de3cc919a5f4f799040d85c015b30b3b6acf4017eac1ba3af41c082e1fcc63",
+      "modules/bar/Clock.qml": "4f3d4395ffc3bb973e05dc5287f058d21cdc3cc2595dc0b694f6eb52a20b6717",
+      "modules/bar/WorkspaceButton.qml": "bfdcae4b52a43aebe1be5fae300a8ab2e92f269de98cc82f90a33a1a95bdf400",
+      "modules/quicksettings/AudioSection.qml": "b96e8a69acea42522d532aa07ec72dfbbb6c35d5b43c32d459f7e1b1b9e5f8dd",
+      "modules/quicksettings/BluetoothSection.qml": "03b3dfbe265ec5e659781e78c58425a79b07b40a96f7fb538b26cbde76ce07d0",
+      "modules/quicksettings/BrightnessSection.qml": "ba1989236eb2c1dc77b318eda1d526d89c123bff06e8cdf38534f191e7e96575",
+      "modules/quicksettings/NetworkSection.qml": "6043d097fdfb4ff4cb291d5096f86c26fb053748e8b8559cfb39a29b2ad40218",
+      "modules/quicksettings/PanelSurface.qml": "bad800c45563cbeb99943de210854cda0dc8c427d10ed786726da824bc75a826",
+      "preview/PanelPreviewScene.qml": "df194a3dbefef3ee7ffb000d88d12344ee5f3abb01f72ace6745a3b50099fbf9",
+      "shell.qml": "b54c9f0d30a665eea34688698c3eb10a99a005b6e36167a3802d95c128fcc3da"
+    },
+    "new_workspace_source_files": [
+      "components/ActionTile.qml",
+      "components/FadeColumn.qml",
+      "components/FadeScope.qml",
+      "components/Glyph.qml",
+      "components/ModuleButton.qml",
+      "components/ModuleRow.qml"
+    ]
+  },
+  "closeout_recorded_utc": "2026-09-16T21:11:42.653579+00:00",
+  "review": "12-closeout-review.log"
+}

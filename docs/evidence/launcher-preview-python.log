@@ -1,0 +1,15 @@
+test_application_file_launch_and_failed_action_history (test_launcher.BackendTests.test_application_file_launch_and_failed_action_history) ... ok
+test_cancel_preview_reaps_decoder_and_emits_no_stale_content (test_launcher.BackendTests.test_cancel_preview_reaps_decoder_and_emits_no_stale_content) ... ok
+test_cliphist_sensitive_limit_exact_text_and_binary_roundtrip (test_launcher.BackendTests.test_cliphist_sensitive_limit_exact_text_and_binary_roundtrip) ... ok
+test_launched_application_survives_worker_event_loop (test_launcher.BackendTests.test_launched_application_survives_worker_event_loop) ... ok
+test_preview_decodes_multiline_text_and_image_without_copying (test_launcher.BackendTests.test_preview_decodes_multiline_text_and_image_without_copying) ... ok
+test_preview_limits_invalid_missing_and_hidden_entries (test_launcher.BackendTests.test_preview_limits_invalid_missing_and_hidden_entries) ... ok
+test_real_fd_literal_paths_limits_and_no_shell (test_launcher.BackendTests.test_real_fd_literal_paths_limits_and_no_shell) ... ok
+test_search_timeout_and_cancellation_reap_process (test_launcher.BackendTests.test_search_timeout_and_cancellation_reap_process) ... ok
+test_clipboard_never_persisted_and_foreign_history_preserved (test_launcher.HistoryTests.test_clipboard_never_persisted_and_foreign_history_preserved) ... ok
+test_private_atomic_mru_roundtrip_and_limit (test_launcher.HistoryTests.test_private_atomic_mru_roundtrip_and_limit) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 2.691s
+
+OK

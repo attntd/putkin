@@ -1,0 +1,1 @@
+FAIL: Signal NewIcon pixmap switches the Material symbol while SNI remains Active: {'ready': True, 'symbol': 'chat_bubble', 'size': 20, 'padding': 6, 'centered': True}; log: docs/evidence/signal-chat-integration.log

@@ -1,0 +1,23 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::Notifications::initTestCase()
+PASS   : qmltestrunner::Notifications::test_arrival_mouse_close_and_action_preserve_focus()
+PASS   : qmltestrunner::Notifications::test_backend_loss_and_disabled_dnd()
+PASS   : qmltestrunner::Notifications::test_dnd_discards_without_replay_and_critical_does_not_expire()
+PASS   : qmltestrunner::Notifications::test_flood_bounds_fifo_and_critical_priority()
+PASS   : qmltestrunner::Notifications::test_identical_replacement_restarts_deadline_and_retains_card()
+FAIL!  : qmltestrunner::Notifications::test_keyboard_hjkl_enter_escape_and_tooltip() 'verify()' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_notifications.qml(88)]
+PASS   : qmltestrunner::Notifications::test_keyboard_pause_and_focus_repair()
+PASS   : qmltestrunner::Notifications::test_missing_data_plain_text_and_limits()
+PASS   : qmltestrunner::Notifications::test_monitor_routing_hotplug_and_geometry()
+PASS   : qmltestrunner::Notifications::test_quick_settings_dnd_and_intentional_handoff()
+PASS   : qmltestrunner::Notifications::test_replaced_actions_and_client_close()
+PASS   : qmltestrunner::Notifications::test_resident_transient_and_nonresident_actions()
+PASS   : qmltestrunner::Notifications::test_screen_resize_rebalances_without_duplicate_views()
+PASS   : qmltestrunner::Notifications::test_small_screen_bounds_images_scroll_and_queue()
+PASS   : qmltestrunner::Notifications::test_timeout_default_zero_and_queue_deadline()
+PASS   : qmltestrunner::Notifications::test_twenty_lifecycles()
+PASS   : qmltestrunner::Notifications::cleanupTestCase()
+Totals: 17 passed, 1 failed, 0 skipped, 0 blacklisted, 1978ms
+********* Finished testing of qmltestrunner *********

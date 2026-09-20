@@ -1,0 +1,30 @@
+[bus]
+
+[fake]
+PUTKIN_STATUS_FAKE_READY
+
+[native]
+  INFO: Launching config: "/tmp/putkin-signal-chat-validation/status-test.qml"
+  INFO: Shell ID: "d2d0244a31f14b48f3ca9bc9a89da0d3" Path ID "d2d0244a31f14b48f3ca9bc9a89da0d3"
+  INFO: Saving logs to "/tmp/pk-mls1qs9b/runtime/quickshell/by-id/th254exnlt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+  INFO: Reloading configuration...
+  WARN: This plugin does not support setting window masks
+  INFO: Configuration Loaded
+  INFO qml: PUTKIN_PREVIEW_READY
+  INFO: Reloading configuration...
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+
+[absent-start]
+  INFO: Launching config: "/tmp/putkin-signal-chat-validation/status-test.qml"
+  INFO: Shell ID: "d2d0244a31f14b48f3ca9bc9a89da0d3" Path ID "d2d0244a31f14b48f3ca9bc9a89da0d3"
+  INFO: Saving logs to "/tmp/pk-mls1qs9b/runtime/quickshell/by-id/x635lexnlt/log.qslog"
+  INFO: Configuration Loaded
+  WARN quickshell.dbus: Could not launch service org.freedesktop.UPower: QDBusError(org.freedesktop.DBus.Error.ServiceUnknown, The name org.freedesktop.UPower was not provided by any .service files)
+  WARN quickshell.service.upower: Could not start UPower. The UPower service will not work.
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY

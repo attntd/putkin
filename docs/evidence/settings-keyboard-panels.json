@@ -1,0 +1,228 @@
+{
+  "timestamp_utc": "2026-09-17T11:27:16.428974+00:00",
+  "mode": "offscreen/software; real Quickshell LazyLoader + IPC, mock monitors and Item surface",
+  "cycles": 20,
+  "live_surfaces_after_close": 0,
+  "rss_kib": {
+    "start": 119136,
+    "end": 118656,
+    "min": 118656,
+    "max": 119264
+  },
+  "initial_process_tree": [
+    {
+      "pid": 26977,
+      "name": "dbus-run-sessio",
+      "parent": 26974,
+      "cpu_ticks": 0,
+      "rss_kib": 2256
+    },
+    {
+      "pid": 26979,
+      "name": "dbus-daemon",
+      "parent": 26977,
+      "cpu_ticks": 0,
+      "rss_kib": 3436
+    },
+    {
+      "pid": 26980,
+      "name": "quickshell",
+      "parent": 26977,
+      "cpu_ticks": 51,
+      "rss_kib": 119136
+    }
+  ],
+  "final_process_tree": [
+    {
+      "pid": 26977,
+      "name": "dbus-run-sessio",
+      "parent": 26974,
+      "cpu_ticks": 0,
+      "rss_kib": 2256
+    },
+    {
+      "pid": 26979,
+      "name": "dbus-daemon",
+      "parent": 26977,
+      "cpu_ticks": 0,
+      "rss_kib": 3436
+    },
+    {
+      "pid": 26980,
+      "name": "quickshell",
+      "parent": 26977,
+      "cpu_ticks": 95,
+      "rss_kib": 118656
+    }
+  ],
+  "samples": [
+    {
+      "cycle": 0,
+      "pid": 26980,
+      "name": "quickshell",
+      "parent": 26977,
+      "cpu_ticks": 51,
+      "rss_kib": 119136
+    },
+    {
+      "cycle": 1,
+      "pid": 26980,
+      "name": "quickshell",
+      "parent": 26977,
+      "cpu_ticks": 52,
+      "rss_kib": 119136
+    },
+    {
+      "cycle": 2,
+      "pid": 26980,
+      "name": "quickshell",
+      "parent": 26977,
+      "cpu_ticks": 55,
+      "rss_kib": 119136
+    },
+    {
+      "cycle": 3,
+      "pid": 26980,
+      "name": "quickshell",
+      "parent": 26977,
+      "cpu_ticks": 57,
+      "rss_kib": 119264
+    },
+    {
+      "cycle": 4,
+      "pid": 26980,
+      "name": "quickshell",
+      "parent": 26977,
+      "cpu_ticks": 59,
+      "rss_kib": 119264
+    },
+    {
+      "cycle": 5,
+      "pid": 26980,
+      "name": "quickshell",
+      "parent": 26977,
+      "cpu_ticks": 61,
+      "rss_kib": 119024
+    },
+    {
+      "cycle": 6,
+      "pid": 26980,
+      "name": "quickshell",
+      "parent": 26977,
+      "cpu_ticks": 64,
+      "rss_kib": 119024
+    },
+    {
+      "cycle": 7,
+      "pid": 26980,
+      "name": "quickshell",
+      "parent": 26977,
+      "cpu_ticks": 66,
+      "rss_kib": 118852
+    },
+    {
+      "cycle": 8,
+      "pid": 26980,
+      "name": "quickshell",
+      "parent": 26977,
+      "cpu_ticks": 68,
+      "rss_kib": 118852
+    },
+    {
+      "cycle": 9,
+      "pid": 26980,
+      "name": "quickshell",
+      "parent": 26977,
+      "cpu_ticks": 70,
+      "rss_kib": 118852
+    },
+    {
+      "cycle": 10,
+      "pid": 26980,
+      "name": "quickshell",
+      "parent": 26977,
+      "cpu_ticks": 73,
+      "rss_kib": 118852
+    },
+    {
+      "cycle": 11,
+      "pid": 26980,
+      "name": "quickshell",
+      "parent": 26977,
+      "cpu_ticks": 74,
+      "rss_kib": 118980
+    },
+    {
+      "cycle": 12,
+      "pid": 26980,
+      "name": "quickshell",
+      "parent": 26977,
+      "cpu_ticks": 76,
+      "rss_kib": 118980
+    },
+    {
+      "cycle": 13,
+      "pid": 26980,
+      "name": "quickshell",
+      "parent": 26977,
+      "cpu_ticks": 79,
+      "rss_kib": 118980
+    },
+    {
+      "cycle": 14,
+      "pid": 26980,
+      "name": "quickshell",
+      "parent": 26977,
+      "cpu_ticks": 81,
+      "rss_kib": 118980
+    },
+    {
+      "cycle": 15,
+      "pid": 26980,
+      "name": "quickshell",
+      "parent": 26977,
+      "cpu_ticks": 83,
+      "rss_kib": 118664
+    },
+    {
+      "cycle": 16,
+      "pid": 26980,
+      "name": "quickshell",
+      "parent": 26977,
+      "cpu_ticks": 85,
+      "rss_kib": 118664
+    },
+    {
+      "cycle": 17,
+      "pid": 26980,
+      "name": "quickshell",
+      "parent": 26977,
+      "cpu_ticks": 87,
+      "rss_kib": 118664
+    },
+    {
+      "cycle": 18,
+      "pid": 26980,
+      "name": "quickshell",
+      "parent": 26977,
+      "cpu_ticks": 89,
+      "rss_kib": 118664
+    },
+    {
+      "cycle": 19,
+      "pid": 26980,
+      "name": "quickshell",
+      "parent": 26977,
+      "cpu_ticks": 92,
+      "rss_kib": 118792
+    },
+    {
+      "cycle": 20,
+      "pid": 26980,
+      "name": "quickshell",
+      "parent": 26977,
+      "cpu_ticks": 95,
+      "rss_kib": 118656
+    }
+  ]
+}

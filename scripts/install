@@ -1,0 +1,107 @@
+#!/usr/bin/env python3
+"""Install the default Putkin, retaining five builds. No system package changes."""
+import argparse
+import fcntl
+import importlib.util
+import json
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+
+from _install import (ROOT, Session, atomic_link, configure, current, file_state, paths, prepare,
+                      prune, publish, releases, restore_file, source_files, verify)
+
+
+def dependencies():
+    required = ["quickshell", "uwsm", "hyprctl", "busctl", "gdbus", "systemctl", "python3"]
+    missing = [name for name in required if not shutil.which(name)]
+    missing += ["python:" + name for name in ("dbus", "gi") if importlib.util.find_spec(name) is None]
+    if missing:
+        raise RuntimeError("Brak wymaganych zależności: " + ", ".join(missing))
+    optional = [name for name in ("brightnessctl", "hyprsunset", "wl-copy", "wl-paste", "cliphist", "fd", "file")
+                if not shutil.which(name)]
+    return {"quickshell": subprocess.check_output(["quickshell", "--version"], text=True).strip(),
+            "uwsm": subprocess.check_output(["uwsm", "--version"], text=True).strip(), "optional_missing": optional}
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--destination", type=Path, help="Prywatny prefiks z config/data/state/bin; bez sesji hosta")
+    parser.add_argument("--source", type=Path, default=ROOT, help="Źródła runtime; domyślnie to repozytorium")
+    parser.add_argument("--dry-run", action="store_true", help="Pokaż plan bez zmiany celu")
+    parser.add_argument("--activate", action="store_true", help="Przełącz odblokowaną sesję przez UWSM")
+    parser.add_argument("--no-prune", action="store_true", help="Odrocz retencję do odbioru pierwszej migracji")
+    parser.add_argument("--restore", nargs="?", const="previous", metavar="BUILD", help="Wróć do poprzedniego lub wskazanego buildu")
+    args = parser.parse_args()
+    if args.destination and args.activate:
+        parser.error("--destination izoluje pliki; nie łącz go z --activate")
+    layout = paths(args.destination)
+    store = layout["store"]
+    builds = releases(store)
+    target = None
+    if args.restore:
+        target = current(store, "previous") if args.restore == "previous" else next((b for b in builds if b.name == args.restore), None)
+        if target is None:
+            raise ValueError("Brak wskazanego zachowanego buildu.")
+        verify(target)
+    plan = {"paths": {k: str(v) for k, v in layout.items()}, "keep": 5,
+            "builds": [p.name for p in builds], "restore": str(target) if target else None,
+            "runtime_files": len(source_files(args.source)), "dependencies": dependencies(), "activate": args.activate}
+    if args.dry_run:
+        print(json.dumps(plan, indent=2, ensure_ascii=False))
+        return 0
+    store.mkdir(parents=True, exist_ok=True)
+    with (store / ".install.lock").open("w") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        old = current(store)
+        session = Session(layout) if args.activate else None
+        if session:
+            session.preflight()
+        elif not args.destination:
+            # A pointer switch changes default IPC resolution too; never leave a
+            # running instance on another build. Require a controlled handoff.
+            from _install import instances
+            if instances():
+                raise RuntimeError("Putkin działa; użyj scripts/install --activate.")
+        if target is None:
+            target = prepare(store, args.source)
+        else:
+            from _install import validate
+            validate(target)
+        # Preparation/check failures above leave both the current runtime and
+        # process intact. Only now change launch configuration and stop the shell.
+        before = {p: file_state(p) for p in (layout["entry"].parent, layout["launcher"], store / "previous")}
+        stopped = False
+        try:
+            if session:
+                session.stop()
+                stopped = True
+            publish(store, target)
+            configure(layout)
+            active = session.start() if session else None
+        except BaseException:
+            fallback = old or (session.old_build if session else None)
+            if stopped and session:
+                session.stop()
+            if fallback:
+                atomic_link(store / "current", fallback)
+            else:
+                (store / "current").unlink(missing_ok=True)
+            for path, state in before.items():
+                restore_file(path, state)
+            if fallback and stopped and session:
+                session.start(session.old["config_path"] if session.old else None)
+            raise
+        removed = [] if args.no_prune else prune(layout)
+        print(json.dumps({"current": str(target), "active": active, "removed": removed,
+                          "retained": [p.name for p in releases(store)]}, indent=2, ensure_ascii=False))
+    return 0
+
+
+if __name__ == "__main__":
+    try:
+        sys.exit(main())
+    except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as error:
+        print(f"install: {error}", file=sys.stderr)
+        sys.exit(1)

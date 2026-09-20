@@ -1,0 +1,6 @@
+QuickSettingsView 1.0 QuickSettingsView.qml
+PanelSurface 1.0 PanelSurface.qml
+InteractivePanelWindow 1.0 InteractivePanelWindow.qml
+AudioSection 1.0 AudioSection.qml
+BrightnessSection 1.0 BrightnessSection.qml
+NightLightSection 1.0 NightLightSection.qml

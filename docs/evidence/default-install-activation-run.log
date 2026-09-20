@@ -1,0 +1,155 @@
+PASS: 130 plików QML, 0 z błędami.
+{
+  "current": "/home/attntd/.local/share/putkin/releases/20260920-143123-526a551c6a9f",
+  "active": {
+    "config_path": "/home/attntd/.config/quickshell/shell.qml",
+    "id": "ioz5q63olt",
+    "launch_time": "2026-09-20T16:35:14",
+    "pid": 279522,
+    "shell_id": "770bba0d0f619c4ab3ab0453a539d542"
+  },
+  "removed": [],
+  "retained": [
+    "20260920-143123-526a551c6a9f",
+    "20260920-native-session-9a3db25af706",
+    "20260920-signal-chat-897d94e15725",
+    "20260920-charging-material-41a71d98cd09",
+    "20260920-bar-alignment-221eccd10c8c",
+    "20260920-bar-icons-399655afcfb6",
+    "20260920-material-icons-229766e3f287",
+    "20260920-fingerprint-603608293d62",
+    "20260920-monochrome-icons-126a9cb93feb",
+    "20260920-launcher-icons-336f43911540",
+    "20260920-caffeinate-focus-5367ba0cec0c",
+    "20260920-window-borders-48f2f2f6ecec",
+    "20260920-diagonal-rows-16d3bbc8db65",
+    "20260920-accent-groups-be2213f6b4c0",
+    "20260920-toggle-tiles-7a84bdec0b46",
+    "20260920-quick-menu-2062d4d22d06",
+    "20260919-mouse-focus-d40d745288bc",
+    "20260917-settings-keyboard-cc7addc79750",
+    "20260917-audio-launcher-2cf1bad7b39c",
+    "20260917-workspace-commands-ca6230ec4aef",
+    "20260917-battery-minimal-8edd9469b482",
+    "20260917-battery-clean-634ac9ebdd59",
+    "20260917-battery-3028dc9e5e77",
+    "20260917-launcher-769491c1e9b8",
+    "20260917-icons-cd3b25f5725c",
+    "20260916-visual-967a46b681fe",
+    "20260916-visual-3d0c562aa347",
+    "20260916-5132708bd8f7"
+  ]
+}
+{
+  "instance": {
+    "config_path": "/home/attntd/.config/quickshell/shell.qml",
+    "id": "ioz5q63olt",
+    "launch_time": "2026-09-20T16:35:14",
+    "pid": 279522,
+    "shell_id": "770bba0d0f619c4ab3ab0453a539d542"
+  },
+  "unit": "ActiveState=active\nSubState=running\nMainPID=279522\nSlice=session-graphical.slice\nControlGroup=/user.slice/user-1000.slice/user@1000.service/session.slice/session-graphical.slice/putkin.service",
+  "notifications_owner": 279522,
+  "session": {
+    "busy": false,
+    "phase": "",
+    "error": "",
+    "result": "",
+    "capabilities": {
+      "reboot": {
+        "available": true,
+        "reason": ""
+      },
+      "poweroff": {
+        "available": true,
+        "reason": ""
+      },
+      "suspend": {
+        "available": false,
+        "reason": "Operacj\u0119 wstrzymuje inhibitor aplikacji."
+      },
+      "idleSuspend": {
+        "available": false,
+        "reason": "Operacj\u0119 wstrzymuje inhibitor aplikacji."
+      },
+      "logout": {
+        "available": true,
+        "reason": ""
+      },
+      "lock": {
+        "available": true,
+        "reason": ""
+      }
+    },
+    "lock": {
+      "locked": false,
+      "secure": false
+    },
+    "idle": {
+      "ready": true,
+      "inhibited": false,
+      "sleepInhibited": true,
+      "dimmed": false,
+      "displaysOff": false,
+      "error": ""
+    }
+  },
+  "caffeinate": {
+    "active": true,
+    "mode": "background",
+    "busy": false,
+    "preventDisplaySleep": false,
+    "preventLock": false,
+    "preventSleep": true,
+    "error": ""
+  },
+  "actions": {
+    "ready": true,
+    "busy": false,
+    "applied": true,
+    "error": "",
+    "shortcuts": 7,
+    "commands": 0
+  },
+  "bar_and_wallpaper": true,
+  "settings_window": true,
+  "second_qs_same_pid": true,
+  "preserved": {
+    "/home/attntd/.config/putkin/settings.json": "58ace6b9a15b05ffd08ec657663878fa5ce7a8ff98f907b88553652c45de5909",
+    "/home/attntd/.config/putkin/keyboard.json": null
+  },
+  "current": "/home/attntd/.local/share/putkin/releases/20260920-143123-526a551c6a9f",
+  "retained": [
+    "20260920-143123-526a551c6a9f",
+    "20260920-native-session-9a3db25af706",
+    "20260920-signal-chat-897d94e15725",
+    "20260920-charging-material-41a71d98cd09",
+    "20260920-bar-alignment-221eccd10c8c"
+  ],
+  "removed": [
+    "20260920-bar-icons-399655afcfb6",
+    "20260920-material-icons-229766e3f287",
+    "20260920-fingerprint-603608293d62",
+    "20260920-monochrome-icons-126a9cb93feb",
+    "20260920-launcher-icons-336f43911540",
+    "20260920-caffeinate-focus-5367ba0cec0c",
+    "20260920-window-borders-48f2f2f6ecec",
+    "20260920-diagonal-rows-16d3bbc8db65",
+    "20260920-accent-groups-be2213f6b4c0",
+    "20260920-toggle-tiles-7a84bdec0b46",
+    "20260920-quick-menu-2062d4d22d06",
+    "20260919-mouse-focus-d40d745288bc",
+    "20260917-settings-keyboard-cc7addc79750",
+    "20260917-audio-launcher-2cf1bad7b39c",
+    "20260917-workspace-commands-ca6230ec4aef",
+    "20260917-battery-minimal-8edd9469b482",
+    "20260917-battery-clean-634ac9ebdd59",
+    "20260917-battery-3028dc9e5e77",
+    "20260917-launcher-769491c1e9b8",
+    "20260917-icons-cd3b25f5725c",
+    "20260916-visual-967a46b681fe",
+    "20260916-visual-3d0c562aa347",
+    "20260916-5132708bd8f7"
+  ],
+  "chezmoi_after": "MM .config/hypr/hyprland.lua\nMM .config/zen/r82xc5xh.Default (release)/chrome/zen-themes.css"
+}

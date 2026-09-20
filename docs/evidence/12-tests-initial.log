@@ -1,0 +1,101 @@
+test_all_files_are_checked_even_after_failures (test_check.CheckGate.test_all_files_are_checked_even_after_failures) ... ok
+test_bad_syntax_fails (test_check.CheckGate.test_bad_syntax_fails) ... ok
+test_empty_or_missing_input_fails (test_check.CheckGate.test_empty_or_missing_input_fails) ... ok
+test_missing_import_fails (test_check.CheckGate.test_missing_import_fails) ... ok
+test_missing_tools_are_distinct_from_qml_failure (test_check.CheckGate.test_missing_tools_are_distinct_from_qml_failure) ... ok
+test_valid_file_with_spaces_passes_without_modification (test_check.CheckGate.test_valid_file_with_spaces_passes_without_modification) ... ok
+test_current_version_and_active_owner (test_night_light.NightLightOwner.test_current_version_and_active_owner) ... ok
+test_foreign_executable_is_never_run (test_night_light.NightLightOwner.test_foreign_executable_is_never_run) ... ok
+test_foreign_or_inactive_unit (test_night_light.NightLightOwner.test_foreign_or_inactive_unit) ... ok
+test_invalid_arguments_do_not_connect (test_night_light.NightLightOwner.test_invalid_arguments_do_not_connect) ... ok
+test_missing_backend_is_structured (test_night_light.NightLightOwner.test_missing_backend_is_structured) ... FAIL
+test_old_version_is_rejected_before_ipc (test_night_light.NightLightOwner.test_old_version_is_rejected_before_ipc) ... ok
+test_process_token_and_session_scope (test_night_light.NightLightOwner.test_process_token_and_session_scope) ... ok
+test_unknown_version_is_rejected (test_night_light.NightLightOwner.test_unknown_version_is_rejected) ... ok
+
+======================================================================
+FAIL: test_missing_backend_is_structured (test_night_light.NightLightOwner.test_missing_backend_is_structured)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/attntd/projects/putkin/tests/test_night_light.py", line 67, in test_missing_backend_is_structured
+    self.assertEqual(night.run(["read"], night.Client(Path(directory) / "absent.sock"))["error"], "absent")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'denied' != 'absent'
+- denied
++ absent
+
+
+----------------------------------------------------------------------
+Ran 14 tests in 1.882s
+
+FAILED (failures=1)
+FAIL: [Errno 1] Operation not permitted; logs: artifacts/bar-integration-*.log
+FAIL: entrypoint ready: {}; log: /home/attntd/projects/putkin/artifacts/panels-cycles.log
+FAIL: settings ready: {}; log: /home/attntd/projects/putkin/artifacts/settings-integration.log
+Traceback (most recent call last):
+  File "/home/attntd/projects/putkin/scripts/test-audio-integration", line 243, in main
+    run(args.output.resolve(), args.idle)
+    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/putkin/scripts/test-audio-integration", line 85, in run
+    initial = eventually(state, lambda s: "available" in s, "IPC ready without PipeWire")
+  File "/home/attntd/projects/putkin/scripts/test-audio-integration", line 33, in eventually
+    raise AssertionError(f"{description}: {last}")
+AssertionError: IPC ready without PipeWire: {}
+FAIL: IPC ready without PipeWire: {}; logs: /home/attntd/projects/putkin/artifacts/audio-integration.log
+Traceback (most recent call last):
+  File "/home/attntd/projects/putkin/scripts/test-brightness-integration", line 257, in main
+    run(args.output.resolve(), args.idle)
+    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/putkin/scripts/test-brightness-integration", line 93, in run
+    initial = eventually(snapshot, lambda s: s.get("available") and not s["busy"], "startup discovery")
+  File "/home/attntd/projects/putkin/scripts/test-brightness-integration", line 34, in eventually
+    raise AssertionError(f"{description}: {last}")
+AssertionError: startup discovery: {}
+FAIL: see /home/attntd/projects/putkin/artifacts/brightness-integration.log
+FAIL: private bus socket: False; log: /home/attntd/projects/putkin/artifacts/status.log
+FAIL: bus socket: False; log: /home/attntd/projects/putkin/artifacts/network.log
+FAIL: private bus: False; log: /home/attntd/projects/putkin/artifacts/bluetooth.log
+{
+  "timestamp_utc": "2026-09-16T18:27:11.639880+00:00",
+  "checks": [],
+  "cycles": [],
+  "error": "private bus: False",
+  "unexpected_diagnostics": [],
+  "expected_diagnostics": [],
+  "remaining_pids": [],
+  "tracked_processes": 1,
+  "passed": false
+}
+Traceback (most recent call last):
+  File "/home/attntd/projects/putkin/scripts/test-session-integration", line 256, in main
+    run(args.output.resolve(), args.idle)
+    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/putkin/scripts/test-session-integration", line 95, in run
+    eventually(lambda: (base / "bus").exists(), bool, "private bus")
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/putkin/scripts/test-session-integration", line 32, in eventually
+    raise AssertionError(f"{description}: {last}")
+AssertionError: private bus: False
+FAIL: private bus: False; log: /home/attntd/projects/putkin/artifacts/session.log
+Traceback (most recent call last):
+  File "/home/attntd/projects/putkin/tests/night_light_peer.py", line 64, in <module>
+    serve(sys.argv[1], sys.argv[2])
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/putkin/tests/night_light_peer.py", line 18, in serve
+    server.bind(str(path))
+    ~~~~~~~~~~~^^^^^^^^^^^
+PermissionError: [Errno 1] Operation not permitted
+Traceback (most recent call last):
+  File "/home/attntd/projects/putkin/scripts/test-desktop-integration", line 254, in main
+    run(args.output.resolve(), args.idle)
+    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/putkin/scripts/test-desktop-integration", line 100, in run
+    peer = start_peer()
+  File "/home/attntd/projects/putkin/scripts/test-desktop-integration", line 96, in start_peer
+    eventually(socket_path.exists, bool, "private peer socket")
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/putkin/scripts/test-desktop-integration", line 32, in eventually
+    raise AssertionError(f"{description}: {last}")
+AssertionError: private peer socket: False
+dbus-daemon[26]: Failed to start message bus: Failed to bind socket "/tmp/dbus-KroFrEaQIm": Operation not permitted
+dbus-run-session: EOF reading address from bus daemon

@@ -1,0 +1,8 @@
+{
+  "package": "grim 1.5.0-2",
+  "url": "https://fastly.mirror.pkgbuild.com/extra/os/x86_64/grim-1.5.0-2-x86_64.pkg.tar.zst",
+  "sha256": "2cbddb88d4a3316c61e8984203bbdca81cbf089c323e5db09c4e1648c483c8a6",
+  "verified_against": "local /var/lib/pacman/sync/extra.db",
+  "extracted_to": "/tmp/putkin-grim",
+  "system_installed": false
+}

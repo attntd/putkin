@@ -1,0 +1,126 @@
+{
+  "instance": {
+    "config_path": "/home/attntd/.local/share/putkin/releases/20260916-5132708bd8f7/shell.qml",
+    "id": "zeb6964hlt",
+    "launch_time": "2026-09-16T22:13:21",
+    "pid": 294731,
+    "shell_id": "d39b09f68a5536f1474d3e8de7785cf4"
+  },
+  "notification_pid": 294731,
+  "layers": {
+    "eDP-1": {
+      "levels": {
+        "0": [
+          {
+            "address": "0x56421fe5af40",
+            "x": 4196,
+            "y": 1440,
+            "w": 1920,
+            "h": 1200,
+            "alpha": 1,
+            "namespace": "putkin-wallpaper",
+            "pid": 294731
+          }
+        ],
+        "1": [],
+        "2": [
+          {
+            "address": "0x56421fe49900",
+            "x": 4196,
+            "y": 1440,
+            "w": 1920,
+            "h": 32,
+            "alpha": 1,
+            "namespace": "putkin-bar",
+            "pid": 294731
+          }
+        ],
+        "3": []
+      }
+    }
+  },
+  "audio": {
+    "available": true,
+    "output": "Core Ultra Processors (Series 3) HD Audio Speaker",
+    "volume": 21.5423583984375,
+    "muted": false,
+    "busy": false,
+    "error": ""
+  },
+  "brightness": {
+    "available": true,
+    "device": "intel_backlight",
+    "percent": 15.92741935483871,
+    "busy": false,
+    "error": "",
+    "diagnostic": "Urz\u0105dzenie: intel_backlight \u00b7 zakres 0\u2013496. Stan od\u015bwie\u017ca si\u0119 po otwarciu panelu i w\u0142asnej zmianie."
+  },
+  "session": {
+    "busy": false,
+    "phase": "",
+    "error": "",
+    "result": "",
+    "capabilities": {
+      "reboot": {
+        "available": true,
+        "reason": ""
+      },
+      "poweroff": {
+        "available": true,
+        "reason": ""
+      },
+      "suspend": {
+        "available": true,
+        "reason": ""
+      },
+      "logout": {
+        "available": true,
+        "reason": ""
+      },
+      "lock": {
+        "available": true,
+        "reason": ""
+      }
+    }
+  },
+  "settings_unchanged": true,
+  "configerrors": "",
+  "restore": "/home/attntd/.local/state/putkin/switch-20260916-5132708bd8f7/restore",
+  "runtime_files": 110,
+  "monitors": [
+    {
+      "name": "eDP-1",
+      "width": 2880,
+      "height": 1800,
+      "scale": 1.5,
+      "reserved": [
+        0,
+        32,
+        0,
+        0
+      ]
+    }
+  ],
+  "configuration_files": {
+    "/home/attntd/.config/hypr/autostart.lua": {
+      "before": "ee6b15d0e9f22a28aa16b9903cbefcf337e7e1fea646ec8a850a1cbfe7581238",
+      "after": "e1854f6b047c8542468bd7b256d07d3c9eb69ce24973db2e870fe9cca658d59a"
+    },
+    "/home/attntd/.config/hypr/hyprland.lua": {
+      "before": "601be5f4bd8d6e54e5667b8b7f77a7d1d5aec6e66be761a5ef376f5d6b843d20",
+      "after": "9749422b194e4f0274bdb0474590cbc42b49e3bcf18a166f7713c7a1b71d9280"
+    },
+    "/home/attntd/.config/hypr/modules/system_binds.lua": {
+      "before": "4c674c7d13d515088901be26616fa7140dea0f94e977fb7dc94eb8aa2c1150d9",
+      "after": "54d33ee7fb871240c64abdadb628350e546a6f165a05c1a24b7a6684aecff01d"
+    }
+  },
+  "requested_by_user": "no to przelacz mnie na nowy shell",
+  "scope": "Local session handoff and persistent autostart; reusable stage 13 installer not implemented.",
+  "startup_issues": [
+    "Quickshell 0.3.1 list --all --json prints No running instances. when empty. Initial handoff paused after old shell stop; exact empty case handled explicitly before starting Putkin.",
+    "First successful Putkin launch was restored to old shell because receipt construction raised NameError. Guarded rollback restored all three configurations and old notification owner; report writer fixed and final activation succeeded.",
+    "Initial QA assumed hyprctl binds exposes commands; Lua exposes __lua callback ids. Verified active key/modifier pairs and executed command registration separately.",
+    "Final panel verification waits for alpha=1 and content height >64, after startup animation."
+  ]
+}

@@ -1,0 +1,5 @@
+FAIL [imports/types, exit=255] /home/attntd/projects/putkin/native-session-test.qml
+Warning: /home/attntd/projects/putkin/native-session-test.qml:32:9: Type PanelWindow is not creatable. [uncreatable-type]
+        PanelWindow {
+        ^^^^^^^^^^^
+FAIL: 3 plików QML, 1 z błędami.

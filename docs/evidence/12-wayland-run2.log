@@ -1,0 +1,18 @@
+PASS: native BarWindow/WallpaperWindow/InteractivePanelWindow mapped; initial panel keyboard focus; real output capture
+PASS: separate Wayland application receives hjkl before and during native OSD/toast; overlays do not steal focus
+PASS: complete hjkl/Enter journey on native surfaces: workspace, both accents/save, audio, brightness, PSK, Bluetooth, DND, critical toast, Power cancellation and returned bar focus
+Traceback (most recent call last):
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 391, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 356, in main
+    inside(args.inside, args.smoke, args.idle)
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 255, in inside
+    press('l','Return'); focused('trayMenuEntry-0'); walk('j','trayMenuEntry-3'); press('l'); focused('trayMenuEntry-0')
+                                                                                              ~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 168, in focused
+    return eventually(lambda: control(name), lambda c: c.get('focus'), 'keyboard focus: '+name)
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 40, in eventually
+    raise AssertionError(f"{description}: {last}")
+AssertionError: keyboard focus: trayMenuEntry-0: {'name': 'trayMenuEntry-0', 'focus': False, 'enabled': True, 'visible': False, 'y': 84, 'height': 36, 'viewportHeight': 126}

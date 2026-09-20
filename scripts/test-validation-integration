@@ -1,0 +1,154 @@
+#!/usr/bin/env python3
+"""All UI domains together: real IPC/lazy windows/FileView, mock-only services."""
+import argparse
+from datetime import datetime, timezone
+import importlib.machinery
+import importlib.util
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
+import time
+
+from _common import ROOT, isolated_environment, ipc_reply, ipc_json, qml_errors, runtime_log, stop_process_group, tool
+
+loader = importlib.machinery.SourceFileLoader("putkin_measure_idle", str(ROOT / "scripts/measure-idle"))
+spec = importlib.util.spec_from_loader(loader.name, loader)
+measurement = importlib.util.module_from_spec(spec)
+loader.exec_module(measurement)
+
+
+def eventually(read, predicate, description):
+    deadline = time.monotonic() + 7
+    last = None
+    while time.monotonic() < deadline:
+        last = read()
+        if predicate(last):
+            return last
+        time.sleep(0.03)
+    raise AssertionError(f"{description}: {last}")
+
+
+def run(output, idle, cycles):
+    output.parent.mkdir(parents=True, exist_ok=True)
+    report = {"timestamp_utc": datetime.now(timezone.utc).isoformat(), "checks": [], "cycles": [],
+              "mode": "offscreen/software, scale 1, 1920x1080, 30 workspaces, minute clock; all domains on mocks, real FileView/IPC/LazyLoader",
+              "isolation": "private XDG and D-Bus; no host display, hardware, PAM or production domain backends"}
+    quickshell, dbus = tool("quickshell"), tool("dbus-run-session")
+    entry = str(ROOT / "validation-test.qml")
+    with tempfile.TemporaryDirectory(prefix="pk-validation-") as directory:
+        env = isolated_environment(directory)
+        env.update(PUTKIN_SCENARIO="closed", PUTKIN_LIVE_CLOCK="1", QS_NO_RELOAD_POPUP="1", PUTKIN_WALLPAPER="solid")
+        for feature in ["AUDIO", "BRIGHTNESS", "STATUS", "NETWORK", "BLUETOOTH", "NOTIFICATIONS", "SESSION", "NIGHT_LIGHT"]:
+            env["PUTKIN_" + feature] = "1"
+        with tempfile.TemporaryFile(mode="w+") as log:
+            process = subprocess.Popen([dbus, "--", quickshell, "--no-color", "--path", entry],
+                                       env=env, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+            def ipc(target, method, *args, starting=False):
+                result = subprocess.run([quickshell, "ipc", "--path", entry, "call", target, method, *map(str, args)],
+                                        env=env, capture_output=True, text=True, timeout=4)
+                return ipc_reply(result, process, log, starting=starting)
+            def state():
+                return ipc_json(ipc("probe", "snapshot", starting=True))
+            def closed():
+                return eventually(state, lambda s: s.get("loaded") is False and s["created"] == s["destroyed"] and not s["busy"], "all panels destroyed and reads settled")
+            def open_panel(name):
+                assert ipc("probe", "open", name) == "true"
+                return eventually(state, lambda s: s.get("loaded") and s.get("surface") == name and not s["busy"], name)
+            try:
+                initial = eventually(state, lambda s: s.get("settingsReady") and not s.get("busy", True), "all domains ready")
+                time.sleep(2)
+                tree = measurement.process_tree(process.pid)
+                shells = [p for p in tree if p["parent"] == process.pid and b"--path" in Path(f"/proc/{p['pid']}/cmdline").read_bytes().split(b"\0")]
+                assert len(shells) == 1, tree
+                pid = shells[0]["pid"]
+                report["initial_process_tree"] = tree
+                if idle:
+                    before = state()
+                    started = time.monotonic()
+                    samples = [{"elapsed_s": 0, **measurement.snapshot(pid)}]
+                    for second in range(1, 61):
+                        time.sleep(max(0, started + second - time.monotonic()))
+                        samples.append({"elapsed_s": time.monotonic() - started, **measurement.snapshot(pid)})
+                        if second % 20 == 0:
+                            print(f"Idle {second}/60 s", flush=True)
+                    after = state()
+                    assert before == after, (before, after)
+                    duration = samples[-1]["elapsed_s"]
+                    ticks = samples[-1]["cpu_ticks"] - samples[0]["cpu_ticks"]
+                    report["idle"] = {"duration_s": duration, "cpu_ticks": ticks, "ticks_per_second": os.sysconf("SC_CLK_TCK"),
+                                      "cpu_percent_one_core": ticks / os.sysconf("SC_CLK_TCK") / duration * 100,
+                                      "before": before, "after": after, "samples": samples}
+                for cycle in range(1, cycles + 1):
+                    open_panel("network")
+                    eventually(state, lambda s: s["scanning"], "visible network list owns scan")
+                    open_panel("settings")
+                    assert not state()["scanning"]
+                    ipc("probe", "draft")
+                    assert state()["accent"] == "#abcdef"
+                    open_panel("power")
+                    assert not state()["editing"] and state()["accent"] == "#cba6f7"
+                    open_panel("trayOverflow")
+                    ipc("ui", "closePanels")
+                    last = closed()
+                    assert not last["scanning"] and not last["discovery"] and last["sessionCalls"] == 0
+                    report["cycles"].append({"cycle": cycle, **measurement.snapshot(pid), "state": last})
+                report["checks"].append(f"{cycles} cycles: Quick Settings + active Wi-Fi list -> Settings/draft -> Power cancellation -> 16-item tray overflow -> destroy")
+                # Monitor routing uses production IPC, with explicit fake monitors.
+                ipc("probe", "monitor", "TEST-2")
+                assert ipc("ui", "openQuickSettings") == "ok"
+                eventually(state, lambda s: s["loaded"] and s["screen"] == "TEST-2", "panel IPC monitor")
+                ipc("ui", "closePanels"); closed()
+                assert ipc("audio", "changeVolume", 5) == "accepted"
+                eventually(state, lambda s: s["osd"] and s["osdScreen"] == "TEST-2", "OSD IPC monitor")
+                assert ipc("session", "openPower") == "ok"
+                eventually(state, lambda s: s["loaded"] and s["screen"] == "TEST-2" and s["surface"] == "power", "power IPC monitor")
+                ipc("probe", "removeSecond"); closed()
+                eventually(state, lambda s: not s["osdLoaded"], "hotplug destroys OSD")
+                ipc("probe", "restoreScreens")
+                report["checks"].append("production panel/audio/session IPC target focused fake monitor; hotplug releases panel and OSD")
+                for hard in ["false", "true"]:
+                    open_panel("network")
+                    eventually(state, lambda s: s["scanning"], "scan before reload")
+                    ipc("probe", "reload", hard)
+                    eventually(state, lambda s: s.get("created") == 0 and not s["loaded"] and not s["scanning"] and not s["busy"], "reload discards open panel and scan")
+                    open_panel("settings"); ipc("probe", "draft")
+                    ipc("probe", "reload", hard)
+                    eventually(state, lambda s: s.get("settingsReady") and not s["editing"] and s["accent"] == "#cba6f7", "reload discards draft")
+                report["checks"].append("soft/hard reload while Wi-Fi scan or appearance draft is open; no scan/draft retained")
+                final = closed()
+                report["final_state"] = final
+                report["final_process_tree"] = measurement.process_tree(process.pid)
+                assert not [p for p in report["final_process_tree"] if p["parent"] == pid]
+                assert not qml_errors(runtime_log(log), allow_offscreen_masks=True), runtime_log(log)
+                report["checks"].append("one Quickshell, no shell children, no discovery or session calls, no new QML diagnostics")
+            finally:
+                stop_process_group(process)
+                output.with_suffix(".log").write_text(runtime_log(log))
+        report["live_pids_after_cleanup"] = eventually(
+            lambda: [p["pid"] for p in report["final_process_tree"] if Path(f"/proc/{p['pid']}").exists()],
+            lambda pids: not pids, "private processes reaped after shutdown")
+    output.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n")
+    print(f"PASS: combined validation; {cycles} cycles; {output}")
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, default=ROOT / "artifacts/validation.json")
+    parser.add_argument("--idle", action="store_true")
+    parser.add_argument("--cycles", type=int, default=20)
+    args = parser.parse_args()
+    if args.cycles < 20:
+        parser.error("--cycles requires at least 20")
+    try:
+        run(args.output.resolve(), args.idle, args.cycles)
+    except (AssertionError, OSError, subprocess.SubprocessError) as error:
+        print(f"FAIL: {error}; log: {args.output.with_suffix('.log')}", file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 383, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 348, in main
+    inside(args.inside, args.smoke, args.idle)
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 243, in inside
+    panel('trayOverflow','trayApp-app0'); walk('j','trayApp-app39')
+                                          ~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 165, in walk
+    raise AssertionError(f'keyboard cannot reach {name}: {state()}')
+AssertionError: keyboard cannot reach trayApp-app39: {'screens': [{'name': 'WAYLAND-1', 'width': 1920, 'height': 1080}, {'name': 'HEADLESS-1', 'width': 1920, 'height': 1080}], 'ready': True, 'focusedMonitor': 'HEADLESS-1', 'barScreen': '', 'bars': [{'screen': 'WAYLAND-1', 'focus': ''}, {'screen': 'HEADLESS-1', 'focus': ''}], 'loaded': True, 'surface': 'trayOverflow', 'screen': 'HEADLESS-1', 'focus': 'trayApp-app9', 'created': 3, 'destroyed': 2, 'editing': False, 'saving': False, 'accent': '#94e2d5', 'secondary': '#fab387', 'persisted': {'accent': '#94e2d5', 'accentSecondary': '#fab387', 'reducedMotion': False}, 'scans': 1, 'scanStops': 1, 'scanning': False, 'discovery': False, 'sessionCalls': 0, 'volume': 52, 'brightness': 55, 'pskCalls': 1, 'needsPassword': False, 'keyboardConnected': True, 'dnd': False, 'notifications': 0, 'osd': False, 'osdScreen': '', 'osdLoaded': False, 'busy': False, 'brightnessRequests': 6, 'nightRequests': 4, 'menuLeafActivations': 0}

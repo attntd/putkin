@@ -1,0 +1,477 @@
+{
+  "timestamp_utc": "2026-09-16T18:42:36.394707+00:00",
+  "mode": "offscreen/software; all data are fixtures; logical viewport = nominal physical size / scale",
+  "wayland_validated": false,
+  "cases": [
+    {
+      "image": "quick-1920x1080-1.png",
+      "scenario": "validation",
+      "nominal_physical_size": [
+        1920,
+        1080
+      ],
+      "logical_size": [
+        1920,
+        1080
+      ],
+      "scale": 1,
+      "png_size": [
+        1920,
+        1080
+      ],
+      "command": [
+        "/home/attntd/projects/putkin/scripts/preview",
+        "--desktop",
+        "--scenario",
+        "validation",
+        "--size",
+        "1920x1080",
+        "--scale",
+        "1",
+        "--screenshot",
+        "/home/attntd/projects/putkin/docs/evidence/12-visuals/quick-1920x1080-1.png"
+      ]
+    },
+    {
+      "image": "quick-1920x1080-1.25.png",
+      "scenario": "validation",
+      "nominal_physical_size": [
+        1920,
+        1080
+      ],
+      "logical_size": [
+        1536,
+        864
+      ],
+      "scale": 1.25,
+      "png_size": [
+        1920,
+        1080
+      ],
+      "command": [
+        "/home/attntd/projects/putkin/scripts/preview",
+        "--desktop",
+        "--scenario",
+        "validation",
+        "--size",
+        "1536x864",
+        "--scale",
+        "1.25",
+        "--screenshot",
+        "/home/attntd/projects/putkin/docs/evidence/12-visuals/quick-1920x1080-1.25.png"
+      ]
+    },
+    {
+      "image": "quick-1920x1080-1.5.png",
+      "scenario": "validation",
+      "nominal_physical_size": [
+        1920,
+        1080
+      ],
+      "logical_size": [
+        1280,
+        720
+      ],
+      "scale": 1.5,
+      "png_size": [
+        1920,
+        1080
+      ],
+      "command": [
+        "/home/attntd/projects/putkin/scripts/preview",
+        "--desktop",
+        "--scenario",
+        "validation",
+        "--size",
+        "1280x720",
+        "--scale",
+        "1.5",
+        "--screenshot",
+        "/home/attntd/projects/putkin/docs/evidence/12-visuals/quick-1920x1080-1.5.png"
+      ]
+    },
+    {
+      "image": "quick-1920x1080-2.png",
+      "scenario": "validation",
+      "nominal_physical_size": [
+        1920,
+        1080
+      ],
+      "logical_size": [
+        960,
+        540
+      ],
+      "scale": 2,
+      "png_size": [
+        1920,
+        1080
+      ],
+      "command": [
+        "/home/attntd/projects/putkin/scripts/preview",
+        "--desktop",
+        "--scenario",
+        "validation",
+        "--size",
+        "960x540",
+        "--scale",
+        "2",
+        "--screenshot",
+        "/home/attntd/projects/putkin/docs/evidence/12-visuals/quick-1920x1080-2.png"
+      ]
+    },
+    {
+      "image": "quick-1366x768-1.png",
+      "scenario": "validation",
+      "nominal_physical_size": [
+        1366,
+        768
+      ],
+      "logical_size": [
+        1366,
+        768
+      ],
+      "scale": 1,
+      "png_size": [
+        1366,
+        768
+      ],
+      "command": [
+        "/home/attntd/projects/putkin/scripts/preview",
+        "--desktop",
+        "--scenario",
+        "validation",
+        "--size",
+        "1366x768",
+        "--scale",
+        "1",
+        "--screenshot",
+        "/home/attntd/projects/putkin/docs/evidence/12-visuals/quick-1366x768-1.png"
+      ]
+    },
+    {
+      "image": "quick-1366x768-1.25.png",
+      "scenario": "validation",
+      "nominal_physical_size": [
+        1366,
+        768
+      ],
+      "logical_size": [
+        1093,
+        614
+      ],
+      "scale": 1.25,
+      "png_size": [
+        1366,
+        768
+      ],
+      "command": [
+        "/home/attntd/projects/putkin/scripts/preview",
+        "--desktop",
+        "--scenario",
+        "validation",
+        "--size",
+        "1093x614",
+        "--scale",
+        "1.25",
+        "--screenshot",
+        "/home/attntd/projects/putkin/docs/evidence/12-visuals/quick-1366x768-1.25.png"
+      ]
+    },
+    {
+      "image": "quick-1366x768-1.5.png",
+      "scenario": "validation",
+      "nominal_physical_size": [
+        1366,
+        768
+      ],
+      "logical_size": [
+        911,
+        512
+      ],
+      "scale": 1.5,
+      "png_size": [
+        1367,
+        768
+      ],
+      "command": [
+        "/home/attntd/projects/putkin/scripts/preview",
+        "--desktop",
+        "--scenario",
+        "validation",
+        "--size",
+        "911x512",
+        "--scale",
+        "1.5",
+        "--screenshot",
+        "/home/attntd/projects/putkin/docs/evidence/12-visuals/quick-1366x768-1.5.png"
+      ]
+    },
+    {
+      "image": "quick-1366x768-2.png",
+      "scenario": "validation",
+      "nominal_physical_size": [
+        1366,
+        768
+      ],
+      "logical_size": [
+        683,
+        384
+      ],
+      "scale": 2,
+      "png_size": [
+        1366,
+        768
+      ],
+      "command": [
+        "/home/attntd/projects/putkin/scripts/preview",
+        "--desktop",
+        "--scenario",
+        "validation",
+        "--size",
+        "683x384",
+        "--scale",
+        "2",
+        "--screenshot",
+        "/home/attntd/projects/putkin/docs/evidence/12-visuals/quick-1366x768-2.png"
+      ]
+    },
+    {
+      "image": "settings-mauve.png",
+      "scenario": "settings",
+      "nominal_physical_size": [
+        1366,
+        768
+      ],
+      "logical_size": [
+        1093,
+        614
+      ],
+      "scale": 1.25,
+      "png_size": [
+        1366,
+        768
+      ],
+      "command": [
+        "/home/attntd/projects/putkin/scripts/preview",
+        "--desktop",
+        "--scenario",
+        "settings",
+        "--size",
+        "1093x614",
+        "--scale",
+        "1.25",
+        "--screenshot",
+        "/home/attntd/projects/putkin/docs/evidence/12-visuals/settings-mauve.png"
+      ]
+    },
+    {
+      "image": "settings-teal.png",
+      "scenario": "settings",
+      "nominal_physical_size": [
+        1366,
+        768
+      ],
+      "logical_size": [
+        1093,
+        614
+      ],
+      "scale": 1.25,
+      "png_size": [
+        1366,
+        768
+      ],
+      "command": [
+        "/home/attntd/projects/putkin/scripts/preview",
+        "--desktop",
+        "--scenario",
+        "settings",
+        "--size",
+        "1093x614",
+        "--scale",
+        "1.25",
+        "--screenshot",
+        "/home/attntd/projects/putkin/docs/evidence/12-visuals/settings-teal.png",
+        "--accent",
+        "#94e2d5",
+        "--secondary",
+        "#fab387"
+      ]
+    },
+    {
+      "image": "audio-osd.png",
+      "scenario": "osd",
+      "nominal_physical_size": [
+        1920,
+        1080
+      ],
+      "logical_size": [
+        1920,
+        1080
+      ],
+      "scale": 1,
+      "png_size": [
+        1920,
+        1080
+      ],
+      "command": [
+        "/home/attntd/projects/putkin/scripts/preview",
+        "--desktop",
+        "--scenario",
+        "osd",
+        "--size",
+        "1920x1080",
+        "--scale",
+        "1",
+        "--screenshot",
+        "/home/attntd/projects/putkin/docs/evidence/12-visuals/audio-osd.png"
+      ]
+    },
+    {
+      "image": "brightness-osd.png",
+      "scenario": "brightnessOsd",
+      "nominal_physical_size": [
+        1366,
+        768
+      ],
+      "logical_size": [
+        911,
+        512
+      ],
+      "scale": 1.5,
+      "png_size": [
+        1367,
+        768
+      ],
+      "command": [
+        "/home/attntd/projects/putkin/scripts/preview",
+        "--desktop",
+        "--scenario",
+        "brightnessOsd",
+        "--size",
+        "911x512",
+        "--scale",
+        "1.5",
+        "--screenshot",
+        "/home/attntd/projects/putkin/docs/evidence/12-visuals/brightness-osd.png",
+        "--secondary",
+        "#fab387"
+      ]
+    },
+    {
+      "image": "notification-long.png",
+      "scenario": "notificationLong",
+      "nominal_physical_size": [
+        1366,
+        768
+      ],
+      "logical_size": [
+        683,
+        384
+      ],
+      "scale": 2,
+      "png_size": [
+        1366,
+        768
+      ],
+      "command": [
+        "/home/attntd/projects/putkin/scripts/preview",
+        "--desktop",
+        "--scenario",
+        "notificationLong",
+        "--size",
+        "683x384",
+        "--scale",
+        "2",
+        "--screenshot",
+        "/home/attntd/projects/putkin/docs/evidence/12-visuals/notification-long.png"
+      ]
+    },
+    {
+      "image": "power-cancel.png",
+      "scenario": "powerConfirm",
+      "nominal_physical_size": [
+        1366,
+        768
+      ],
+      "logical_size": [
+        1093,
+        614
+      ],
+      "scale": 1.25,
+      "png_size": [
+        1366,
+        768
+      ],
+      "command": [
+        "/home/attntd/projects/putkin/scripts/preview",
+        "--desktop",
+        "--scenario",
+        "powerConfirm",
+        "--size",
+        "1093x614",
+        "--scale",
+        "1.25",
+        "--screenshot",
+        "/home/attntd/projects/putkin/docs/evidence/12-visuals/power-cancel.png"
+      ]
+    },
+    {
+      "image": "tray-overflow.png",
+      "scenario": "trayOverflow",
+      "nominal_physical_size": [
+        1366,
+        768
+      ],
+      "logical_size": [
+        683,
+        384
+      ],
+      "scale": 2,
+      "png_size": [
+        1366,
+        768
+      ],
+      "command": [
+        "/home/attntd/projects/putkin/scripts/preview",
+        "--desktop",
+        "--scenario",
+        "trayOverflow",
+        "--size",
+        "683x384",
+        "--scale",
+        "2",
+        "--screenshot",
+        "/home/attntd/projects/putkin/docs/evidence/12-visuals/tray-overflow.png"
+      ]
+    },
+    {
+      "image": "night-light-absent.png",
+      "scenario": "nightLightAbsent",
+      "nominal_physical_size": [
+        1366,
+        768
+      ],
+      "logical_size": [
+        911,
+        512
+      ],
+      "scale": 1.5,
+      "png_size": [
+        1367,
+        768
+      ],
+      "command": [
+        "/home/attntd/projects/putkin/scripts/preview",
+        "--desktop",
+        "--scenario",
+        "nightLightAbsent",
+        "--size",
+        "911x512",
+        "--scale",
+        "1.5",
+        "--screenshot",
+        "/home/attntd/projects/putkin/docs/evidence/12-visuals/night-light-absent.png"
+      ]
+    }
+  ]
+}

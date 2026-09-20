@@ -1,0 +1,14 @@
+test_cancel_during_grim_reaps_child_and_removes_temporary_data (test_screenshot.ScreenshotTests.test_cancel_during_grim_reaps_child_and_removes_temporary_data) ... ok
+test_capture_failure_does_not_replace_clipboard_or_leave_file (test_screenshot.ScreenshotTests.test_capture_failure_does_not_replace_clipboard_or_leave_file) ... ok
+test_clipboard_failure_keeps_savable_png (test_screenshot.ScreenshotTests.test_clipboard_failure_keeps_savable_png) ... ok
+test_failed_save_keeps_preview_for_retry (test_screenshot.ScreenshotTests.test_failed_save_keeps_preview_for_retry) ... ok
+test_no_work_until_request_and_cancel_keeps_clipboard (test_screenshot.ScreenshotTests.test_no_work_until_request_and_cancel_keeps_clipboard) ... ok
+test_region_save_has_identical_bytes_unique_names_and_cleanup (test_screenshot.ScreenshotTests.test_region_save_has_identical_bytes_unique_names_and_cleanup) ... ok
+test_rotated_fractional_negative_output_and_clipped_region (test_screenshot.ScreenshotTests.test_rotated_fractional_negative_output_and_clipped_region) ... ok
+test_window_crossing_monitors_keeps_both_visible_parts (test_screenshot.ScreenshotTests.test_window_crossing_monitors_keeps_both_visible_parts) ... ok
+test_window_uses_original_address_and_rejects_hidden_or_closed (test_screenshot.ScreenshotTests.test_window_uses_original_address_and_rejects_hidden_or_closed) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 1.778s
+
+OK

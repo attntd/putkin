@@ -1,0 +1,163 @@
+{
+  "timestamp": "2026-09-20T10:10:35.806975+00:00",
+  "checks": [
+    "capabilities and explicit current session",
+    "confirmation cancellation makes no system call",
+    "lock requested -> protocol confirmation -> one Suspend",
+    "paired login1 PrepareForSleep resumes brightness once",
+    "no confirmation, late signal and duplicate launcher cannot suspend",
+    "denial, timeout and late reply have no implicit retry",
+    "own session only, logind no and challenge capabilities",
+    "observer loss invalidates pending lock transaction",
+    "soft/hard reload cancels waiting helper and preserves one external locker",
+    "locker exit zero is not readiness",
+    "20 power menu LazyLoader cycles release their views",
+    "production rejects unverified ScreenSaver owner",
+    "logind loss and return update capabilities"
+  ],
+  "cycles": [
+    {
+      "pid": 198774,
+      "name": "quickshell",
+      "parent": 198769,
+      "cpu_ticks": 154,
+      "rss_kib": 151628
+    },
+    {
+      "pid": 198774,
+      "name": "quickshell",
+      "parent": 198769,
+      "cpu_ticks": 162,
+      "rss_kib": 151628
+    },
+    {
+      "pid": 198774,
+      "name": "quickshell",
+      "parent": 198769,
+      "cpu_ticks": 171,
+      "rss_kib": 151628
+    },
+    {
+      "pid": 198774,
+      "name": "quickshell",
+      "parent": 198769,
+      "cpu_ticks": 178,
+      "rss_kib": 151628
+    },
+    {
+      "pid": 198774,
+      "name": "quickshell",
+      "parent": 198769,
+      "cpu_ticks": 186,
+      "rss_kib": 151628
+    },
+    {
+      "pid": 198774,
+      "name": "quickshell",
+      "parent": 198769,
+      "cpu_ticks": 194,
+      "rss_kib": 151628
+    },
+    {
+      "pid": 198774,
+      "name": "quickshell",
+      "parent": 198769,
+      "cpu_ticks": 201,
+      "rss_kib": 151488
+    },
+    {
+      "pid": 198774,
+      "name": "quickshell",
+      "parent": 198769,
+      "cpu_ticks": 209,
+      "rss_kib": 151488
+    },
+    {
+      "pid": 198774,
+      "name": "quickshell",
+      "parent": 198769,
+      "cpu_ticks": 218,
+      "rss_kib": 151032
+    },
+    {
+      "pid": 198774,
+      "name": "quickshell",
+      "parent": 198769,
+      "cpu_ticks": 225,
+      "rss_kib": 143064
+    },
+    {
+      "pid": 198774,
+      "name": "quickshell",
+      "parent": 198769,
+      "cpu_ticks": 232,
+      "rss_kib": 143064
+    },
+    {
+      "pid": 198774,
+      "name": "quickshell",
+      "parent": 198769,
+      "cpu_ticks": 241,
+      "rss_kib": 144992
+    },
+    {
+      "pid": 198774,
+      "name": "quickshell",
+      "parent": 198769,
+      "cpu_ticks": 251,
+      "rss_kib": 144992
+    },
+    {
+      "pid": 198774,
+      "name": "quickshell",
+      "parent": 198769,
+      "cpu_ticks": 260,
+      "rss_kib": 144992
+    },
+    {
+      "pid": 198774,
+      "name": "quickshell",
+      "parent": 198769,
+      "cpu_ticks": 269,
+      "rss_kib": 144992
+    },
+    {
+      "pid": 198774,
+      "name": "quickshell",
+      "parent": 198769,
+      "cpu_ticks": 277,
+      "rss_kib": 144992
+    },
+    {
+      "pid": 198774,
+      "name": "quickshell",
+      "parent": 198769,
+      "cpu_ticks": 284,
+      "rss_kib": 144992
+    },
+    {
+      "pid": 198774,
+      "name": "quickshell",
+      "parent": 198769,
+      "cpu_ticks": 293,
+      "rss_kib": 148064
+    },
+    {
+      "pid": 198774,
+      "name": "quickshell",
+      "parent": 198769,
+      "cpu_ticks": 299,
+      "rss_kib": 148064
+    },
+    {
+      "pid": 198774,
+      "name": "quickshell",
+      "parent": 198769,
+      "cpu_ticks": 308,
+      "rss_kib": 148064
+    }
+  ],
+  "isolation": "private system+session D-Bus and XDG; offscreen; fake locker; observer identity substituted only in fixture helper",
+  "passed": true,
+  "remaining_pids": []
+}

@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "/tmp/putkin-launcher-release-source/scripts/test-wayland", line 577, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/tmp/putkin-launcher-release-source/scripts/test-wayland", line 529, in main
+    inside(args.inside, args.smoke, args.idle, args.native_session, args.screenshot, args.launcher_preview)
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/putkin-launcher-release-source/scripts/test-wayland", line 159, in inside
+    report['launcher_preview'] = run(env, base, output, first, hypr, launch)
+                                 ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/putkin-launcher-release-source/tests/launcher_preview_wayland.py", line 64, in run
+    eventually(state, lambda s: s['focus'] == 'launcherPreview', 'right to preview')
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/putkin-launcher-release-source/tests/screenshot_wayland.py", line 25, in eventually
+    raise AssertionError(f"{label}: {value}")
+AssertionError: right to preview: {'active': 'launcher', 'loaded': True, 'previewId': '12', 'text': 'Tekst podglądu\n\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\nZażółć gęślą jaźń.\n', 'imageReady': False, 'focus': 'launcherSearch', 'list': {'x': 652, 'y': 436, 'width': 616, 'height': 72}, 'frame': {'x': 1288, 'y': 380, 'width': 320, 'height': 320}, 'surface': {'x': 640, 'y': 380, 'width': 968, 'height': 320}, 'primaryHeight': 140, 'opacity': 1, 'contentY': 0, 'activations': 0}

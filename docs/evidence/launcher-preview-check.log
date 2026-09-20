@@ -1,0 +1,8 @@
+FAIL [imports/types, exit=255] /home/attntd/projects/putkin/components/FadePresentation.qml
+Warning: /home/attntd/projects/putkin/components/FadePresentation.qml:21:22: Member "fadePresentation" not found on type "QQuickItem" [missing-property]
+            if (node["fadePresentation"] !== undefined) return node["fadePresentation"];
+                     ^^^^^^^^^^^^^^^^^^
+Warning: /home/attntd/projects/putkin/components/FadePresentation.qml:21:69: Member "fadePresentation" not found on type "QQuickItem" [missing-property]
+            if (node["fadePresentation"] !== undefined) return node["fadePresentation"];
+                                                                    ^^^^^^^^^^^^^^^^^^
+FAIL: 217 plików QML, 1 z błędami.

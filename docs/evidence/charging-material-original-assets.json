@@ -1,0 +1,13 @@
+{
+  "google_svgs_unchanged": 82,
+  "original_paths_preserved": 82,
+  "local_symbols": 84,
+  "charging_symbols": [
+    "battery_charging_20_2",
+    "battery_charging_30_2",
+    "battery_charging_50_2",
+    "battery_charging_60_2",
+    "battery_charging_80_2",
+    "battery_charging_full_2"
+  ]
+}

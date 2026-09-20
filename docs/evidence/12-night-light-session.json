@@ -1,0 +1,29 @@
+{
+  "before": {
+    "ActiveState": "inactive",
+    "SubState": "dead",
+    "UnitFileState": "disabled",
+    "MainPID": "0",
+    "ExecStart": "{ path=/usr/bin/hyprsunset ; argv[]=/usr/bin/hyprsunset ; ignore_errors=no ; start_time=[n/a] ; stop_time=[n/a] ; pid=0 ; code=(null) ; status=0/0 }"
+  },
+  "added_files": {
+    "/home/attntd/.config/putkin/night-light/hypr/hyprsunset.conf": "bb6da1176204a411b6bb2c4cc350b644127b7621082b55e33699e9e43486dc50",
+    "/home/attntd/.config/systemd/user/hyprsunset.service.d/putkin.conf": "ba02f33b636fcaa5af640db74bc503cd01381fc260daa8b87abe548cc46d0d01"
+  },
+  "autostart_changed": false,
+  "after": {
+    "ActiveState": "active",
+    "SubState": "running",
+    "UnitFileState": "disabled",
+    "MainPID": "297039",
+    "ExecStart": "{ path=/usr/bin/hyprsunset ; argv[]=/usr/bin/hyprsunset --identity ; ignore_errors=no ; start_time=[Wed 2026-09-16 22:31:23 CEST] ; stop_time=[n/a] ; pid=297039 ; code=(null) ; status=0/0 }"
+  },
+  "adapter": {
+    "sample": {
+      "owner": "297039:18508878",
+      "enabled": false,
+      "temperature": 6000
+    },
+    "error": ""
+  }
+}

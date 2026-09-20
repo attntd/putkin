@@ -1,0 +1,119 @@
+{
+  "result": "PASS",
+  "date": "2026-09-20",
+  "prompt_count": 13,
+  "local_links_checked": 17,
+  "prompts": [
+    {
+      "file": "docs/prompts/signal/00-audit-contracts.md",
+      "stage": "S00",
+      "words": 892,
+      "lines": 125,
+      "sha256": "c012c2a6324e132785e471fdb2f127e6cfb5a011c72e837b64e6257a7b4a81c5"
+    },
+    {
+      "file": "docs/prompts/signal/01-process-lifecycle.md",
+      "stage": "S01",
+      "words": 746,
+      "lines": 106,
+      "sha256": "daae671b675f4394b32ba79fd008bffb62a90182f416eca301fd0ade370a36ff"
+    },
+    {
+      "file": "docs/prompts/signal/02-history-sync-outbox.md",
+      "stage": "S02",
+      "words": 796,
+      "lines": 111,
+      "sha256": "47d84ca28183514d6a38da1ae502930bdfe8bf1113121c5241bbd120d16bbca4"
+    },
+    {
+      "file": "docs/prompts/signal/03-pairing-settings.md",
+      "stage": "S03",
+      "words": 737,
+      "lines": 105,
+      "sha256": "63357ef79d20c28f5f81b56551262774d3437321ac79803f02612002d6398686"
+    },
+    {
+      "file": "docs/prompts/signal/04-conversations-window.md",
+      "stage": "S04",
+      "words": 775,
+      "lines": 109,
+      "sha256": "38a58bb310a40f84730c8686d1038066d269670fc2884f063d479d39964d8aa9"
+    },
+    {
+      "file": "docs/prompts/signal/05-notifications-quick-reply.md",
+      "stage": "S05",
+      "words": 847,
+      "lines": 119,
+      "sha256": "cb38339f6810518fc1046edbcb598c5412e2bf4771ac5c50e8565e8f499f0253"
+    },
+    {
+      "file": "docs/prompts/signal/06-receipts-read-state.md",
+      "stage": "S06",
+      "words": 782,
+      "lines": 112,
+      "sha256": "a08dc2bed87ff4405ad51ba5b38075c9ce14e3c2083047f3b45a924c565dcdc4"
+    },
+    {
+      "file": "docs/prompts/signal/07-media-attachments.md",
+      "stage": "S07",
+      "words": 772,
+      "lines": 109,
+      "sha256": "0805bc697b7b9a3db7f7eade8e214046fb058408fdb4c071f501c307c5e32775"
+    },
+    {
+      "file": "docs/prompts/signal/08-reactions-edits-quotes.md",
+      "stage": "S08",
+      "words": 749,
+      "lines": 107,
+      "sha256": "2a3e0ef6c73e5a8ba6eb8b0bbe1d8713faf2d73523677d411e9131443464251a"
+    },
+    {
+      "file": "docs/prompts/signal/09-deletion-expiration.md",
+      "stage": "S09",
+      "words": 806,
+      "lines": 113,
+      "sha256": "a565853eccfe8a1816f2d4944c5141f0eca98b9e0c8f8ff66ed4cb546c5c5a20"
+    },
+    {
+      "file": "docs/prompts/signal/10-groups-contacts.md",
+      "stage": "S10",
+      "words": 751,
+      "lines": 110,
+      "sha256": "a4e43994b255950f4e2655f1dbf2a160bbd6cfe4e33f335e113a16141fa31394"
+    },
+    {
+      "file": "docs/prompts/signal/11-reliability-acceptance.md",
+      "stage": "S11",
+      "words": 840,
+      "lines": 116,
+      "sha256": "e5f6dc3d5efc0a289581433724b3a75044d19c21047f94c294d4d4506af09fc3"
+    },
+    {
+      "file": "docs/prompts/signal/12-release-activation.md",
+      "stage": "S12",
+      "words": 987,
+      "lines": 136,
+      "sha256": "8410a316c46530295d0a75921db23fb042debb754b5969cc98b08ae84001dee6"
+    }
+  ],
+  "errors": [],
+  "qml_gate": {
+    "command": "scripts/check",
+    "exit_code": 0,
+    "output": "PASS: 217 plików QML, 0 z błędami.",
+    "scope": "Existing shell syntax/imports; documentation-only task"
+  },
+  "semantic_review": [
+    "Linear dependencies and stable handoff files",
+    "User theme/lifecycle/notification decisions repeated in every prompt",
+    "No history import dependency",
+    "Notification read state separated from Signal read state",
+    "Unknown send outcome does not imply safe retry",
+    "Ephemeral-message cleanup covers notification copies",
+    "Own sent sync is not a toast-triggering incoming message",
+    "Note to Self does not validate incoming notifications/groups/external receipts",
+    "Live integration evidence separated from fake transport tests",
+    "Deployment authorized by execution of the final prompt, not performed while writing this plan"
+  ],
+  "scope": "Roadmap and prompt review only; Signal implementation not started"
+}

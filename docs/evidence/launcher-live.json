@@ -1,0 +1,44 @@
+{
+  "status": "PASS",
+  "instance": {
+    "config_path": "/home/attntd/.local/share/putkin/releases/20260917-launcher-769491c1e9b8/shell.qml",
+    "id": "nxi7babhlt",
+    "launch_time": "2026-09-17T00:46:59",
+    "pid": 351131,
+    "shell_id": "ac645a09e676177bb057325968d2721a"
+  },
+  "notification_pid": 351131,
+  "focused_monitor": "eDP-1",
+  "launcher_layer": [
+    [
+      "eDP-1",
+      {
+        "address": "0x56421ed996e0",
+        "x": 4836,
+        "y": 1440,
+        "w": 1280,
+        "h": 674,
+        "alpha": 1,
+        "namespace": "putkin-panel",
+        "pid": 351131
+      }
+    ]
+  ],
+  "ipc_open_close_toggle": true,
+  "helper_pid": 351152,
+  "watchers": [
+    {
+      "pid": 351209,
+      "type": "text"
+    },
+    {
+      "pid": 351210,
+      "type": "image"
+    }
+  ],
+  "qml_errors": false,
+  "settings_unchanged": true,
+  "configerrors": "",
+  "runtime_files": 133,
+  "restore": "/home/attntd/.local/state/putkin/update-20260917-launcher-769491c1e9b8/restore"
+}

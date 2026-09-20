@@ -1,0 +1,11 @@
+FAIL [imports/types, exit=255] /home/attntd/projects/putkin/tests/qml/tst_launcher.qml
+Info: /home/attntd/projects/putkin/tests/qml/tst_launcher.qml:3:1: Unused import [unused-imports]
+import "../../core"
+^^^^^^
+Warning: /home/attntd/projects/putkin/tests/qml/tst_launcher.qml:87:53: Member "workspace" not found on type "QObject" [missing-property]
+                compare(preview.backend.firstWindow.workspace.id, destination);
+                                                    ^^^^^^^^^
+Warning: /home/attntd/projects/putkin/tests/qml/tst_launcher.qml:88:54: Member "workspace" not found on type "QObject" [missing-property]
+                compare(preview.backend.secondWindow.workspace.id, 2);
+                                                     ^^^^^^^^^
+FAIL: 157 plików QML, 1 z błędami.

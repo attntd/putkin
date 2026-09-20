@@ -1,0 +1,19 @@
+PASS: 130 plików QML, 0 z błędami.
+{
+  "runtime_files": 265,
+  "changed_runtime": [
+    "scripts/lock-session"
+  ],
+  "configurations": [
+    "/home/attntd/.config/hypr/hyprland.lua",
+    "/home/attntd/.local/share/chezmoi/dot_config/hypr/hyprland.lua",
+    "/home/attntd/.config/hypr/autostart.lua",
+    "/home/attntd/.local/share/chezmoi/dot_config/hypr/autostart.lua",
+    "/home/attntd/.config/hypr/modules/system_binds.lua",
+    "/home/attntd/.local/share/chezmoi/dot_config/hypr/modules/system_binds.lua",
+    "/home/attntd/.config/fish/conf.d/ssh-agent.fish",
+    "/home/attntd/.local/share/chezmoi/dot_config/fish/conf.d/ssh-agent.fish"
+  ],
+  "builds_before": 27,
+  "keep": 5
+}

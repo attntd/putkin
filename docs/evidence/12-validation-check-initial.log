@@ -1,0 +1,14 @@
+FAIL [imports/types, exit=255] /home/attntd/projects/putkin/tests/qml/tst_validation.qml
+Warning: /home/attntd/projects/putkin/tests/qml/tst_validation.qml:83:25: Member "dismiss" not found on type "OsdService" [missing-property]
+            preview.osd.dismiss();
+                        ^^^^^^^
+Warning: /home/attntd/projects/putkin/tests/qml/tst_validation.qml:101:25: Member "dismiss" not found on type "OsdService" [missing-property]
+            preview.osd.dismiss();
+                        ^^^^^^^
+Warning: /home/attntd/projects/putkin/tests/qml/tst_validation.qml:133:51: Member "percentage" not found on type "BrightnessService" [missing-property]
+            const oldBrightness = brightnessModel.percentage;
+                                                  ^^^^^^^^^^
+Info: Did you mean "percent"?
+            const oldBrightness = brightnessModel.percent;
+                                                  ^^^^^^^
+FAIL: 1 plików QML, 1 z błędami.

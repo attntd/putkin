@@ -1,0 +1,14 @@
+{
+  "timestamp_utc": "2026-09-20T15:48:32.989114+00:00",
+  "files": {
+    "services/ScreenshotBackend.qml": "4915feabaed7480db7d28ab29295a22065ffc06df52fd8af8d4aa9760b56ba98",
+    "keyboard-test.qml": "6e7ea97922c3f09a031b384cff244dd2cf52cbd80f0956de1c74482c91b7505a",
+    "tests/screenshot_wayland.py": "28ced14e43b2cace5a22357ea3c46b4d96ba04990dc311e9d6752fdf563fae6e",
+    "scripts/test-keyboard-wayland": "57e1cf078e239fd99f61c6b70e8b3d0a58e9978bf9245b03722c01eee0cb5f77",
+    "docs/architecture.md": "f80b0b18b7de445f7b42be788f8c01d1f14de1ced2573c9e212e8bbf885add8f",
+    "docs/development.md": "f7bcf412dfb6e35b6d627e0430e72f42c7f44866bca1a4e8c9b6b7c585d8d014",
+    "docs/testing.md": "8570b11a97ddecf0f51de22177e13a92f65c00c68c35377a32b1fbb1a1775c0e",
+    "docs/status.md": "f00a856ab3fd96552de70356cef49863d0bf75d2b42cc042c04026658d64a84a",
+    "ROADMAP.md": "e951e5cd41866195ec5206f676b26fe156a8b8aafee8a4cc321080736bed6b3a"
+  }
+}

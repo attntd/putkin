@@ -1,0 +1,116 @@
+#!/usr/bin/env python3
+"""Test fade pixels and panel behavior on the GPU in a private nested Wayland."""
+import argparse
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+import tempfile
+import time
+
+from _common import ROOT, isolated_environment, qml_errors, stop_process_group, tool
+
+
+def eventually(read, label):
+    deadline = time.monotonic() + 15
+    while time.monotonic() < deadline:
+        result = read()
+        if result:
+            return result
+        time.sleep(.04)
+    raise AssertionError(label)
+
+
+def inside(base, scale):
+    assert os.environ.get("PUTKIN_FADE_TEST") == str(base)
+    assert Path("/proc/1/comm").read_text().strip() == "bwrap"
+    output = base / "evidence"
+    output.mkdir()
+    config = base / "hyprland.lua"
+    config.write_text('hl.monitor({output = "", mode = "1440x1000@60", position = "auto", scale = 1})\n'
+                      'hl.config({animations = {enabled = false}, misc = {disable_hyprland_logo = true, '
+                      'disable_splash_rendering = true}, xwayland = {enabled = false}})\n')
+    env = dict(os.environ)
+    report = {"scale": scale, "checks": [], "result": "FAIL",
+              "isolation": "private PID/network/mount namespaces, XDG, D-Bus and Wayland; hardware services absent"}
+    with (output / "hyprland.log").open("w") as log:
+        compositor = subprocess.Popen([tool("Hyprland"), "--config", str(config)], env=env,
+                                      stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+        try:
+            displays = eventually(lambda: [p for p in (base / "r").glob("wayland-*") if p.is_socket()], "private Wayland socket")
+            env["WAYLAND_DISPLAY"] = displays[0].name
+            env["QT_QPA_PLATFORM"] = "wayland"
+            env["QT_SCALE_FACTOR"] = scale
+            env["QSG_INFO"] = "1"
+            env.pop("QT_QUICK_BACKEND", None)
+            for name in ("tst_fade.qml", "tst_visual_contract.qml"):
+                cases = [] if name == "tst_fade.qml" else ["VisualContract::test_surface_fade_geometry",
+                    "VisualContract::test_fade_keeps_geometry_and_legacy_motion_cannot_disable_it",
+                    "VisualContract::test_osd_horizontal_and_fade_retains_last_monitor"]
+                with (output / (name + ".log")).open("w") as test_log:
+                    process = subprocess.Popen([tool("qmltestrunner"), "-input", str(ROOT / "tests/qml" / name),
+                                                "-import", str(ROOT), *cases], env=env, stdout=test_log,
+                                               stderr=subprocess.STDOUT, start_new_session=True)
+                    try:
+                        process.wait(timeout=100)
+                    finally:
+                        stop_process_group(process)
+                text = (output / (name + ".log")).read_text()
+                assert process.returncode == 0 and not qml_errors(text), text
+                report["checks"].append(name)
+                print("PASS GPU:", name, "scale", scale, flush=True)
+            report["result"] = "PASS"
+        except Exception as error:
+            report["error"] = str(error)
+            raise
+        finally:
+            stop_process_group(compositor)
+            report["compositor_reaped"] = compositor.poll() is not None
+            (output / "report.json").write_text(json.dumps(report, indent=2) + "\n")
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--nested", action="store_true")
+    parser.add_argument("--scale", choices=["1", "1.25", "1.5", "2"], default="1")
+    parser.add_argument("--output", type=Path, default=ROOT / "artifacts/fade-wayland")
+    parser.add_argument("--inside", type=Path, help=argparse.SUPPRESS)
+    args = parser.parse_args()
+    if args.inside:
+        inside(args.inside, args.scale)
+        return 0
+    if not args.nested:
+        parser.error("--nested permits the parent Wayland socket and GPU render node for the isolated compositor")
+    parent = Path(os.environ["XDG_RUNTIME_DIR"]) / os.environ["WAYLAND_DISPLAY"]
+    assert parent.is_socket(), "parent Wayland socket is missing"
+    assert Path("/dev/dri/renderD128").exists(), "GPU render node is missing"
+    output = args.output.resolve()
+    output.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="pf-") as directory:
+        base = Path(directory)
+        env = isolated_environment(directory)
+        (base / "r").mkdir(mode=0o700)
+        env.update(XDG_RUNTIME_DIR=str(base / "r"), WAYLAND_DISPLAY="parent-wayland", PUTKIN_FADE_TEST=directory)
+        command = [tool("bwrap"), "--unshare-all", "--die-with-parent", "--ro-bind", "/", "/",
+                   "--dev", "/dev", "--proc", "/proc", "--tmpfs", "/run", "--tmpfs", "/tmp", "--bind", directory, directory,
+                   "--ro-bind", str(parent), str(base / "r/parent-wayland"),
+                   "--dev-bind", "/dev/dri/renderD128", "/dev/dri/renderD128",
+                   tool("dbus-run-session"), "--", sys.executable, str(Path(__file__).resolve()),
+                   "--inside", directory, "--scale", args.scale]
+        (output / "command.json").write_text(json.dumps(command, indent=2) + "\n")
+        process = subprocess.Popen(command, env=env, start_new_session=True)
+        try:
+            process.wait(timeout=240)
+        finally:
+            stop_process_group(process)
+            if (base / "evidence").exists():
+                shutil.copytree(base / "evidence", output, dirs_exist_ok=True)
+    (output / "cleanup.json").write_text(json.dumps({"directory_removed": not base.exists(),
+        "wrapper_reaped": process.poll() is not None, "exit_code": process.returncode}, indent=2) + "\n")
+    return process.returncode
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -1,0 +1,27 @@
+PASS: real Print opens selection; Q and Escape cancel without PNG or capture worker
+PASS: Enter captures full current output after unmap; native preview floats; PNG copied before preview and survives Q
+PASS: real reverse drag waits for Enter; cropped PNG has exact dimensions; F saves identical bytes with mode 0600
+PASS: :screenshot uses real launcher input; W captures the original active window; Enter saves preview
+PASS: compositor animations do not retain dimmer in capture; Escape closes preview and preserves clipboard
+Traceback (most recent call last):
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 576, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 529, in main
+    inside(args.inside, args.smoke, args.idle, args.native_session, args.screenshot, args.launcher_preview)
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 152, in inside
+    report['screenshot'] = run(env, base, output, first, hypr, launch)
+                           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/putkin/tests/screenshot_wayland.py", line 176, in run
+    assert not qml_errors(runtime_log(log)), runtime_log(log)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError:   INFO: Launching config: "/home/attntd/projects/putkin/keyboard-test.qml"
+  INFO: Shell ID: "3122caaea7ae53eef5a47a9bc9e973bf" Path ID "3122caaea7ae53eef5a47a9bc9e973bf"
+  INFO: Saving logs to "/tmp/pw-q3k6n2aj/r/quickshell/by-id/y2b6olt/log.qslog"
+  INFO: Configuration Loaded
+  INFO: Reloading configuration...
+  INFO: Configuration Loaded
+  WARN quickshell.hyprland.ipc: Dispatch request "function() if _G.putkin_screenshot_rule then _G.putkin_screenshot_rule:remove() end _G.putkin_screenshot_rule = hl.layer_rule({name=\"putkin-screenshot\",match={namespace=\"^putkin-screenshot$\"},no_anim=true,blur=false,dim_around=false}) end" failed with error "error: return hl.dispatch(function() if _G.putkin_screenshot_rule then _G.putkin_screenshot_rule:remove() end _G.putkin_screenshot_rule = hl.layer_rule({name=\"putkin-screenshot\",match={namespace=\"^putkin-screenshot$\"},no_anim=true,blur=false,dim_around=false}) end):1: hl.dispatch: [string \"return hl.dispatch(function() if _G.putkin_sc...\"]:1: attempt to call a nil value (method 'remove')"
+  WARN quickshell.hyprland.ipc: Dispatch request "function() if _G.putkin_screenshot_rule then _G.putkin_screenshot_rule:remove() end _G.putkin_screenshot_rule = hl.layer_rule({name=\"putkin-screenshot\",match={namespace=\"^putkin-screenshot$\"},no_anim=true,blur=false,dim_around=false}) end" failed with error "error: return hl.dispatch(function() if _G.putkin_screenshot_rule then _G.putkin_screenshot_rule:remove() end _G.putkin_screenshot_rule = hl.layer_rule({name=\"putkin-screenshot\",match={namespace=\"^putkin-screenshot$\"},no_anim=true,blur=false,dim_around=false}) end):1: hl.dispatch: [string \"return hl.dispatch(function() if _G.putkin_sc...\"]:1: attempt to call a nil value (method 'remove')"
+

@@ -1,0 +1,26 @@
+{
+  "release": "20260916-visual-3d0c562aa347",
+  "runtime_files": 126,
+  "qml_gate": {
+    "passed": 146,
+    "errors": 0
+  },
+  "python_tests": 19,
+  "qt_results": 243,
+  "integrations": 12,
+  "additional_bluetooth_regression": "PASS: 7 groups, 20 cycles, no startup errors; lint 2 QML files",
+  "native_wayland": {
+    "result": "PASS",
+    "screenshots": 18,
+    "remaining_children": 0
+  },
+  "hyprlock": "PASS: actual render on private compositor with deny-only fixture PAM, fingerprint disabled",
+  "active_verification": "PASS: one shell, one notification owner, panels, bindings, clean logs and no startup toast",
+  "settings_unchanged": true,
+  "not_run": [
+    "live password/fingerprint/lock/suspend after visual update",
+    "new idle performance measurement",
+    "user visual acceptance"
+  ],
+  "restore": "/home/attntd/.local/state/putkin/update-20260916-visual-3d0c562aa347/restore"
+}

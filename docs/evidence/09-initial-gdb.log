@@ -1,0 +1,156 @@
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/usr/lib/libthread_db.so.1".
+[New Thread 0x7fffeffff6c0 (LWP 201899)]
+  INFO: Launching config: "/home/attntd/projects/putkin/notifications-test.qml"
+  INFO: Shell ID: "baaa508919dd09c1fdb0fe45f5dbe4c8" Path ID "baaa508919dd09c1fdb0fe45f5dbe4c8"
+  INFO: Saving logs to "/tmp/pk-tmzz4gxj/runtime/quickshell/by-id/1sb47ruglt/log.qslog"
+[New Thread 0x7fffed37f6c0 (LWP 201901)]
+[New Thread 0x7fffeb67f6c0 (LWP 201902)]
+[Detaching after vfork from child process 201903]
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+[Detaching after vfork from child process 201904]
+[Detaching after vfork from child process 201905]
+[New Thread 0x7fffea1ff6c0 (LWP 201906)]
+[Detaching after vfork from child process 201907]
+  INFO qml: PUTKIN_PREVIEW_READY
+[Detaching after vfork from child process 201909]
+[New Thread 0x7fffe6fff6c0 (LWP 201911)]
+[New Thread 0x7fffe67fe6c0 (LWP 201912)]
+[New Thread 0x7fffe5bff6c0 (LWP 201913)]
+[New Thread 0x7fffe4dff6c0 (LWP 201914)]
+
+Thread 1 "quickshell" received signal SIGSEGV, Segmentation fault.
+0x00007ffff57c4453 in ?? () from /usr/bin/../lib/libQt6Qml.so.6
+
+Thread 9 (Thread 0x7fffe4dff6c0 (LWP 201914) "Thread (pooled)"):
+#0  0x00007ffff44a0952 in ?? () from /usr/bin/../lib/libc.so.6
+#1  0x00007ffff4494cd9 in ?? () from /usr/bin/../lib/libc.so.6
+#2  0x00007ffff4497762 in pthread_cond_timedwait () from /usr/bin/../lib/libc.so.6
+#3  0x00007ffff4f6b549 in QWaitCondition::wait(QMutex*, QDeadlineTimer) () from /usr/bin/../lib/libQt6Core.so.6
+#4  0x00007ffff4eb5817 in ?? () from /usr/bin/../lib/libQt6Core.so.6
+#5  0x00007ffff4f721eb in ?? () from /usr/bin/../lib/libQt6Core.so.6
+#6  0x00007ffff44980a2 in ?? () from /usr/bin/../lib/libc.so.6
+#7  0x00007ffff452080c in ?? () from /usr/bin/../lib/libc.so.6
+
+Thread 8 (Thread 0x7fffe5bff6c0 (LWP 201913) "Thread (pooled)"):
+#0  0x00007ffff44a0952 in ?? () from /usr/bin/../lib/libc.so.6
+#1  0x00007ffff4494cd9 in ?? () from /usr/bin/../lib/libc.so.6
+#2  0x00007ffff4497762 in pthread_cond_timedwait () from /usr/bin/../lib/libc.so.6
+#3  0x00007ffff4f6b549 in QWaitCondition::wait(QMutex*, QDeadlineTimer) () from /usr/bin/../lib/libQt6Core.so.6
+#4  0x00007ffff4eb5817 in ?? () from /usr/bin/../lib/libQt6Core.so.6
+#5  0x00007ffff4f721eb in ?? () from /usr/bin/../lib/libQt6Core.so.6
+#6  0x00007ffff44980a2 in ?? () from /usr/bin/../lib/libc.so.6
+#7  0x00007ffff452080c in ?? () from /usr/bin/../lib/libc.so.6
+
+Thread 7 (Thread 0x7fffe67fe6c0 (LWP 201912) "Thread (pooled)"):
+#0  0x00007ffff44a0952 in ?? () from /usr/bin/../lib/libc.so.6
+#1  0x00007ffff4494cd9 in ?? () from /usr/bin/../lib/libc.so.6
+#2  0x00007ffff4497762 in pthread_cond_timedwait () from /usr/bin/../lib/libc.so.6
+#3  0x00007ffff4f6b549 in QWaitCondition::wait(QMutex*, QDeadlineTimer) () from /usr/bin/../lib/libQt6Core.so.6
+#4  0x00007ffff4eb5817 in ?? () from /usr/bin/../lib/libQt6Core.so.6
+#5  0x00007ffff4f721eb in ?? () from /usr/bin/../lib/libQt6Core.so.6
+#6  0x00007ffff44980a2 in ?? () from /usr/bin/../lib/libc.so.6
+#7  0x00007ffff452080c in ?? () from /usr/bin/../lib/libc.so.6
+
+Thread 6 (Thread 0x7fffe6fff6c0 (LWP 201911) "Thread (pooled)"):
+#0  0x00007ffff44a0952 in ?? () from /usr/bin/../lib/libc.so.6
+#1  0x00007ffff4494cd9 in ?? () from /usr/bin/../lib/libc.so.6
+#2  0x00007ffff4497762 in pthread_cond_timedwait () from /usr/bin/../lib/libc.so.6
+#3  0x00007ffff4f6b549 in QWaitCondition::wait(QMutex*, QDeadlineTimer) () from /usr/bin/../lib/libQt6Core.so.6
+#4  0x00007ffff4eb5817 in ?? () from /usr/bin/../lib/libQt6Core.so.6
+#5  0x00007ffff4f721eb in ?? () from /usr/bin/../lib/libQt6Core.so.6
+#6  0x00007ffff44980a2 in ?? () from /usr/bin/../lib/libc.so.6
+#7  0x00007ffff452080c in ?? () from /usr/bin/../lib/libc.so.6
+
+Thread 5 (Thread 0x7fffea1ff6c0 (LWP 201906) "QDBusConnection"):
+#0  0x00007ffff44a0952 in ?? () from /usr/bin/../lib/libc.so.6
+#1  0x00007ffff4511a57 in ppoll () from /usr/bin/../lib/libc.so.6
+#2  0x00007ffff77fdf59 in ?? () from /usr/bin/../lib/libglib-2.0.so.0
+#3  0x00007ffff77fe055 in g_main_context_iteration () from /usr/bin/../lib/libglib-2.0.so.0
+#4  0x00007ffff5096f32 in QEventDispatcherGlib::processEvents(QFlags<QEventLoop::ProcessEventsFlag>) () from /usr/bin/../lib/libQt6Core.so.6
+#5  0x00007ffff4d8f664 in QEventLoop::exec(QFlags<QEventLoop::ProcessEventsFlag>) () from /usr/bin/../lib/libQt6Core.so.6
+#6  0x00007ffff4eb7ce2 in QThread::exec() () from /usr/bin/../lib/libQt6Core.so.6
+#7  0x00007ffff76c9951 in ?? () from /usr/bin/../lib/libQt6DBus.so.6
+#8  0x00007ffff4f721eb in ?? () from /usr/bin/../lib/libQt6Core.so.6
+#9  0x00007ffff44980a2 in ?? () from /usr/bin/../lib/libc.so.6
+#10 0x00007ffff452080c in ?? () from /usr/bin/../lib/libc.so.6
+
+Thread 4 (Thread 0x7fffeb67f6c0 (LWP 201902) "Thread (pooled)"):
+#0  0x00007ffff44a0952 in ?? () from /usr/bin/../lib/libc.so.6
+#1  0x00007ffff4494cd9 in ?? () from /usr/bin/../lib/libc.so.6
+#2  0x00007ffff4497762 in pthread_cond_timedwait () from /usr/bin/../lib/libc.so.6
+#3  0x00007ffff4f6b549 in QWaitCondition::wait(QMutex*, QDeadlineTimer) () from /usr/bin/../lib/libQt6Core.so.6
+#4  0x00007ffff4eb5817 in ?? () from /usr/bin/../lib/libQt6Core.so.6
+#5  0x00007ffff4f721eb in ?? () from /usr/bin/../lib/libQt6Core.so.6
+#6  0x00007ffff44980a2 in ?? () from /usr/bin/../lib/libc.so.6
+#7  0x00007ffff452080c in ?? () from /usr/bin/../lib/libc.so.6
+
+Thread 3 (Thread 0x7fffed37f6c0 (LWP 201901) "QQmlThread"):
+#0  0x00007ffff44a0952 in ?? () from /usr/bin/../lib/libc.so.6
+#1  0x00007ffff4511a57 in ppoll () from /usr/bin/../lib/libc.so.6
+#2  0x00007ffff77fdf59 in ?? () from /usr/bin/../lib/libglib-2.0.so.0
+#3  0x00007ffff77fe055 in g_main_context_iteration () from /usr/bin/../lib/libglib-2.0.so.0
+#4  0x00007ffff5096f32 in QEventDispatcherGlib::processEvents(QFlags<QEventLoop::ProcessEventsFlag>) () from /usr/bin/../lib/libQt6Core.so.6
+#5  0x00007ffff4d8f664 in QEventLoop::exec(QFlags<QEventLoop::ProcessEventsFlag>) () from /usr/bin/../lib/libQt6Core.so.6
+#6  0x00007ffff4eb7ce2 in QThread::exec() () from /usr/bin/../lib/libQt6Core.so.6
+#7  0x00007ffff4f72285 in ?? () from /usr/bin/../lib/libQt6Core.so.6
+#8  0x00007ffff44980a2 in ?? () from /usr/bin/../lib/libc.so.6
+#9  0x00007ffff452080c in ?? () from /usr/bin/../lib/libc.so.6
+
+Thread 2 (Thread 0x7fffeffff6c0 (LWP 201899) "QThread"):
+#0  0x00007ffff44a0952 in ?? () from /usr/bin/../lib/libc.so.6
+#1  0x00007ffff4511a57 in ppoll () from /usr/bin/../lib/libc.so.6
+#2  0x00007ffff77fdf59 in ?? () from /usr/bin/../lib/libglib-2.0.so.0
+#3  0x00007ffff77fe055 in g_main_context_iteration () from /usr/bin/../lib/libglib-2.0.so.0
+#4  0x00007ffff5096f32 in QEventDispatcherGlib::processEvents(QFlags<QEventLoop::ProcessEventsFlag>) () from /usr/bin/../lib/libQt6Core.so.6
+#5  0x00007ffff4d8f664 in QEventLoop::exec(QFlags<QEventLoop::ProcessEventsFlag>) () from /usr/bin/../lib/libQt6Core.so.6
+#6  0x00007ffff4eb7ce2 in QThread::exec() () from /usr/bin/../lib/libQt6Core.so.6
+#7  0x00007ffff4f72285 in ?? () from /usr/bin/../lib/libQt6Core.so.6
+#8  0x00007ffff44980a2 in ?? () from /usr/bin/../lib/libc.so.6
+#9  0x00007ffff452080c in ?? () from /usr/bin/../lib/libc.so.6
+
+Thread 1 (Thread 0x7ffff2b9d440 (LWP 201889) "quickshell"):
+#0  0x00007ffff57c4453 in ?? () from /usr/bin/../lib/libQt6Qml.so.6
+#1  0x00007ffff57c445f in ?? () from /usr/bin/../lib/libQt6Qml.so.6
+#2  0x00007ffff57c3f4b in ?? () from /usr/bin/../lib/libQt6Qml.so.6
+#3  0x00007ffff57c3f4b in ?? () from /usr/bin/../lib/libQt6Qml.so.6
+#4  0x00007ffff57c445f in ?? () from /usr/bin/../lib/libQt6Qml.so.6
+#5  0x00007ffff57c3f4b in ?? () from /usr/bin/../lib/libQt6Qml.so.6
+#6  0x00007ffff57c3f4b in ?? () from /usr/bin/../lib/libQt6Qml.so.6
+#7  0x00007ffff57c4a96 in ?? () from /usr/bin/../lib/libQt6Qml.so.6
+#8  0x00007ffff57c58c7 in ?? () from /usr/bin/../lib/libQt6Qml.so.6
+#9  0x00007ffff58642c8 in ?? () from /usr/bin/../lib/libQt6Qml.so.6
+#10 0x00007ffff5870fd2 in ?? () from /usr/bin/../lib/libQt6Qml.so.6
+#11 0x00007ffff57b7497 in ?? () from /usr/bin/../lib/libQt6Qml.so.6
+#12 0x00007ffff57b77a9 in ?? () from /usr/bin/../lib/libQt6Qml.so.6
+#13 0x00007ffff58642c8 in ?? () from /usr/bin/../lib/libQt6Qml.so.6
+#14 0x00007ffff5870fd2 in ?? () from /usr/bin/../lib/libQt6Qml.so.6
+#15 0x00007ffff57a8874 in ?? () from /usr/bin/../lib/libQt6Qml.so.6
+#16 0x00007ffff57aee55 in QV4::Function::call(QObject*, void**, QMetaType const*, int, QV4::ExecutionContext*) () from /usr/bin/../lib/libQt6Qml.so.6
+#17 0x00007ffff591f908 in QQmlJavaScriptExpression::evaluate(void**, QMetaType const*, int) () from /usr/bin/../lib/libQt6Qml.so.6
+#18 0x00007ffff58adc68 in QQmlBoundSignalExpression::evaluate(void**) () from /usr/bin/../lib/libQt6Qml.so.6
+#19 0x00007ffff58b3939 in ?? () from /usr/bin/../lib/libQt6Qml.so.6
+#20 0x00007ffff594cc20 in QQmlNotifier::emitNotify(QQmlNotifierEndpoint*, void**) () from /usr/bin/../lib/libQt6Qml.so.6
+#21 0x00007ffff4deef5f in ?? () from /usr/bin/../lib/libQt6Core.so.6
+#22 0x00005555556d7ea3 in ?? ()
+#23 0x00005555556d80de in ?? ()
+#24 0x00007ffff4deeff3 in ?? () from /usr/bin/../lib/libQt6Core.so.6
+#25 0x00007ffff4fd983d in ?? () from /usr/bin/../lib/libQt6Core.so.6
+#26 0x00007ffff4deeff3 in ?? () from /usr/bin/../lib/libQt6Core.so.6
+#27 0x00007ffff4e02280 in QSocketNotifier::event(QEvent*) () from /usr/bin/../lib/libQt6Core.so.6
+#28 0x00007ffff4d822b8 in QCoreApplication::notifyInternal2(QObject*, QEvent*) () from /usr/bin/../lib/libQt6Core.so.6
+#29 0x00007ffff509a1d0 in ?? () from /usr/bin/../lib/libQt6Core.so.6
+#30 0x00007ffff77fbc76 in ?? () from /usr/bin/../lib/libglib-2.0.so.0
+#31 0x00007ffff77fded7 in ?? () from /usr/bin/../lib/libglib-2.0.so.0
+#32 0x00007ffff77fe055 in g_main_context_iteration () from /usr/bin/../lib/libglib-2.0.so.0
+#33 0x00007ffff5096f32 in QEventDispatcherGlib::processEvents(QFlags<QEventLoop::ProcessEventsFlag>) () from /usr/bin/../lib/libQt6Core.so.6
+#34 0x00007ffff4d8f664 in QEventLoop::exec(QFlags<QEventLoop::ProcessEventsFlag>) () from /usr/bin/../lib/libQt6Core.so.6
+#35 0x00007ffff4d8685a in QCoreApplication::exec() () from /usr/bin/../lib/libQt6Core.so.6
+#36 0x00005555556315f2 in ?? ()
+#37 0x0000555555621020 in ?? ()
+#38 0x0000555555626cf0 in ?? ()
+#39 0x000055555560f491 in ?? ()
+#40 0x00007ffff4427781 in ?? () from /usr/bin/../lib/libc.so.6
+#41 0x00007ffff44278b9 in __libc_start_main () from /usr/bin/../lib/libc.so.6
+#42 0x0000555555612085 in ?? ()

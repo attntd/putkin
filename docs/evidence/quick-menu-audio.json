@@ -1,0 +1,218 @@
+{
+  "timestamp_utc": "2026-09-19T21:53:18.170819+00:00",
+  "quickshell": "Quickshell 0.3.1 (revision , distributed by Arch Linux)",
+  "pipewire": "/usr/bin/pipewire\nCompiled with libpipewire 1.6.8\nLinked with libpipewire 1.6.8",
+  "mode": "offscreen/software; production PipewireBackend + AudioService + IPC; two virtual sinks and two virtual sources; no hardware or session manager",
+  "cycles": [
+    {
+      "cycle": 1,
+      "pid": 79439,
+      "name": "quickshell",
+      "parent": 79436,
+      "cpu_ticks": 138,
+      "rss_kib": 147808
+    },
+    {
+      "cycle": 2,
+      "pid": 79439,
+      "name": "quickshell",
+      "parent": 79436,
+      "cpu_ticks": 139,
+      "rss_kib": 147672
+    },
+    {
+      "cycle": 3,
+      "pid": 79439,
+      "name": "quickshell",
+      "parent": 79436,
+      "cpu_ticks": 141,
+      "rss_kib": 147340
+    },
+    {
+      "cycle": 4,
+      "pid": 79439,
+      "name": "quickshell",
+      "parent": 79436,
+      "cpu_ticks": 144,
+      "rss_kib": 138940
+    },
+    {
+      "cycle": 5,
+      "pid": 79439,
+      "name": "quickshell",
+      "parent": 79436,
+      "cpu_ticks": 145,
+      "rss_kib": 138940
+    },
+    {
+      "cycle": 6,
+      "pid": 79439,
+      "name": "quickshell",
+      "parent": 79436,
+      "cpu_ticks": 147,
+      "rss_kib": 138940
+    },
+    {
+      "cycle": 7,
+      "pid": 79439,
+      "name": "quickshell",
+      "parent": 79436,
+      "cpu_ticks": 149,
+      "rss_kib": 138940
+    },
+    {
+      "cycle": 8,
+      "pid": 79439,
+      "name": "quickshell",
+      "parent": 79436,
+      "cpu_ticks": 150,
+      "rss_kib": 138940
+    },
+    {
+      "cycle": 9,
+      "pid": 79439,
+      "name": "quickshell",
+      "parent": 79436,
+      "cpu_ticks": 153,
+      "rss_kib": 138940
+    },
+    {
+      "cycle": 10,
+      "pid": 79439,
+      "name": "quickshell",
+      "parent": 79436,
+      "cpu_ticks": 155,
+      "rss_kib": 137684
+    },
+    {
+      "cycle": 11,
+      "pid": 79439,
+      "name": "quickshell",
+      "parent": 79436,
+      "cpu_ticks": 157,
+      "rss_kib": 137204
+    },
+    {
+      "cycle": 12,
+      "pid": 79439,
+      "name": "quickshell",
+      "parent": 79436,
+      "cpu_ticks": 159,
+      "rss_kib": 136856
+    },
+    {
+      "cycle": 13,
+      "pid": 79439,
+      "name": "quickshell",
+      "parent": 79436,
+      "cpu_ticks": 160,
+      "rss_kib": 136856
+    },
+    {
+      "cycle": 14,
+      "pid": 79439,
+      "name": "quickshell",
+      "parent": 79436,
+      "cpu_ticks": 163,
+      "rss_kib": 136856
+    },
+    {
+      "cycle": 15,
+      "pid": 79439,
+      "name": "quickshell",
+      "parent": 79436,
+      "cpu_ticks": 165,
+      "rss_kib": 136856
+    },
+    {
+      "cycle": 16,
+      "pid": 79439,
+      "name": "quickshell",
+      "parent": 79436,
+      "cpu_ticks": 167,
+      "rss_kib": 136856
+    },
+    {
+      "cycle": 17,
+      "pid": 79439,
+      "name": "quickshell",
+      "parent": 79436,
+      "cpu_ticks": 168,
+      "rss_kib": 136856
+    },
+    {
+      "cycle": 18,
+      "pid": 79439,
+      "name": "quickshell",
+      "parent": 79436,
+      "cpu_ticks": 170,
+      "rss_kib": 136856
+    },
+    {
+      "cycle": 19,
+      "pid": 79439,
+      "name": "quickshell",
+      "parent": 79436,
+      "cpu_ticks": 172,
+      "rss_kib": 136856
+    },
+    {
+      "cycle": 20,
+      "pid": 79439,
+      "name": "quickshell",
+      "parent": 79436,
+      "cpu_ticks": 174,
+      "rss_kib": 136856
+    }
+  ],
+  "final": {
+    "ready": true,
+    "available": true,
+    "volume": 49.000000953674316,
+    "muted": false,
+    "output": "putkin-test-speakers",
+    "outputs": [
+      {
+        "id": 16,
+        "name": "putkin-test-headphones"
+      },
+      {
+        "id": 11,
+        "name": "putkin-test-speakers"
+      }
+    ],
+    "busy": false,
+    "error": "",
+    "refreshing": false,
+    "tracked": 1,
+    "inputAvailable": true,
+    "inputVolume": 100,
+    "inputMuted": false,
+    "input": "putkin-test-microphone",
+    "inputs": [
+      {
+        "id": 21,
+        "name": "putkin-test-microphone"
+      },
+      {
+        "id": 26,
+        "name": "putkin-test-usb-microphone"
+      }
+    ],
+    "inputBusy": false,
+    "inputError": "",
+    "inputRefreshing": false,
+    "inputTracked": 1,
+    "osd": false,
+    "osdLoaded": false,
+    "created": 20,
+    "destroyed": 20,
+    "screen": "",
+    "panel": "",
+    "focus": ""
+  },
+  "expected_diagnostics": [
+    "ERROR quickshell.service.pipewire.loop: Failed to connect pipewire context. Errno: 112",
+    "WARN quickshell.service.pipewire.loop: Pipewire error on object 0 with code -32 connection error"
+  ]
+}

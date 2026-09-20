@@ -1,0 +1,396 @@
+{
+  "hypridle": {
+    "pid": 226035,
+    "active": true,
+    "screensaver_owner_verified": true
+  },
+  "auth_unchanged": true,
+  "chezmoi_status": "MM .config/hypr/hyprland.lua\nMM .config/zen/r82xc5xh.Default (release)/chrome/zen-themes.css",
+  "bar_focus": "eDP-1",
+  "keyboard": {
+    "ready": true,
+    "busy": false,
+    "applied": true,
+    "error": "",
+    "shortcuts": 7,
+    "commands": 0
+  },
+  "settings_window": {
+    "address": "0x5606440ed3c0",
+    "mapped": true,
+    "hidden": false,
+    "visible": true,
+    "acceptsInput": true,
+    "at": [
+      4796,
+      1716
+    ],
+    "size": [
+      720,
+      680
+    ],
+    "workspace": {
+      "id": 3,
+      "name": "3"
+    },
+    "floating": true,
+    "monitor": 0,
+    "class": "org.quickshell",
+    "title": "Ustawienia",
+    "initialClass": "org.quickshell",
+    "initialTitle": "Ustawienia",
+    "pid": 226043,
+    "xwayland": false,
+    "pinned": false,
+    "pinFullscreened": false,
+    "fullscreen": 0,
+    "fullscreenClient": 0,
+    "fullscreenHandler": "default",
+    "allowedOverFullscreen": true,
+    "grouped": [],
+    "tags": [],
+    "swallowing": "0x0",
+    "focusHistoryID": 0,
+    "inhibitingIdle": false,
+    "xdgTag": "",
+    "xdgDescription": "",
+    "contentType": "none",
+    "tearingHint": false,
+    "stableId": "1800005b"
+  },
+  "panel_ipc": {
+    "openAudio": [
+      [
+        "eDP-1",
+        {
+          "address": "0x560645aa4ef0",
+          "x": 5748,
+          "y": 1440,
+          "w": 368,
+          "h": 444,
+          "alpha": 1,
+          "namespace": "putkin-panel",
+          "pid": 226043
+        }
+      ]
+    ],
+    "openNotifications": [
+      [
+        "eDP-1",
+        {
+          "address": "0x5606445e8b00",
+          "x": 5748,
+          "y": 1440,
+          "w": 368,
+          "h": 130,
+          "alpha": 1,
+          "namespace": "putkin-panel",
+          "pid": 226043
+        }
+      ]
+    ],
+    "openCommands": [
+      [
+        "eDP-1",
+        {
+          "address": "0x560645aa4ef0",
+          "x": 4836,
+          "y": 1440,
+          "w": 1280,
+          "h": 674,
+          "alpha": 1,
+          "namespace": "putkin-panel",
+          "pid": 226043
+        }
+      ]
+    ],
+    "openClipboard": [
+      [
+        "eDP-1",
+        {
+          "address": "0x5606445e8b00",
+          "x": 4836,
+          "y": 1440,
+          "w": 1280,
+          "h": 674,
+          "alpha": 1,
+          "namespace": "putkin-panel",
+          "pid": 226043
+        }
+      ]
+    ],
+    "open": [
+      [
+        "eDP-1",
+        {
+          "address": "0x560645aa4ef0",
+          "x": 4836,
+          "y": 1440,
+          "w": 1280,
+          "h": 778,
+          "alpha": 1,
+          "namespace": "putkin-panel",
+          "pid": 226043
+        }
+      ]
+    ],
+    "openQuickSettings": [
+      [
+        "eDP-1",
+        {
+          "address": "0x5606445e8b00",
+          "x": 5748,
+          "y": 1440,
+          "w": 368,
+          "h": 424,
+          "alpha": 1,
+          "namespace": "putkin-panel",
+          "pid": 226043
+        }
+      ]
+    ]
+  },
+  "audio_toggle": true,
+  "audio_before": {
+    "available": true,
+    "output": "Wbudowane g\u0142o\u015bniki",
+    "volume": 24.99542236328125,
+    "muted": true,
+    "busy": false,
+    "error": ""
+  },
+  "audio_after": {
+    "available": true,
+    "output": "Wbudowane g\u0142o\u015bniki",
+    "volume": 24.99542236328125,
+    "muted": true,
+    "busy": false,
+    "error": ""
+  },
+  "launcher_binds": [
+    {
+      "locked": false,
+      "mouse": false,
+      "release": false,
+      "repeat": false,
+      "longPress": false,
+      "non_consuming": false,
+      "auto_consuming": false,
+      "has_description": true,
+      "modmask": 64,
+      "submap": "",
+      "submap_universal": "false",
+      "key": "SPACE",
+      "keycode": 0,
+      "catch_all": false,
+      "description": "Putkin:launcher",
+      "allow_input_capture": false,
+      "dispatcher": "__lua",
+      "arg": "34"
+    },
+    {
+      "locked": false,
+      "mouse": false,
+      "release": false,
+      "repeat": false,
+      "longPress": false,
+      "non_consuming": false,
+      "auto_consuming": false,
+      "has_description": true,
+      "modmask": 64,
+      "submap": "",
+      "submap_universal": "false",
+      "key": "V",
+      "keycode": 0,
+      "catch_all": false,
+      "description": "Putkin:clipboard",
+      "allow_input_capture": false,
+      "dispatcher": "__lua",
+      "arg": "9"
+    },
+    {
+      "locked": false,
+      "mouse": false,
+      "release": false,
+      "repeat": false,
+      "longPress": false,
+      "non_consuming": false,
+      "auto_consuming": false,
+      "has_description": true,
+      "modmask": 65,
+      "submap": "",
+      "submap_universal": "false",
+      "key": "semicolon",
+      "keycode": 0,
+      "catch_all": false,
+      "description": "Putkin:commands",
+      "allow_input_capture": false,
+      "dispatcher": "__lua",
+      "arg": "70"
+    }
+  ],
+  "instance": {
+    "config_path": "/home/attntd/.local/share/putkin/releases/20260920-bar-alignment-221eccd10c8c/shell.qml",
+    "id": "zeu4v3vnlt",
+    "launch_time": "2026-09-20T13:40:43",
+    "pid": 226043,
+    "shell_id": "ac5d4056230a347f56460a0b2da7ed6f"
+  },
+  "notification_pid": 226043,
+  "monitors": [
+    {
+      "id": 0,
+      "name": "eDP-1",
+      "description": "Samsung Display Corp. ATNA40HQ09-0  0x0000003B",
+      "make": "Samsung Display Corp.",
+      "model": "ATNA40HQ09-0 ",
+      "serial": "0x0000003B",
+      "width": 2880,
+      "height": 1800,
+      "physicalWidth": 300,
+      "physicalHeight": 190,
+      "refreshRate": 120.0,
+      "x": 4196,
+      "y": 1440,
+      "activeWorkspace": {
+        "id": 3,
+        "name": "3"
+      },
+      "specialWorkspace": {
+        "id": 0,
+        "name": ""
+      },
+      "reserved": [
+        0,
+        32,
+        0,
+        0
+      ],
+      "scale": 1.5,
+      "transform": 0,
+      "focused": true,
+      "dpmsStatus": true,
+      "vrr": false,
+      "solitary": "0",
+      "solitaryBlockedBy": [
+        "WINDOWED",
+        "CANDIDATE"
+      ],
+      "activelyTearing": false,
+      "tearingBlockedBy": [
+        "NOT_TORN",
+        "USER",
+        "CANDIDATE",
+        "HW_CURSOR"
+      ],
+      "directScanoutTo": "0",
+      "directScanoutBlockedBy": [
+        "USER",
+        "CANDIDATE"
+      ],
+      "disabled": false,
+      "currentFormat": "XRGB8888",
+      "mirrorOf": "none",
+      "availableModes": [
+        "2880x1800@120.00Hz",
+        "2880x1800@60.00Hz"
+      ],
+      "colorManagementPreset": "srgb",
+      "sdrBrightness": 1,
+      "sdrSaturation": 1,
+      "sdrMinLuminance": 0.2,
+      "sdrMaxLuminance": 80,
+      "hardwareCursorsInUse": true
+    }
+  ],
+  "layers": {
+    "eDP-1": {
+      "levels": {
+        "0": [
+          {
+            "address": "0x560645ba2c20",
+            "x": 4196,
+            "y": 1440,
+            "w": 1920,
+            "h": 1200,
+            "alpha": 1,
+            "namespace": "putkin-wallpaper",
+            "pid": 226043
+          }
+        ],
+        "1": [],
+        "2": [
+          {
+            "address": "0x560645460060",
+            "x": 4196,
+            "y": 1440,
+            "w": 1920,
+            "h": 32,
+            "alpha": 1,
+            "namespace": "putkin-bar",
+            "pid": 226043
+          }
+        ],
+        "3": []
+      }
+    }
+  },
+  "caffeinate": {
+    "active": false,
+    "mode": "off",
+    "busy": false,
+    "preventDisplaySleep": false,
+    "preventLock": false,
+    "preventSleep": false,
+    "error": ""
+  },
+  "audio": {
+    "available": true,
+    "output": "Wbudowane g\u0142o\u015bniki",
+    "volume": 24.99542236328125,
+    "muted": true,
+    "busy": false,
+    "error": ""
+  },
+  "brightness": {
+    "available": true,
+    "device": "intel_backlight",
+    "percent": 80.64516129032258,
+    "busy": false,
+    "error": "",
+    "diagnostic": "Urz\u0105dzenie: intel_backlight \u00b7 zakres 0\u2013496. Stan od\u015bwie\u017ca si\u0119 po otwarciu panelu i w\u0142asnej zmianie."
+  },
+  "session": {
+    "busy": false,
+    "phase": "",
+    "error": "",
+    "result": "",
+    "capabilities": {
+      "reboot": {
+        "available": true,
+        "reason": ""
+      },
+      "poweroff": {
+        "available": true,
+        "reason": ""
+      },
+      "suspend": {
+        "available": true,
+        "reason": ""
+      },
+      "logout": {
+        "available": true,
+        "reason": ""
+      },
+      "lock": {
+        "available": true,
+        "reason": ""
+      }
+    }
+  },
+  "settings_unchanged": true,
+  "configerrors": "",
+  "runtime_manifest_verified": true,
+  "restore": "/home/attntd/.local/state/putkin/update-20260920-bar-alignment-221eccd10c8c/restore",
+  "runtime_files": 268
+}

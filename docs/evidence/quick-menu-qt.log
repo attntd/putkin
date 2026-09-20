@@ -1,0 +1,18 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::QuickMenu::initTestCase()
+PASS   : qmltestrunner::QuickMenu::test_audio_becoming_ready_keeps_row_focus()
+PASS   : qmltestrunner::QuickMenu::test_audio_is_one_keyboard_row()
+PASS   : qmltestrunner::QuickMenu::test_center_mouse_dismiss_and_expired_action_recover_focus()
+PASS   : qmltestrunner::QuickMenu::test_center_small_panel_and_lifecycles()
+PASS   : qmltestrunner::QuickMenu::test_distinct_audio_names_follow_device_not_default()
+PASS   : qmltestrunner::QuickMenu::test_error_is_only_a_notification()
+PASS   : qmltestrunner::QuickMenu::test_history_keeps_expired_and_dnd_but_not_transient()
+PASS   : qmltestrunner::QuickMenu::test_history_replacements_limit_and_live_actions()
+PASS   : qmltestrunner::QuickMenu::test_night_light_temperature_has_no_refresh()
+PASS   : qmltestrunner::QuickMenu::test_notification_center_empty_and_mouse_focus()
+PASS   : qmltestrunner::QuickMenu::test_radio_modules_own_lists_and_scanning()
+PASS   : qmltestrunner::QuickMenu::test_tiles_toggle_without_management_or_progress_messages()
+PASS   : qmltestrunner::QuickMenu::cleanupTestCase()
+Totals: 14 passed, 0 failed, 0 skipped, 0 blacklisted, 5415ms
+********* Finished testing of qmltestrunner *********

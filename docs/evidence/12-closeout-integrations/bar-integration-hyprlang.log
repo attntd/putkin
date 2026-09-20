@@ -1,0 +1,8 @@
+  INFO: Launching config: "/home/attntd/projects/putkin/bar-test.qml"
+  INFO: Shell ID: "e2e2d7e39fa037c408ef00671aca6576" Path ID "e2e2d7e39fa037c408ef00671aca6576"
+  INFO: Saving logs to "/tmp/pk-zjx_4rpu/runtime/quickshell/by-id/lvf6ju5hlt/log.qslog"
+  WARN : Failed to create wl_display (No such file or directory)
+  WARN: Compositor does not support hyprland-toplevel-mapping-v1.It will not be possible to derive hyprland addresses from toplevels.
+  INFO: Configuration Loaded
+  WARN quickshell.io.socket: Socket error for Socket(0x7f302ede4f80) QLocalSocket::PeerClosedError
+  WARN: Hyprland event socket error: QLocalSocket::PeerClosedError

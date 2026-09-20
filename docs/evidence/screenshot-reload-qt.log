@@ -1,0 +1,23 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::Screenshot::initTestCase()
+PASS   : qmltestrunner::Screenshot::test_buttons_vim_and_pointer_focus()
+PASS   : qmltestrunner::Screenshot::test_cancel_without_any_capture(row 0)
+PASS   : qmltestrunner::Screenshot::test_cancel_without_any_capture(row 1)
+PASS   : qmltestrunner::Screenshot::test_cancelled_request_ignores_late_result()
+PASS   : qmltestrunner::Screenshot::test_click_and_zero_area_capture_whole_screen()
+PASS   : qmltestrunner::Screenshot::test_hotplug_and_lock_cancel_before_capture()
+PASS   : qmltestrunner::Screenshot::test_keyboard_catalog_migrates_existing_settings()
+PASS   : qmltestrunner::Screenshot::test_missing_monitor_does_not_capture_another_screen()
+PASS   : qmltestrunner::Screenshot::test_missing_window_stays_in_selection()
+PASS   : qmltestrunner::Screenshot::test_preview_close(row 0)
+PASS   : qmltestrunner::Screenshot::test_preview_close(row 1)
+PASS   : qmltestrunner::Screenshot::test_preview_save(row 0)
+PASS   : qmltestrunner::Screenshot::test_preview_save(row 1)
+PASS   : qmltestrunner::Screenshot::test_preview_save(row 2)
+PASS   : qmltestrunner::Screenshot::test_reverse_drag_waits_for_enter_and_native_unmap()
+PASS   : qmltestrunner::Screenshot::test_save_failure_can_retry_and_fatal_clears()
+PASS   : qmltestrunner::Screenshot::test_window_preserves_target_and_overrides_selection()
+PASS   : qmltestrunner::Screenshot::cleanupTestCase()
+Totals: 19 passed, 0 failed, 0 skipped, 0 blacklisted, 52ms
+********* Finished testing of qmltestrunner *********

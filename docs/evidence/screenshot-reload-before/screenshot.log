@@ -1,0 +1,8 @@
+  INFO: Launching config: "/home/attntd/projects/putkin/keyboard-test.qml"
+  INFO: Shell ID: "3122caaea7ae53eef5a47a9bc9e973bf" Path ID "3122caaea7ae53eef5a47a9bc9e973bf"
+  INFO: Saving logs to "/tmp/pw-nx55mbb6/r/quickshell/by-id/yf96olt/log.qslog"
+  INFO: Configuration Loaded
+  INFO: Reloading configuration...
+  INFO: Configuration Loaded
+  WARN quickshell.hyprland.ipc: Dispatch request "function() if _G.putkin_screenshot_rule then _G.putkin_screenshot_rule:remove() end _G.putkin_screenshot_rule = hl.layer_rule({name=\"putkin-screenshot\",match={namespace=\"^putkin-screenshot$\"},no_anim=true,blur=false,dim_around=false}) end" failed with error "error: return hl.dispatch(function() if _G.putkin_screenshot_rule then _G.putkin_screenshot_rule:remove() end _G.putkin_screenshot_rule = hl.layer_rule({name=\"putkin-screenshot\",match={namespace=\"^putkin-screenshot$\"},no_anim=true,blur=false,dim_around=false}) end):1: hl.dispatch: [string \"return hl.dispatch(function() if _G.putkin_sc...\"]:1: attempt to call a nil value (method 'remove')"
+  WARN quickshell.hyprland.ipc: Dispatch request "function() if _G.putkin_screenshot_rule then _G.putkin_screenshot_rule:remove() end _G.putkin_screenshot_rule = hl.layer_rule({name=\"putkin-screenshot\",match={namespace=\"^putkin-screenshot$\"},no_anim=true,blur=false,dim_around=false}) end" failed with error "error: return hl.dispatch(function() if _G.putkin_screenshot_rule then _G.putkin_screenshot_rule:remove() end _G.putkin_screenshot_rule = hl.layer_rule({name=\"putkin-screenshot\",match={namespace=\"^putkin-screenshot$\"},no_anim=true,blur=false,dim_around=false}) end):1: hl.dispatch: [string \"return hl.dispatch(function() if _G.putkin_sc...\"]:1: attempt to call a nil value (method 'remove')"

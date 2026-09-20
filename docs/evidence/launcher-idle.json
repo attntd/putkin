@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "scope": "production Python helper; fake event-driven wl-paste watchers; no host clipboard",
+  "seconds": 60.0001946669945,
+  "before": {
+    "ticks": 14,
+    "rssKiB": 23348
+  },
+  "after": {
+    "ticks": 14,
+    "rssKiB": 23348
+  },
+  "cpuPercent": 0.0,
+  "watchers": 2,
+  "cleanup": true
+}

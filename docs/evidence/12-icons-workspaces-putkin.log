@@ -1,0 +1,5 @@
+INFO: Launching config: "/home/attntd/.local/share/putkin/releases/20260917-icons-cd3b25f5725c/shell.qml"
+  INFO: Shell ID: "c7e4d6aa700174a5c1d416dd3e01e114" Path ID "c7e4d6aa700174a5c1d416dd3e01e114"
+  INFO: Saving logs to "/run/user/1000/quickshell/by-id/e597cm9hlt/log.qslog"
+ DEBUG quickshell.incubator: Incubation mode changed: render loop driven
+  INFO: Configuration Loaded

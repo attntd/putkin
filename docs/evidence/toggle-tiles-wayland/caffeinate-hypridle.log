@@ -1,0 +1,127 @@
+[LOG] Using config file: /tmp/pw-i4pmwno0/hypridle.conf
+[LOG] Registered timeout rule for 1s:
+      on-timeout: /usr/bin/touch /tmp/pw-i4pmwno0/display-timeout
+      on-resume: 
+      ignore_inhibit: false
+      condition_cmd: 
+      condition_retry: 0
+[LOG] Registered timeout rule for 2s:
+      on-timeout: /usr/bin/touch /tmp/pw-i4pmwno0/lock-timeout
+      on-resume: 
+      ignore_inhibit: false
+      condition_cmd: 
+      condition_retry: 0
+[LOG]   | got iface: wl_seat v9
+[LOG]    > Bound to wl_seat v9
+[LOG]   | got iface: wl_data_device_manager v3
+[LOG]   | got iface: wl_compositor v6
+[LOG]   | got iface: wl_subcompositor v1
+[LOG]   | got iface: wl_shm v2
+[LOG]   | got iface: wp_viewporter v1
+[LOG]   | got iface: wp_tearing_control_manager_v1 v1
+[LOG]   | got iface: wp_fractional_scale_manager_v1 v1
+[LOG]   | got iface: zxdg_output_manager_v1 v3
+[LOG]   | got iface: wp_cursor_shape_manager_v1 v2
+[LOG]   | got iface: zwp_idle_inhibit_manager_v1 v1
+[LOG]   | got iface: zwp_relative_pointer_manager_v1 v1
+[LOG]   | got iface: zxdg_decoration_manager_v1 v2
+[LOG]   | got iface: wp_alpha_modifier_v1 v1
+[LOG]   | got iface: zwlr_gamma_control_manager_v1 v1
+[LOG]   | got iface: ext_foreign_toplevel_list_v1 v1
+[LOG]   | got iface: zwp_pointer_gestures_v1 v3
+[LOG]   | got iface: zwlr_foreign_toplevel_manager_v1 v3
+[LOG]   | got iface: zwp_keyboard_shortcuts_inhibit_manager_v1 v1
+[LOG]   | got iface: zwp_text_input_manager_v1 v1
+[LOG]   | got iface: zwp_text_input_manager_v3 v1
+[LOG]   | got iface: zwp_pointer_constraints_v1 v1
+[LOG]   | got iface: zwlr_output_power_manager_v1 v1
+[LOG]   | got iface: xdg_activation_v1 v1
+[LOG]   | got iface: ext_idle_notifier_v1 v2
+[LOG]    > Bound to ext_idle_notifier_v1 v2
+[LOG]   | got iface: hyprland_lock_notifier_v1 v1
+[LOG]    > Bound to hyprland_lock_notifier_v1 v1
+[LOG]   | got iface: ext_session_lock_manager_v1 v1
+[LOG]   | got iface: zwp_input_method_manager_v2 v1
+[LOG]   | got iface: zwp_virtual_keyboard_manager_v1 v1
+[LOG]   | got iface: zwlr_virtual_pointer_manager_v1 v2
+[LOG]   | got iface: zwlr_output_manager_v1 v4
+[LOG]   | got iface: org_kde_kwin_server_decoration_manager v1
+[LOG]   | got iface: hyprland_focus_grab_manager_v1 v1
+[LOG]   | got iface: zwp_tablet_manager_v2 v1
+[LOG]   | got iface: zwlr_layer_shell_v1 v5
+[LOG]   | got iface: wp_presentation v2
+[LOG]   | got iface: xdg_wm_base v7
+[LOG]   | got iface: zwlr_data_control_manager_v1 v2
+[LOG]   | got iface: zwp_primary_selection_device_manager_v1 v1
+[LOG]   | got iface: xwayland_shell_v1 v1
+[LOG]   | got iface: hyprland_toplevel_mapping_manager_v1 v1
+[LOG]   | got iface: hyprland_global_shortcuts_manager_v1 v1
+[LOG]   | got iface: xdg_wm_dialog_v1 v1
+[LOG]   | got iface: wp_single_pixel_buffer_manager_v1 v1
+[LOG]   | got iface: wp_security_context_manager_v1 v1
+[LOG]   | got iface: hyprland_ctm_control_manager_v1 v2
+[LOG]   | got iface: hyprland_input_capture_manager_v1 v1
+[LOG]   | got iface: hyprland_surface_manager_v1 v2
+[LOG]   | got iface: wp_content_type_manager_v1 v1
+[LOG]   | got iface: xdg_toplevel_tag_manager_v1 v1
+[LOG]   | got iface: xdg_system_bell_v1 v1
+[LOG]   | got iface: vicinae_hotkey_manager_v1 v1
+[LOG]   | got iface: ext_workspace_manager_v1 v1
+[LOG]   | got iface: ext_data_control_manager_v1 v1
+[LOG]   | got iface: wp_pointer_warp_v1 v1
+[LOG]   | got iface: wp_fifo_manager_v1 v1
+[LOG]   | got iface: zxdg_exporter_v2 v1
+[LOG]   | got iface: zxdg_importer_v2 v1
+[LOG]   | got iface: ext_background_effect_manager_v1 v1
+[LOG]   | got iface: wp_commit_timing_manager_v1 v1
+[LOG]   | got iface: zwlr_screencopy_manager_v1 v3
+[LOG]   | got iface: hyprland_toplevel_export_manager_v1 v2
+[LOG]   | got iface: ext_output_image_capture_source_manager_v1 v1
+[LOG]   | got iface: ext_foreign_toplevel_image_capture_source_manager_v1 v1
+[LOG]   | got iface: ext_image_copy_capture_manager_v1 v1
+[LOG]   | got iface: wp_color_manager_v1 v3
+[LOG]   | got iface: wl_drm v2
+[LOG]   | got iface: zwp_linux_dmabuf_v1 v5
+[LOG]   | got iface: wl_output v4
+[LOG]   | got iface: wl_output v4
+[LOG]   | got iface: wl_output v4
+[LOG] found 2 rules
+[LOG] wayland done, registering dbus
+[LOG] Sleep inhibition disabled
+[LOG] Using dbus path /org/freedesktop/login1/session/fixture
+[LOG] systemd idle inhibit active
+[LOG] Inhibit locks: 1
+[LOG] Idled: rule 556150ef8930
+[LOG] Ignoring from onIdled(), inhibit locks: 1
+[LOG] Idled: rule 556150ef89c0
+[LOG] Ignoring from onIdled(), inhibit locks: 1
+[LOG] systemd idle inhibit inactive
+[LOG] Inhibit locks: 0
+[LOG] Idled: rule 556150ef8930
+[LOG] Running /usr/bin/touch /tmp/pw-i4pmwno0/display-timeout
+[LOG] Executing /usr/bin/touch /tmp/pw-i4pmwno0/display-timeout
+[LOG] Process Created with pid 2910
+[LOG] Idled: rule 556150ef89c0
+[LOG] Running /usr/bin/touch /tmp/pw-i4pmwno0/lock-timeout
+[LOG] Executing /usr/bin/touch /tmp/pw-i4pmwno0/lock-timeout
+[LOG] Process Created with pid 2912
+[LOG] systemd idle inhibit active
+[LOG] Inhibit locks: 1
+[LOG] Resumed: rule 556150ef8930
+[LOG] Ignoring, onRestore is empty.
+[LOG] Resumed: rule 556150ef89c0
+[LOG] Ignoring, onRestore is empty.
+[LOG] Idled: rule 556150ef8930
+[LOG] Ignoring from onIdled(), inhibit locks: 1
+[LOG] Idled: rule 556150ef89c0
+[LOG] Ignoring from onIdled(), inhibit locks: 1
+[LOG] systemd idle inhibit inactive
+[LOG] Inhibit locks: 0
+[LOG] Idled: rule 556150ef8930
+[LOG] Running /usr/bin/touch /tmp/pw-i4pmwno0/display-timeout
+[LOG] Executing /usr/bin/touch /tmp/pw-i4pmwno0/display-timeout
+[LOG] Process Created with pid 2924
+[LOG] Idled: rule 556150ef89c0
+[LOG] Running /usr/bin/touch /tmp/pw-i4pmwno0/lock-timeout
+[LOG] Executing /usr/bin/touch /tmp/pw-i4pmwno0/lock-timeout
+[LOG] Process Created with pid 2926

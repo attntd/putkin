@@ -1,0 +1,267 @@
+#!/usr/bin/env python3
+"""Stage 11: native config parsers and private Night Light protocol/Process tests."""
+
+import argparse
+import importlib.machinery
+import importlib.util
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
+import time
+import traceback
+
+from _common import ROOT, ipc_reply, ipc_json, isolated_environment, qml_errors, stop_process_group, tool
+
+loader = importlib.machinery.SourceFileLoader("desktop_measure", str(ROOT / "scripts/measure-idle"))
+spec = importlib.util.spec_from_loader(loader.name, loader)
+measurement = importlib.util.module_from_spec(spec)
+loader.exec_module(measurement)
+
+
+def eventually(read, predicate, description, seconds=7):
+    deadline = time.monotonic() + seconds
+    last = None
+    while time.monotonic() < deadline:
+        last = read()
+        if predicate(last):
+            return last
+        time.sleep(0.03)
+    raise AssertionError(f"{description}: {last}")
+
+
+def configs(base, env):
+    results = {}
+    native = tool("Hyprland")
+    for included in [True, False]:
+        config = base / "hyprland.lua"
+        baseline = "hl.config({ general = { border_size = 3, gaps_in = 2, gaps_out = 4 }, decoration = { rounding = 8 } })\n"
+        include = f"dofile({json.dumps(str(ROOT / 'config/desktop-appearance.lua'))})\n" if included else ""
+        expected = 2 if included else 3
+        assertions = f'assert(hl.get_config("general:border_size") == {expected}, "border rollback")\n'
+        assertions += f'assert(hl.get_config("decoration.rounding") == {0 if included else 8}, "corner rollback")\n'
+        if included:
+            assertions += '''local gradient = hl.get_config("general.col.active_border")
+assert(#gradient.colors == 10 and gradient.colors[1] == "0xFFCBA6F7" and gradient.colors[10] == "0xFF89B4FA", "gradient endpoints")
+assert(math.abs(gradient.angle - 30) < 0.001, "diagonal weights")
+'''
+        config.write_text(baseline + include + assertions)
+        result = subprocess.run([native, "--verify-config", "--config", str(config)], env=env, capture_output=True, text=True, timeout=10)
+        results["appearance" if included else "rollback"] = {"code": result.returncode, "output": result.stdout + result.stderr}
+        assert result.returncode == 0, results
+    try:
+        sunset = tool("hyprsunset")
+    except FileNotFoundError:
+        results["hyprsunset_config"] = {"status": "not run: hyprsunset absent"}
+        return results
+    # No host display. A parser-only check, followed by the expected failure to
+    # connect to our nonexistent Wayland socket; no service is started.
+    for valid in [True, False]:
+        path = Path(env["XDG_CONFIG_HOME"]) / "hypr/hyprsunset.conf"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text((ROOT / "config/hyprsunset.example.conf").read_text() if valid else "profile {\n")
+        result = subprocess.run([sunset, "--identity", "--verbose"], env=env,
+                                capture_output=True, text=True, timeout=5)
+        output = result.stdout + result.stderr
+        results["hyprsunset_config" if valid else "hyprsunset_invalid_control"] = {"code": result.returncode, "output": output}
+        assert ("Config has errors" in output) == (not valid), output
+        assert result.returncode != 0, "No Wayland should be available in this test"
+    return results
+
+
+def run(output, idle):
+    report = {"checks": [], "isolation": "private XDG, session D-Bus, IPC peer; no host Wayland or hardware"}
+    output.parent.mkdir(parents=True, exist_ok=True)
+    quickshell, dbus = tool("quickshell"), tool("dbus-run-session")
+    entrypoint = str(ROOT / "desktop-test.qml")
+    with tempfile.TemporaryDirectory(prefix="pk-") as directory:
+        base = Path(directory)
+        env = isolated_environment(directory)
+        report["configs"] = configs(base, env)
+        report["checks"].append("native Lua fragment and rollback; hyprsunset parser if installed")
+        env.update(HYPRLAND_INSTANCE_SIGNATURE="putkin-desktop-test", PUTKIN_SCENARIO="closed",
+                   PUTKIN_LIVE_CLOCK="1", PUTKIN_WALLPAPER="solid", QS_NO_RELOAD_POPUP="1")
+        (base / "night-light-test-only").touch()
+        fixture = base / "sunset.json"
+        socket_path = Path(env["XDG_RUNTIME_DIR"]) / "hypr/putkin-desktop-test/.hyprsunset.sock"
+
+        def configure(**updates):
+            state = json.loads(fixture.read_text()) if fixture.exists() else {"enabled": True, "temperature": 4200}
+            state.update(updates)
+            fixture.write_text(json.dumps(state))
+
+        def events():
+            path = fixture.with_suffix(".events")
+            return [json.loads(line) for line in path.read_text().splitlines()] if path.exists() else []
+
+        def start_peer():
+            socket_path.unlink(missing_ok=True)
+            peer = subprocess.Popen([sys.executable, str(ROOT / "tests/night_light_peer.py"), str(socket_path), str(fixture)],
+                                    env=env, start_new_session=True)
+            eventually(socket_path.exists, bool, "private peer socket")
+            return peer
+
+        configure()
+        peer = start_peer()
+        with tempfile.TemporaryFile(mode="w+") as log:
+            process = subprocess.Popen([dbus, "--", quickshell, "--no-color", "--path", entrypoint], env=env,
+                                       stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+
+            def ipc(method, *args, target="probe", startup=False):
+                result = subprocess.run([quickshell, "ipc", "--path", entrypoint, "call", target, method, *map(str, args)],
+                                        env=env, capture_output=True, text=True, timeout=4)
+                return ipc_reply(result, process, log, starting=startup)
+
+            def snapshot():
+                value = ipc("snapshot", startup=True)
+                return ipc_json(value)
+
+            def settled(available=True):
+                return eventually(snapshot, lambda s: "busy" in s and not s["busy"] and s["available"] == available, "settled Night Light")
+
+            def refresh():
+                ipc("refresh")
+                return settled()
+
+            try:
+                initial = settled()
+                assert initial["enabled"] and initial["temperature"] == 4200, initial
+                assert [e["command"] for e in events()] == ["identity get", "temperature", "identity get"]
+                assert {e["pid"] for e in events()} == {peer.pid}
+                report["checks"].append("already active state read without writing or starting another daemon")
+                assert ipc("enable", "false") == "true"
+                assert not settled()["enabled"]
+                assert ipc("enable", "true") == "true"
+                assert settled()["enabled"]
+                assert ipc("temperature", 3300) == "true"
+                assert settled()["temperature"] == 3300
+                configure(mode="fragment", temperature=3900)
+                assert refresh()["temperature"] == 3900
+                report["checks"].append("on/off, temperature and complete fragmented reply/readback")
+                for mode in ["denied", "ignore", "late"]:
+                    configure(mode=mode)
+                    assert ipc("enable", "false") == "true"
+                    assert settled(False)["error"]
+                    time.sleep(0.7 if mode == "late" else 0.05)
+                    configure(mode="", enabled=True)
+                    refresh()
+                configure(mode="timeout")
+                ipc("refresh"); assert settled(False)["error"]
+                time.sleep(0.65); configure(mode=""); refresh()
+                configure(mode="malformed")
+                ipc("refresh"); settled(False)
+                configure(mode=""); refresh()
+                report["checks"].append("denial, unconfirmed write, late write, timeout and malformed state invalidate UI")
+
+                old_pid = peer.pid
+                stop_process_group(peer)
+                socket_path.unlink(missing_ok=True)
+                ipc("refresh"); settled(False)
+                peer = start_peer(); refresh()
+                stop_process_group(peer); peer = start_peer()
+                before = len(events())
+                assert ipc("enable", "false") == "true"
+                settled(False)
+                assert all(e["command"] in ["identity get", "temperature"] for e in events()[before:])
+                refresh()
+                report["checks"].append("absent backend, restart recovery and stale intent rejected without replay")
+                assert peer.pid != old_pid
+
+                before = len(events())
+                ipc("productionOwner"); settled(False)
+                assert len(events()) == before, "foreign executable must be rejected BEFORE identity get"
+                ipc("testOwner"); settled()
+                report["checks"].append("production ownership rejects the fixture before any IPC")
+
+                (base / "hang-helper").touch()
+                ipc("refresh")
+                child = eventually(snapshot, lambda s: s.get("busy") and s.get("pid", 0) > 0, "helper PID")["pid"]
+                settled(False)
+                eventually(lambda: Path(f"/proc/{child}").exists(), lambda alive: not alive, "timed out child reaped")
+                (base / "hang-helper").unlink()
+                refresh()
+                report["checks"].append("Process timeout, SIGTERM/SIGKILL and child reaping")
+
+                (base / "hang-command").touch()
+                ipc("refresh")
+                child_path = base / "command-pid"
+                eventually(child_path.exists, bool, "owned preflight child")
+                command_pid = int(child_path.read_text())
+                (base / "hang-command").unlink()
+                ipc("reload")
+                def live_command():
+                    try:
+                        return Path(f"/proc/{command_pid}/stat").read_text().rsplit(")", 1)[1].split()[0] != "Z"
+                    except FileNotFoundError:
+                        return False
+                eventually(live_command, lambda live: not live, "preflight child dies with helper on reload")
+                settled()
+                report["checks"].append("reload also terminates the helper's own preflight child")
+
+                before = len(events()); pid = peer.pid
+                ipc("reload")
+                eventually(lambda: len(events()), lambda count: count > before, "reload fresh read")
+                settled()
+                assert peer.poll() is None and peer.pid == pid
+                assert all(e["command"] in ["identity get", "temperature"] for e in events()[before:])
+                report["checks"].append("shell reload keeps the external daemon and confirmed state")
+
+                tree = measurement.process_tree(process.pid)
+                shells = [p for p in tree if p["parent"] == process.pid and b"--path" in Path(f"/proc/{p['pid']}/cmdline").read_bytes().split(b"\0")]
+                assert len(shells) == 1, tree
+                shell_pid = shells[0]["pid"]
+                rss = []
+                for _ in range(20):
+                    ipc("openQuickSettings", target="ui")
+                    eventually(snapshot, lambda s: s.get("panelLoaded") and not s["busy"], "open panel")
+                    ipc("closePanels", target="ui")
+                    eventually(snapshot, lambda s: not s.get("panelLoaded", True) and s["created"] == s["destroyed"], "release panel")
+                    rss.append(measurement.snapshot(shell_pid)["rss_kib"])
+                report["cycles"] = {"count": 20, "rss_kib": rss, "snapshot": snapshot()}
+                report["checks"].append("20 panel cycles release every view; no persistent child helper")
+                assert len(measurement.process_tree(shell_pid)) == 1
+                if idle:
+                    before = len(events())
+                    samples = [measurement.snapshot(shell_pid)]
+                    start = time.monotonic()
+                    print("Pomiar: 60 s spoczynku, panel zamknięty, tapeta Mocha.", flush=True)
+                    for second in range(1, 61):
+                        time.sleep(max(0, start + second - time.monotonic()))
+                        samples.append(measurement.snapshot(shell_pid))
+                        if second % 20 == 0: print(f"{second}/60 s", flush=True)
+                    assert len(events()) == before, "no idle polling"
+                    report["idle"] = {"duration_s": time.monotonic() - start, "samples": samples,
+                                      "cpu_ticks": samples[-1]["cpu_ticks"] - samples[0]["cpu_ticks"],
+                                      "children": measurement.process_tree(shell_pid)[1:]}
+                else:
+                    before = len(events()); time.sleep(0.2); assert len(events()) == before
+                assert peer.poll() is None
+                log.seek(0)
+                assert not qml_errors(log.read(), allow_offscreen_masks=True)
+                report["result"] = "PASS"
+            finally:
+                stop_process_group(process)
+                stop_process_group(peer)
+                log.seek(0)
+                output.with_suffix(".log").write_text(log.read())
+                output.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n")
+    print(f"PASS: desktop examples, Night Light IPC/Process, 20 cycles; {output}")
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, default=ROOT / "artifacts/desktop.json")
+    parser.add_argument("--idle", action="store_true")
+    args = parser.parse_args()
+    try:
+        run(args.output.resolve(), args.idle)
+    except (AssertionError, OSError, subprocess.SubprocessError):
+        traceback.print_exc()
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

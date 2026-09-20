@@ -1,0 +1,193 @@
+{
+  "timestamp_utc": "2026-09-19T21:46:16.233098+00:00",
+  "checks": [
+    "native adapters and paired/unpaired devices; Battery1 add/change/remove; no discovery",
+    "confirmed Connect/Disconnect; rejection and retry; serialized rapid requests; adapter selection survives late rejection",
+    "Powered confirmation, rejected/ignored write, timeout, rfkill guard, retry without optimistic success",
+    "device disappearance, adapter removal/fallback/hotplug, empty adapter set, bounded timeout and late confirmed state",
+    "20 LazyLoader cycles, soft/hard reload; closed surfaces and reaped observers; no discovery or pairing calls",
+    "missing Blueman handled; available fake executable launches; panel closes for external window",
+    "absent/lost/restarted/late BlueZ; native lifecycle limitation exposed; stale models never actionable"
+  ],
+  "cycles": [
+    {
+      "cycle": 1,
+      "pid": 75247,
+      "name": "quickshell",
+      "parent": 75235,
+      "cpu_ticks": 26,
+      "rss_kib": 128384
+    },
+    {
+      "cycle": 2,
+      "pid": 75247,
+      "name": "quickshell",
+      "parent": 75235,
+      "cpu_ticks": 27,
+      "rss_kib": 128384
+    },
+    {
+      "cycle": 3,
+      "pid": 75247,
+      "name": "quickshell",
+      "parent": 75235,
+      "cpu_ticks": 29,
+      "rss_kib": 128512
+    },
+    {
+      "cycle": 4,
+      "pid": 75247,
+      "name": "quickshell",
+      "parent": 75235,
+      "cpu_ticks": 32,
+      "rss_kib": 128896
+    },
+    {
+      "cycle": 5,
+      "pid": 75247,
+      "name": "quickshell",
+      "parent": 75235,
+      "cpu_ticks": 33,
+      "rss_kib": 128896
+    },
+    {
+      "cycle": 6,
+      "pid": 75247,
+      "name": "quickshell",
+      "parent": 75235,
+      "cpu_ticks": 36,
+      "rss_kib": 128896
+    },
+    {
+      "cycle": 7,
+      "pid": 75247,
+      "name": "quickshell",
+      "parent": 75235,
+      "cpu_ticks": 38,
+      "rss_kib": 128760
+    },
+    {
+      "cycle": 8,
+      "pid": 75247,
+      "name": "quickshell",
+      "parent": 75235,
+      "cpu_ticks": 41,
+      "rss_kib": 128760
+    },
+    {
+      "cycle": 9,
+      "pid": 75247,
+      "name": "quickshell",
+      "parent": 75235,
+      "cpu_ticks": 42,
+      "rss_kib": 128888
+    },
+    {
+      "cycle": 10,
+      "pid": 75247,
+      "name": "quickshell",
+      "parent": 75235,
+      "cpu_ticks": 44,
+      "rss_kib": 129016
+    },
+    {
+      "cycle": 11,
+      "pid": 75247,
+      "name": "quickshell",
+      "parent": 75235,
+      "cpu_ticks": 46,
+      "rss_kib": 129016
+    },
+    {
+      "cycle": 12,
+      "pid": 75247,
+      "name": "quickshell",
+      "parent": 75235,
+      "cpu_ticks": 49,
+      "rss_kib": 129016
+    },
+    {
+      "cycle": 13,
+      "pid": 75247,
+      "name": "quickshell",
+      "parent": 75235,
+      "cpu_ticks": 51,
+      "rss_kib": 129016
+    },
+    {
+      "cycle": 14,
+      "pid": 75247,
+      "name": "quickshell",
+      "parent": 75235,
+      "cpu_ticks": 52,
+      "rss_kib": 129016
+    },
+    {
+      "cycle": 15,
+      "pid": 75247,
+      "name": "quickshell",
+      "parent": 75235,
+      "cpu_ticks": 54,
+      "rss_kib": 129144
+    },
+    {
+      "cycle": 16,
+      "pid": 75247,
+      "name": "quickshell",
+      "parent": 75235,
+      "cpu_ticks": 56,
+      "rss_kib": 129244
+    },
+    {
+      "cycle": 17,
+      "pid": 75247,
+      "name": "quickshell",
+      "parent": 75235,
+      "cpu_ticks": 59,
+      "rss_kib": 129244
+    },
+    {
+      "cycle": 18,
+      "pid": 75247,
+      "name": "quickshell",
+      "parent": 75235,
+      "cpu_ticks": 61,
+      "rss_kib": 129244
+    },
+    {
+      "cycle": 19,
+      "pid": 75247,
+      "name": "quickshell",
+      "parent": 75235,
+      "cpu_ticks": 63,
+      "rss_kib": 129208
+    },
+    {
+      "cycle": 20,
+      "pid": 75247,
+      "name": "quickshell",
+      "parent": 75235,
+      "cpu_ticks": 65,
+      "rss_kib": 129208
+    }
+  ],
+  "expected_diagnostics": [
+    "WARN quickshell.dbus.objectmanager: Failed to create DBusObjectManagerInterface for \"org.bluez\" \"/\" : QDBusError(\"\", \"\")"
+  ],
+  "processes_cleaned": [
+    75238,
+    75240,
+    75247,
+    75266,
+    76454,
+    76465,
+    76480,
+    76488,
+    76499,
+    76506,
+    76550,
+    76562,
+    76570,
+    76577
+  ]
+}

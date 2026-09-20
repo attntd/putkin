@@ -1,0 +1,5 @@
+FAIL [imports/types, exit=255] /home/attntd/projects/putkin/modules/power/PowerView.qml
+Warning: /home/attntd/projects/putkin/modules/power/PowerView.qml:22:96: Member "control" not found on type "QQuickItem" [missing-property]
+    function button(index: int): Item { const item = choices.itemAt(index); return item ? item.control : null; }
+                                                                                               ^^^^^^^
+FAIL: 121 plików QML, 1 z błędami.

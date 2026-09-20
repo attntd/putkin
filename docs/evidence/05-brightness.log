@@ -1,0 +1,21 @@
+  INFO: Launching config: "/home/attntd/projects/putkin/brightness-test.qml"
+  INFO: Shell ID: "4ee0808857032af7af08d2aba11b16ed" Path ID "4ee0808857032af7af08d2aba11b16ed"
+  INFO: Saving logs to "/tmp/pk-e6sjxa3y/runtime/quickshell/by-id/vv73jymglt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+  WARN: Process failed to start, likely because the binary could not be found. Command: QList("/tmp/pk-e6sjxa3y/missing-brightnessctl", "--class=backlight", "--machine-readable", "--list")
+  INFO: Reloading configuration...
+  WARN: This plugin does not support setting window masks
+  INFO: Configuration Loaded
+  INFO qml: PUTKIN_PREVIEW_READY
+  INFO: Reloading configuration...
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+  INFO: Launching config: "/home/attntd/projects/putkin/brightness-test.qml"
+  INFO: Shell ID: "4ee0808857032af7af08d2aba11b16ed" Path ID "4ee0808857032af7af08d2aba11b16ed"
+  INFO: Saving logs to "/tmp/pk-e6sjxa3y/runtime/quickshell/by-id/xh836zmglt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY

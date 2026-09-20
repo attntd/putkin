@@ -1,0 +1,5 @@
+PASS: all 204 previously verified source hashes remain unchanged.
+PASS: 208 source hashes recorded; four added native test files have NOT been run on Wayland.
+PASS: Python syntax, 26 files.
+PASS: 293 local link targets in five updated documents.
+PASS: approved compositor probe processes and private directory cleaned up.

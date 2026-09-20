@@ -1,0 +1,56 @@
+#!/usr/bin/env python3
+"""Run gate regressions and real Qt Quick input tests in an isolated environment."""
+
+import subprocess
+import sys
+import tempfile
+
+from _common import ROOT, isolated_environment, qml_errors, stop_process_group, tool
+
+
+def main():
+    try:
+        runner, dbus = tool("qmltestrunner"), tool("dbus-run-session")
+    except FileNotFoundError as error:
+        print(error, file=sys.stderr)
+        return 2
+    gate = subprocess.run([sys.executable, "-m", "unittest", "discover", "-s", str(ROOT / "tests"), "-p", "test_*.py", "-v"])
+    with tempfile.TemporaryDirectory(prefix="pk-") as directory:
+        env = isolated_environment(directory)
+        process = subprocess.Popen([dbus, "--", runner, "-input", str(ROOT / "tests/qml"), "-import", str(ROOT)],
+                                   env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                                   text=True, start_new_session=True)
+        try:
+            output, _ = process.communicate(timeout=180)
+        except subprocess.TimeoutExpired as error:
+            if error.output:
+                print(error.output.decode() if isinstance(error.output, bytes) else error.output)
+            print(f"FAIL: testy QML przekroczyły 180 s: {error}", file=sys.stderr)
+            return 1
+        finally:
+            stop_process_group(process)
+    print(output, end="", flush=True)
+    if gate.returncode != 0 or process.returncode != 0 or qml_errors(output):
+        return 1
+    launcher = subprocess.run([sys.executable, str(ROOT / "scripts/test-launcher-integration")])
+    native = subprocess.run([sys.executable, str(ROOT / "scripts/test-bar-integration")])
+    panels = subprocess.run([sys.executable, str(ROOT / "scripts/test-panels-integration")])
+    settings = subprocess.run([sys.executable, str(ROOT / "scripts/test-settings-integration")])
+    audio = subprocess.run([sys.executable, str(ROOT / "scripts/test-audio-integration")])
+    brightness = subprocess.run([sys.executable, str(ROOT / "scripts/test-brightness-integration")])
+    status = subprocess.run([sys.executable, str(ROOT / "scripts/test-status-integration")])
+    network = subprocess.run([sys.executable, str(ROOT / "scripts/test-network-integration")])
+    bluetooth = subprocess.run([sys.executable, str(ROOT / "scripts/test-bluetooth-integration")])
+    notifications = subprocess.run([sys.executable, str(ROOT / "scripts/test-notifications-integration")])
+    session = subprocess.run([sys.executable, str(ROOT / "scripts/test-session-integration")])
+    desktop = subprocess.run([sys.executable, str(ROOT / "scripts/test-desktop-integration")])
+    caffeinate = subprocess.run([sys.executable, str(ROOT / "scripts/test-caffeinate-integration")])
+    validation = subprocess.run([sys.executable, str(ROOT / "scripts/test-validation-integration")])
+    return int(gate.returncode != 0 or process.returncode != 0 or bool(qml_errors(output))
+               or launcher.returncode != 0 or native.returncode != 0 or panels.returncode != 0 or settings.returncode != 0 or audio.returncode != 0
+               or brightness.returncode != 0 or status.returncode != 0 or network.returncode != 0 or bluetooth.returncode != 0
+               or notifications.returncode != 0 or session.returncode != 0 or desktop.returncode != 0 or caffeinate.returncode != 0 or validation.returncode != 0)
+
+
+if __name__ == "__main__":
+    sys.exit(main())

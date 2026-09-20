@@ -1,0 +1,5 @@
+Pomiar: 60 s spoczynku po 2 s rozgrzewki; offscreen/software, bez interakcji.
+20/60 s
+40/60 s
+60/60 s
+PASS: RSS {'start': 98004, 'end': 98132, 'min': 98004, 'max': 98132, 'mean': 98071.14754098361}, CPU 0.0% jednego rdzenia; /home/attntd/projects/putkin/docs/evidence/12-baseline-idle.json

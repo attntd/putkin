@@ -1,0 +1,42 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::Panels::initTestCase()
+PASS   : qmltestrunner::Panels::test_close_before_async_load_and_switch_monitor_hotplug()
+PASS   : qmltestrunner::Panels::test_directions_enter_keypad_space_and_escape_layers()
+PASS   : qmltestrunner::Panels::test_disabled_tab_arrows_and_text_editing()
+PASS   : qmltestrunner::Panels::test_keyboard_bar_entry_and_return_focus()
+PASS   : qmltestrunner::Panels::test_long_content_and_resize_preserve_visible_focus()
+PASS   : qmltestrunner::Panels::test_mouse_active_indicator_tooltip_and_outside_consumption()
+PASS   : qmltestrunner::Panels::test_reject_unknown_surface_and_missing_screen()
+PASS   : qmltestrunner::Panels::test_settings_replaces_page_and_keeps_local_state_local()
+PASS   : qmltestrunner::Panels::test_small_screen_scroll_and_visible_focus()
+PASS   : qmltestrunner::Panels::test_twenty_cycles_and_reopen_during_fade()
+PASS   : qmltestrunner::Panels::cleanupTestCase()
+Totals: 12 passed, 0 failed, 0 skipped, 0 blacklisted, 10231ms
+********* Finished testing of qmltestrunner *********
+
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::BatteryTray::initTestCase()
+PASS   : qmltestrunner::BatteryTray::test_absent_peripheral_unavailable_and_return()
+PASS   : qmltestrunner::BatteryTray::test_bar_activation_secondary_menu_tooltip_fallback()
+PASS   : qmltestrunner::BatteryTray::test_bar_keyboard_and_only_menu()
+PASS   : qmltestrunner::BatteryTray::test_battery_states(charging)
+PASS   : qmltestrunner::BatteryTray::test_battery_states(discharging)
+PASS   : qmltestrunner::BatteryTray::test_battery_states(full)
+PASS   : qmltestrunner::BatteryTray::test_battery_states(unknown)
+PASS   : qmltestrunner::BatteryTray::test_battery_states(empty)
+PASS   : qmltestrunner::BatteryTray::test_battery_states(pendingCharge)
+PASS   : qmltestrunner::BatteryTray::test_battery_states(pendingDischarge)
+PASS   : qmltestrunner::BatteryTray::test_invalid_percent_unknown_time_and_warning_keeps_semantics()
+PASS   : qmltestrunner::BatteryTray::test_layouts_preserve_main_controls()
+PASS   : qmltestrunner::BatteryTray::test_menu_live_update_removes_submenu_and_recovers_focus()
+PASS   : qmltestrunner::BatteryTray::test_menu_vim_standard_keys_submenu_and_trigger()
+PASS   : qmltestrunner::BatteryTray::test_overflow_all_items_scrolling_back_and_escape_restore()
+PASS   : qmltestrunner::BatteryTray::test_removal_with_focus_and_active_menu()
+PASS   : qmltestrunner::BatteryTray::test_return_after_invoker_removed_and_keyboard_context_menu()
+PASS   : qmltestrunner::BatteryTray::test_surface_exclusion_settings_cancel_and_monitor()
+PASS   : qmltestrunner::BatteryTray::test_updates_do_not_take_focus_from_header_and_passive_skips()
+PASS   : qmltestrunner::BatteryTray::cleanupTestCase()
+Totals: 21 passed, 0 failed, 0 skipped, 0 blacklisted, 5049ms
+********* Finished testing of qmltestrunner *********

@@ -1,0 +1,11 @@
+test_all_files_are_checked_even_after_failures (test_check.CheckGate.test_all_files_are_checked_even_after_failures) ... ok
+test_bad_syntax_fails (test_check.CheckGate.test_bad_syntax_fails) ... ok
+test_empty_or_missing_input_fails (test_check.CheckGate.test_empty_or_missing_input_fails) ... ok
+test_missing_import_fails (test_check.CheckGate.test_missing_import_fails) ... ok
+test_missing_tools_are_distinct_from_qml_failure (test_check.CheckGate.test_missing_tools_are_distinct_from_qml_failure) ... ok
+test_valid_file_with_spaces_passes_without_modification (test_check.CheckGate.test_valid_file_with_spaces_passes_without_modification) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 1.725s
+
+OK

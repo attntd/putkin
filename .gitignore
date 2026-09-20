@@ -1,0 +1,38 @@
+# Generated output; curated evidence in docs/evidence stays versionable.
+/artifacts/
+/build/
+/dist/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.qmlcache/
+*.qmlc
+*.jsc
+*.log
+!docs/evidence/*.log
+!docs/evidence/**/*.log
+*.core
+core.[0-9]*
+
+# Private local configuration and credentials.
+.env
+.env.*
+!.env.example
+/settings.json
+/.local/
+/.runtime/
+*.pem
+*.key
+
+# Editor files.
+*.swp
+*.swo
+*~
+
+# AI assistant configuration, prompts, and generated design references.
+.agents/
+.codex/
+AGENTS.md
+AGENTS.override.md
+/docs/prompts/
+/ChatGPT Image *.png

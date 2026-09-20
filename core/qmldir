@@ -1,0 +1,16 @@
+singleton Theme 1.0 Theme.qml
+singleton Metrics 1.0 Metrics.qml
+BarFocus 1.0 BarFocus.qml
+PanelCoordinator 1.0 PanelCoordinator.qml
+PanelHost 1.0 PanelHost.qml
+PanelIpc 1.0 PanelIpc.qml
+Settings 1.0 Settings.qml
+SettingsFile 1.0 SettingsFile.qml
+SettingsFocus 1.0 SettingsFocus.qml
+KeyboardSettings 1.0 KeyboardSettings.qml
+ActionController 1.0 ActionController.qml
+ActionIpc 1.0 ActionIpc.qml
+OsdHost 1.0 OsdHost.qml
+NotificationFocus 1.0 NotificationFocus.qml
+SessionController 1.0 SessionController.qml
+ErrorNotifications 1.0 ErrorNotifications.qml

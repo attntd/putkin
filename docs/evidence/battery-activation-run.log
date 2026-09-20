@@ -1,0 +1,195 @@
+{
+  "battery_layer": [
+    [
+      "eDP-1",
+      {
+        "address": "0x56421edd78f0",
+        "x": 5748,
+        "y": 1440,
+        "w": 368,
+        "h": 413,
+        "alpha": 1,
+        "namespace": "putkin-panel",
+        "pid": 356416
+      }
+    ]
+  ],
+  "battery_ipc_open_close_toggle": true,
+  "profile_before": "s \"power-saver\"",
+  "profile_after": "s \"power-saver\"",
+  "launcher_binds": [
+    {
+      "locked": false,
+      "mouse": false,
+      "release": false,
+      "repeat": false,
+      "longPress": false,
+      "non_consuming": false,
+      "auto_consuming": false,
+      "has_description": true,
+      "modmask": 64,
+      "submap": "",
+      "submap_universal": "false",
+      "key": "SPACE",
+      "keycode": 0,
+      "catch_all": false,
+      "description": "[Putkin] Launcher",
+      "allow_input_capture": false,
+      "dispatcher": "__lua",
+      "arg": "32"
+    }
+  ],
+  "instance": {
+    "config_path": "/home/attntd/.local/share/putkin/releases/20260917-battery-3028dc9e5e77/shell.qml",
+    "id": "g0n7wkchlt",
+    "launch_time": "2026-09-17T01:14:56",
+    "pid": 356416,
+    "shell_id": "4ce30e68b75d18309f74c1eef176f3e6"
+  },
+  "notification_pid": 356416,
+  "monitors": [
+    {
+      "id": 0,
+      "name": "eDP-1",
+      "description": "Samsung Display Corp. ATNA40HQ09-0  0x0000003B",
+      "make": "Samsung Display Corp.",
+      "model": "ATNA40HQ09-0 ",
+      "serial": "0x0000003B",
+      "width": 2880,
+      "height": 1800,
+      "physicalWidth": 300,
+      "physicalHeight": 190,
+      "refreshRate": 120.0,
+      "x": 4196,
+      "y": 1440,
+      "activeWorkspace": {
+        "id": 1,
+        "name": "1"
+      },
+      "specialWorkspace": {
+        "id": 0,
+        "name": ""
+      },
+      "reserved": [
+        0,
+        32,
+        0,
+        0
+      ],
+      "scale": 1.5,
+      "transform": 0,
+      "focused": true,
+      "dpmsStatus": true,
+      "vrr": false,
+      "solitary": "0",
+      "solitaryBlockedBy": [
+        "WINDOWED",
+        "CANDIDATE"
+      ],
+      "activelyTearing": false,
+      "tearingBlockedBy": [
+        "NOT_TORN",
+        "USER",
+        "CANDIDATE"
+      ],
+      "directScanoutTo": "0",
+      "directScanoutBlockedBy": [
+        "USER",
+        "CANDIDATE"
+      ],
+      "disabled": false,
+      "currentFormat": "XRGB8888",
+      "mirrorOf": "none",
+      "availableModes": [
+        "2880x1800@120.00Hz",
+        "2880x1800@60.00Hz"
+      ],
+      "colorManagementPreset": "srgb",
+      "sdrBrightness": 1,
+      "sdrSaturation": 1,
+      "sdrMinLuminance": 0.2,
+      "sdrMaxLuminance": 80,
+      "hardwareCursorsInUse": true
+    }
+  ],
+  "layers": {
+    "eDP-1": {
+      "levels": {
+        "0": [
+          {
+            "address": "0x56421f0ad310",
+            "x": 4196,
+            "y": 1440,
+            "w": 1920,
+            "h": 1200,
+            "alpha": 1,
+            "namespace": "putkin-wallpaper",
+            "pid": 356416
+          }
+        ],
+        "1": [],
+        "2": [
+          {
+            "address": "0x56421f0f67b0",
+            "x": 4196,
+            "y": 1440,
+            "w": 1920,
+            "h": 32,
+            "alpha": 1,
+            "namespace": "putkin-bar",
+            "pid": 356416
+          }
+        ],
+        "3": []
+      }
+    }
+  },
+  "audio": {
+    "available": true,
+    "output": "Core Ultra Processors (Series 3) HD Audio Speaker",
+    "volume": 20.001220703125,
+    "muted": false,
+    "busy": false,
+    "error": ""
+  },
+  "brightness": {
+    "available": true,
+    "device": "intel_backlight",
+    "percent": 20.967741935483872,
+    "busy": false,
+    "error": "",
+    "diagnostic": "Urz\u0105dzenie: intel_backlight \u00b7 zakres 0\u2013496. Stan od\u015bwie\u017ca si\u0119 po otwarciu panelu i w\u0142asnej zmianie."
+  },
+  "session": {
+    "busy": false,
+    "phase": "",
+    "error": "",
+    "result": "",
+    "capabilities": {
+      "reboot": {
+        "available": true,
+        "reason": ""
+      },
+      "poweroff": {
+        "available": true,
+        "reason": ""
+      },
+      "suspend": {
+        "available": true,
+        "reason": ""
+      },
+      "logout": {
+        "available": true,
+        "reason": ""
+      },
+      "lock": {
+        "available": true,
+        "reason": ""
+      }
+    }
+  },
+  "settings_unchanged": true,
+  "configerrors": "",
+  "restore": "/home/attntd/.local/state/putkin/update-20260917-battery-3028dc9e5e77/restore",
+  "runtime_files": 137
+}

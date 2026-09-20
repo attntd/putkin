@@ -1,0 +1,722 @@
+{
+  "timestamp_utc": "2026-09-16T15:44:59.638686+00:00",
+  "checks": [
+    "native devices/APs; duplicate SSID grouped by upstream; literal UTF-8; strength signals; bar never scans",
+    "saved ActivateConnection; open AddAndActivateConnection; NoSecrets; wrong/correct PSK via native Update; field cleared",
+    "Ethernet + Wi-Fi; unknown/limited/portal/full internet; explicit CheckConnectivity",
+    "confirmed radio; denied + ignored writes; retries; hardware rfkill; scanner release and resume",
+    "pending cancellation and target change; bounded timeout; native adapter removal/return",
+    "20 native LazyLoader cycles; soft reload preserves owner; hard reload requests process restart; scanners/views/watchers released",
+    "missing optional editor message; available editor invokes controlled fake executable",
+    "missing/lost/restarted NM; stale state hidden; upstream reconnect limitation stated in UI",
+    "no test secrets in private XDG/files/logs or process argv; private system/session bus; no host hardware"
+  ],
+  "cycles": [
+    {
+      "cycle": 1,
+      "pid": 181748,
+      "name": "quickshell",
+      "parent": 181743,
+      "cpu_ticks": 68,
+      "rss_kib": 128432
+    },
+    {
+      "cycle": 2,
+      "pid": 181748,
+      "name": "quickshell",
+      "parent": 181743,
+      "cpu_ticks": 74,
+      "rss_kib": 128236
+    },
+    {
+      "cycle": 3,
+      "pid": 181748,
+      "name": "quickshell",
+      "parent": 181743,
+      "cpu_ticks": 78,
+      "rss_kib": 128356
+    },
+    {
+      "cycle": 4,
+      "pid": 181748,
+      "name": "quickshell",
+      "parent": 181743,
+      "cpu_ticks": 83,
+      "rss_kib": 128484
+    },
+    {
+      "cycle": 5,
+      "pid": 181748,
+      "name": "quickshell",
+      "parent": 181743,
+      "cpu_ticks": 88,
+      "rss_kib": 128484
+    },
+    {
+      "cycle": 6,
+      "pid": 181748,
+      "name": "quickshell",
+      "parent": 181743,
+      "cpu_ticks": 92,
+      "rss_kib": 128484
+    },
+    {
+      "cycle": 7,
+      "pid": 181748,
+      "name": "quickshell",
+      "parent": 181743,
+      "cpu_ticks": 96,
+      "rss_kib": 128484
+    },
+    {
+      "cycle": 8,
+      "pid": 181748,
+      "name": "quickshell",
+      "parent": 181743,
+      "cpu_ticks": 99,
+      "rss_kib": 128612
+    },
+    {
+      "cycle": 9,
+      "pid": 181748,
+      "name": "quickshell",
+      "parent": 181743,
+      "cpu_ticks": 103,
+      "rss_kib": 128700
+    },
+    {
+      "cycle": 10,
+      "pid": 181748,
+      "name": "quickshell",
+      "parent": 181743,
+      "cpu_ticks": 107,
+      "rss_kib": 128864
+    },
+    {
+      "cycle": 11,
+      "pid": 181748,
+      "name": "quickshell",
+      "parent": 181743,
+      "cpu_ticks": 113,
+      "rss_kib": 128600
+    },
+    {
+      "cycle": 12,
+      "pid": 181748,
+      "name": "quickshell",
+      "parent": 181743,
+      "cpu_ticks": 116,
+      "rss_kib": 128728
+    },
+    {
+      "cycle": 13,
+      "pid": 181748,
+      "name": "quickshell",
+      "parent": 181743,
+      "cpu_ticks": 120,
+      "rss_kib": 128728
+    },
+    {
+      "cycle": 14,
+      "pid": 181748,
+      "name": "quickshell",
+      "parent": 181743,
+      "cpu_ticks": 124,
+      "rss_kib": 128728
+    },
+    {
+      "cycle": 15,
+      "pid": 181748,
+      "name": "quickshell",
+      "parent": 181743,
+      "cpu_ticks": 127,
+      "rss_kib": 128728
+    },
+    {
+      "cycle": 16,
+      "pid": 181748,
+      "name": "quickshell",
+      "parent": 181743,
+      "cpu_ticks": 131,
+      "rss_kib": 128728
+    },
+    {
+      "cycle": 17,
+      "pid": 181748,
+      "name": "quickshell",
+      "parent": 181743,
+      "cpu_ticks": 135,
+      "rss_kib": 128856
+    },
+    {
+      "cycle": 18,
+      "pid": 181748,
+      "name": "quickshell",
+      "parent": 181743,
+      "cpu_ticks": 139,
+      "rss_kib": 128984
+    },
+    {
+      "cycle": 19,
+      "pid": 181748,
+      "name": "quickshell",
+      "parent": 181743,
+      "cpu_ticks": 142,
+      "rss_kib": 128728
+    },
+    {
+      "cycle": 20,
+      "pid": 181748,
+      "name": "quickshell",
+      "parent": 181743,
+      "cpu_ticks": 145,
+      "rss_kib": 128728
+    }
+  ],
+  "idle": {
+    "duration_seconds": 60.00136975499481,
+    "samples": [
+      {
+        "second": 0,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 108996
+      },
+      {
+        "second": 1,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 108996
+      },
+      {
+        "second": 2,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 108996
+      },
+      {
+        "second": 3,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 108996
+      },
+      {
+        "second": 4,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 108996
+      },
+      {
+        "second": 5,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 108996
+      },
+      {
+        "second": 6,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 108996
+      },
+      {
+        "second": 7,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 108996
+      },
+      {
+        "second": 8,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 108996
+      },
+      {
+        "second": 9,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 108996
+      },
+      {
+        "second": 10,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 108996
+      },
+      {
+        "second": 11,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 108996
+      },
+      {
+        "second": 12,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 108996
+      },
+      {
+        "second": 13,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 108996
+      },
+      {
+        "second": 14,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 108996
+      },
+      {
+        "second": 15,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 108996
+      },
+      {
+        "second": 16,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 108996
+      },
+      {
+        "second": 17,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 108996
+      },
+      {
+        "second": 18,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 108996
+      },
+      {
+        "second": 19,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 108996
+      },
+      {
+        "second": 20,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 108996
+      },
+      {
+        "second": 21,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 108996
+      },
+      {
+        "second": 22,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 108996
+      },
+      {
+        "second": 23,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 108996
+      },
+      {
+        "second": 24,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 108996
+      },
+      {
+        "second": 25,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 108996
+      },
+      {
+        "second": 26,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 108996
+      },
+      {
+        "second": 27,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 108996
+      },
+      {
+        "second": 28,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 29,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 30,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 31,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 32,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 33,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 34,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 35,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 36,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 37,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 38,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 39,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 40,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 41,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 42,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 43,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 44,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 45,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 46,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 47,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 48,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 49,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 50,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 51,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 52,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 53,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 54,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 55,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 56,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 57,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 58,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 59,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "second": 60,
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      }
+    ],
+    "tree_before": [
+      {
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 108996
+      },
+      {
+        "pid": 182359,
+        "name": "gdbus",
+        "parent": 182350,
+        "cpu_ticks": 0,
+        "rss_kib": 5904
+      }
+    ],
+    "tree_after": [
+      {
+        "pid": 182350,
+        "name": "quickshell",
+        "parent": 181743,
+        "cpu_ticks": 39,
+        "rss_kib": 109132
+      },
+      {
+        "pid": 182359,
+        "name": "gdbus",
+        "parent": 182350,
+        "cpu_ticks": 0,
+        "rss_kib": 5904
+      }
+    ],
+    "new_reads": 0,
+    "new_scans": 0
+  },
+  "expected_diagnostics": [
+    "ERROR quickshell.network: Network will not work. Could not find an available backend."
+  ],
+  "processes_cleaned": [
+    181744,
+    181745,
+    181748,
+    181759,
+    182250,
+    182269,
+    182280,
+    182289,
+    182313,
+    182325,
+    182333,
+    182342,
+    182350,
+    182359
+  ]
+}

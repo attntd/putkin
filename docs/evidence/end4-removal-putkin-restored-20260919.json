@@ -1,0 +1,169 @@
+{
+  "runtime": "/home/attntd/.local/share/putkin/releases/20260917-settings-keyboard-cc7addc79750/shell.qml",
+  "runtime_files_matching_project": 153,
+  "qml_files_checked": 174,
+  "launcher_integration": "PASS: 5 groups",
+  "panel_integration": "PASS: 20 cycles",
+  "actions": {
+    "ready": true,
+    "busy": false,
+    "applied": true,
+    "error": "",
+    "shortcuts": 7,
+    "commands": 0
+  },
+  "panels": [
+    {
+      "target": "launcher",
+      "method": "open",
+      "reply": "ok",
+      "width": 1280,
+      "height": 778
+    },
+    {
+      "target": "launcher",
+      "method": "openClipboard",
+      "reply": "ok",
+      "width": 1280,
+      "height": 674
+    },
+    {
+      "target": "launcher",
+      "method": "openCommands",
+      "reply": "ok",
+      "width": 1280,
+      "height": 674
+    },
+    {
+      "target": "ui",
+      "method": "openQuickSettings",
+      "reply": "ok",
+      "width": 368,
+      "height": 424
+    },
+    {
+      "target": "ui",
+      "method": "openAudio",
+      "reply": "ok",
+      "width": 368,
+      "height": 444
+    }
+  ],
+  "bar_focus": "eDP-1",
+  "layers": [
+    {
+      "address": "0x5606443aaaa0",
+      "x": 4196,
+      "y": 1440,
+      "w": 1920,
+      "h": 1200,
+      "alpha": 1,
+      "namespace": "putkin-wallpaper",
+      "pid": 59655
+    },
+    {
+      "address": "0x5606455f76c0",
+      "x": 4196,
+      "y": 1440,
+      "w": 1920,
+      "h": 32,
+      "alpha": 1,
+      "namespace": "putkin-bar",
+      "pid": 59655
+    }
+  ],
+  "instances": [
+    {
+      "config_path": "/home/attntd/.local/share/putkin/releases/20260917-settings-keyboard-cc7addc79750/shell.qml",
+      "id": "31a1vxomlt",
+      "launch_time": "2026-09-19T22:29:55",
+      "pid": 59655,
+      "shell_id": "01d6fccf61301c54542bda41583a1bc3"
+    }
+  ],
+  "notification_owner": 59655,
+  "config_errors": "",
+  "putkin_bindings": [
+    {
+      "key": "TAB",
+      "modmask": 64,
+      "description": "[Putkin] Focus bar",
+      "dispatcher": "__lua",
+      "arg": "6"
+    },
+    {
+      "key": "B",
+      "modmask": 65,
+      "description": "[Putkin] Pasek",
+      "dispatcher": "__lua",
+      "arg": "26"
+    },
+    {
+      "key": "SPACE",
+      "modmask": 64,
+      "description": "Putkin:launcher",
+      "dispatcher": "__lua",
+      "arg": "12"
+    },
+    {
+      "key": "V",
+      "modmask": 64,
+      "description": "Putkin:clipboard",
+      "dispatcher": "__lua",
+      "arg": "48"
+    },
+    {
+      "key": "semicolon",
+      "modmask": 65,
+      "description": "Putkin:commands",
+      "dispatcher": "__lua",
+      "arg": "40"
+    },
+    {
+      "key": "Q",
+      "modmask": 65,
+      "description": "Putkin:quickSettings",
+      "dispatcher": "__lua",
+      "arg": "109"
+    },
+    {
+      "key": "B",
+      "modmask": 64,
+      "description": "Putkin:bar",
+      "dispatcher": "__lua",
+      "arg": "34"
+    },
+    {
+      "key": "N",
+      "modmask": 65,
+      "description": "Putkin:notifications",
+      "dispatcher": "__lua",
+      "arg": "42"
+    },
+    {
+      "key": "P",
+      "modmask": 65,
+      "description": "Putkin:power",
+      "dispatcher": "__lua",
+      "arg": "50"
+    }
+  ],
+  "runtime_log": "2026-09-19 22:29:55.922  INFO: Launching config: \"/home/attntd/.local/share/putkin/releases/20260917-settings-keyboard-cc7addc79750/shell.qml\"\n2026-09-19 22:29:55.923  INFO: Shell ID: \"01d6fccf61301c54542bda41583a1bc3\" Path ID \"01d6fccf61301c54542bda41583a1bc3\"\n2026-09-19 22:29:55.923  INFO: Saving logs to \"/run/user/1000/quickshell/by-id/31a1vxomlt/log.qslog\"\n2026-09-19 22:29:56.162  INFO: Configuration Loaded\n",
+  "hypridle": "active",
+  "hyprpolkitagent": "active",
+  "untested": [
+    "new login/autostart after logout",
+    "lock and suspend on hardware during this restoration"
+  ],
+  "remaining_package_cleanup": [],
+  "quickshell_package": "quickshell 0.3.1-1",
+  "date": "2026-09-19",
+  "end4_backup_created": false,
+  "end4_removed_paths_verified": [
+    "~/end-4",
+    "~/.cache/dots-hyprland",
+    "~/.config/illogical-impulse",
+    "~/.config/quickshell/ii",
+    "~/.local/state/quickshell/.venv"
+  ]
+}

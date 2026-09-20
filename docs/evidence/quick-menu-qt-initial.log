@@ -1,0 +1,25 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::QuickMenu::initTestCase()
+PASS   : qmltestrunner::QuickMenu::test_audio_is_one_keyboard_row()
+FAIL!  : qmltestrunner::QuickMenu::test_center_small_panel_and_lifecycles() 'verify()' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_quick_menu.qml(229)]
+PASS   : qmltestrunner::QuickMenu::test_distinct_audio_names_follow_device_not_default()
+FAIL!  : qmltestrunner::QuickMenu::test_error_is_only_a_notification() Compared values are not the same
+   Actual   (): 0
+   Expected (): 1
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_quick_menu.qml(148)]
+FAIL!  : qmltestrunner::QuickMenu::test_history_keeps_expired_and_dnd_but_not_transient() 'verify()' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_quick_menu.qml(197)]
+FAIL!  : qmltestrunner::QuickMenu::test_history_replacements_limit_and_live_actions() Compared values are not the same
+   Actual   (): 0
+   Expected (): 1
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_quick_menu.qml(210)]
+FAIL!  : qmltestrunner::QuickMenu::test_night_light_temperature_has_no_refresh() 'verify()' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_quick_menu.qml(170)]
+PASS   : qmltestrunner::QuickMenu::test_notification_center_empty_and_mouse_focus()
+PASS   : qmltestrunner::QuickMenu::test_radio_modules_own_lists_and_scanning()
+PASS   : qmltestrunner::QuickMenu::test_tiles_toggle_without_management_or_progress_messages()
+PASS   : qmltestrunner::QuickMenu::cleanupTestCase()
+Totals: 7 passed, 5 failed, 0 skipped, 0 blacklisted, 2027ms
+********* Finished testing of qmltestrunner *********

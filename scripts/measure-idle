@@ -1,0 +1,140 @@
+#!/usr/bin/env python3
+"""Measure 60 s of mock preview idle after a 2 s warm-up, using Linux /proc."""
+
+import argparse
+from datetime import datetime, timezone
+import json
+import os
+from pathlib import Path
+import statistics
+import subprocess
+import sys
+import tempfile
+import time
+
+from _common import ROOT, isolated_environment, qml_errors, stop_process_group, tool
+
+
+def snapshot(pid):
+    stat = Path(f"/proc/{pid}/stat").read_text()
+    # comm may contain spaces; fields after its final ')' start at state (3).
+    fields = stat[stat.rfind(")") + 2:].split()
+    return {
+        "pid": pid,
+        "name": Path(f"/proc/{pid}/comm").read_text().strip(),
+        "parent": int(fields[1]),
+        "cpu_ticks": int(fields[11]) + int(fields[12]),
+        "rss_kib": int(fields[21]) * os.sysconf("SC_PAGE_SIZE") // 1024,
+    }
+
+
+def process_tree(pid):
+    records = []
+    pending = [pid]
+    seen = set()
+    while pending:
+        current = pending.pop()
+        if current in seen:
+            continue
+        seen.add(current)
+        try:
+            records.append(snapshot(current))
+            for task in Path(f"/proc/{current}/task").iterdir():
+                pending.extend(int(child) for child in (task / "children").read_text().split())
+        except (FileNotFoundError, ProcessLookupError):
+            pass
+    return sorted(records, key=lambda record: record["pid"])
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, default=ROOT / "artifacts/idle-60s.json")
+    parser.add_argument("--bar", action="store_true", help="Pasek z 30 workspace i działającym zegarem minutowym")
+    parser.add_argument("--panels", action="store_true", help="Pasek z 30 workspace, zegarem i niezaładowanym panelem")
+    args = parser.parse_args()
+    try:
+        quickshell, dbus = tool("quickshell"), tool("dbus-run-session")
+    except FileNotFoundError as error:
+        print(error, file=sys.stderr)
+        return 2
+    output = args.output.resolve()
+    output.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="pk-") as directory:
+        env = isolated_environment(directory)
+        if args.bar or args.panels:
+            env.update(PUTKIN_LIVE_CLOCK="1", PUTKIN_SCENARIO="closed" if args.panels else "overflow")
+        entrypoint = ROOT / ("panels-preview.qml" if args.panels else "bar-preview.qml" if args.bar else "preview.qml")
+        with tempfile.TemporaryFile(mode="w+") as log:
+            process = subprocess.Popen([dbus, "--", quickshell, "--no-color", "--path", str(entrypoint)],
+                                       env=env, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+            try:
+                time.sleep(2)
+                log.seek(0)
+                initial_log = log.read()
+                if process.poll() is not None or qml_errors(initial_log, allow_offscreen_masks=True) or "PUTKIN_PREVIEW_READY" not in initial_log:
+                    raise RuntimeError(f"Podgląd nie wystartował poprawnie:\n{initial_log}")
+                initial_tree = process_tree(process.pid)
+                # Match the explicit argument, not a process-name substring.
+                shells = [record for record in initial_tree if record["parent"] == process.pid
+                          and b"--path" in Path(f"/proc/{record['pid']}/cmdline").read_bytes().split(b"\0")]
+                if len(shells) != 1:
+                    raise RuntimeError(f"Nie można wskazać jednego procesu shella: {initial_tree}")
+                pid = shells[0]["pid"]
+                start = time.monotonic()
+                samples = [{"elapsed_s": 0.0, **snapshot(pid), "process_count": len(initial_tree)}]
+                print("Pomiar: 60 s spoczynku po 2 s rozgrzewki; offscreen/software, bez interakcji.", flush=True)
+                for second in range(1, 61):
+                    time.sleep(max(0, start + second - time.monotonic()))
+                    if process.poll() is not None:
+                        raise RuntimeError("Proces zakończył się w trakcie pomiaru.")
+                    samples.append({"elapsed_s": round(time.monotonic() - start, 6), **snapshot(pid),
+                                    "process_count": len(process_tree(process.pid))})
+                    if second % 20 == 0:
+                        print(f"{second}/60 s", flush=True)
+                final_tree = process_tree(process.pid)
+                log.seek(0)
+                final_log = log.read()
+                if qml_errors(final_log, allow_offscreen_masks=True):
+                    raise RuntimeError(final_log)
+            except (OSError, RuntimeError) as error:
+                print(f"FAIL: {error}", file=sys.stderr)
+                return 1
+            finally:
+                stop_process_group(process)
+
+    first, last = samples[0], samples[-1]
+    seconds = last["elapsed_s"]
+    cpu_seconds = (last["cpu_ticks"] - first["cpu_ticks"]) / os.sysconf("SC_CLK_TCK")
+    report = {
+        "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+        "quickshell": subprocess.check_output([quickshell, "--version"], text=True).strip(),
+        "qt": subprocess.check_output([tool("qmake6"), "-query", "QT_VERSION"], text=True).strip(),
+        "kernel": os.uname().release,
+        "mode": "offscreen / software / basic render loop / scale 1 / " + (
+            "1920x1080 bar, 30 workspaces, minute clock, unloaded panel host" if args.panels else
+            "1920x1080 bar, 30 workspaces, minute clock" if args.bar else "720x440 foundation"),
+        "displays": "1 virtual Qt offscreen screen; no real Wayland output",
+        "isolation": "private XDG and session D-Bus; mock-only imports; no host display or hardware buses",
+        "warmup_s": 2,
+        "duration_s": seconds,
+        "sample_interval_s": 1,
+        "cpu_clock_ticks_per_s": os.sysconf("SC_CLK_TCK"),
+        "cpu_seconds": cpu_seconds,
+        "cpu_percent_one_core": round(cpu_seconds / seconds * 100, 6),
+        "rss_kib": {"start": first["rss_kib"], "end": last["rss_kib"],
+                    "min": min(s["rss_kib"] for s in samples), "max": max(s["rss_kib"] for s in samples),
+                    "mean": statistics.mean(s["rss_kib"] for s in samples)},
+        "process_count_min": min(s["process_count"] for s in samples),
+        "process_count_max": max(s["process_count"] for s in samples),
+        "initial_process_tree": initial_tree,
+        "final_process_tree": final_tree,
+        "samples": samples,
+    }
+    output.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n")
+    output.with_suffix(".log").write_text(final_log)
+    print(f"PASS: RSS {report['rss_kib']}, CPU {report['cpu_percent_one_core']}% jednego rdzenia; {output}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

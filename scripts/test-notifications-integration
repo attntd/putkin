@@ -1,0 +1,402 @@
+#!/usr/bin/env python3
+"""Real notification clients against one native server on a private D-Bus."""
+import argparse
+from datetime import datetime, timezone
+import importlib.machinery
+import importlib.util
+import json
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
+import time
+
+from _common import ROOT, ipc_reply, ipc_json, isolated_environment, qml_errors, stop_process_group, tool
+
+loader = importlib.machinery.SourceFileLoader("putkin_measure_idle", str(ROOT / "scripts/measure-idle"))
+spec = importlib.util.spec_from_loader(loader.name, loader)
+measurement = importlib.util.module_from_spec(spec)
+loader.exec_module(measurement)
+
+
+def run(output, idle):
+    import dbus
+    from dbus.mainloop.glib import DBusGMainLoop
+    from gi.repository import GLib
+    DBusGMainLoop(set_as_default=True)
+    context = GLib.MainContext.default()
+
+    def pump():
+        while context.pending():
+            context.iteration(False)
+
+    def pause(seconds):
+        deadline = time.monotonic() + seconds
+        while time.monotonic() < deadline:
+            pump()
+            time.sleep(min(.02, max(0, deadline - time.monotonic())))
+        pump()
+
+    def eventually(read, predicate, description, seconds=8):
+        deadline = time.monotonic() + seconds
+        value = None
+        while time.monotonic() < deadline:
+            pump()
+            value = read()
+            if predicate(value):
+                return value
+            pause(.025)
+        raise AssertionError(f"{description}: {value}")
+
+    quickshell = tool("quickshell")
+    entrypoint = str(ROOT / "notifications-test.qml")
+    output.parent.mkdir(parents=True, exist_ok=True)
+    report = {"timestamp_utc": datetime.now(timezone.utc).isoformat(), "checks": [], "cycles": []}
+    with tempfile.TemporaryDirectory(prefix="pk-") as directory:
+        base = Path(directory)
+        env = isolated_environment(directory)
+        address = f"unix:path={base}/bus"
+        env.update(DBUS_SESSION_BUS_ADDRESS=address, DBUS_SYSTEM_BUS_ADDRESS=address,
+                   PUTKIN_SCENARIO="closed", PUTKIN_PREVIEW_WIDTH="1920", PUTKIN_PREVIEW_HEIGHT="1080",
+                   QS_NO_RELOAD_POPUP="1")
+        processes, logs = [], []
+        seen_pids = set()
+        closed, actions = [], []
+        content_marker = "putkin-private-notification-content-" + base.name
+
+        def start(command, name):
+            log = (base / f"{name}.log").open("w+")
+            logs.append((name, log))
+            process = subprocess.Popen(command, env=env, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+            processes.append(process)
+            seen_pids.add(process.pid)
+            return process
+
+        def stop(process):
+            if process.poll() is None:
+                seen_pids.update(p["pid"] for p in measurement.process_tree(process.pid))
+            stop_process_group(process)
+
+        def ipc(target, method, *args, starting=False):
+            result = subprocess.run([quickshell, "ipc", "--path", entrypoint, "call", target, method, *map(str, args)],
+                                    env=env, capture_output=True, text=True, timeout=4)
+            return ipc_reply(result, shell, logs, starting=starting)
+
+        def state():
+            value = ipc("probe", "snapshot", starting=True)
+            return ipc_json(value)
+
+        def entry(id):
+            return next((entry for entry in state().get("entries", []) if entry["id"] == id), None)
+
+        def is_closed(id, reason):
+            pump()
+            return (id, reason) in closed
+
+        def clear():
+            assert all(not row["actions"] and not row["imageSource"] for row in state()["history"]), "archive has no native references"
+            ipc("notifications", "leave")
+            ipc("probe", "clear")
+            eventually(state, lambda s: s.get("tracked") == 0 and not s.get("entries") and not s.get("loaded"), "all notifications released")
+
+        def client(bus):
+            return dbus.Interface(bus.get_object("org.freedesktop.Notifications", "/org/freedesktop/Notifications"), "org.freedesktop.Notifications")
+
+        def notify(api, summary="Test", body="", replaces=0, timeout=0, urgency=1, resident=False, transient=False, action_list=(), extra=None, app="Putkin test"):
+            hints = {"urgency": dbus.Byte(urgency), "resident": dbus.Boolean(resident), "transient": dbus.Boolean(transient)}
+            hints.update(extra or {})
+            return int(api.Notify(app, dbus.UInt32(replaces), "", summary, body,
+                dbus.Array(action_list, signature="s"), dbus.Dictionary(hints, signature="sv"), dbus.Int32(timeout), timeout=15))
+
+        try:
+            start([tool("dbus-daemon"), "--session", "--nofork", f"--address={address}"], "bus")
+            eventually(lambda: (base / "bus").is_socket(), bool, "private bus")
+            bus = dbus.bus.BusConnection(address)
+            bus.add_signal_receiver(lambda id, reason: closed.append((int(id), int(reason))), signal_name="NotificationClosed",
+                                    dbus_interface="org.freedesktop.Notifications", path="/org/freedesktop/Notifications")
+            bus.add_signal_receiver(lambda id, action: actions.append((int(id), str(action))), signal_name="ActionInvoked",
+                                    dbus_interface="org.freedesktop.Notifications", path="/org/freedesktop/Notifications")
+            shell = start([quickshell, "--no-color", "--path", entrypoint], "native")
+            ready = eventually(state, lambda s: s.get("available"), "native server ready")
+            assert ready["serverLoaded"] and ready["watcherPid"] > 0, ready
+            api = client(bus)
+            assert sorted(map(str, api.GetCapabilities())) == ["actions", "body", "icon-static"]
+            assert str(api.GetServerInformation()[3]) == "1.2"
+            dbus_api = dbus.Interface(bus.get_object("org.freedesktop.DBus", "/org/freedesktop/DBus"), "org.freedesktop.DBus")
+            assert int(dbus_api.GetConnectionUnixProcessID("org.freedesktop.Notifications")) == shell.pid
+            first = notify(api, summary="", app="")
+            value = eventually(lambda: entry(first), bool, "missing-data notification")
+            assert value["summary"] == "Powiadomienie" and value["monitor"] == "TEST-1", value
+            assert state()["keyboard"] == "", "arrival must not enter keyboard mode"
+            ipc("probe", "dismiss", first)
+            eventually(lambda: is_closed(first, 2), bool, "user dismiss reason")
+            report["checks"].append("single native owner; exact capabilities; missing data; passive arrival; dismiss=2")
+
+            default = notify(api, timeout=-1)
+            value = eventually(lambda: entry(default), bool, "default timeout")
+            remaining = value["deadline"] - time.time() * 1000
+            assert 5000 < remaining <= 6100, remaining
+            eventually(lambda: is_closed(default, 1), bool, "real 6000 ms default expiration")
+            fixed = notify(api)
+            pause(.15)
+            assert entry(fixed)["deadline"] == 0
+            api.CloseNotification(dbus.UInt32(fixed))
+            eventually(lambda: is_closed(fixed, 3), bool, "client CloseNotification reason")
+            api.CloseNotification(dbus.UInt32(9999999))
+            replaced = notify(api, summary="unchanged", timeout=600)
+            pause(.35)
+            assert notify(api, summary="unchanged", replaces=replaced, timeout=600) == replaced
+            pause(.35)
+            assert entry(replaced), "identical replacement must reset timeout"
+            eventually(lambda: is_closed(replaced, 1), bool, "replacement expires")
+            fresh = notify(api, replaces=replaced)
+            assert fresh != replaced
+            clear()
+            report["checks"].append("default -1=6000 ms; zero remains; CloseNotification=3; unknown ID; identical replace resets timer; expired ID creates new notification")
+
+            ordinary = notify(api, action_list=["default", "Open", "secondary", "Secondary"])
+            assert ipc("probe", "invoke", ordinary, "default") == "true"
+            eventually(lambda: (ordinary, "default") in actions and is_closed(ordinary, 2), bool, "nonresident action signal and close")
+            resident = notify(api, resident=True, transient=True, action_list=["default", "Old label", "remove", "Remove"])
+            notify(api, replaces=resident, resident=True, transient=True, action_list=["default", "New label"])
+            eventually(lambda: entry(resident), lambda e: e and e["actions"] == [{"identifier": "default", "text": "New label"}], "replacement action labels and removal")
+            assert ipc("probe", "invoke", resident, "remove") == "false"
+            assert ipc("probe", "invoke", resident, "default") == "true"
+            eventually(lambda: (resident, "default") in actions, bool, "resident ActionInvoked")
+            assert entry(resident), "resident survives action"
+            transient = notify(api, summary="Transient fixture", transient=True, timeout=80)
+            eventually(lambda: is_closed(transient, 1), bool, "transient toast expires")
+            assert any(row["summary"] == "Transient fixture" for row in state()["history"]), "transient retained in center"
+            clear()
+            report["checks"].append("real ActionInvoked; nonresident closes; resident survives; transient; changed/removed action labels using same ID")
+
+            # VoxType 1.0.1: the exact app name, integer transient hint, private
+            # synchronous hint and replacement protocol; synthetic text only.
+            def voxtype(summary, replaces=0):
+                command = [tool("notify-send"), "--app-name=Voxtype", "--expire-time=2000",
+                           "-h", "string:x-canonical-private-synchronous:voxtype", "-h", "int:transient:1",
+                           "--print-id", "--replace-id", str(replaces), summary, "Synthetic integration fixture"]
+                return int(subprocess.check_output(command, env=env, text=True, timeout=4).strip())
+            vox = voxtype("Recording fixture")
+            assert voxtype("Transcription fixture", vox) == vox
+            eventually(lambda: is_closed(vox, 1), bool, "VoxType toast expiration")
+            archive = state()["history"]
+            assert len(archive) == 1 and archive[0]["summary"] == "Transcription fixture", archive
+            assert not archive[0]["actions"] and not archive[0]["imageSource"]
+            ipc("notifications", "setDnd", "true")
+            muted_vox = voxtype("Muted transcription fixture")
+            eventually(lambda: is_closed(muted_vox, 1), bool, "muted VoxType toast suppressed")
+            assert len(state()["history"]) == 2 and not state()["entries"]
+            ipc("notifications", "setDnd", "false")
+            clear()
+            report["checks"].append("VoxType 1.0.1 notify-send hints, same-ID replacement, timeout and DND retain latest text in history")
+
+            normal = notify(api)
+            assert ipc("notifications", "setDnd", "true") == "true"
+            eventually(lambda: is_closed(normal, 1), bool, "DND clears existing")
+            muted = [notify(api) for _ in range(30)]
+            eventually(lambda: all(is_closed(id, 1) for id in muted), bool, "DND closes suppressed arrivals")
+            critical = notify(api, urgency=2, timeout=30)
+            pause(.15)
+            assert entry(critical)["critical"] and entry(critical)["deadline"] == 0
+            assert state()["unread"] == 32 and state()["bell"] == "notifications_off", state()
+            assert ipc("notifications", "focus") == "TEST-1"
+            eventually(state, lambda s: s["center"] and len(s["history"]) > 0, "notification center with DND history")
+            assert len(state()["history"]) == 32, "ordinary + suppressed + critical in session history"
+            assert state()["unread"] == 0, "opening the center marks the complete history read"
+            ipc("notifications", "leave")
+            ipc("notifications", "setDnd", "false")
+            assert len(state()["entries"]) == 1, "no DND replay"
+            assert state()["bell"] == "notifications", state()
+            ipc("notifications", "setDnd", "true")
+            notify(api, replaces=critical, urgency=1)
+            eventually(lambda: is_closed(critical, 1), bool, "replacement loses critical exemption")
+            ipc("notifications", "setDnd", "false")
+            eventually(state, lambda s: s["unread"] == 1 and s["bell"] == "notifications_unread", "replacement is unread after leaving the center")
+            clear()
+            report["checks"].append("production DND IPC; no replay; critical bypasses DND and never auto-expires; explicit keyboard entry/leave")
+
+            ipc("probe", "monitor", "TEST-1")
+            on_first = notify(api)
+            ipc("probe", "monitor", "TEST-2")
+            on_second = notify(api)
+            assert entry(on_first)["monitor"] == "TEST-1" and entry(on_second)["monitor"] == "TEST-2"
+            ipc("probe", "screens", 1)
+            assert entry(on_first)["monitor"] == "TEST-2"
+            assert len(state()["entries"]) == 2
+            ipc("probe", "screens", 0)
+            eventually(lambda: is_closed(on_first, 1) and is_closed(on_second, 1), bool, "no-screen close")
+            absent = notify(api)
+            eventually(lambda: is_closed(absent, 1), bool, "no-screen arrival")
+            ipc("probe", "screens", 2)
+            ipc("probe", "monitor", "TEST-1")
+            report["checks"].append("one target per arrival; monitor fallback/hotplug preserves IDs; last screen removal closes; no duplication")
+
+            ids = [notify(api, summary=str(i)) for i in range(100)]
+            flood = eventually(state, lambda s: s.get("tracked") == 15 and len(s.get("entries", [])) == 15, "bounded flood")
+            assert [e["id"] for e in flood["entries"] if e["shown"]] == ids[:3]
+            assert [e["id"] for e in flood["entries"] if not e["shown"]] == ids[-12:]
+            assert all(is_closed(id, 1) for id in ids[3:-12])
+            clear()
+            for _ in range(3): notify(api)
+            queued = notify(api, timeout=100)
+            assert not entry(queued)["shown"]
+            eventually(lambda: is_closed(queued, 1), bool, "queued deadline runs")
+            clear()
+            report["checks"].append("100-event flood bounded to 3 visible + 12 queued; deterministic oldest queued eviction; queue timeout from arrival")
+
+            width, height = 2048, 1024
+            image = dbus.Struct((width, height, width * 4, True, 8, 4,
+                dbus.ByteArray(b"\x89\xb4\xfa\xff" * (width * height))), signature="iiibiiay")
+            large = notify(api, summary=content_marker + " title " * 200, body=content_marker + "<b>literal hjkl</b>" * 600,
+                extra={"image-data": image}, action_list=["default", "Open"])
+            large_value = eventually(lambda: entry(large), bool, "large image notification")
+            assert len(large_value["body"]) == 4096 and len(large_value["summary"]) == 512
+            assert large_value["image"].startswith("image://"), large_value["image"]
+            eventually(state, lambda s: s.get("loaded"), "native image view loaded")
+            pause(.2)
+            notify(api, summary="replaced large image", replaces=large, extra={"image-data": image}, action_list=["default", "New image action"])
+            eventually(lambda: entry(large), lambda e: e and e["actions"] == [{"identifier": "default", "text": "New image action"}], "large-image replacement observer remains bounded")
+            for process in measurement.process_tree(shell.pid):
+                assert content_marker.encode() not in Path(f"/proc/{process['pid']}/cmdline").read_bytes()
+            clear()
+            assert not any(content_marker.encode() in path.read_bytes() for path in base.rglob("*") if path.is_file()), "notification content persisted"
+            report["checks"].append("8 MiB raw image; bounded title/body and native image provider; no payload in argv, logs, cache or XDG files")
+
+            other_bus = dbus.bus.BusConnection(address)
+            other_api = client(other_bus)
+            disconnected = notify(other_api, resident=True, action_list=["default", "Open"])
+            other_bus.close()
+            assert entry(disconnected)
+            returned_bus = dbus.bus.BusConnection(address)
+            returned_api = client(returned_bus)
+            notify(returned_api, summary="returned", replaces=disconnected)
+            eventually(lambda: entry(disconnected), lambda e: e and e["summary"] == "returned", "returning client replacement")
+            returned_api.CloseNotification(dbus.UInt32(disconnected))
+            eventually(lambda: is_closed(disconnected, 3), bool, "returning client close")
+            returned_bus.close()
+            report["checks"].append("client disconnect and new D-Bus connection; replace retained ID and client close after return")
+
+            for cycle in range(20):
+                id = notify(api)
+                eventually(state, lambda s: s.get("loaded"), "toast LazyLoader created")
+                ipc("probe", "dismiss", id)
+                eventually(state, lambda s: not s.get("loaded") and s["created"] == s["destroyed"], "toast LazyLoader destroyed")
+                report["cycles"].append({"cycle": cycle + 1, **measurement.snapshot(shell.pid)})
+            for hard in [False, True]:
+                ipc("notifications", "setDnd", "true")
+                old_ids = [notify(api, urgency=2) for _ in range(5)]
+                before = state()
+                seen_pids.add(before["watcherPid"])
+                ipc("probe", "reload", str(hard).lower())
+                after = eventually(state, lambda s: s.get("generation") != before["generation"] and s.get("available"), "reload resumes server")
+                assert not after["dnd"] and not after["entries"] and not after["loaded"] and after["tracked"] == 0, after
+                eventually(lambda: all(is_closed(id, 1) for id in old_ids), bool, "reload expires old native objects")
+                eventually(lambda: Path(f"/proc/{before['watcherPid']}").exists(), lambda exists: not exists, "reload reaps old monitor")
+            report["checks"].append("20 real LazyLoader lifecycles; soft/hard reload clears native visible/queued objects with reason=1; DND resets; old observers reaped")
+
+            stop(shell)
+            eventually(lambda: bus.name_has_owner("org.freedesktop.Notifications"), lambda owned: not owned, "server process releases name")
+            assert bus.request_name("org.freedesktop.Notifications", dbus.bus.NAME_FLAG_ALLOW_REPLACEMENT) == dbus.bus.REQUEST_NAME_REPLY_PRIMARY_OWNER
+            shell = start([quickshell, "--no-color", "--path", entrypoint], "conflict")
+            conflict = eventually(state, lambda s: s.get("phase") == "failed", "existing owner detected")
+            assert not conflict["available"] and not conflict["serverLoaded"] and not conflict["watcherPid"], conflict
+            assert str(dbus_api.GetNameOwner("org.freedesktop.Notifications")) == bus.get_unique_name()
+            bus.release_name("org.freedesktop.Notifications")
+            pause(.3)
+            assert not bus.name_has_owner("org.freedesktop.Notifications"), "blocked server must not take over after release"
+            stop(shell)
+            report["checks"].append("replaceable existing owner remains untouched; server is never constructed on conflict; releasing owner does not activate blocked instance")
+
+            shell = start([quickshell, "--no-color", "--path", entrypoint], "recovery")
+            eventually(state, lambda s: s.get("available"), "fresh server after migration")
+            api = client(bus)
+            held = notify(api)
+            watcher = state()["watcherPid"]
+            seen_pids.add(watcher)
+            import os
+            import signal
+            os.kill(watcher, signal.SIGTERM)
+            failed = eventually(state, lambda s: s.get("phase") == "failed", "observer loss reported")
+            assert not failed["available"] and not failed["entries"]
+            eventually(lambda: is_closed(held, 1), bool, "observer failure closes held content")
+            rejected = notify(api)
+            eventually(lambda: is_closed(rejected, 1), bool, "failed adapter rejects new content")
+            stop(shell)
+            report["checks"].append("observer failure is visible; stale content released and new arrivals expired; recovery requires process restart")
+
+            helpers = base / "helpers"
+            helpers.mkdir()
+            (helpers / "busctl").symlink_to(tool("busctl"))
+            env["PATH"] = str(helpers)
+            shell = start([quickshell, "--no-color", "--path", entrypoint], "missing-helper")
+            missing = eventually(state, lambda s: s.get("phase") == "failed", "missing Python handled")
+            assert not missing["serverLoaded"] and not missing["available"] and "Pythona" in missing["error"], missing
+            assert not bus.name_has_owner("org.freedesktop.Notifications")
+            stop(shell)
+            env["PATH"] = "/usr/bin:/bin:/usr/lib/qt6/bin"
+            report["checks"].append("missing observer executable is visible and prevents server construction/name acquisition")
+
+            if idle:
+                env["PUTKIN_LIVE_CLOCK"] = "1"
+                shell = start([quickshell, "--no-color", "--path", entrypoint], "idle")
+                eventually(state, lambda s: s.get("available"), "idle fresh process")
+                pause(2)
+                before = measurement.snapshot(shell.pid)
+                watcher = state()["watcherPid"]
+                monitor_before = measurement.snapshot(watcher)
+                started = time.monotonic()
+                print("Pomiar: 60 s spoczynku powiadomień na prywatnej magistrali…", flush=True)
+                pause(60)
+                after = measurement.snapshot(shell.pid)
+                monitor_after = measurement.snapshot(watcher)
+                report["idle"] = {"seconds": time.monotonic() - started, "before": before, "after": after,
+                    "monitor_before": monitor_before, "monitor_after": monitor_after,
+                    "process_tree": measurement.process_tree(shell.pid)}
+                assert state()["entries"] == [] and not state()["loaded"]
+                stop(shell)
+        except Exception as error:
+            report["error"] = str(error)
+        finally:
+            for process in reversed(processes): stop(process)
+            combined = []
+            unexpected = []
+            expected = []
+            missing_helper_warning = 'WARN: Process failed to start, likely because the binary could not be found. Command: QList("python3", "-B", "' + str(ROOT / "services/notification-watch.py") + '")'
+            for name, log in logs:
+                log.seek(0)
+                text = log.read()
+                combined.append(f"[{name}]\n{text}")
+                for diagnostic in qml_errors(text, allow_offscreen_masks=True):
+                    if name == "missing-helper" and diagnostic.strip() == missing_helper_warning:
+                        expected.append(diagnostic)
+                    else:
+                        unexpected.append(diagnostic)
+                log.close()
+            if "error" not in report and len(expected) != 1:
+                unexpected.append("Expected exactly one missing-executable diagnostic in its dedicated scenario")
+            output.with_suffix(".log").write_text("\n".join(combined))
+            report["unexpected_diagnostics"] = unexpected
+            report["expected_diagnostics"] = expected
+            report["remaining_pids"] = [pid for pid in seen_pids if Path(f"/proc/{pid}").exists()]
+            report["tracked_processes"] = len(seen_pids)
+            report["passed"] = "error" not in report and not unexpected and not report["remaining_pids"]
+            output.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n")
+    print(json.dumps(report, ensure_ascii=False, indent=2))
+    return 0 if report["passed"] else 1
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, default=ROOT / "artifacts/notifications.json")
+    parser.add_argument("--idle", action="store_true")
+    args = parser.parse_args()
+    try:
+        return run(args.output.resolve(), args.idle)
+    except (ImportError, FileNotFoundError) as error:
+        print(f"FAIL: {error}", file=sys.stderr)
+        return 2
+
+
+if __name__ == "__main__":
+    sys.exit(main())

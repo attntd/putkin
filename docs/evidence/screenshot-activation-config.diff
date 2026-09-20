@@ -1,0 +1,30 @@
+--- /home/attntd/.config/hypr/keybinds.lua
++++ /home/attntd/.config/hypr/keybinds.lua
+@@ -18,11 +18,7 @@
+ 
+     -- Super+Spacja obsługuje config/menu-keybinds.lua Putkina.
+ 
+-    screenshot = {
+-        global = "quickshell-de:screenshot-open",
+-        bind = "PRINT",
+-        description = "[Screenshot] Open QuickShell capture",
+-    },
++    -- Print obsługuje działanie screenshot Putkina (Ustawienia → Klawiatura).
+ 
+     screenshot_region = {
+         global = "quickshell-de:screenshot-region",
+--- /home/attntd/.local/share/chezmoi/dot_config/hypr/keybinds.lua
++++ /home/attntd/.local/share/chezmoi/dot_config/hypr/keybinds.lua
+@@ -18,11 +18,7 @@
+ 
+     -- Super+Spacja obsługuje config/menu-keybinds.lua Putkina.
+ 
+-    screenshot = {
+-        global = "quickshell-de:screenshot-open",
+-        bind = "PRINT",
+-        description = "[Screenshot] Open QuickShell capture",
+-    },
++    -- Print obsługuje działanie screenshot Putkina (Ustawienia → Klawiatura).
+ 
+     screenshot_region = {
+         global = "quickshell-de:screenshot-region",

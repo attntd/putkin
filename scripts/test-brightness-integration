@@ -1,0 +1,264 @@
+#!/usr/bin/env python3
+"""Real Process/IPC against a fake brightnessctl; no host sysfs or hardware."""
+
+import argparse
+from datetime import datetime, timezone
+import importlib.machinery
+import importlib.util
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+import tempfile
+import time
+import traceback
+
+from _common import ROOT, ipc_reply, ipc_json, isolated_environment, qml_errors, stop_process_group, tool
+
+loader = importlib.machinery.SourceFileLoader("putkin_measure_idle", str(ROOT / "scripts/measure-idle"))
+spec = importlib.util.spec_from_loader(loader.name, loader)
+measurement = importlib.util.module_from_spec(spec)
+loader.exec_module(measurement)
+
+
+def eventually(read, predicate, description, seconds=7):
+    deadline = time.monotonic() + seconds
+    last = None
+    while time.monotonic() < deadline:
+        last = read()
+        if predicate(last):
+            return last
+        time.sleep(0.025)
+    raise AssertionError(f"{description}: {last}")
+
+
+def run(output, idle):
+    quickshell, dbus = tool("quickshell"), tool("dbus-run-session")
+    entrypoint = str(ROOT / "brightness-test.qml")
+    output.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="pk-") as directory:
+        base = Path(directory)
+        env = isolated_environment(directory)
+        fixture = base / "backlight.json"
+        (base / "brightness-test-only").touch()
+        executable = base / "fake brightnessctl"
+        shutil.copyfile(ROOT / "tests/brightnessctl_fake.py", executable)
+        executable.chmod(0o700)
+        env.update(PUTKIN_TEST_BACKLIGHT=str(fixture), PUTKIN_TEST_BRIGHTNESSCTL=str(executable),
+                   PUTKIN_SCENARIO="closed", PUTKIN_LIVE_CLOCK="1", QS_NO_RELOAD_POPUP="1")
+        state = {"devices": [{"device": "test_backlight", "current": 60, "maximum": 100}]}
+
+        def configure(**updates):
+            state.update(updates)
+            fixture.write_text(json.dumps(state))
+
+        def events():
+            path = fixture.with_suffix(".events")
+            return [json.loads(line) for line in path.read_text().splitlines()] if path.exists() else []
+
+        configure()
+        with tempfile.TemporaryFile(mode="w+") as log:
+            process = subprocess.Popen([dbus, "--", quickshell, "--no-color", "--path", entrypoint], env=env,
+                                       stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+
+            def ipc(target, method, *args, starting=False):
+                result = subprocess.run([quickshell, "ipc", "--path", entrypoint, "call", target, method, *map(str, args)],
+                                        env=env, capture_output=True, text=True, timeout=4)
+                return ipc_reply(result, process, log, starting=starting)
+
+            def snapshot():
+                value = ipc("probe", "snapshot", starting=True)
+                return ipc_json(value)
+
+            def settled(percent=None, error=False):
+                return eventually(snapshot, lambda s: "busy" in s and not s["busy"]
+                                  and bool(s["error"]) == error and (percent is None or s["percent"] == percent), "brightness settled")
+
+            def refresh():
+                ipc("brightness", "refresh")
+                return settled()
+
+            def set_percent(value):
+                assert ipc("brightness", "setPercent", value) == "accepted"
+                return settled(value)
+
+            def child_gone(pid):
+                eventually(lambda: Path(f"/proc/{pid}").exists(), lambda exists: not exists, f"child {pid} reaped")
+
+            try:
+                initial = eventually(snapshot, lambda s: s.get("available") and not s["busy"], "startup discovery")
+                assert initial["percent"] == 60 and not initial["osd"], initial
+                assert len(events()) == 1, events()
+                for invalid in [0, -1, 101]:
+                    assert ipc("brightness", "setPercent", invalid) != "accepted"
+                for value in [1, 100, 30]:
+                    set_percent(value)
+                assert json.loads(fixture.read_text())["devices"][0]["current"] == 30
+                assert ipc("brightness", "change", 5) == "accepted"
+                settled(35)
+                configure(devices=[{"device": "test_backlight", "current": 35, "maximum": 100}], delay=0.08)
+                before = len(events())
+                ipc("probe", "burst", 40)
+                settled(75)
+                burst = events()[before:]
+                assert len([e for e in burst if "set" in e["args"]]) <= 2, burst
+                assert snapshot()["screen"] == "TEST-2"
+                configure(delay=0)
+
+                # One real LazyLoader switches content between services.
+                ipc("audio", "setVolume", 31)
+                eventually(snapshot, lambda s: s.get("kind") == "audio" and s["osdLoaded"], "audio OSD")
+                set_percent(45)
+                assert snapshot()["kind"] == "brightness"
+                assert ipc("ui", "openQuickSettings") == "ok"
+                eventually(snapshot, lambda s: s.get("panel") == "quickSettings" and not s["busy"] and not s["osdLoaded"], "panel refresh")
+                current = snapshot()["percent"]
+                configure(devices=[{"device": "test_backlight", "current": 22, "maximum": 100}])
+                count = len(events())
+                time.sleep(0.3)
+                assert snapshot()["percent"] == current and len(events()) == count
+                ipc("ui", "closePanels")
+                ipc("ui", "openQuickSettings")
+                settled(22)
+                ipc("ui", "closePanels")
+                ipc("probe", "hideOsd")
+
+                configure(writeMode="denied")
+                ipc("brightness", "setPercent", 80)
+                denied = settled(22, error=True)
+                assert "Permission denied" in denied["error"] and not denied["osd"], denied
+                configure(writeMode="ignore")
+                ipc("brightness", "setPercent", 80)
+                mismatch = settled(22, error=True)
+                assert "nie potwierdził" in mismatch["error"] and not mismatch["osd"], mismatch
+                for mode in ["timeout", "crash"]:
+                    configure(writeMode=mode)
+                    before = len(events())
+                    ipc("brightness", "setPercent", 80)
+                    failure = settled(22, error=True)
+                    assert not failure["osd"] and failure["child"] is None, failure
+                    if mode == "timeout":
+                        assert "czas" in failure["error"], failure
+                    for event in events()[before:]:
+                        child_gone(event["pid"])
+                configure(writeMode="ok")
+                set_percent(65)
+
+                for devices in [[], [{"device": "test_backlight", "current": 0, "maximum": 0}]]:
+                    configure(devices=devices)
+                    ipc("brightness", "refresh")
+                    missing = settled(error=bool(devices))
+                    assert not missing["available"] and missing["percent"] == -1 and not missing["osd"], missing
+                    assert ipc("brightness", "setPercent", 50) != "accepted"
+                configure(devices=[{"device": "test_backlight", "current": 0, "maximum": 100}])
+                refresh()
+                assert snapshot()["available"] and snapshot()["percent"] == 0
+                for mode in ["malformed", "denied", "timeout"]:
+                    configure(readMode=mode)
+                    ipc("brightness", "refresh")
+                    failure = settled(error=True)
+                    assert not failure["available"] and not failure["osd"], failure
+                configure(readMode="ok")
+                refresh()
+
+                # FailedToStart has no exited signal in Quickshell 0.3.1.
+                missing_executable = str(base / "missing-brightnessctl")
+                ipc("probe", "executable", missing_executable)
+                ipc("brightness", "refresh")
+                missing = settled(error=True)
+                assert "uruchomić" in missing["error"] and not missing["available"], missing
+                ipc("probe", "executable", str(executable))
+                refresh()
+
+                # Reload must terminate a pending child, never detach it.
+                for hard in ["false", "true"]:
+                    configure(writeMode="timeout")
+                    ipc("brightness", "setPercent", 55)
+                    child = eventually(snapshot, lambda s: s.get("child", 0), "pending child")["child"]
+                    ipc("probe", "reload", hard)
+                    child_gone(child)
+                    eventually(snapshot, lambda s: s.get("available") and not s["busy"], "reload readback")
+                    assert not snapshot()["osd"], snapshot()
+                configure(writeMode="ok")
+                set_percent(30)
+
+                tree = measurement.process_tree(process.pid)
+                shells = [p for p in tree if p["parent"] == process.pid and
+                          b"--path" in Path(f"/proc/{p['pid']}/cmdline").read_bytes().split(b"\0")]
+                assert len(shells) == 1, tree
+                pid = shells[0]["pid"]
+                ipc("probe", "timeout", 400)
+                cycles = []
+                for cycle in range(20):
+                    set_percent(31 + cycle)
+                    eventually(snapshot, lambda s: s.get("osdLoaded"), "OSD loaded")
+                    # LazyLoader can become inactive one event turn before
+                    # Component.onDestruction; wait for actual destruction too.
+                    closed = eventually(snapshot, lambda s: not s.get("osdLoaded") and s.get("created") == s.get("destroyed"), "OSD destroyed")
+                    cycles.append({"cycle": cycle + 1, **measurement.snapshot(pid)})
+
+                report = {"timestamp_utc": datetime.now(timezone.utc).isoformat(),
+                          "mode": "offscreen/software; real Process/IPC/LazyLoader; fake brightnessctl; mock audio and monitors; no hardware",
+                          "cycles": cycles, "final": snapshot(), "events": events()}
+                if idle:
+                    stop_process_group(process)
+                    process = subprocess.Popen([dbus, "--", quickshell, "--no-color", "--path", entrypoint], env=env,
+                                               stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+                    eventually(snapshot, lambda s: s.get("available") and not s["busy"], "fresh idle process")
+                    time.sleep(2)
+                    tree = measurement.process_tree(process.pid)
+                    shells = [p for p in tree if p["parent"] == process.pid and
+                              b"--path" in Path(f"/proc/{p['pid']}/cmdline").read_bytes().split(b"\0")]
+                    assert len(shells) == 1, tree
+                    pid = shells[0]["pid"]
+                    count = len(events())
+                    start = time.monotonic()
+                    samples = [{"elapsed_s": 0, **measurement.snapshot(pid)}]
+                    print("Brightness idle: 60 s, closed panel/OSD, no polling or live child.", flush=True)
+                    for second in range(1, 61):
+                        time.sleep(max(0, start + second - time.monotonic()))
+                        samples.append({"elapsed_s": time.monotonic() - start, **measurement.snapshot(pid)})
+                        if second % 20 == 0:
+                            print(f"{second}/60 s", flush=True)
+                    assert len(events()) == count, "unexpected background brightness command"
+                    cpu = (samples[-1]["cpu_ticks"] - samples[0]["cpu_ticks"]) / os.sysconf("SC_CLK_TCK")
+                    report["idle"] = {"samples": samples, "duration_s": samples[-1]["elapsed_s"], "warmup_s": 2,
+                                      "cpu_seconds": cpu, "cpu_percent_one_core": cpu / samples[-1]["elapsed_s"] * 100,
+                                      "rss_kib": {"start": samples[0]["rss_kib"], "end": samples[-1]["rss_kib"],
+                                                  "min": min(s["rss_kib"] for s in samples), "max": max(s["rss_kib"] for s in samples)},
+                                      "initial_process_tree": tree, "process_tree": measurement.process_tree(process.pid),
+                                      "brightness_commands": len(events()) - count}
+                log.seek(0)
+                diagnostics = qml_errors(log.read(), allow_offscreen_masks=True)
+                expected = f'WARN: Process failed to start, likely because the binary could not be found. Command: QList("{missing_executable}", "--class=backlight", "--machine-readable", "--list")'
+                assert [line.strip() for line in diagnostics] == [expected], diagnostics
+                report["expected_diagnostics"] = diagnostics
+                print(expected)
+                output.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n")
+                print(f"PASS: brightness Process/IPC, readback, errors, timeout/kill, reload, 20 OSD cycles; {output}")
+            finally:
+                stop_process_group(process)
+                log.seek(0)
+                output.with_suffix(".log").write_text(log.read())
+                for event in events():
+                    child_gone(event["pid"])
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, default=ROOT / "artifacts/brightness-integration.json")
+    parser.add_argument("--idle", action="store_true")
+    args = parser.parse_args()
+    try:
+        run(args.output.resolve(), args.idle)
+    except (AssertionError, OSError, subprocess.SubprocessError):
+        traceback.print_exc()
+        print(f"FAIL: see {args.output.with_suffix('.log')}", file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

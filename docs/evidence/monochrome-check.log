@@ -1,0 +1,5 @@
+FAIL [imports/types, exit=255] /home/attntd/projects/putkin/status-test.qml
+Warning: /home/attntd/projects/putkin/status-test.qml:27:43: Member "contentItem" not found on type "QQuickItem" [missing-property]
+            const image = button ? button.contentItem.children.find(child => child.objectName === "trayApplicationIcon") : null;
+                                          ^^^^^^^^^^^
+FAIL: 194 plików QML, 1 z błędami.

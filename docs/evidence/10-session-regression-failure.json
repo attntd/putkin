@@ -1,0 +1,47 @@
+{
+  "timestamp": "2026-09-16T17:41:25.519619+00:00",
+  "checks": [
+    "capabilities and explicit current session",
+    "confirmation cancellation makes no system call",
+    "lock requested -> protocol confirmation -> one Suspend",
+    "paired login1 PrepareForSleep resumes brightness once",
+    "no confirmation, late signal and duplicate launcher cannot suspend",
+    "denial, timeout and late reply have no implicit retry",
+    "own session only, logind no and challenge capabilities",
+    "observer loss invalidates pending lock transaction",
+    "soft/hard reload cancels waiting helper and preserves one external locker",
+    "locker exit zero is not readiness"
+  ],
+  "cycles": [
+    {
+      "pid": 223022,
+      "name": "quickshell",
+      "parent": 223018,
+      "cpu_ticks": 91,
+      "rss_kib": 137352
+    },
+    {
+      "pid": 223022,
+      "name": "quickshell",
+      "parent": 223018,
+      "cpu_ticks": 93,
+      "rss_kib": 137608
+    },
+    {
+      "pid": 223022,
+      "name": "quickshell",
+      "parent": 223018,
+      "cpu_ticks": 96,
+      "rss_kib": 137608
+    },
+    {
+      "pid": 223022,
+      "name": "quickshell",
+      "parent": 223018,
+      "cpu_ticks": 99,
+      "rss_kib": 137864
+    }
+  ],
+  "isolation": "private system+session D-Bus and XDG; offscreen; fake locker; observer identity substituted only in fixture helper",
+  "remaining_pids": []
+}

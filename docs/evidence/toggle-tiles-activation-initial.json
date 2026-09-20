@@ -1,0 +1,5 @@
+{
+  "command": "python /tmp/putkin-toggle-tiles-update/activate.py",
+  "result": "restore branch selected because --apply missing; unchanged configs, old instance remained running; failed to write restored.json because backup not created",
+  "correction": "rerun with --apply completed successfully"
+}

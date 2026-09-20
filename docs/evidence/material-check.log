@@ -1,0 +1,24 @@
+FAIL [imports/types, exit=255] /home/attntd/projects/putkin/notifications-test.qml
+Warning: /home/attntd/projects/putkin/notifications-test.qml:27:70: Member "symbol" not found on type "QQuickItem" [missing-property]
+                bell: view.scene.bar.notificationsButton.contentItem.symbol,
+                                                                     ^^^^^^
+FAIL [imports/types, exit=255] /home/attntd/projects/putkin/tests/qml/tst_visual_contract.qml
+Warning: /home/attntd/projects/putkin/tests/qml/tst_visual_contract.qml:115:30: Member "symbol" not found on type "QQuickItem" [missing-property]
+                compare(icon.symbol, entry[1]);
+                             ^^^^^^
+Warning: /home/attntd/projects/putkin/tests/qml/tst_visual_contract.qml:116:30: Member "iconSize" not found on type "QQuickItem" [missing-property]
+                compare(icon.iconSize, 24); compare(icon.iconPadding, 4);
+                             ^^^^^^^^
+Warning: /home/attntd/projects/putkin/tests/qml/tst_visual_contract.qml:116:58: Member "iconPadding" not found on type "QQuickItem" [missing-property]
+                compare(icon.iconSize, 24); compare(icon.iconPadding, 4);
+                                                         ^^^^^^^^^^^
+Warning: /home/attntd/projects/putkin/tests/qml/tst_visual_contract.qml:119:26: Member "symbol" not found on type "QQuickItem" [missing-property]
+            compare(icon.symbol, "signal_wifi_0_bar");
+                         ^^^^^^
+Warning: /home/attntd/projects/putkin/tests/qml/tst_visual_contract.qml:121:26: Member "symbol" not found on type "QQuickItem" [missing-property]
+            compare(icon.symbol, "signal_wifi_off");
+                         ^^^^^^
+Warning: /home/attntd/projects/putkin/tests/qml/tst_visual_contract.qml:123:26: Member "symbol" not found on type "QQuickItem" [missing-property]
+            compare(icon.symbol, "settings_ethernet");
+                         ^^^^^^
+FAIL: 195 plików QML, 2 z błędami.

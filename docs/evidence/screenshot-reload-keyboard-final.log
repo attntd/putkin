@@ -1,0 +1,19 @@
+PASS: startup: eight owned bindings including Print, no duplicates or errors
+PASS: native square 2px window borders and shared diagonal GPU pixels
+PASS: real Super+Space / Super+: / Super+V keyboard input
+PASS: appearance preview changes window borders; cancel restores the saved palette
+PASS: real floating Settings window, preserved on focus loss, appearance persisted
+Traceback (most recent call last):
+  File "/home/attntd/projects/putkin/scripts/test-keyboard-wayland", line 234, in <module>
+    if __name__=='__main__': sys.exit(main())
+                                      ~~~~^^
+  File "/home/attntd/projects/putkin/scripts/test-keyboard-wayland", line 215, in main
+    if args.inside: inside(args.inside); return 0
+                    ~~~~~~^^^^^^^^^^^^^
+  File "/home/attntd/projects/putkin/scripts/test-keyboard-wayland", line 145, in inside
+    border_capture('window-border-saved', '#fab387', '#89b4fa')
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/putkin/scripts/test-keyboard-wayland", line 108, in border_capture
+    assert len(actual) == 3 and all(abs(a-b) <= 3 for a,b in zip(actual,expected)), record
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'image': 'window-border-saved.png', 'x': 450, 'y': 0, 'width': 901, 'height': 525, 'actual': [182, 149, 137], 'expected': [221.69619047619048, 179.25047619047618, 163.8047619047619]}

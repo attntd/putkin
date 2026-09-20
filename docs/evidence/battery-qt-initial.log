@@ -1,0 +1,45 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::BatteryTray::initTestCase()
+PASS   : qmltestrunner::BatteryTray::test_absent_peripheral_unavailable_and_return()
+PASS   : qmltestrunner::BatteryTray::test_bar_activation_secondary_menu_tooltip_fallback()
+PASS   : qmltestrunner::BatteryTray::test_bar_keyboard_and_only_menu()
+FAIL!  : qmltestrunner::BatteryTray::test_battery_missing_profiles_and_focus_recovery() 'verify()' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_status.qml(148)]
+FAIL!  : qmltestrunner::BatteryTray::test_battery_monitor_toggle_and_twenty_cycles() Uncaught exception: Property 'enter' of object BarFocus_QMLTYPE_46(0x560340439ba0) is not a function
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_status.qml(194)]
+FAIL!  : qmltestrunner::BatteryTray::test_battery_profile_keyboard_confirmed_state_and_refusal() 'verify()' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_status.qml(137)]
+PASS   : qmltestrunner::BatteryTray::test_battery_small_screen_scroll_and_mouse()
+PASS   : qmltestrunner::BatteryTray::test_battery_states(charging)
+PASS   : qmltestrunner::BatteryTray::test_battery_states(discharging)
+PASS   : qmltestrunner::BatteryTray::test_battery_states(full)
+PASS   : qmltestrunner::BatteryTray::test_battery_states(unknown)
+PASS   : qmltestrunner::BatteryTray::test_battery_states(empty)
+PASS   : qmltestrunner::BatteryTray::test_battery_states(pendingCharge)
+PASS   : qmltestrunner::BatteryTray::test_battery_states(pendingDischarge)
+PASS   : qmltestrunner::BatteryTray::test_battery_unknown_time_absent_and_full()
+PASS   : qmltestrunner::BatteryTray::test_invalid_percent_unknown_time_and_warning_keeps_semantics()
+FAIL!  : qmltestrunner::BatteryTray::test_layouts_preserve_main_controls() Compared values are not the same
+   Actual   (): trayMenu
+   Expected (): battery
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_status.qml(75)]
+FAIL!  : qmltestrunner::BatteryTray::test_menu_live_update_removes_submenu_and_recovers_focus() Compared values are not the same
+   Actual   (): trayMenu
+   Expected (): battery
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_status.qml(75)]
+FAIL!  : qmltestrunner::BatteryTray::test_menu_vim_standard_keys_submenu_and_trigger() Compared values are not the same
+   Actual   (): trayMenu
+   Expected (): battery
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_status.qml(75)]
+PASS   : qmltestrunner::BatteryTray::test_overflow_all_items_scrolling_back_and_escape_restore()
+PASS   : qmltestrunner::BatteryTray::test_removal_with_focus_and_active_menu()
+PASS   : qmltestrunner::BatteryTray::test_return_after_invoker_removed_and_keyboard_context_menu()
+FAIL!  : qmltestrunner::BatteryTray::test_surface_exclusion_settings_cancel_and_monitor() Compared values are not the same
+   Actual   (): trayMenu
+   Expected (): battery
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_status.qml(75)]
+PASS   : qmltestrunner::BatteryTray::test_updates_do_not_take_focus_from_header_and_passive_skips()
+PASS   : qmltestrunner::BatteryTray::cleanupTestCase()
+Totals: 19 passed, 7 failed, 0 skipped, 0 blacklisted, 11533ms
+********* Finished testing of qmltestrunner *********

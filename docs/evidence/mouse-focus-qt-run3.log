@@ -1,0 +1,112 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::PointerFocus::initTestCase()
+FAIL!  : qmltestrunner::PointerFocus::test_bar(workspace) Compared values are not the same
+   Actual   (): 0
+   Expected (): 1
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(148)]
+FAIL!  : qmltestrunner::PointerFocus::test_bar(tray) Compared values are not the same
+   Actual   (): 0
+   Expected (): 1
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(148)]
+FAIL!  : qmltestrunner::PointerFocus::test_bar(tray-menu) Compared values are not the same
+   Actual   (): 0
+   Expected (): 1
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(148)]
+FAIL!  : qmltestrunner::PointerFocus::test_bar(overflow) Compared values are not the same
+   Actual   (): 0
+   Expected (): 1
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(148)]
+FAIL!  : qmltestrunner::PointerFocus::test_bar(network) Compared values are not the same
+   Actual   (): 0
+   Expected (): 1
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(148)]
+FAIL!  : qmltestrunner::PointerFocus::test_bar(bluetooth) Compared values are not the same
+   Actual   (): 0
+   Expected (): 1
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(148)]
+FAIL!  : qmltestrunner::PointerFocus::test_bar(audio) Compared values are not the same
+   Actual   (): 0
+   Expected (): 1
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(148)]
+FAIL!  : qmltestrunner::PointerFocus::test_bar(battery) Compared values are not the same
+   Actual   (): 0
+   Expected (): 1
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(148)]
+FAIL!  : qmltestrunner::PointerFocus::test_bar(quick) Compared values are not the same
+   Actual   (): 0
+   Expected (): 1
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(148)]
+FAIL!  : qmltestrunner::PointerFocus::test_keyboard_entry_and_return_after_mouse() property loaded
+   Actual   (): false
+   Expected (): true
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(90)]
+FAIL!  : qmltestrunner::PointerFocus::test_mouse_page_changes_and_power_confirmation() property loaded
+   Actual   (): false
+   Expected (): true
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(90)]
+FAIL!  : qmltestrunner::PointerFocus::test_quick_controls(audioMute) property loaded
+   Actual   (): false
+   Expected (): true
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(90)]
+FAIL!  : qmltestrunner::PointerFocus::test_quick_controls(audioOutputs) property loaded
+   Actual   (): false
+   Expected (): true
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(90)]
+FAIL!  : qmltestrunner::PointerFocus::test_quick_controls(brightnessDetails) property loaded
+   Actual   (): false
+   Expected (): true
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(90)]
+FAIL!  : qmltestrunner::PointerFocus::test_quick_controls(wifiRadio) property loaded
+   Actual   (): false
+   Expected (): true
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(90)]
+FAIL!  : qmltestrunner::PointerFocus::test_quick_controls(wifiExpand) property loaded
+   Actual   (): false
+   Expected (): true
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(90)]
+FAIL!  : qmltestrunner::PointerFocus::test_quick_controls(bluetoothRadio) property loaded
+   Actual   (): false
+   Expected (): true
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(90)]
+FAIL!  : qmltestrunner::PointerFocus::test_quick_controls(bluetoothExpand) property loaded
+   Actual   (): false
+   Expected (): true
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(90)]
+FAIL!  : qmltestrunner::PointerFocus::test_quick_controls(nightLightToggle) property loaded
+   Actual   (): false
+   Expected (): true
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(90)]
+FAIL!  : qmltestrunner::PointerFocus::test_quick_controls(nightLightExpand) property loaded
+   Actual   (): false
+   Expected (): true
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(90)]
+FAIL!  : qmltestrunner::PointerFocus::test_quick_controls(notificationDnd) property loaded
+   Actual   (): false
+   Expected (): true
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(90)]
+FAIL!  : qmltestrunner::PointerFocus::test_shared_buttons(button) Compared values are not the same
+   Actual   (): 0
+   Expected (): 1
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(109)]
+FAIL!  : qmltestrunner::PointerFocus::test_shared_buttons(navigation) Compared values are not the same
+   Actual   (): 0
+   Expected (): 1
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(109)]
+FAIL!  : qmltestrunner::PointerFocus::test_shared_buttons(module) Compared values are not the same
+   Actual   (): 0
+   Expected (): 1
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(109)]
+FAIL!  : qmltestrunner::PointerFocus::test_shared_buttons(tile) Compared values are not the same
+   Actual   (): 0
+   Expected (): 1
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(109)]
+FAIL!  : qmltestrunner::PointerFocus::test_shared_buttons(icon) Compared values are not the same
+   Actual   (): 0
+   Expected (): 1
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(109)]
+FAIL!  : qmltestrunner::PointerFocus::test_slider_and_text_keep_standard_input() 'verify()' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_pointer_focus.qml(118)]
+PASS   : qmltestrunner::PointerFocus::cleanupTestCase()
+Totals: 2 passed, 27 failed, 0 skipped, 0 blacklisted, 61362ms
+********* Finished testing of qmltestrunner *********

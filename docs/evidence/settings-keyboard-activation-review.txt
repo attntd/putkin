@@ -1,0 +1,5 @@
+Automatyczny przegląd uprawnień odrzucił wywołanie activate.py --apply przed uruchomieniem procesu.
+Powód: Akcja zatrzymuje aktywny shell i modyfikuje trzy hostowe konfiguracje Hyprlanda; mimo rollbacku użytkownik nie autoryzował wprost wdrożenia na działającym pulpicie.
+Wysłano pytanie o zgodę. Nie próbowano obejścia odmowy.
+
+Użytkownik następnie zatwierdził: „Tak, uruchom przygotowaną wersję”. Ponowne wywołanie uzyskało zgodę; aktywacja i odbiór zakończone kodem 0.

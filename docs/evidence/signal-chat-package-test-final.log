@@ -1,0 +1,4 @@
+Przywrócono poprzedni shell i jego autostart.
+Przywrócono poprzedni shell i jego autostart.
+Przywrócono poprzedni shell i jego autostart.
+PASS: 261 runtime files match the verified base plus the Signal source overlay; 8 configurations change only release paths; auth/settings ownership preserved; all three Caffeinate modes and idempotent restoration passed; rollback, repeated rollback and later-edit protection passed on temporary files.

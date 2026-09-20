@@ -1,0 +1,60 @@
+[bus]
+dbus-daemon[202839]: [session uid=1000 pid=202839 pidfd=4] Connection :1.2 (uid=1000 pid=202857 comm="/usr/bin/python3 -B /home/attntd/projects/putkin/s") became a monitor.
+dbus-daemon[202839]: [session uid=1000 pid=202839 pidfd=4] Monitoring connection :1.2 closed.
+dbus-daemon[202839]: [session uid=1000 pid=202839 pidfd=4] Connection :1.10 (uid=1000 pid=203196 comm="/usr/bin/python3 -B /home/attntd/projects/putkin/s") became a monitor.
+dbus-daemon[202839]: [session uid=1000 pid=202839 pidfd=4] Monitoring connection :1.10 closed.
+dbus-daemon[202839]: [session uid=1000 pid=202839 pidfd=4] Connection :1.15 (uid=1000 pid=203214 comm="/usr/bin/python3 -B /home/attntd/projects/putkin/s") became a monitor.
+dbus-daemon[202839]: [session uid=1000 pid=202839 pidfd=4] Monitoring connection :1.15 closed.
+dbus-daemon[202839]: [session uid=1000 pid=202839 pidfd=4] Connection :1.21 (uid=1000 pid=203251 comm="/usr/bin/python3 -B /home/attntd/projects/putkin/s") became a monitor.
+dbus-daemon[202839]: [session uid=1000 pid=202839 pidfd=4] Monitoring connection :1.21 closed.
+dbus-daemon[202839]: [session uid=1000 pid=202839 pidfd=4] Connection :1.27 (uid=1000 pid=203299 comm="/usr/bin/python3 -B /home/attntd/projects/putkin/s") became a monitor.
+dbus-daemon[202839]: [session uid=1000 pid=202839 pidfd=4] Monitoring connection :1.27 closed.
+
+[native]
+  INFO: Launching config: "/home/attntd/projects/putkin/notifications-test.qml"
+  INFO: Shell ID: "baaa508919dd09c1fdb0fe45f5dbe4c8" Path ID "baaa508919dd09c1fdb0fe45f5dbe4c8"
+  INFO: Saving logs to "/tmp/pk-79zp015r/runtime/quickshell/by-id/gic4wyuglt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+  INFO: Reloading configuration...
+  WARN: This plugin does not support setting window masks
+  INFO: Configuration Loaded
+  INFO qml: PUTKIN_PREVIEW_READY
+  INFO: Reloading configuration...
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+
+[conflict]
+  INFO: Launching config: "/home/attntd/projects/putkin/notifications-test.qml"
+  INFO: Shell ID: "baaa508919dd09c1fdb0fe45f5dbe4c8" Path ID "baaa508919dd09c1fdb0fe45f5dbe4c8"
+  INFO: Saving logs to "/tmp/pk-79zp015r/runtime/quickshell/by-id/2tc4bzuglt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+
+[recovery]
+  INFO: Launching config: "/home/attntd/projects/putkin/notifications-test.qml"
+  INFO: Shell ID: "baaa508919dd09c1fdb0fe45f5dbe4c8" Path ID "baaa508919dd09c1fdb0fe45f5dbe4c8"
+  INFO: Saving logs to "/tmp/pk-79zp015r/runtime/quickshell/by-id/jtc4czuglt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+
+[missing-helper]
+  INFO: Launching config: "/home/attntd/projects/putkin/notifications-test.qml"
+  INFO: Shell ID: "baaa508919dd09c1fdb0fe45f5dbe4c8" Path ID "baaa508919dd09c1fdb0fe45f5dbe4c8"
+  INFO: Saving logs to "/tmp/pk-79zp015r/runtime/quickshell/by-id/euc4dzuglt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  WARN: Process failed to start, likely because the binary could not be found. Command: QList("python3", "-B", "/home/attntd/projects/putkin/services/notification-watch.py")
+  INFO qml: PUTKIN_PREVIEW_READY
+
+[idle]
+  INFO: Launching config: "/home/attntd/projects/putkin/notifications-test.qml"
+  INFO: Shell ID: "baaa508919dd09c1fdb0fe45f5dbe4c8" Path ID "baaa508919dd09c1fdb0fe45f5dbe4c8"
+  INFO: Saving logs to "/tmp/pk-79zp015r/runtime/quickshell/by-id/uuc4dzuglt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY

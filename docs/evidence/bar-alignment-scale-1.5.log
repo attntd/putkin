@@ -1,0 +1,49 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::BarAlignment::initTestCase()
+QDEBUG : qmltestrunner::BarAlignment::test_charging_preserves_frame_and_level(0) qml: Capture: 800 180 800 180 1.5
+FAIL!  : qmltestrunner::BarAlignment::test_charging_preserves_frame_and_level(0) Uncaught exception: Cannot read property 'r' of undefined
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_bar_alignment.qml(46)]
+QDEBUG : qmltestrunner::BarAlignment::test_charging_preserves_frame_and_level(10) qml: Capture: 800 180 800 180 1.5
+FAIL!  : qmltestrunner::BarAlignment::test_charging_preserves_frame_and_level(10) Uncaught exception: Cannot read property 'r' of undefined
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_bar_alignment.qml(46)]
+QDEBUG : qmltestrunner::BarAlignment::test_charging_preserves_frame_and_level(25) qml: Capture: 800 180 800 180 1.5
+FAIL!  : qmltestrunner::BarAlignment::test_charging_preserves_frame_and_level(25) Uncaught exception: Cannot read property 'r' of undefined
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_bar_alignment.qml(46)]
+QDEBUG : qmltestrunner::BarAlignment::test_charging_preserves_frame_and_level(40) qml: Capture: 800 180 800 180 1.5
+FAIL!  : qmltestrunner::BarAlignment::test_charging_preserves_frame_and_level(40) Uncaught exception: Cannot read property 'r' of undefined
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_bar_alignment.qml(46)]
+QDEBUG : qmltestrunner::BarAlignment::test_charging_preserves_frame_and_level(55) qml: Capture: 800 180 800 180 1.5
+FAIL!  : qmltestrunner::BarAlignment::test_charging_preserves_frame_and_level(55) Uncaught exception: Cannot read property 'r' of undefined
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_bar_alignment.qml(46)]
+QDEBUG : qmltestrunner::BarAlignment::test_charging_preserves_frame_and_level(70) qml: Capture: 800 180 800 180 1.5
+FAIL!  : qmltestrunner::BarAlignment::test_charging_preserves_frame_and_level(70) Uncaught exception: Cannot read property 'r' of undefined
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_bar_alignment.qml(46)]
+QDEBUG : qmltestrunner::BarAlignment::test_charging_preserves_frame_and_level(85) qml: Capture: 800 180 800 180 1.5
+FAIL!  : qmltestrunner::BarAlignment::test_charging_preserves_frame_and_level(85) Uncaught exception: Cannot read property 'r' of undefined
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_bar_alignment.qml(46)]
+QDEBUG : qmltestrunner::BarAlignment::test_charging_preserves_frame_and_level(100) qml: Capture: 800 180 800 180 1.5
+FAIL!  : qmltestrunner::BarAlignment::test_charging_preserves_frame_and_level(100) Uncaught exception: Cannot read property 'r' of undefined
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_bar_alignment.qml(46)]
+QDEBUG : qmltestrunner::BarAlignment::test_clock_visible_glyphs_are_centered(pl_PL0) qml: Capture: 800 180 800 180 1.5
+FAIL!  : qmltestrunner::BarAlignment::test_clock_visible_glyphs_are_centered(pl_PL0) Uncaught exception: Cannot read property 'r' of undefined
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_bar_alignment.qml(46)]
+QDEBUG : qmltestrunner::BarAlignment::test_clock_visible_glyphs_are_centered(pl_PL1) qml: Capture: 800 180 800 180 1.5
+FAIL!  : qmltestrunner::BarAlignment::test_clock_visible_glyphs_are_centered(pl_PL1) Uncaught exception: Cannot read property 'r' of undefined
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_bar_alignment.qml(46)]
+QDEBUG : qmltestrunner::BarAlignment::test_clock_visible_glyphs_are_centered(pl_PL2) qml: Capture: 800 180 800 180 1.5
+FAIL!  : qmltestrunner::BarAlignment::test_clock_visible_glyphs_are_centered(pl_PL2) Uncaught exception: Cannot read property 'r' of undefined
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_bar_alignment.qml(46)]
+QDEBUG : qmltestrunner::BarAlignment::test_clock_visible_glyphs_are_centered(en_US0) qml: Capture: 800 180 800 180 1.5
+FAIL!  : qmltestrunner::BarAlignment::test_clock_visible_glyphs_are_centered(en_US0) Uncaught exception: Cannot read property 'r' of undefined
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_bar_alignment.qml(46)]
+QDEBUG : qmltestrunner::BarAlignment::test_clock_visible_glyphs_are_centered(en_US1) qml: Capture: 800 180 800 180 1.5
+FAIL!  : qmltestrunner::BarAlignment::test_clock_visible_glyphs_are_centered(en_US1) Uncaught exception: Cannot read property 'r' of undefined
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_bar_alignment.qml(46)]
+QDEBUG : qmltestrunner::BarAlignment::test_clock_visible_glyphs_are_centered(en_US2) qml: Capture: 800 180 800 180 1.5
+FAIL!  : qmltestrunner::BarAlignment::test_clock_visible_glyphs_are_centered(en_US2) Uncaught exception: Cannot read property 'r' of undefined
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_bar_alignment.qml(46)]
+PASS   : qmltestrunner::BarAlignment::test_equal_canvas_padding_above_separator()
+PASS   : qmltestrunner::BarAlignment::cleanupTestCase()
+Totals: 3 passed, 14 failed, 0 skipped, 0 blacklisted, 62ms
+********* Finished testing of qmltestrunner *********

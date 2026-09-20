@@ -1,0 +1,31 @@
+{
+  "production_adapter": "services/session_backend.py",
+  "verified_hypridle_owner": true,
+  "hypridle_pid": 913,
+  "screen_locked_at_read": false,
+  "own_active_session_identified": true,
+  "capabilities": {
+    "reboot": {
+      "available": true,
+      "reason": ""
+    },
+    "poweroff": {
+      "available": true,
+      "reason": ""
+    },
+    "suspend": {
+      "available": true,
+      "reason": ""
+    },
+    "logout": {
+      "available": true,
+      "reason": ""
+    },
+    "lock": {
+      "available": true,
+      "reason": ""
+    }
+  },
+  "read_only": true,
+  "note": "PID/executable/version/display identify the observer; readiness uses the ScreenSaver protocol. No Lock/Suspend/logout request issued."
+}

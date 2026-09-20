@@ -1,0 +1,7158 @@
+{
+  "timestamp_utc": "2026-09-16T21:48:20.944530+00:00",
+  "checks": [
+    "native BarWindow/WallpaperWindow/InteractivePanelWindow mapped; initial panel keyboard focus; real output capture",
+    "separate Wayland application receives hjkl before and during native OSD/toast; overlays do not steal focus",
+    "real private virtual-pointer click outside panel closes it and returns input to the separate application",
+    "explicit notification navigation accepts Escape and outside click; passive toast remains and foreign input returns",
+    "complete hjkl/Enter journey on native surfaces: workspace, both accents/save, audio, brightness, PSK, Bluetooth, DND, critical toast, Power cancellation and returned bar focus",
+    "fortieth tray item is keyboard reachable and revealed; real panel submenu opens and activates once",
+    "two physical sizes x four native output scales; panel fits and keyboard reveals bottom controls; one bar and 32 px reservation per output",
+    "mixed native scales, focused-monitor panel/audio IPC; hotplug during Wi-Fi scanning, appearance draft, tray submenu and Power confirmation releases surfaces and temporary state",
+    "20 native panel cycles release all created views, Wi-Fi scan leases and drafts; no discovery/session calls",
+    "native soft/hard reload while scan or appearance draft is open; saved appearance persists"
+  ],
+  "captures": [
+    {
+      "image": "initial-quick.png",
+      "output": "HEADLESS-1",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "monitors": [
+        {
+          "id": 0,
+          "name": "WAYLAND-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 3920,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 1,
+            "name": "1"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": false,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE",
+            "HW_CURSOR"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        },
+        {
+          "id": 1,
+          "name": "HEADLESS-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2000,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 2,
+            "name": "2"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": true,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "SW",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [
+            "1920x1080@60.00Hz"
+          ],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        }
+      ],
+      "command": [
+        "/tmp/pw-blju89vn/grim",
+        "-o",
+        "HEADLESS-1",
+        "-s",
+        "1",
+        "/tmp/pw-blju89vn/evidence/initial-quick.png"
+      ]
+    },
+    {
+      "image": "passive-overlays.png",
+      "output": "HEADLESS-1",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "monitors": [
+        {
+          "id": 0,
+          "name": "WAYLAND-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 3920,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 1,
+            "name": "1"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": false,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE",
+            "HW_CURSOR"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        },
+        {
+          "id": 1,
+          "name": "HEADLESS-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2000,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 2,
+            "name": "2"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": true,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "SW",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [
+            "1920x1080@60.00Hz"
+          ],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        }
+      ],
+      "command": [
+        "/tmp/pw-blju89vn/grim",
+        "-o",
+        "HEADLESS-1",
+        "-s",
+        "1",
+        "/tmp/pw-blju89vn/evidence/passive-overlays.png"
+      ]
+    },
+    {
+      "image": "settings-mauve.png",
+      "output": "HEADLESS-1",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "monitors": [
+        {
+          "id": 0,
+          "name": "WAYLAND-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 3920,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 1,
+            "name": "1"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": false,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE",
+            "HW_CURSOR"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        },
+        {
+          "id": 1,
+          "name": "HEADLESS-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2000,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 3,
+            "name": "3"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": true,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "SW",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [
+            "1920x1080@60.00Hz"
+          ],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        }
+      ],
+      "command": [
+        "/tmp/pw-blju89vn/grim",
+        "-o",
+        "HEADLESS-1",
+        "-s",
+        "1",
+        "/tmp/pw-blju89vn/evidence/settings-mauve.png"
+      ]
+    },
+    {
+      "image": "settings-teal-peach.png",
+      "output": "HEADLESS-1",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "monitors": [
+        {
+          "id": 0,
+          "name": "WAYLAND-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 3920,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 1,
+            "name": "1"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": false,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE",
+            "HW_CURSOR"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        },
+        {
+          "id": 1,
+          "name": "HEADLESS-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2000,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 3,
+            "name": "3"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": true,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "SW",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [
+            "1920x1080@60.00Hz"
+          ],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        }
+      ],
+      "command": [
+        "/tmp/pw-blju89vn/grim",
+        "-o",
+        "HEADLESS-1",
+        "-s",
+        "1",
+        "/tmp/pw-blju89vn/evidence/settings-teal-peach.png"
+      ]
+    },
+    {
+      "image": "power-cancel.png",
+      "output": "HEADLESS-1",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "monitors": [
+        {
+          "id": 0,
+          "name": "WAYLAND-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 3920,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 1,
+            "name": "1"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": false,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE",
+            "HW_CURSOR"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        },
+        {
+          "id": 1,
+          "name": "HEADLESS-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2000,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 3,
+            "name": "3"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": true,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "SW",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [
+            "1920x1080@60.00Hz"
+          ],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        }
+      ],
+      "command": [
+        "/tmp/pw-blju89vn/grim",
+        "-o",
+        "HEADLESS-1",
+        "-s",
+        "1",
+        "/tmp/pw-blju89vn/evidence/power-cancel.png"
+      ]
+    },
+    {
+      "image": "tray-overflow-last.png",
+      "output": "HEADLESS-1",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "monitors": [
+        {
+          "id": 0,
+          "name": "WAYLAND-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 3920,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 1,
+            "name": "1"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": false,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE",
+            "HW_CURSOR"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        },
+        {
+          "id": 1,
+          "name": "HEADLESS-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2000,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 3,
+            "name": "3"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": true,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "SW",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [
+            "1920x1080@60.00Hz"
+          ],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        }
+      ],
+      "command": [
+        "/tmp/pw-blju89vn/grim",
+        "-o",
+        "HEADLESS-1",
+        "-s",
+        "1",
+        "/tmp/pw-blju89vn/evidence/tray-overflow-last.png"
+      ]
+    },
+    {
+      "image": "tray-submenu.png",
+      "output": "HEADLESS-1",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "monitors": [
+        {
+          "id": 0,
+          "name": "WAYLAND-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 3920,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 1,
+            "name": "1"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": false,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE",
+            "HW_CURSOR"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        },
+        {
+          "id": 1,
+          "name": "HEADLESS-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2000,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 3,
+            "name": "3"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": true,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "SW",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [
+            "1920x1080@60.00Hz"
+          ],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        }
+      ],
+      "command": [
+        "/tmp/pw-blju89vn/grim",
+        "-o",
+        "HEADLESS-1",
+        "-s",
+        "1",
+        "/tmp/pw-blju89vn/evidence/tray-submenu.png"
+      ]
+    },
+    {
+      "image": "quick-1920x1080-1.png",
+      "output": "HEADLESS-1",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "monitors": [
+        {
+          "id": 0,
+          "name": "WAYLAND-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 3920,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 1,
+            "name": "1"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": false,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE",
+            "HW_CURSOR"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        },
+        {
+          "id": 1,
+          "name": "HEADLESS-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2000,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 3,
+            "name": "3"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": true,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "SW",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [
+            "1920x1080@60.00Hz"
+          ],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        }
+      ],
+      "command": [
+        "/tmp/pw-blju89vn/grim",
+        "-o",
+        "HEADLESS-1",
+        "-s",
+        "1",
+        "/tmp/pw-blju89vn/evidence/quick-1920x1080-1.png"
+      ]
+    },
+    {
+      "image": "quick-1920x1080-1.25.png",
+      "output": "HEADLESS-1",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "monitors": [
+        {
+          "id": 0,
+          "name": "WAYLAND-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 3536,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 1,
+            "name": "1"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": false,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE",
+            "HW_CURSOR"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        },
+        {
+          "id": 1,
+          "name": "HEADLESS-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2000,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 3,
+            "name": "3"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1.25,
+          "transform": 0,
+          "focused": true,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "SW",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [
+            "1920x1080@60.00Hz"
+          ],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        }
+      ],
+      "command": [
+        "/tmp/pw-blju89vn/grim",
+        "-o",
+        "HEADLESS-1",
+        "-s",
+        "1.25",
+        "/tmp/pw-blju89vn/evidence/quick-1920x1080-1.25.png"
+      ]
+    },
+    {
+      "image": "quick-1920x1080-1.5.png",
+      "output": "HEADLESS-1",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "monitors": [
+        {
+          "id": 0,
+          "name": "WAYLAND-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 3280,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 1,
+            "name": "1"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": false,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE",
+            "HW_CURSOR"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        },
+        {
+          "id": 1,
+          "name": "HEADLESS-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2000,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 3,
+            "name": "3"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1.5,
+          "transform": 0,
+          "focused": true,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "SW",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [
+            "1920x1080@60.00Hz"
+          ],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        }
+      ],
+      "command": [
+        "/tmp/pw-blju89vn/grim",
+        "-o",
+        "HEADLESS-1",
+        "-s",
+        "1.5",
+        "/tmp/pw-blju89vn/evidence/quick-1920x1080-1.5.png"
+      ]
+    },
+    {
+      "image": "quick-1920x1080-2.png",
+      "output": "HEADLESS-1",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "monitors": [
+        {
+          "id": 0,
+          "name": "WAYLAND-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2960,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 1,
+            "name": "1"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": false,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE",
+            "HW_CURSOR"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        },
+        {
+          "id": 1,
+          "name": "HEADLESS-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2000,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 3,
+            "name": "3"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 2,
+          "transform": 0,
+          "focused": true,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "SW",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [
+            "1920x1080@60.00Hz"
+          ],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        }
+      ],
+      "command": [
+        "/tmp/pw-blju89vn/grim",
+        "-o",
+        "HEADLESS-1",
+        "-s",
+        "2",
+        "/tmp/pw-blju89vn/evidence/quick-1920x1080-2.png"
+      ]
+    },
+    {
+      "image": "quick-1366x768-1.png",
+      "output": "HEADLESS-1",
+      "pixels": [
+        1366,
+        768
+      ],
+      "monitors": [
+        {
+          "id": 0,
+          "name": "WAYLAND-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 3366,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 1,
+            "name": "1"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": false,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE",
+            "HW_CURSOR"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        },
+        {
+          "id": 1,
+          "name": "HEADLESS-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1366,
+          "height": 768,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2000,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 3,
+            "name": "3"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": true,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "SW",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [
+            "1920x1080@60.00Hz"
+          ],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        }
+      ],
+      "command": [
+        "/tmp/pw-blju89vn/grim",
+        "-o",
+        "HEADLESS-1",
+        "-s",
+        "1",
+        "/tmp/pw-blju89vn/evidence/quick-1366x768-1.png"
+      ]
+    },
+    {
+      "image": "quick-1366x768-1.25.png",
+      "output": "HEADLESS-1",
+      "pixels": [
+        1366,
+        767
+      ],
+      "monitors": [
+        {
+          "id": 0,
+          "name": "WAYLAND-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 3093,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 1,
+            "name": "1"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": false,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE",
+            "HW_CURSOR"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        },
+        {
+          "id": 1,
+          "name": "HEADLESS-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1366,
+          "height": 768,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2000,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 3,
+            "name": "3"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1.25,
+          "transform": 0,
+          "focused": true,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "SW",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [
+            "1920x1080@60.00Hz"
+          ],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        }
+      ],
+      "command": [
+        "/tmp/pw-blju89vn/grim",
+        "-o",
+        "HEADLESS-1",
+        "-s",
+        "1.25",
+        "/tmp/pw-blju89vn/evidence/quick-1366x768-1.25.png"
+      ]
+    },
+    {
+      "image": "quick-1366x768-1.5.png",
+      "output": "HEADLESS-1",
+      "pixels": [
+        1366,
+        768
+      ],
+      "monitors": [
+        {
+          "id": 0,
+          "name": "WAYLAND-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2911,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 1,
+            "name": "1"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": false,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE",
+            "HW_CURSOR"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        },
+        {
+          "id": 1,
+          "name": "HEADLESS-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1366,
+          "height": 768,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2000,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 3,
+            "name": "3"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1.5,
+          "transform": 0,
+          "focused": true,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "SW",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [
+            "1920x1080@60.00Hz"
+          ],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        }
+      ],
+      "command": [
+        "/tmp/pw-blju89vn/grim",
+        "-o",
+        "HEADLESS-1",
+        "-s",
+        "1.5",
+        "/tmp/pw-blju89vn/evidence/quick-1366x768-1.5.png"
+      ]
+    },
+    {
+      "image": "quick-1366x768-2.png",
+      "output": "HEADLESS-1",
+      "pixels": [
+        1366,
+        768
+      ],
+      "monitors": [
+        {
+          "id": 0,
+          "name": "WAYLAND-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2683,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 1,
+            "name": "1"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": false,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE",
+            "HW_CURSOR"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        },
+        {
+          "id": 1,
+          "name": "HEADLESS-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1366,
+          "height": 768,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2000,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 3,
+            "name": "3"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 2,
+          "transform": 0,
+          "focused": true,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "SW",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [
+            "1920x1080@60.00Hz"
+          ],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        }
+      ],
+      "command": [
+        "/tmp/pw-blju89vn/grim",
+        "-o",
+        "HEADLESS-1",
+        "-s",
+        "2",
+        "/tmp/pw-blju89vn/evidence/quick-1366x768-2.png"
+      ]
+    },
+    {
+      "image": "mixed-first.png",
+      "output": "HEADLESS-1",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "monitors": [
+        {
+          "id": 0,
+          "name": "WAYLAND-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 5280,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 1,
+            "name": "1"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": false,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE",
+            "HW_CURSOR"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        },
+        {
+          "id": 1,
+          "name": "HEADLESS-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2000,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 3,
+            "name": "3"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": false,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "SW",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [
+            "1920x1080@60.00Hz"
+          ],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        },
+        {
+          "id": 2,
+          "name": "HEADLESS-2",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 4000,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 2,
+            "name": "2"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1.5,
+          "transform": 0,
+          "focused": true,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "SW",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [
+            "1920x1080@60.00Hz"
+          ],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        }
+      ],
+      "command": [
+        "/tmp/pw-blju89vn/grim",
+        "-o",
+        "HEADLESS-1",
+        "-s",
+        "1",
+        "/tmp/pw-blju89vn/evidence/mixed-first.png"
+      ]
+    },
+    {
+      "image": "mixed-second.png",
+      "output": "HEADLESS-2",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "monitors": [
+        {
+          "id": 0,
+          "name": "WAYLAND-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 5280,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 1,
+            "name": "1"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": false,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE",
+            "HW_CURSOR"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        },
+        {
+          "id": 1,
+          "name": "HEADLESS-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2000,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 3,
+            "name": "3"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": false,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "SW",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [
+            "1920x1080@60.00Hz"
+          ],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        },
+        {
+          "id": 2,
+          "name": "HEADLESS-2",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 4000,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 2,
+            "name": "2"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1.5,
+          "transform": 0,
+          "focused": true,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "SW",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [
+            "1920x1080@60.00Hz"
+          ],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        }
+      ],
+      "command": [
+        "/tmp/pw-blju89vn/grim",
+        "-o",
+        "HEADLESS-2",
+        "-s",
+        "1.5",
+        "/tmp/pw-blju89vn/evidence/mixed-second.png"
+      ]
+    },
+    {
+      "image": "osd-second.png",
+      "output": "HEADLESS-2",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "monitors": [
+        {
+          "id": 0,
+          "name": "WAYLAND-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 5280,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 1,
+            "name": "1"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": false,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE",
+            "HW_CURSOR"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        },
+        {
+          "id": 1,
+          "name": "HEADLESS-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2000,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 3,
+            "name": "3"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": false,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "SW",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [
+            "1920x1080@60.00Hz"
+          ],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        },
+        {
+          "id": 2,
+          "name": "HEADLESS-2",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 4000,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 2,
+            "name": "2"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1.5,
+          "transform": 0,
+          "focused": true,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "SW",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [
+            "1920x1080@60.00Hz"
+          ],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        }
+      ],
+      "command": [
+        "/tmp/pw-blju89vn/grim",
+        "-o",
+        "HEADLESS-2",
+        "-s",
+        "1.5",
+        "/tmp/pw-blju89vn/evidence/osd-second.png"
+      ]
+    }
+  ],
+  "mode": "native nested Hyprland, private HEADLESS outputs, GPU renderer, explicit domain mocks",
+  "isolation": "private PID/network/mount namespaces, XDG and session D-Bus; only parent Wayland socket and GPU render node shared",
+  "version": {
+    "branch": "v0.56.2",
+    "commit": "efb50993780079460b0cbed1363e2166a2de1d9f",
+    "version": "0.56.2",
+    "dirty": false,
+    "commit_message": "[gha] Nix: update inputs",
+    "commit_date": "Wed Aug 5 14:13:21 2026",
+    "tag": "v0.56.2",
+    "commits": "7661",
+    "buildAquamarine": "0.15.0",
+    "buildHyprlang": "0.6.8",
+    "buildHyprutils": "0.14.1",
+    "buildHyprcursor": "0.1.13",
+    "buildHyprgraphics": "0.5.1",
+    "systemAquamarine": "0.15.0",
+    "systemHyprlang": "0.6.8",
+    "systemHyprutils": "0.14.2",
+    "systemHyprcursor": "0.1.13",
+    "systemHyprgraphics": "0.5.1",
+    "abiHash": "efb50993780079460b0cbed1363e2166a2de1d9f_aq_0.15_hu_0.14_hg_0.5_hc_0.1_hlg_0.6",
+    "flags": []
+  },
+  "initial_monitors": [
+    {
+      "id": 0,
+      "name": "WAYLAND-1",
+      "description": "",
+      "make": "",
+      "model": "",
+      "serial": "",
+      "width": 1920,
+      "height": 1080,
+      "physicalWidth": 0,
+      "physicalHeight": 0,
+      "refreshRate": 60.0,
+      "x": 3920,
+      "y": 0,
+      "activeWorkspace": {
+        "id": 1,
+        "name": "1"
+      },
+      "specialWorkspace": {
+        "id": 0,
+        "name": ""
+      },
+      "reserved": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "scale": 1,
+      "transform": 0,
+      "focused": false,
+      "dpmsStatus": true,
+      "vrr": false,
+      "solitary": "0",
+      "solitaryBlockedBy": [
+        "NOTIFICATION",
+        "WINDOWED",
+        "CANDIDATE"
+      ],
+      "activelyTearing": false,
+      "tearingBlockedBy": [
+        "NOT_TORN",
+        "USER",
+        "SUPPORT",
+        "CANDIDATE",
+        "HW_CURSOR"
+      ],
+      "directScanoutTo": "0",
+      "directScanoutBlockedBy": [
+        "USER",
+        "CANDIDATE"
+      ],
+      "disabled": false,
+      "currentFormat": "XRGB8888",
+      "mirrorOf": "none",
+      "availableModes": [],
+      "colorManagementPreset": "srgb",
+      "sdrBrightness": 1,
+      "sdrSaturation": 1,
+      "sdrMinLuminance": 0.2,
+      "sdrMaxLuminance": 80,
+      "hardwareCursorsInUse": true
+    },
+    {
+      "id": 1,
+      "name": "HEADLESS-1",
+      "description": "",
+      "make": "",
+      "model": "",
+      "serial": "",
+      "width": 1920,
+      "height": 1080,
+      "physicalWidth": 0,
+      "physicalHeight": 0,
+      "refreshRate": 60.0,
+      "x": 2000,
+      "y": 0,
+      "activeWorkspace": {
+        "id": 2,
+        "name": "2"
+      },
+      "specialWorkspace": {
+        "id": 0,
+        "name": ""
+      },
+      "reserved": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "scale": 1,
+      "transform": 0,
+      "focused": true,
+      "dpmsStatus": true,
+      "vrr": false,
+      "solitary": "0",
+      "solitaryBlockedBy": [
+        "NOTIFICATION",
+        "WINDOWED",
+        "CANDIDATE"
+      ],
+      "activelyTearing": false,
+      "tearingBlockedBy": [
+        "NOT_TORN",
+        "USER",
+        "SUPPORT",
+        "CANDIDATE"
+      ],
+      "directScanoutTo": "0",
+      "directScanoutBlockedBy": [
+        "USER",
+        "SW",
+        "CANDIDATE"
+      ],
+      "disabled": false,
+      "currentFormat": "XRGB8888",
+      "mirrorOf": "none",
+      "availableModes": [
+        "1920x1080@60.00Hz"
+      ],
+      "colorManagementPreset": "srgb",
+      "sdrBrightness": 1,
+      "sdrSaturation": 1,
+      "sdrMinLuminance": 0.2,
+      "sdrMaxLuminance": 80,
+      "hardwareCursorsInUse": true
+    }
+  ],
+  "last_state": {
+    "screens": [
+      {
+        "name": "WAYLAND-1",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "name": "HEADLESS-1",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "name": "HEADLESS-6",
+        "width": 1280,
+        "height": 720
+      }
+    ],
+    "ready": true,
+    "focusedMonitor": "HEADLESS-1",
+    "barScreen": "",
+    "bars": [
+      {
+        "screen": "WAYLAND-1",
+        "focus": ""
+      },
+      {
+        "screen": "HEADLESS-1",
+        "focus": ""
+      },
+      {
+        "screen": "HEADLESS-6",
+        "focus": ""
+      }
+    ],
+    "loaded": false,
+    "surface": "",
+    "screen": "",
+    "focus": "",
+    "created": 0,
+    "destroyed": 0,
+    "editing": false,
+    "saving": false,
+    "accent": "#94e2d5",
+    "secondary": "#fab387",
+    "persisted": {
+      "accent": "#94e2d5",
+      "accentSecondary": "#fab387",
+      "reducedMotion": false
+    },
+    "scans": 0,
+    "scanStops": 0,
+    "scanning": false,
+    "discovery": false,
+    "sessionCalls": 0,
+    "volume": 42,
+    "brightness": 60,
+    "pskCalls": 0,
+    "needsPassword": false,
+    "keyboardConnected": false,
+    "dnd": false,
+    "notifications": 0,
+    "notificationFocus": "",
+    "osd": false,
+    "osdScreen": "",
+    "osdLoaded": false,
+    "busy": false,
+    "brightnessRequests": 1,
+    "nightRequests": 1,
+    "menuLeafActivations": 0,
+    "trayCount": 40
+  },
+  "initial_state": {
+    "screens": [
+      {
+        "name": "WAYLAND-1",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "name": "HEADLESS-1",
+        "width": 1920,
+        "height": 1080
+      }
+    ],
+    "ready": true,
+    "focusedMonitor": "HEADLESS-1",
+    "barScreen": "",
+    "bars": [
+      {
+        "screen": "WAYLAND-1",
+        "focus": ""
+      },
+      {
+        "screen": "HEADLESS-1",
+        "focus": ""
+      }
+    ],
+    "loaded": false,
+    "surface": "",
+    "screen": "",
+    "focus": "",
+    "created": 0,
+    "destroyed": 0,
+    "editing": false,
+    "saving": false,
+    "accent": "#cba6f7",
+    "secondary": "#89b4fa",
+    "persisted": {
+      "accent": "#cba6f7",
+      "accentSecondary": "#89b4fa",
+      "reducedMotion": false
+    },
+    "scans": 0,
+    "scanStops": 0,
+    "scanning": false,
+    "discovery": false,
+    "sessionCalls": 0,
+    "volume": 42,
+    "brightness": 60,
+    "pskCalls": 0,
+    "needsPassword": false,
+    "keyboardConnected": false,
+    "dnd": false,
+    "notifications": 0,
+    "notificationFocus": "",
+    "osd": false,
+    "osdScreen": "",
+    "osdLoaded": false,
+    "busy": false,
+    "brightnessRequests": 1,
+    "nightRequests": 1,
+    "menuLeafActivations": 0,
+    "trayCount": 40
+  },
+  "opened_state": {
+    "screens": [
+      {
+        "name": "WAYLAND-1",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "name": "HEADLESS-1",
+        "width": 1920,
+        "height": 1080
+      }
+    ],
+    "ready": true,
+    "focusedMonitor": "HEADLESS-1",
+    "barScreen": "",
+    "bars": [
+      {
+        "screen": "WAYLAND-1",
+        "focus": ""
+      },
+      {
+        "screen": "HEADLESS-1",
+        "focus": ""
+      }
+    ],
+    "loaded": true,
+    "surface": "quickSettings",
+    "screen": "HEADLESS-1",
+    "focus": "audioVolume",
+    "created": 1,
+    "destroyed": 0,
+    "editing": false,
+    "saving": false,
+    "accent": "#cba6f7",
+    "secondary": "#89b4fa",
+    "persisted": {
+      "accent": "#cba6f7",
+      "accentSecondary": "#89b4fa",
+      "reducedMotion": false
+    },
+    "scans": 0,
+    "scanStops": 0,
+    "scanning": false,
+    "discovery": false,
+    "sessionCalls": 0,
+    "volume": 42,
+    "brightness": 60,
+    "pskCalls": 0,
+    "needsPassword": false,
+    "keyboardConnected": false,
+    "dnd": false,
+    "notifications": 0,
+    "notificationFocus": "",
+    "osd": false,
+    "osdScreen": "",
+    "osdLoaded": false,
+    "busy": false,
+    "brightnessRequests": 2,
+    "nightRequests": 2,
+    "menuLeafActivations": 0,
+    "trayCount": 40
+  },
+  "layers": {
+    "WAYLAND-1": {
+      "levels": {
+        "0": [
+          {
+            "address": "0x5599880df1d0",
+            "x": 3920,
+            "y": 0,
+            "w": 1920,
+            "h": 1080,
+            "alpha": 1,
+            "namespace": "putkin-wallpaper",
+            "pid": 34
+          }
+        ],
+        "1": [],
+        "2": [
+          {
+            "address": "0x55998824f240",
+            "x": 3920,
+            "y": 0,
+            "w": 1920,
+            "h": 32,
+            "alpha": 1,
+            "namespace": "putkin-bar",
+            "pid": 34
+          }
+        ],
+        "3": []
+      }
+    },
+    "HEADLESS-1": {
+      "levels": {
+        "0": [
+          {
+            "address": "0x559987256a80",
+            "x": 2000,
+            "y": 0,
+            "w": 1920,
+            "h": 1080,
+            "alpha": 1,
+            "namespace": "putkin-wallpaper",
+            "pid": 34
+          }
+        ],
+        "1": [],
+        "2": [
+          {
+            "address": "0x55998824e940",
+            "x": 2000,
+            "y": 0,
+            "w": 1920,
+            "h": 32,
+            "alpha": 1,
+            "namespace": "putkin-bar",
+            "pid": 34
+          }
+        ],
+        "3": [
+          {
+            "address": "0x559988261840",
+            "x": 3552,
+            "y": 0,
+            "w": 368,
+            "h": 424,
+            "alpha": 1,
+            "namespace": "putkin-panel",
+            "pid": 34
+          }
+        ]
+      }
+    }
+  },
+  "geometry": [
+    {
+      "monitors": [
+        {
+          "id": 0,
+          "name": "WAYLAND-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 3920,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 1,
+            "name": "1"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": false,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE",
+            "HW_CURSOR"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        },
+        {
+          "id": 1,
+          "name": "HEADLESS-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2000,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 3,
+            "name": "3"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": true,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "SW",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [
+            "1920x1080@60.00Hz"
+          ],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        }
+      ],
+      "layers": {
+        "WAYLAND-1": {
+          "levels": {
+            "0": [
+              {
+                "address": "0x5599880df1d0",
+                "x": 3920,
+                "y": 0,
+                "w": 1920,
+                "h": 1080,
+                "alpha": 1,
+                "namespace": "putkin-wallpaper",
+                "pid": 34
+              }
+            ],
+            "1": [],
+            "2": [
+              {
+                "address": "0x55998824f240",
+                "x": 3920,
+                "y": 0,
+                "w": 1920,
+                "h": 32,
+                "alpha": 1,
+                "namespace": "putkin-bar",
+                "pid": 34
+              }
+            ],
+            "3": []
+          }
+        },
+        "HEADLESS-1": {
+          "levels": {
+            "0": [
+              {
+                "address": "0x559987256a80",
+                "x": 2000,
+                "y": 0,
+                "w": 1920,
+                "h": 1080,
+                "alpha": 1,
+                "namespace": "putkin-wallpaper",
+                "pid": 34
+              }
+            ],
+            "1": [],
+            "2": [
+              {
+                "address": "0x55998824e940",
+                "x": 2000,
+                "y": 0,
+                "w": 1920,
+                "h": 32,
+                "alpha": 1,
+                "namespace": "putkin-bar",
+                "pid": 34
+              }
+            ],
+            "3": [
+              {
+                "address": "0x559988918b90",
+                "x": 3552,
+                "y": 0,
+                "w": 368,
+                "h": 424,
+                "alpha": 1,
+                "namespace": "putkin-panel",
+                "pid": 34
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "monitors": [
+        {
+          "id": 0,
+          "name": "WAYLAND-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 3536,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 1,
+            "name": "1"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": false,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE",
+            "HW_CURSOR"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        },
+        {
+          "id": 1,
+          "name": "HEADLESS-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2000,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 3,
+            "name": "3"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1.25,
+          "transform": 0,
+          "focused": true,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "SW",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [
+            "1920x1080@60.00Hz"
+          ],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        }
+      ],
+      "layers": {
+        "WAYLAND-1": {
+          "levels": {
+            "0": [
+              {
+                "address": "0x5599880df1d0",
+                "x": 3920,
+                "y": 0,
+                "w": 1920,
+                "h": 1080,
+                "alpha": 1,
+                "namespace": "putkin-wallpaper",
+                "pid": 34
+              }
+            ],
+            "1": [],
+            "2": [
+              {
+                "address": "0x55998824f240",
+                "x": 3920,
+                "y": 0,
+                "w": 1920,
+                "h": 32,
+                "alpha": 1,
+                "namespace": "putkin-bar",
+                "pid": 34
+              }
+            ],
+            "3": []
+          }
+        },
+        "HEADLESS-1": {
+          "levels": {
+            "0": [
+              {
+                "address": "0x559987256a80",
+                "x": 2000,
+                "y": 0,
+                "w": 1536,
+                "h": 864,
+                "alpha": 1,
+                "namespace": "putkin-wallpaper",
+                "pid": 34
+              }
+            ],
+            "1": [],
+            "2": [
+              {
+                "address": "0x55998824e940",
+                "x": 2000,
+                "y": 0,
+                "w": 1536,
+                "h": 32,
+                "alpha": 1,
+                "namespace": "putkin-bar",
+                "pid": 34
+              }
+            ],
+            "3": [
+              {
+                "address": "0x559988261840",
+                "x": 3168,
+                "y": 0,
+                "w": 368,
+                "h": 424,
+                "alpha": 1,
+                "namespace": "putkin-panel",
+                "pid": 34
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "monitors": [
+        {
+          "id": 0,
+          "name": "WAYLAND-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 3280,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 1,
+            "name": "1"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": false,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE",
+            "HW_CURSOR"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        },
+        {
+          "id": 1,
+          "name": "HEADLESS-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2000,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 3,
+            "name": "3"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1.5,
+          "transform": 0,
+          "focused": true,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "SW",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [
+            "1920x1080@60.00Hz"
+          ],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        }
+      ],
+      "layers": {
+        "WAYLAND-1": {
+          "levels": {
+            "0": [
+              {
+                "address": "0x5599880df1d0",
+                "x": 3920,
+                "y": 0,
+                "w": 1920,
+                "h": 1080,
+                "alpha": 1,
+                "namespace": "putkin-wallpaper",
+                "pid": 34
+              }
+            ],
+            "1": [],
+            "2": [
+              {
+                "address": "0x55998824f240",
+                "x": 3920,
+                "y": 0,
+                "w": 1920,
+                "h": 32,
+                "alpha": 1,
+                "namespace": "putkin-bar",
+                "pid": 34
+              }
+            ],
+            "3": []
+          }
+        },
+        "HEADLESS-1": {
+          "levels": {
+            "0": [
+              {
+                "address": "0x559987256a80",
+                "x": 2000,
+                "y": 0,
+                "w": 1280,
+                "h": 720,
+                "alpha": 1,
+                "namespace": "putkin-wallpaper",
+                "pid": 34
+              }
+            ],
+            "1": [],
+            "2": [
+              {
+                "address": "0x55998824e940",
+                "x": 2000,
+                "y": 0,
+                "w": 1280,
+                "h": 32,
+                "alpha": 1,
+                "namespace": "putkin-bar",
+                "pid": 34
+              }
+            ],
+            "3": [
+              {
+                "address": "0x559988918b90",
+                "x": 2912,
+                "y": 0,
+                "w": 368,
+                "h": 424,
+                "alpha": 1,
+                "namespace": "putkin-panel",
+                "pid": 34
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "monitors": [
+        {
+          "id": 0,
+          "name": "WAYLAND-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2960,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 1,
+            "name": "1"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": false,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE",
+            "HW_CURSOR"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        },
+        {
+          "id": 1,
+          "name": "HEADLESS-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2000,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 3,
+            "name": "3"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 2,
+          "transform": 0,
+          "focused": true,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "SW",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [
+            "1920x1080@60.00Hz"
+          ],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        }
+      ],
+      "layers": {
+        "WAYLAND-1": {
+          "levels": {
+            "0": [
+              {
+                "address": "0x5599880df1d0",
+                "x": 3920,
+                "y": 0,
+                "w": 1920,
+                "h": 1080,
+                "alpha": 1,
+                "namespace": "putkin-wallpaper",
+                "pid": 34
+              }
+            ],
+            "1": [],
+            "2": [
+              {
+                "address": "0x55998824f240",
+                "x": 3920,
+                "y": 0,
+                "w": 1920,
+                "h": 32,
+                "alpha": 1,
+                "namespace": "putkin-bar",
+                "pid": 34
+              }
+            ],
+            "3": []
+          }
+        },
+        "HEADLESS-1": {
+          "levels": {
+            "0": [
+              {
+                "address": "0x559987256a80",
+                "x": 2000,
+                "y": 0,
+                "w": 960,
+                "h": 540,
+                "alpha": 1,
+                "namespace": "putkin-wallpaper",
+                "pid": 34
+              }
+            ],
+            "1": [],
+            "2": [
+              {
+                "address": "0x55998824e940",
+                "x": 2000,
+                "y": 0,
+                "w": 960,
+                "h": 32,
+                "alpha": 1,
+                "namespace": "putkin-bar",
+                "pid": 34
+              }
+            ],
+            "3": [
+              {
+                "address": "0x559988261840",
+                "x": 2592,
+                "y": 0,
+                "w": 368,
+                "h": 424,
+                "alpha": 1,
+                "namespace": "putkin-panel",
+                "pid": 34
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "monitors": [
+        {
+          "id": 0,
+          "name": "WAYLAND-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 3366,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 1,
+            "name": "1"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": false,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE",
+            "HW_CURSOR"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        },
+        {
+          "id": 1,
+          "name": "HEADLESS-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1366,
+          "height": 768,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2000,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 3,
+            "name": "3"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": true,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "SW",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [
+            "1920x1080@60.00Hz"
+          ],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        }
+      ],
+      "layers": {
+        "WAYLAND-1": {
+          "levels": {
+            "0": [
+              {
+                "address": "0x5599880df1d0",
+                "x": 3920,
+                "y": 0,
+                "w": 1920,
+                "h": 1080,
+                "alpha": 1,
+                "namespace": "putkin-wallpaper",
+                "pid": 34
+              }
+            ],
+            "1": [],
+            "2": [
+              {
+                "address": "0x55998824f240",
+                "x": 3920,
+                "y": 0,
+                "w": 1920,
+                "h": 32,
+                "alpha": 1,
+                "namespace": "putkin-bar",
+                "pid": 34
+              }
+            ],
+            "3": []
+          }
+        },
+        "HEADLESS-1": {
+          "levels": {
+            "0": [
+              {
+                "address": "0x559987256a80",
+                "x": 2000,
+                "y": 0,
+                "w": 1366,
+                "h": 768,
+                "alpha": 1,
+                "namespace": "putkin-wallpaper",
+                "pid": 34
+              }
+            ],
+            "1": [],
+            "2": [
+              {
+                "address": "0x55998824e940",
+                "x": 2000,
+                "y": 0,
+                "w": 1366,
+                "h": 32,
+                "alpha": 1,
+                "namespace": "putkin-bar",
+                "pid": 34
+              }
+            ],
+            "3": [
+              {
+                "address": "0x559988918b90",
+                "x": 2998,
+                "y": 0,
+                "w": 368,
+                "h": 424,
+                "alpha": 1,
+                "namespace": "putkin-panel",
+                "pid": 34
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "monitors": [
+        {
+          "id": 0,
+          "name": "WAYLAND-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 3093,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 1,
+            "name": "1"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": false,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE",
+            "HW_CURSOR"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        },
+        {
+          "id": 1,
+          "name": "HEADLESS-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1366,
+          "height": 768,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2000,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 3,
+            "name": "3"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1.25,
+          "transform": 0,
+          "focused": true,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "SW",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [
+            "1920x1080@60.00Hz"
+          ],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        }
+      ],
+      "layers": {
+        "WAYLAND-1": {
+          "levels": {
+            "0": [
+              {
+                "address": "0x5599880df1d0",
+                "x": 3920,
+                "y": 0,
+                "w": 1920,
+                "h": 1080,
+                "alpha": 1,
+                "namespace": "putkin-wallpaper",
+                "pid": 34
+              }
+            ],
+            "1": [],
+            "2": [
+              {
+                "address": "0x55998824f240",
+                "x": 3920,
+                "y": 0,
+                "w": 1920,
+                "h": 32,
+                "alpha": 1,
+                "namespace": "putkin-bar",
+                "pid": 34
+              }
+            ],
+            "3": []
+          }
+        },
+        "HEADLESS-1": {
+          "levels": {
+            "0": [
+              {
+                "address": "0x559987256a80",
+                "x": 2000,
+                "y": 0,
+                "w": 1093,
+                "h": 614,
+                "alpha": 1,
+                "namespace": "putkin-wallpaper",
+                "pid": 34
+              }
+            ],
+            "1": [],
+            "2": [
+              {
+                "address": "0x55998824e940",
+                "x": 2000,
+                "y": 0,
+                "w": 1093,
+                "h": 32,
+                "alpha": 1,
+                "namespace": "putkin-bar",
+                "pid": 34
+              }
+            ],
+            "3": [
+              {
+                "address": "0x559988261840",
+                "x": 2725,
+                "y": 0,
+                "w": 368,
+                "h": 424,
+                "alpha": 1,
+                "namespace": "putkin-panel",
+                "pid": 34
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "monitors": [
+        {
+          "id": 0,
+          "name": "WAYLAND-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2911,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 1,
+            "name": "1"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": false,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE",
+            "HW_CURSOR"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        },
+        {
+          "id": 1,
+          "name": "HEADLESS-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1366,
+          "height": 768,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2000,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 3,
+            "name": "3"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1.5,
+          "transform": 0,
+          "focused": true,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "SW",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [
+            "1920x1080@60.00Hz"
+          ],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        }
+      ],
+      "layers": {
+        "WAYLAND-1": {
+          "levels": {
+            "0": [
+              {
+                "address": "0x5599880df1d0",
+                "x": 3920,
+                "y": 0,
+                "w": 1920,
+                "h": 1080,
+                "alpha": 1,
+                "namespace": "putkin-wallpaper",
+                "pid": 34
+              }
+            ],
+            "1": [],
+            "2": [
+              {
+                "address": "0x55998824f240",
+                "x": 3920,
+                "y": 0,
+                "w": 1920,
+                "h": 32,
+                "alpha": 1,
+                "namespace": "putkin-bar",
+                "pid": 34
+              }
+            ],
+            "3": []
+          }
+        },
+        "HEADLESS-1": {
+          "levels": {
+            "0": [
+              {
+                "address": "0x559987256a80",
+                "x": 2000,
+                "y": 0,
+                "w": 911,
+                "h": 512,
+                "alpha": 1,
+                "namespace": "putkin-wallpaper",
+                "pid": 34
+              }
+            ],
+            "1": [],
+            "2": [
+              {
+                "address": "0x55998824e940",
+                "x": 2000,
+                "y": 0,
+                "w": 911,
+                "h": 32,
+                "alpha": 1,
+                "namespace": "putkin-bar",
+                "pid": 34
+              }
+            ],
+            "3": [
+              {
+                "address": "0x559988918b90",
+                "x": 2543,
+                "y": 0,
+                "w": 368,
+                "h": 424,
+                "alpha": 1,
+                "namespace": "putkin-panel",
+                "pid": 34
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "monitors": [
+        {
+          "id": 0,
+          "name": "WAYLAND-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1920,
+          "height": 1080,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2683,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 1,
+            "name": "1"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 1,
+          "transform": 0,
+          "focused": false,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE",
+            "HW_CURSOR"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        },
+        {
+          "id": 1,
+          "name": "HEADLESS-1",
+          "description": "",
+          "make": "",
+          "model": "",
+          "serial": "",
+          "width": 1366,
+          "height": 768,
+          "physicalWidth": 0,
+          "physicalHeight": 0,
+          "refreshRate": 60.0,
+          "x": 2000,
+          "y": 0,
+          "activeWorkspace": {
+            "id": 3,
+            "name": "3"
+          },
+          "specialWorkspace": {
+            "id": 0,
+            "name": ""
+          },
+          "reserved": [
+            0,
+            32,
+            0,
+            0
+          ],
+          "scale": 2,
+          "transform": 0,
+          "focused": true,
+          "dpmsStatus": true,
+          "vrr": false,
+          "solitary": "0",
+          "solitaryBlockedBy": [
+            "WINDOWED",
+            "CANDIDATE"
+          ],
+          "activelyTearing": false,
+          "tearingBlockedBy": [
+            "NOT_TORN",
+            "USER",
+            "SUPPORT",
+            "CANDIDATE"
+          ],
+          "directScanoutTo": "0",
+          "directScanoutBlockedBy": [
+            "USER",
+            "SW",
+            "CANDIDATE"
+          ],
+          "disabled": false,
+          "currentFormat": "XRGB8888",
+          "mirrorOf": "none",
+          "availableModes": [
+            "1920x1080@60.00Hz"
+          ],
+          "colorManagementPreset": "srgb",
+          "sdrBrightness": 1,
+          "sdrSaturation": 1,
+          "sdrMinLuminance": 0.2,
+          "sdrMaxLuminance": 80,
+          "hardwareCursorsInUse": true
+        }
+      ],
+      "layers": {
+        "WAYLAND-1": {
+          "levels": {
+            "0": [
+              {
+                "address": "0x5599880df1d0",
+                "x": 3920,
+                "y": 0,
+                "w": 1920,
+                "h": 1080,
+                "alpha": 1,
+                "namespace": "putkin-wallpaper",
+                "pid": 34
+              }
+            ],
+            "1": [],
+            "2": [
+              {
+                "address": "0x55998824f240",
+                "x": 3920,
+                "y": 0,
+                "w": 1920,
+                "h": 32,
+                "alpha": 1,
+                "namespace": "putkin-bar",
+                "pid": 34
+              }
+            ],
+            "3": []
+          }
+        },
+        "HEADLESS-1": {
+          "levels": {
+            "0": [
+              {
+                "address": "0x559987256a80",
+                "x": 2000,
+                "y": 0,
+                "w": 683,
+                "h": 384,
+                "alpha": 1,
+                "namespace": "putkin-wallpaper",
+                "pid": 34
+              }
+            ],
+            "1": [],
+            "2": [
+              {
+                "address": "0x55998824e940",
+                "x": 2000,
+                "y": 0,
+                "w": 683,
+                "h": 32,
+                "alpha": 1,
+                "namespace": "putkin-bar",
+                "pid": 34
+              }
+            ],
+            "3": [
+              {
+                "address": "0x55998723bc60",
+                "x": 2315,
+                "y": 0,
+                "w": 368,
+                "h": 376,
+                "alpha": 1,
+                "namespace": "putkin-panel",
+                "pid": 34
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "fractional_test_override": "debug:disable_scale_checks=true during physical mode/scale matrix only",
+  "mixed_monitors": {
+    "monitors": [
+      {
+        "id": 0,
+        "name": "WAYLAND-1",
+        "description": "",
+        "make": "",
+        "model": "",
+        "serial": "",
+        "width": 1920,
+        "height": 1080,
+        "physicalWidth": 0,
+        "physicalHeight": 0,
+        "refreshRate": 60.0,
+        "x": 5280,
+        "y": 0,
+        "activeWorkspace": {
+          "id": 1,
+          "name": "1"
+        },
+        "specialWorkspace": {
+          "id": 0,
+          "name": ""
+        },
+        "reserved": [
+          0,
+          32,
+          0,
+          0
+        ],
+        "scale": 1,
+        "transform": 0,
+        "focused": false,
+        "dpmsStatus": true,
+        "vrr": false,
+        "solitary": "0",
+        "solitaryBlockedBy": [
+          "WINDOWED",
+          "CANDIDATE"
+        ],
+        "activelyTearing": false,
+        "tearingBlockedBy": [
+          "NOT_TORN",
+          "USER",
+          "SUPPORT",
+          "CANDIDATE",
+          "HW_CURSOR"
+        ],
+        "directScanoutTo": "0",
+        "directScanoutBlockedBy": [
+          "USER",
+          "CANDIDATE"
+        ],
+        "disabled": false,
+        "currentFormat": "XRGB8888",
+        "mirrorOf": "none",
+        "availableModes": [],
+        "colorManagementPreset": "srgb",
+        "sdrBrightness": 1,
+        "sdrSaturation": 1,
+        "sdrMinLuminance": 0.2,
+        "sdrMaxLuminance": 80,
+        "hardwareCursorsInUse": true
+      },
+      {
+        "id": 1,
+        "name": "HEADLESS-1",
+        "description": "",
+        "make": "",
+        "model": "",
+        "serial": "",
+        "width": 1920,
+        "height": 1080,
+        "physicalWidth": 0,
+        "physicalHeight": 0,
+        "refreshRate": 60.0,
+        "x": 2000,
+        "y": 0,
+        "activeWorkspace": {
+          "id": 3,
+          "name": "3"
+        },
+        "specialWorkspace": {
+          "id": 0,
+          "name": ""
+        },
+        "reserved": [
+          0,
+          32,
+          0,
+          0
+        ],
+        "scale": 1,
+        "transform": 0,
+        "focused": false,
+        "dpmsStatus": true,
+        "vrr": false,
+        "solitary": "0",
+        "solitaryBlockedBy": [
+          "WINDOWED",
+          "CANDIDATE"
+        ],
+        "activelyTearing": false,
+        "tearingBlockedBy": [
+          "NOT_TORN",
+          "USER",
+          "SUPPORT",
+          "CANDIDATE"
+        ],
+        "directScanoutTo": "0",
+        "directScanoutBlockedBy": [
+          "USER",
+          "SW",
+          "CANDIDATE"
+        ],
+        "disabled": false,
+        "currentFormat": "XRGB8888",
+        "mirrorOf": "none",
+        "availableModes": [
+          "1920x1080@60.00Hz"
+        ],
+        "colorManagementPreset": "srgb",
+        "sdrBrightness": 1,
+        "sdrSaturation": 1,
+        "sdrMinLuminance": 0.2,
+        "sdrMaxLuminance": 80,
+        "hardwareCursorsInUse": true
+      },
+      {
+        "id": 2,
+        "name": "HEADLESS-2",
+        "description": "",
+        "make": "",
+        "model": "",
+        "serial": "",
+        "width": 1920,
+        "height": 1080,
+        "physicalWidth": 0,
+        "physicalHeight": 0,
+        "refreshRate": 60.0,
+        "x": 4000,
+        "y": 0,
+        "activeWorkspace": {
+          "id": 2,
+          "name": "2"
+        },
+        "specialWorkspace": {
+          "id": 0,
+          "name": ""
+        },
+        "reserved": [
+          0,
+          32,
+          0,
+          0
+        ],
+        "scale": 1.5,
+        "transform": 0,
+        "focused": true,
+        "dpmsStatus": true,
+        "vrr": false,
+        "solitary": "0",
+        "solitaryBlockedBy": [
+          "WINDOWED",
+          "CANDIDATE"
+        ],
+        "activelyTearing": false,
+        "tearingBlockedBy": [
+          "NOT_TORN",
+          "USER",
+          "SUPPORT",
+          "CANDIDATE"
+        ],
+        "directScanoutTo": "0",
+        "directScanoutBlockedBy": [
+          "USER",
+          "SW",
+          "CANDIDATE"
+        ],
+        "disabled": false,
+        "currentFormat": "XRGB8888",
+        "mirrorOf": "none",
+        "availableModes": [
+          "1920x1080@60.00Hz"
+        ],
+        "colorManagementPreset": "srgb",
+        "sdrBrightness": 1,
+        "sdrSaturation": 1,
+        "sdrMinLuminance": 0.2,
+        "sdrMaxLuminance": 80,
+        "hardwareCursorsInUse": true
+      }
+    ],
+    "layers": {
+      "WAYLAND-1": {
+        "levels": {
+          "0": [
+            {
+              "address": "0x5599880df1d0",
+              "x": 3920,
+              "y": 0,
+              "w": 1920,
+              "h": 1080,
+              "alpha": 1,
+              "namespace": "putkin-wallpaper",
+              "pid": 34
+            }
+          ],
+          "1": [],
+          "2": [
+            {
+              "address": "0x55998824f240",
+              "x": 3920,
+              "y": 0,
+              "w": 1920,
+              "h": 32,
+              "alpha": 1,
+              "namespace": "putkin-bar",
+              "pid": 34
+            }
+          ],
+          "3": []
+        }
+      },
+      "HEADLESS-1": {
+        "levels": {
+          "0": [
+            {
+              "address": "0x559987256a80",
+              "x": 2000,
+              "y": 0,
+              "w": 1920,
+              "h": 1080,
+              "alpha": 1,
+              "namespace": "putkin-wallpaper",
+              "pid": 34
+            }
+          ],
+          "1": [],
+          "2": [
+            {
+              "address": "0x55998824e940",
+              "x": 2000,
+              "y": 0,
+              "w": 1920,
+              "h": 32,
+              "alpha": 1,
+              "namespace": "putkin-bar",
+              "pid": 34
+            }
+          ],
+          "3": []
+        }
+      },
+      "HEADLESS-2": {
+        "levels": {
+          "0": [
+            {
+              "address": "0x559988839ba0",
+              "x": 4000,
+              "y": 0,
+              "w": 1280,
+              "h": 720,
+              "alpha": 1,
+              "namespace": "putkin-wallpaper",
+              "pid": 34
+            }
+          ],
+          "1": [],
+          "2": [
+            {
+              "address": "0x559988261840",
+              "x": 4000,
+              "y": 0,
+              "w": 1280,
+              "h": 32,
+              "alpha": 1,
+              "namespace": "putkin-bar",
+              "pid": 34
+            }
+          ],
+          "3": [
+            {
+              "address": "0x5599885493c0",
+              "x": 4912,
+              "y": 0,
+              "w": 368,
+              "h": 424,
+              "alpha": 1,
+              "namespace": "putkin-panel",
+              "pid": 34
+            }
+          ]
+        }
+      }
+    }
+  },
+  "cycles": [
+    {
+      "cycle": 1,
+      "state": {
+        "screens": [
+          {
+            "name": "WAYLAND-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-6",
+            "width": 1280,
+            "height": 720
+          }
+        ],
+        "ready": true,
+        "focusedMonitor": "HEADLESS-1",
+        "barScreen": "",
+        "bars": [
+          {
+            "screen": "WAYLAND-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-6",
+            "focus": ""
+          }
+        ],
+        "loaded": false,
+        "surface": "",
+        "screen": "",
+        "focus": "",
+        "created": 18,
+        "destroyed": 18,
+        "editing": false,
+        "saving": false,
+        "accent": "#94e2d5",
+        "secondary": "#fab387",
+        "persisted": {
+          "accent": "#94e2d5",
+          "accentSecondary": "#fab387",
+          "reducedMotion": false
+        },
+        "scans": 3,
+        "scanStops": 3,
+        "scanning": false,
+        "discovery": false,
+        "sessionCalls": 0,
+        "volume": 56.99999999999999,
+        "brightness": 55,
+        "pskCalls": 1,
+        "needsPassword": false,
+        "keyboardConnected": true,
+        "dnd": false,
+        "notifications": 0,
+        "notificationFocus": "",
+        "osd": false,
+        "osdScreen": "",
+        "osdLoaded": false,
+        "busy": false,
+        "brightnessRequests": 18,
+        "nightRequests": 16,
+        "menuLeafActivations": 1,
+        "trayCount": 40
+      },
+      "process": {
+        "pid": 34,
+        "name": "quickshell",
+        "parent": 4,
+        "cpu_ticks": 445,
+        "rss_kib": 238164
+      }
+    },
+    {
+      "cycle": 2,
+      "state": {
+        "screens": [
+          {
+            "name": "WAYLAND-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-6",
+            "width": 1280,
+            "height": 720
+          }
+        ],
+        "ready": true,
+        "focusedMonitor": "HEADLESS-1",
+        "barScreen": "",
+        "bars": [
+          {
+            "screen": "WAYLAND-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-6",
+            "focus": ""
+          }
+        ],
+        "loaded": false,
+        "surface": "",
+        "screen": "",
+        "focus": "",
+        "created": 19,
+        "destroyed": 19,
+        "editing": false,
+        "saving": false,
+        "accent": "#94e2d5",
+        "secondary": "#fab387",
+        "persisted": {
+          "accent": "#94e2d5",
+          "accentSecondary": "#fab387",
+          "reducedMotion": false
+        },
+        "scans": 4,
+        "scanStops": 4,
+        "scanning": false,
+        "discovery": false,
+        "sessionCalls": 0,
+        "volume": 56.99999999999999,
+        "brightness": 55,
+        "pskCalls": 1,
+        "needsPassword": false,
+        "keyboardConnected": true,
+        "dnd": false,
+        "notifications": 0,
+        "notificationFocus": "",
+        "osd": false,
+        "osdScreen": "",
+        "osdLoaded": false,
+        "busy": false,
+        "brightnessRequests": 19,
+        "nightRequests": 17,
+        "menuLeafActivations": 1,
+        "trayCount": 40
+      },
+      "process": {
+        "pid": 34,
+        "name": "quickshell",
+        "parent": 4,
+        "cpu_ticks": 468,
+        "rss_kib": 240532
+      }
+    },
+    {
+      "cycle": 3,
+      "state": {
+        "screens": [
+          {
+            "name": "WAYLAND-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-6",
+            "width": 1280,
+            "height": 720
+          }
+        ],
+        "ready": true,
+        "focusedMonitor": "HEADLESS-1",
+        "barScreen": "",
+        "bars": [
+          {
+            "screen": "WAYLAND-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-6",
+            "focus": ""
+          }
+        ],
+        "loaded": false,
+        "surface": "",
+        "screen": "",
+        "focus": "",
+        "created": 20,
+        "destroyed": 20,
+        "editing": false,
+        "saving": false,
+        "accent": "#94e2d5",
+        "secondary": "#fab387",
+        "persisted": {
+          "accent": "#94e2d5",
+          "accentSecondary": "#fab387",
+          "reducedMotion": false
+        },
+        "scans": 5,
+        "scanStops": 5,
+        "scanning": false,
+        "discovery": false,
+        "sessionCalls": 0,
+        "volume": 56.99999999999999,
+        "brightness": 55,
+        "pskCalls": 1,
+        "needsPassword": false,
+        "keyboardConnected": true,
+        "dnd": false,
+        "notifications": 0,
+        "notificationFocus": "",
+        "osd": false,
+        "osdScreen": "",
+        "osdLoaded": false,
+        "busy": false,
+        "brightnessRequests": 20,
+        "nightRequests": 18,
+        "menuLeafActivations": 1,
+        "trayCount": 40
+      },
+      "process": {
+        "pid": 34,
+        "name": "quickshell",
+        "parent": 4,
+        "cpu_ticks": 490,
+        "rss_kib": 240796
+      }
+    },
+    {
+      "cycle": 4,
+      "state": {
+        "screens": [
+          {
+            "name": "WAYLAND-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-6",
+            "width": 1280,
+            "height": 720
+          }
+        ],
+        "ready": true,
+        "focusedMonitor": "HEADLESS-1",
+        "barScreen": "",
+        "bars": [
+          {
+            "screen": "WAYLAND-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-6",
+            "focus": ""
+          }
+        ],
+        "loaded": false,
+        "surface": "",
+        "screen": "",
+        "focus": "",
+        "created": 21,
+        "destroyed": 21,
+        "editing": false,
+        "saving": false,
+        "accent": "#94e2d5",
+        "secondary": "#fab387",
+        "persisted": {
+          "accent": "#94e2d5",
+          "accentSecondary": "#fab387",
+          "reducedMotion": false
+        },
+        "scans": 6,
+        "scanStops": 6,
+        "scanning": false,
+        "discovery": false,
+        "sessionCalls": 0,
+        "volume": 56.99999999999999,
+        "brightness": 55,
+        "pskCalls": 1,
+        "needsPassword": false,
+        "keyboardConnected": true,
+        "dnd": false,
+        "notifications": 0,
+        "notificationFocus": "",
+        "osd": false,
+        "osdScreen": "",
+        "osdLoaded": false,
+        "busy": false,
+        "brightnessRequests": 21,
+        "nightRequests": 19,
+        "menuLeafActivations": 1,
+        "trayCount": 40
+      },
+      "process": {
+        "pid": 34,
+        "name": "quickshell",
+        "parent": 4,
+        "cpu_ticks": 511,
+        "rss_kib": 240536
+      }
+    },
+    {
+      "cycle": 5,
+      "state": {
+        "screens": [
+          {
+            "name": "WAYLAND-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-6",
+            "width": 1280,
+            "height": 720
+          }
+        ],
+        "ready": true,
+        "focusedMonitor": "HEADLESS-1",
+        "barScreen": "",
+        "bars": [
+          {
+            "screen": "WAYLAND-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-6",
+            "focus": ""
+          }
+        ],
+        "loaded": false,
+        "surface": "",
+        "screen": "",
+        "focus": "",
+        "created": 22,
+        "destroyed": 22,
+        "editing": false,
+        "saving": false,
+        "accent": "#94e2d5",
+        "secondary": "#fab387",
+        "persisted": {
+          "accent": "#94e2d5",
+          "accentSecondary": "#fab387",
+          "reducedMotion": false
+        },
+        "scans": 7,
+        "scanStops": 7,
+        "scanning": false,
+        "discovery": false,
+        "sessionCalls": 0,
+        "volume": 56.99999999999999,
+        "brightness": 55,
+        "pskCalls": 1,
+        "needsPassword": false,
+        "keyboardConnected": true,
+        "dnd": false,
+        "notifications": 0,
+        "notificationFocus": "",
+        "osd": false,
+        "osdScreen": "",
+        "osdLoaded": false,
+        "busy": false,
+        "brightnessRequests": 22,
+        "nightRequests": 20,
+        "menuLeafActivations": 1,
+        "trayCount": 40
+      },
+      "process": {
+        "pid": 34,
+        "name": "quickshell",
+        "parent": 4,
+        "cpu_ticks": 534,
+        "rss_kib": 240792
+      }
+    },
+    {
+      "cycle": 6,
+      "state": {
+        "screens": [
+          {
+            "name": "WAYLAND-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-6",
+            "width": 1280,
+            "height": 720
+          }
+        ],
+        "ready": true,
+        "focusedMonitor": "HEADLESS-1",
+        "barScreen": "",
+        "bars": [
+          {
+            "screen": "WAYLAND-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-6",
+            "focus": ""
+          }
+        ],
+        "loaded": false,
+        "surface": "",
+        "screen": "",
+        "focus": "",
+        "created": 23,
+        "destroyed": 23,
+        "editing": false,
+        "saving": false,
+        "accent": "#94e2d5",
+        "secondary": "#fab387",
+        "persisted": {
+          "accent": "#94e2d5",
+          "accentSecondary": "#fab387",
+          "reducedMotion": false
+        },
+        "scans": 8,
+        "scanStops": 8,
+        "scanning": false,
+        "discovery": false,
+        "sessionCalls": 0,
+        "volume": 56.99999999999999,
+        "brightness": 55,
+        "pskCalls": 1,
+        "needsPassword": false,
+        "keyboardConnected": true,
+        "dnd": false,
+        "notifications": 0,
+        "notificationFocus": "",
+        "osd": false,
+        "osdScreen": "",
+        "osdLoaded": false,
+        "busy": false,
+        "brightnessRequests": 23,
+        "nightRequests": 21,
+        "menuLeafActivations": 1,
+        "trayCount": 40
+      },
+      "process": {
+        "pid": 34,
+        "name": "quickshell",
+        "parent": 4,
+        "cpu_ticks": 556,
+        "rss_kib": 240792
+      }
+    },
+    {
+      "cycle": 7,
+      "state": {
+        "screens": [
+          {
+            "name": "WAYLAND-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-6",
+            "width": 1280,
+            "height": 720
+          }
+        ],
+        "ready": true,
+        "focusedMonitor": "HEADLESS-1",
+        "barScreen": "",
+        "bars": [
+          {
+            "screen": "WAYLAND-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-6",
+            "focus": ""
+          }
+        ],
+        "loaded": false,
+        "surface": "",
+        "screen": "",
+        "focus": "",
+        "created": 24,
+        "destroyed": 24,
+        "editing": false,
+        "saving": false,
+        "accent": "#94e2d5",
+        "secondary": "#fab387",
+        "persisted": {
+          "accent": "#94e2d5",
+          "accentSecondary": "#fab387",
+          "reducedMotion": false
+        },
+        "scans": 9,
+        "scanStops": 9,
+        "scanning": false,
+        "discovery": false,
+        "sessionCalls": 0,
+        "volume": 56.99999999999999,
+        "brightness": 55,
+        "pskCalls": 1,
+        "needsPassword": false,
+        "keyboardConnected": true,
+        "dnd": false,
+        "notifications": 0,
+        "notificationFocus": "",
+        "osd": false,
+        "osdScreen": "",
+        "osdLoaded": false,
+        "busy": false,
+        "brightnessRequests": 24,
+        "nightRequests": 22,
+        "menuLeafActivations": 1,
+        "trayCount": 40
+      },
+      "process": {
+        "pid": 34,
+        "name": "quickshell",
+        "parent": 4,
+        "cpu_ticks": 578,
+        "rss_kib": 240332
+      }
+    },
+    {
+      "cycle": 8,
+      "state": {
+        "screens": [
+          {
+            "name": "WAYLAND-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-6",
+            "width": 1280,
+            "height": 720
+          }
+        ],
+        "ready": true,
+        "focusedMonitor": "HEADLESS-1",
+        "barScreen": "",
+        "bars": [
+          {
+            "screen": "WAYLAND-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-6",
+            "focus": ""
+          }
+        ],
+        "loaded": false,
+        "surface": "",
+        "screen": "",
+        "focus": "",
+        "created": 25,
+        "destroyed": 25,
+        "editing": false,
+        "saving": false,
+        "accent": "#94e2d5",
+        "secondary": "#fab387",
+        "persisted": {
+          "accent": "#94e2d5",
+          "accentSecondary": "#fab387",
+          "reducedMotion": false
+        },
+        "scans": 10,
+        "scanStops": 10,
+        "scanning": false,
+        "discovery": false,
+        "sessionCalls": 0,
+        "volume": 56.99999999999999,
+        "brightness": 55,
+        "pskCalls": 1,
+        "needsPassword": false,
+        "keyboardConnected": true,
+        "dnd": false,
+        "notifications": 0,
+        "notificationFocus": "",
+        "osd": false,
+        "osdScreen": "",
+        "osdLoaded": false,
+        "busy": false,
+        "brightnessRequests": 25,
+        "nightRequests": 23,
+        "menuLeafActivations": 1,
+        "trayCount": 40
+      },
+      "process": {
+        "pid": 34,
+        "name": "quickshell",
+        "parent": 4,
+        "cpu_ticks": 600,
+        "rss_kib": 240332
+      }
+    },
+    {
+      "cycle": 9,
+      "state": {
+        "screens": [
+          {
+            "name": "WAYLAND-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-6",
+            "width": 1280,
+            "height": 720
+          }
+        ],
+        "ready": true,
+        "focusedMonitor": "HEADLESS-1",
+        "barScreen": "",
+        "bars": [
+          {
+            "screen": "WAYLAND-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-6",
+            "focus": ""
+          }
+        ],
+        "loaded": false,
+        "surface": "",
+        "screen": "",
+        "focus": "",
+        "created": 26,
+        "destroyed": 26,
+        "editing": false,
+        "saving": false,
+        "accent": "#94e2d5",
+        "secondary": "#fab387",
+        "persisted": {
+          "accent": "#94e2d5",
+          "accentSecondary": "#fab387",
+          "reducedMotion": false
+        },
+        "scans": 11,
+        "scanStops": 11,
+        "scanning": false,
+        "discovery": false,
+        "sessionCalls": 0,
+        "volume": 56.99999999999999,
+        "brightness": 55,
+        "pskCalls": 1,
+        "needsPassword": false,
+        "keyboardConnected": true,
+        "dnd": false,
+        "notifications": 0,
+        "notificationFocus": "",
+        "osd": false,
+        "osdScreen": "",
+        "osdLoaded": false,
+        "busy": false,
+        "brightnessRequests": 26,
+        "nightRequests": 24,
+        "menuLeafActivations": 1,
+        "trayCount": 40
+      },
+      "process": {
+        "pid": 34,
+        "name": "quickshell",
+        "parent": 4,
+        "cpu_ticks": 623,
+        "rss_kib": 240140
+      }
+    },
+    {
+      "cycle": 10,
+      "state": {
+        "screens": [
+          {
+            "name": "WAYLAND-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-6",
+            "width": 1280,
+            "height": 720
+          }
+        ],
+        "ready": true,
+        "focusedMonitor": "HEADLESS-1",
+        "barScreen": "",
+        "bars": [
+          {
+            "screen": "WAYLAND-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-6",
+            "focus": ""
+          }
+        ],
+        "loaded": false,
+        "surface": "",
+        "screen": "",
+        "focus": "",
+        "created": 27,
+        "destroyed": 27,
+        "editing": false,
+        "saving": false,
+        "accent": "#94e2d5",
+        "secondary": "#fab387",
+        "persisted": {
+          "accent": "#94e2d5",
+          "accentSecondary": "#fab387",
+          "reducedMotion": false
+        },
+        "scans": 12,
+        "scanStops": 12,
+        "scanning": false,
+        "discovery": false,
+        "sessionCalls": 0,
+        "volume": 56.99999999999999,
+        "brightness": 55,
+        "pskCalls": 1,
+        "needsPassword": false,
+        "keyboardConnected": true,
+        "dnd": false,
+        "notifications": 0,
+        "notificationFocus": "",
+        "osd": false,
+        "osdScreen": "",
+        "osdLoaded": false,
+        "busy": false,
+        "brightnessRequests": 27,
+        "nightRequests": 25,
+        "menuLeafActivations": 1,
+        "trayCount": 40
+      },
+      "process": {
+        "pid": 34,
+        "name": "quickshell",
+        "parent": 4,
+        "cpu_ticks": 643,
+        "rss_kib": 240012
+      }
+    },
+    {
+      "cycle": 11,
+      "state": {
+        "screens": [
+          {
+            "name": "WAYLAND-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-6",
+            "width": 1280,
+            "height": 720
+          }
+        ],
+        "ready": true,
+        "focusedMonitor": "HEADLESS-1",
+        "barScreen": "",
+        "bars": [
+          {
+            "screen": "WAYLAND-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-6",
+            "focus": ""
+          }
+        ],
+        "loaded": false,
+        "surface": "",
+        "screen": "",
+        "focus": "",
+        "created": 28,
+        "destroyed": 28,
+        "editing": false,
+        "saving": false,
+        "accent": "#94e2d5",
+        "secondary": "#fab387",
+        "persisted": {
+          "accent": "#94e2d5",
+          "accentSecondary": "#fab387",
+          "reducedMotion": false
+        },
+        "scans": 13,
+        "scanStops": 13,
+        "scanning": false,
+        "discovery": false,
+        "sessionCalls": 0,
+        "volume": 56.99999999999999,
+        "brightness": 55,
+        "pskCalls": 1,
+        "needsPassword": false,
+        "keyboardConnected": true,
+        "dnd": false,
+        "notifications": 0,
+        "notificationFocus": "",
+        "osd": false,
+        "osdScreen": "",
+        "osdLoaded": false,
+        "busy": false,
+        "brightnessRequests": 28,
+        "nightRequests": 26,
+        "menuLeafActivations": 1,
+        "trayCount": 40
+      },
+      "process": {
+        "pid": 34,
+        "name": "quickshell",
+        "parent": 4,
+        "cpu_ticks": 666,
+        "rss_kib": 240128
+      }
+    },
+    {
+      "cycle": 12,
+      "state": {
+        "screens": [
+          {
+            "name": "WAYLAND-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-6",
+            "width": 1280,
+            "height": 720
+          }
+        ],
+        "ready": true,
+        "focusedMonitor": "HEADLESS-1",
+        "barScreen": "",
+        "bars": [
+          {
+            "screen": "WAYLAND-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-6",
+            "focus": ""
+          }
+        ],
+        "loaded": false,
+        "surface": "",
+        "screen": "",
+        "focus": "",
+        "created": 29,
+        "destroyed": 29,
+        "editing": false,
+        "saving": false,
+        "accent": "#94e2d5",
+        "secondary": "#fab387",
+        "persisted": {
+          "accent": "#94e2d5",
+          "accentSecondary": "#fab387",
+          "reducedMotion": false
+        },
+        "scans": 14,
+        "scanStops": 14,
+        "scanning": false,
+        "discovery": false,
+        "sessionCalls": 0,
+        "volume": 56.99999999999999,
+        "brightness": 55,
+        "pskCalls": 1,
+        "needsPassword": false,
+        "keyboardConnected": true,
+        "dnd": false,
+        "notifications": 0,
+        "notificationFocus": "",
+        "osd": false,
+        "osdScreen": "",
+        "osdLoaded": false,
+        "busy": false,
+        "brightnessRequests": 29,
+        "nightRequests": 27,
+        "menuLeafActivations": 1,
+        "trayCount": 40
+      },
+      "process": {
+        "pid": 34,
+        "name": "quickshell",
+        "parent": 4,
+        "cpu_ticks": 688,
+        "rss_kib": 240000
+      }
+    },
+    {
+      "cycle": 13,
+      "state": {
+        "screens": [
+          {
+            "name": "WAYLAND-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-6",
+            "width": 1280,
+            "height": 720
+          }
+        ],
+        "ready": true,
+        "focusedMonitor": "HEADLESS-1",
+        "barScreen": "",
+        "bars": [
+          {
+            "screen": "WAYLAND-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-6",
+            "focus": ""
+          }
+        ],
+        "loaded": false,
+        "surface": "",
+        "screen": "",
+        "focus": "",
+        "created": 30,
+        "destroyed": 30,
+        "editing": false,
+        "saving": false,
+        "accent": "#94e2d5",
+        "secondary": "#fab387",
+        "persisted": {
+          "accent": "#94e2d5",
+          "accentSecondary": "#fab387",
+          "reducedMotion": false
+        },
+        "scans": 15,
+        "scanStops": 15,
+        "scanning": false,
+        "discovery": false,
+        "sessionCalls": 0,
+        "volume": 56.99999999999999,
+        "brightness": 55,
+        "pskCalls": 1,
+        "needsPassword": false,
+        "keyboardConnected": true,
+        "dnd": false,
+        "notifications": 0,
+        "notificationFocus": "",
+        "osd": false,
+        "osdScreen": "",
+        "osdLoaded": false,
+        "busy": false,
+        "brightnessRequests": 30,
+        "nightRequests": 28,
+        "menuLeafActivations": 1,
+        "trayCount": 40
+      },
+      "process": {
+        "pid": 34,
+        "name": "quickshell",
+        "parent": 4,
+        "cpu_ticks": 711,
+        "rss_kib": 240256
+      }
+    },
+    {
+      "cycle": 14,
+      "state": {
+        "screens": [
+          {
+            "name": "WAYLAND-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-6",
+            "width": 1280,
+            "height": 720
+          }
+        ],
+        "ready": true,
+        "focusedMonitor": "HEADLESS-1",
+        "barScreen": "",
+        "bars": [
+          {
+            "screen": "WAYLAND-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-6",
+            "focus": ""
+          }
+        ],
+        "loaded": false,
+        "surface": "",
+        "screen": "",
+        "focus": "",
+        "created": 31,
+        "destroyed": 31,
+        "editing": false,
+        "saving": false,
+        "accent": "#94e2d5",
+        "secondary": "#fab387",
+        "persisted": {
+          "accent": "#94e2d5",
+          "accentSecondary": "#fab387",
+          "reducedMotion": false
+        },
+        "scans": 16,
+        "scanStops": 16,
+        "scanning": false,
+        "discovery": false,
+        "sessionCalls": 0,
+        "volume": 56.99999999999999,
+        "brightness": 55,
+        "pskCalls": 1,
+        "needsPassword": false,
+        "keyboardConnected": true,
+        "dnd": false,
+        "notifications": 0,
+        "notificationFocus": "",
+        "osd": false,
+        "osdScreen": "",
+        "osdLoaded": false,
+        "busy": false,
+        "brightnessRequests": 31,
+        "nightRequests": 29,
+        "menuLeafActivations": 1,
+        "trayCount": 40
+      },
+      "process": {
+        "pid": 34,
+        "name": "quickshell",
+        "parent": 4,
+        "cpu_ticks": 733,
+        "rss_kib": 240256
+      }
+    },
+    {
+      "cycle": 15,
+      "state": {
+        "screens": [
+          {
+            "name": "WAYLAND-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-6",
+            "width": 1280,
+            "height": 720
+          }
+        ],
+        "ready": true,
+        "focusedMonitor": "HEADLESS-1",
+        "barScreen": "",
+        "bars": [
+          {
+            "screen": "WAYLAND-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-6",
+            "focus": ""
+          }
+        ],
+        "loaded": false,
+        "surface": "",
+        "screen": "",
+        "focus": "",
+        "created": 32,
+        "destroyed": 32,
+        "editing": false,
+        "saving": false,
+        "accent": "#94e2d5",
+        "secondary": "#fab387",
+        "persisted": {
+          "accent": "#94e2d5",
+          "accentSecondary": "#fab387",
+          "reducedMotion": false
+        },
+        "scans": 17,
+        "scanStops": 17,
+        "scanning": false,
+        "discovery": false,
+        "sessionCalls": 0,
+        "volume": 56.99999999999999,
+        "brightness": 55,
+        "pskCalls": 1,
+        "needsPassword": false,
+        "keyboardConnected": true,
+        "dnd": false,
+        "notifications": 0,
+        "notificationFocus": "",
+        "osd": false,
+        "osdScreen": "",
+        "osdLoaded": false,
+        "busy": false,
+        "brightnessRequests": 32,
+        "nightRequests": 30,
+        "menuLeafActivations": 1,
+        "trayCount": 40
+      },
+      "process": {
+        "pid": 34,
+        "name": "quickshell",
+        "parent": 4,
+        "cpu_ticks": 757,
+        "rss_kib": 242104
+      }
+    },
+    {
+      "cycle": 16,
+      "state": {
+        "screens": [
+          {
+            "name": "WAYLAND-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-6",
+            "width": 1280,
+            "height": 720
+          }
+        ],
+        "ready": true,
+        "focusedMonitor": "HEADLESS-1",
+        "barScreen": "",
+        "bars": [
+          {
+            "screen": "WAYLAND-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-6",
+            "focus": ""
+          }
+        ],
+        "loaded": false,
+        "surface": "",
+        "screen": "",
+        "focus": "",
+        "created": 33,
+        "destroyed": 33,
+        "editing": false,
+        "saving": false,
+        "accent": "#94e2d5",
+        "secondary": "#fab387",
+        "persisted": {
+          "accent": "#94e2d5",
+          "accentSecondary": "#fab387",
+          "reducedMotion": false
+        },
+        "scans": 18,
+        "scanStops": 18,
+        "scanning": false,
+        "discovery": false,
+        "sessionCalls": 0,
+        "volume": 56.99999999999999,
+        "brightness": 55,
+        "pskCalls": 1,
+        "needsPassword": false,
+        "keyboardConnected": true,
+        "dnd": false,
+        "notifications": 0,
+        "notificationFocus": "",
+        "osd": false,
+        "osdScreen": "",
+        "osdLoaded": false,
+        "busy": false,
+        "brightnessRequests": 33,
+        "nightRequests": 31,
+        "menuLeafActivations": 1,
+        "trayCount": 40
+      },
+      "process": {
+        "pid": 34,
+        "name": "quickshell",
+        "parent": 4,
+        "cpu_ticks": 778,
+        "rss_kib": 241976
+      }
+    },
+    {
+      "cycle": 17,
+      "state": {
+        "screens": [
+          {
+            "name": "WAYLAND-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-6",
+            "width": 1280,
+            "height": 720
+          }
+        ],
+        "ready": true,
+        "focusedMonitor": "HEADLESS-1",
+        "barScreen": "",
+        "bars": [
+          {
+            "screen": "WAYLAND-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-6",
+            "focus": ""
+          }
+        ],
+        "loaded": false,
+        "surface": "",
+        "screen": "",
+        "focus": "",
+        "created": 34,
+        "destroyed": 34,
+        "editing": false,
+        "saving": false,
+        "accent": "#94e2d5",
+        "secondary": "#fab387",
+        "persisted": {
+          "accent": "#94e2d5",
+          "accentSecondary": "#fab387",
+          "reducedMotion": false
+        },
+        "scans": 19,
+        "scanStops": 19,
+        "scanning": false,
+        "discovery": false,
+        "sessionCalls": 0,
+        "volume": 56.99999999999999,
+        "brightness": 55,
+        "pskCalls": 1,
+        "needsPassword": false,
+        "keyboardConnected": true,
+        "dnd": false,
+        "notifications": 0,
+        "notificationFocus": "",
+        "osd": false,
+        "osdScreen": "",
+        "osdLoaded": false,
+        "busy": false,
+        "brightnessRequests": 34,
+        "nightRequests": 32,
+        "menuLeafActivations": 1,
+        "trayCount": 40
+      },
+      "process": {
+        "pid": 34,
+        "name": "quickshell",
+        "parent": 4,
+        "cpu_ticks": 800,
+        "rss_kib": 242100
+      }
+    },
+    {
+      "cycle": 18,
+      "state": {
+        "screens": [
+          {
+            "name": "WAYLAND-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-6",
+            "width": 1280,
+            "height": 720
+          }
+        ],
+        "ready": true,
+        "focusedMonitor": "HEADLESS-1",
+        "barScreen": "",
+        "bars": [
+          {
+            "screen": "WAYLAND-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-6",
+            "focus": ""
+          }
+        ],
+        "loaded": false,
+        "surface": "",
+        "screen": "",
+        "focus": "",
+        "created": 35,
+        "destroyed": 35,
+        "editing": false,
+        "saving": false,
+        "accent": "#94e2d5",
+        "secondary": "#fab387",
+        "persisted": {
+          "accent": "#94e2d5",
+          "accentSecondary": "#fab387",
+          "reducedMotion": false
+        },
+        "scans": 20,
+        "scanStops": 20,
+        "scanning": false,
+        "discovery": false,
+        "sessionCalls": 0,
+        "volume": 56.99999999999999,
+        "brightness": 55,
+        "pskCalls": 1,
+        "needsPassword": false,
+        "keyboardConnected": true,
+        "dnd": false,
+        "notifications": 0,
+        "notificationFocus": "",
+        "osd": false,
+        "osdScreen": "",
+        "osdLoaded": false,
+        "busy": false,
+        "brightnessRequests": 35,
+        "nightRequests": 33,
+        "menuLeafActivations": 1,
+        "trayCount": 40
+      },
+      "process": {
+        "pid": 34,
+        "name": "quickshell",
+        "parent": 4,
+        "cpu_ticks": 823,
+        "rss_kib": 241468
+      }
+    },
+    {
+      "cycle": 19,
+      "state": {
+        "screens": [
+          {
+            "name": "WAYLAND-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-6",
+            "width": 1280,
+            "height": 720
+          }
+        ],
+        "ready": true,
+        "focusedMonitor": "HEADLESS-1",
+        "barScreen": "",
+        "bars": [
+          {
+            "screen": "WAYLAND-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-6",
+            "focus": ""
+          }
+        ],
+        "loaded": false,
+        "surface": "",
+        "screen": "",
+        "focus": "",
+        "created": 36,
+        "destroyed": 36,
+        "editing": false,
+        "saving": false,
+        "accent": "#94e2d5",
+        "secondary": "#fab387",
+        "persisted": {
+          "accent": "#94e2d5",
+          "accentSecondary": "#fab387",
+          "reducedMotion": false
+        },
+        "scans": 21,
+        "scanStops": 21,
+        "scanning": false,
+        "discovery": false,
+        "sessionCalls": 0,
+        "volume": 56.99999999999999,
+        "brightness": 55,
+        "pskCalls": 1,
+        "needsPassword": false,
+        "keyboardConnected": true,
+        "dnd": false,
+        "notifications": 0,
+        "notificationFocus": "",
+        "osd": false,
+        "osdScreen": "",
+        "osdLoaded": false,
+        "busy": false,
+        "brightnessRequests": 36,
+        "nightRequests": 34,
+        "menuLeafActivations": 1,
+        "trayCount": 40
+      },
+      "process": {
+        "pid": 34,
+        "name": "quickshell",
+        "parent": 4,
+        "cpu_ticks": 846,
+        "rss_kib": 241200
+      }
+    },
+    {
+      "cycle": 20,
+      "state": {
+        "screens": [
+          {
+            "name": "WAYLAND-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-1",
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "name": "HEADLESS-6",
+            "width": 1280,
+            "height": 720
+          }
+        ],
+        "ready": true,
+        "focusedMonitor": "HEADLESS-1",
+        "barScreen": "",
+        "bars": [
+          {
+            "screen": "WAYLAND-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-1",
+            "focus": ""
+          },
+          {
+            "screen": "HEADLESS-6",
+            "focus": ""
+          }
+        ],
+        "loaded": false,
+        "surface": "",
+        "screen": "",
+        "focus": "",
+        "created": 37,
+        "destroyed": 37,
+        "editing": false,
+        "saving": false,
+        "accent": "#94e2d5",
+        "secondary": "#fab387",
+        "persisted": {
+          "accent": "#94e2d5",
+          "accentSecondary": "#fab387",
+          "reducedMotion": false
+        },
+        "scans": 22,
+        "scanStops": 22,
+        "scanning": false,
+        "discovery": false,
+        "sessionCalls": 0,
+        "volume": 56.99999999999999,
+        "brightness": 55,
+        "pskCalls": 1,
+        "needsPassword": false,
+        "keyboardConnected": true,
+        "dnd": false,
+        "notifications": 0,
+        "notificationFocus": "",
+        "osd": false,
+        "osdScreen": "",
+        "osdLoaded": false,
+        "busy": false,
+        "brightnessRequests": 37,
+        "nightRequests": 35,
+        "menuLeafActivations": 1,
+        "trayCount": 40
+      },
+      "process": {
+        "pid": 34,
+        "name": "quickshell",
+        "parent": 4,
+        "cpu_ticks": 867,
+        "rss_kib": 241456
+      }
+    }
+  ],
+  "final_state": {
+    "screens": [
+      {
+        "name": "WAYLAND-1",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "name": "HEADLESS-1",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "name": "HEADLESS-6",
+        "width": 1280,
+        "height": 720
+      }
+    ],
+    "ready": true,
+    "focusedMonitor": "HEADLESS-1",
+    "barScreen": "",
+    "bars": [
+      {
+        "screen": "WAYLAND-1",
+        "focus": ""
+      },
+      {
+        "screen": "HEADLESS-1",
+        "focus": ""
+      },
+      {
+        "screen": "HEADLESS-6",
+        "focus": ""
+      }
+    ],
+    "loaded": false,
+    "surface": "",
+    "screen": "",
+    "focus": "",
+    "created": 0,
+    "destroyed": 0,
+    "editing": false,
+    "saving": false,
+    "accent": "#94e2d5",
+    "secondary": "#fab387",
+    "persisted": {
+      "accent": "#94e2d5",
+      "accentSecondary": "#fab387",
+      "reducedMotion": false
+    },
+    "scans": 0,
+    "scanStops": 0,
+    "scanning": false,
+    "discovery": false,
+    "sessionCalls": 0,
+    "volume": 42,
+    "brightness": 60,
+    "pskCalls": 0,
+    "needsPassword": false,
+    "keyboardConnected": false,
+    "dnd": false,
+    "notifications": 0,
+    "notificationFocus": "",
+    "osd": false,
+    "osdScreen": "",
+    "osdLoaded": false,
+    "busy": false,
+    "brightnessRequests": 1,
+    "nightRequests": 1,
+    "menuLeafActivations": 0,
+    "trayCount": 40
+  },
+  "final_layers": {
+    "monitors": [
+      {
+        "id": 0,
+        "name": "WAYLAND-1",
+        "description": "",
+        "make": "",
+        "model": "",
+        "serial": "",
+        "width": 1920,
+        "height": 1080,
+        "physicalWidth": 0,
+        "physicalHeight": 0,
+        "refreshRate": 60.0,
+        "x": 5280,
+        "y": 0,
+        "activeWorkspace": {
+          "id": 1,
+          "name": "1"
+        },
+        "specialWorkspace": {
+          "id": 0,
+          "name": ""
+        },
+        "reserved": [
+          0,
+          32,
+          0,
+          0
+        ],
+        "scale": 1,
+        "transform": 0,
+        "focused": false,
+        "dpmsStatus": true,
+        "vrr": false,
+        "solitary": "0",
+        "solitaryBlockedBy": [
+          "WINDOWED",
+          "CANDIDATE"
+        ],
+        "activelyTearing": false,
+        "tearingBlockedBy": [
+          "NOT_TORN",
+          "USER",
+          "SUPPORT",
+          "CANDIDATE",
+          "HW_CURSOR"
+        ],
+        "directScanoutTo": "0",
+        "directScanoutBlockedBy": [
+          "USER",
+          "CANDIDATE"
+        ],
+        "disabled": false,
+        "currentFormat": "XRGB8888",
+        "mirrorOf": "none",
+        "availableModes": [],
+        "colorManagementPreset": "srgb",
+        "sdrBrightness": 1,
+        "sdrSaturation": 1,
+        "sdrMinLuminance": 0.2,
+        "sdrMaxLuminance": 80,
+        "hardwareCursorsInUse": true
+      },
+      {
+        "id": 1,
+        "name": "HEADLESS-1",
+        "description": "",
+        "make": "",
+        "model": "",
+        "serial": "",
+        "width": 1920,
+        "height": 1080,
+        "physicalWidth": 0,
+        "physicalHeight": 0,
+        "refreshRate": 60.0,
+        "x": 2000,
+        "y": 0,
+        "activeWorkspace": {
+          "id": 3,
+          "name": "3"
+        },
+        "specialWorkspace": {
+          "id": 0,
+          "name": ""
+        },
+        "reserved": [
+          0,
+          32,
+          0,
+          0
+        ],
+        "scale": 1,
+        "transform": 0,
+        "focused": true,
+        "dpmsStatus": true,
+        "vrr": false,
+        "solitary": "0",
+        "solitaryBlockedBy": [
+          "WINDOWED",
+          "CANDIDATE"
+        ],
+        "activelyTearing": false,
+        "tearingBlockedBy": [
+          "NOT_TORN",
+          "USER",
+          "SUPPORT",
+          "CANDIDATE"
+        ],
+        "directScanoutTo": "0",
+        "directScanoutBlockedBy": [
+          "USER",
+          "SW",
+          "CANDIDATE"
+        ],
+        "disabled": false,
+        "currentFormat": "XRGB8888",
+        "mirrorOf": "none",
+        "availableModes": [
+          "1920x1080@60.00Hz"
+        ],
+        "colorManagementPreset": "srgb",
+        "sdrBrightness": 1,
+        "sdrSaturation": 1,
+        "sdrMinLuminance": 0.2,
+        "sdrMaxLuminance": 80,
+        "hardwareCursorsInUse": true
+      },
+      {
+        "id": 2,
+        "name": "HEADLESS-6",
+        "description": "",
+        "make": "",
+        "model": "",
+        "serial": "",
+        "width": 1920,
+        "height": 1080,
+        "physicalWidth": 0,
+        "physicalHeight": 0,
+        "refreshRate": 60.0,
+        "x": 4000,
+        "y": 0,
+        "activeWorkspace": {
+          "id": 2,
+          "name": "2"
+        },
+        "specialWorkspace": {
+          "id": 0,
+          "name": ""
+        },
+        "reserved": [
+          0,
+          32,
+          0,
+          0
+        ],
+        "scale": 1.5,
+        "transform": 0,
+        "focused": false,
+        "dpmsStatus": true,
+        "vrr": false,
+        "solitary": "0",
+        "solitaryBlockedBy": [
+          "WINDOWED",
+          "CANDIDATE"
+        ],
+        "activelyTearing": false,
+        "tearingBlockedBy": [
+          "NOT_TORN",
+          "USER",
+          "SUPPORT",
+          "CANDIDATE"
+        ],
+        "directScanoutTo": "0",
+        "directScanoutBlockedBy": [
+          "USER",
+          "SW",
+          "CANDIDATE"
+        ],
+        "disabled": false,
+        "currentFormat": "XRGB8888",
+        "mirrorOf": "none",
+        "availableModes": [
+          "1920x1080@60.00Hz"
+        ],
+        "colorManagementPreset": "srgb",
+        "sdrBrightness": 1,
+        "sdrSaturation": 1,
+        "sdrMinLuminance": 0.2,
+        "sdrMaxLuminance": 80,
+        "hardwareCursorsInUse": true
+      }
+    ],
+    "layers": {
+      "WAYLAND-1": {
+        "levels": {
+          "0": [
+            {
+              "address": "0x55998824e2f0",
+              "x": 5280,
+              "y": 0,
+              "w": 1920,
+              "h": 1080,
+              "alpha": 1,
+              "namespace": "putkin-wallpaper",
+              "pid": 34
+            }
+          ],
+          "1": [],
+          "2": [
+            {
+              "address": "0x55998723bc60",
+              "x": 5280,
+              "y": 0,
+              "w": 1920,
+              "h": 32,
+              "alpha": 1,
+              "namespace": "putkin-bar",
+              "pid": 34
+            }
+          ],
+          "3": []
+        }
+      },
+      "HEADLESS-1": {
+        "levels": {
+          "0": [
+            {
+              "address": "0x559987251dd0",
+              "x": 2000,
+              "y": 0,
+              "w": 1920,
+              "h": 1080,
+              "alpha": 1,
+              "namespace": "putkin-wallpaper",
+              "pid": 34
+            }
+          ],
+          "1": [],
+          "2": [
+            {
+              "address": "0x559987256610",
+              "x": 2000,
+              "y": 0,
+              "w": 1920,
+              "h": 32,
+              "alpha": 1,
+              "namespace": "putkin-bar",
+              "pid": 34
+            }
+          ],
+          "3": []
+        }
+      },
+      "HEADLESS-6": {
+        "levels": {
+          "0": [
+            {
+              "address": "0x559988415620",
+              "x": 4000,
+              "y": 0,
+              "w": 1280,
+              "h": 720,
+              "alpha": 1,
+              "namespace": "putkin-wallpaper",
+              "pid": 34
+            }
+          ],
+          "1": [],
+          "2": [
+            {
+              "address": "0x55998702e0d0",
+              "x": 4000,
+              "y": 0,
+              "w": 1280,
+              "h": 32,
+              "alpha": 1,
+              "namespace": "putkin-bar",
+              "pid": 34
+            }
+          ],
+          "3": []
+        }
+      }
+    }
+  },
+  "result": "PASS",
+  "process_exit_codes": [
+    0,
+    -15,
+    -15
+  ],
+  "remaining_child_pids": [],
+  "elapsed_s": 61.24127484500059
+}

@@ -1,0 +1,58 @@
+#!/usr/bin/env python3
+"""Repeatable release screenshots on mocks; offscreen, never a Wayland PASS."""
+import argparse
+from datetime import datetime, timezone
+import json
+from pathlib import Path
+import struct
+import subprocess
+import sys
+
+from _common import ROOT
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, default=ROOT / "artifacts/validation-visuals")
+    args = parser.parse_args()
+    output = args.output.resolve()
+    output.mkdir(parents=True, exist_ok=True)
+    cases = []
+    for size in [(1920, 1080), (1366, 768)]:
+        for scale in [1, 1.25, 1.5, 2]:
+            cases.append((f"quick-{size[0]}x{size[1]}-{scale}", "validation", size, scale, []))
+    cases += [
+        ("settings-mauve", "settings", (1366, 768), 1.25, []),
+        ("settings-teal", "settings", (1366, 768), 1.25, ["--accent", "#94e2d5", "--secondary", "#fab387"]),
+        ("audio-osd", "osd", (1920, 1080), 1, []),
+        ("brightness-osd", "brightnessOsd", (1366, 768), 1.5, ["--secondary", "#fab387"]),
+        ("notification-long", "notificationLong", (1366, 768), 2, []),
+        ("power-cancel", "powerConfirm", (1366, 768), 1.25, []),
+        ("tray-overflow", "trayOverflow", (1366, 768), 2, []),
+        ("night-light-absent", "nightLightAbsent", (1366, 768), 1.5, []),
+    ]
+    report = {"timestamp_utc": datetime.now(timezone.utc).isoformat(),
+              "mode": "offscreen/software; all data are fixtures; logical viewport = nominal physical size / scale",
+              "wayland_validated": False, "cases": []}
+    for name, scenario, size, scale, extra in cases:
+        width, height = [round(value / scale) for value in size]
+        image = output / (name + ".png")
+        command = [str(ROOT / "scripts/preview"), "--desktop", "--scenario", scenario,
+                   "--size", f"{width}x{height}", "--scale", str(scale), "--screenshot", str(image), *extra]
+        result = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, timeout=15)
+        if result.returncode:
+            print(result.stdout + result.stderr, file=sys.stderr)
+            return 1
+        actual = struct.unpack(">II", image.read_bytes()[16:24])
+        if any(abs(expected - rendered) > 1 for expected, rendered in zip(size, actual)):
+            print(f"FAIL: unexpected pixel dimensions for {image}: {actual}", file=sys.stderr)
+            return 1
+        report["cases"].append({"image": image.name, "scenario": scenario, "nominal_physical_size": size,
+                                "logical_size": [width, height], "scale": scale, "png_size": actual, "command": command})
+        print(f"PASS: {image.name}: {actual}, logical {width}x{height} @ {scale}", flush=True)
+    (output / "manifest.json").write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

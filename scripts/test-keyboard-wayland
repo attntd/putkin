@@ -1,0 +1,245 @@
+#!/usr/bin/env python3
+"""Keyboard and settings acceptance in a private nested Hyprland, with hardware mocks."""
+import argparse
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+import tempfile
+import time
+from _common import ROOT, isolated_environment, ipc_reply, ipc_json, qml_errors, runtime_log, stop_process_group, tool
+
+
+def eventually(read, predicate, label, seconds=10):
+    deadline = time.monotonic() + seconds
+    last = None
+    while time.monotonic() < deadline:
+        last = read()
+        if predicate(last):
+            return last
+        time.sleep(.04)
+    raise AssertionError(f'{label}: {last}')
+
+
+def inside(base):
+    assert os.environ.get('PUTKIN_KEYBOARD_TEST') == '1'
+    assert Path('/proc/1/comm').read_text().strip() == 'bwrap'
+    evidence = base/'evidence'; evidence.mkdir()
+    checks = []
+    border_pixels = []
+    def passed(name):
+        checks.append(name); print('PASS: '+name, flush=True)
+    entry = str(ROOT/'keyboard-test.qml')
+    config = base/'hyprland.lua'
+    config.write_text('''hl.monitor({output = "", mode = "1280x900@60", position = "auto", scale = 1})
+hl.config({animations = {enabled = false}, input = {kb_layout = "pl", resolve_binds_by_sym = true}, misc = {disable_hyprland_logo = true, disable_splash_rendering = true}, xwayland = {enabled = false}})
+''' + f'dofile({json.dumps(str(ROOT/"config/shell-layers.lua"))})\n' +
+        f'dofile({json.dumps(str(ROOT/"config/menu-keybinds.lua"))})(hl.bind, {json.dumps(entry)})\n' +
+        'hl.bind("SUPER + ALT + X", function() end, {description = "Foreign test"})\n')
+    env = dict(os.environ)
+    processes = []
+    with (evidence/'hyprland.log').open('w+') as hypr_log, (evidence/'quickshell.log').open('w+') as app_log:
+        try:
+            compositor = subprocess.Popen([tool('Hyprland'), '--config', str(config)], env=env, stdout=hypr_log, stderr=subprocess.STDOUT, start_new_session=True)
+            processes.append(compositor)
+            sockets = eventually(lambda: list((base/'r/hypr').glob('*/.socket.sock')), bool, 'private compositor', 15)
+            env['HYPRLAND_INSTANCE_SIGNATURE'] = sockets[0].parent.name
+            env['WAYLAND_DISPLAY'] = eventually(lambda: [p for p in (base/'r').glob('wayland-*') if p.is_socket()], bool, 'private display')[0].name
+            env['QT_QPA_PLATFORM'] = 'wayland'; env.pop('QT_QUICK_BACKEND', None)
+            def hypr(*args, data=False):
+                result = subprocess.run([tool('hyprctl'), *(['-j'] if data else []), *args], env=env, capture_output=True, text=True, timeout=5)
+                assert result.returncode == 0, result.stdout+result.stderr
+                return json.loads(result.stdout) if data else result.stdout.strip()
+            eventually(lambda: hypr('monitors', data=True), bool, 'monitor')
+            # The parent can resize a nested window below the Settings height.
+            # Use a fixed private output so its shadow cannot cover border probes.
+            hypr('output', 'create', 'headless')
+            monitors = eventually(lambda: hypr('monitors', data=True),
+                                  lambda ms: any(m['name'].startswith('HEADLESS-') for m in ms), 'private output')
+            test_output = next(m['name'] for m in monitors if m['name'].startswith('HEADLESS-'))
+            hypr('eval', 'hl.monitor({output=' + json.dumps(test_output) + ',mode="1280x900@60",position="2000x0",scale=1})')
+            eventually(lambda: hypr('monitors', data=True),
+                       lambda ms: any(m['name'] == test_output and m['width'] == 1280 and m['height'] == 900
+                                      and m['scale'] == 1 for m in ms), 'fixed output geometry')
+            hypr('dispatch', 'hl.dsp.focus({monitor=' + json.dumps(test_output) + '})')
+            app = subprocess.Popen([tool('quickshell'), '--no-color', '--path', entry], env=env, stdout=app_log, stderr=subprocess.STDOUT, start_new_session=True)
+            processes.append(app)
+            def ipc(target, method, *args, starting=False):
+                result = subprocess.run([tool('quickshell'), 'ipc', '--path', entry, 'call', target, method, *map(str,args)], env=env, capture_output=True, text=True, timeout=5)
+                return ipc_reply(result, app, app_log, starting=starting)
+            def state(): return ipc_json(ipc('probe','snapshot',starting=True))
+            def stable(): return eventually(state, lambda s: s.get('ready') and not s.get('keyboardBusy') and not s.get('saving'), 'stable keyboard')
+            def keys(*args): subprocess.run([tool('wtype'), *args], env=env, check=True, timeout=5)
+            def close():
+                ipc('ui','closePanels'); eventually(state,lambda s: not s.get('active') and not s.get('loaded'),'closed')
+            def opened(name): return eventually(state, lambda s:s.get('active')==name and s.get('loaded'), name)
+            def bindings(): return [b for b in hypr('binds',data=True) if b.get('description','').startswith('Putkin:')]
+            def shortcut(action): return [(b['modmask'],b['key'].lower()) for b in bindings() if b['description']=='Putkin:'+action]
+            def clients(): return hypr('clients',data=True)
+            def target(): return next(c for c in clients() if c['title']=='Putkin keyboard target')
+            def border_options(primary, secondary):
+                first = '0xFF' + primary.removeprefix('#').upper()
+                last = '0xFF' + secondary.removeprefix('#').upper()
+                command = f'''local active=hl.get_config("general.col.active_border")
+assert(#active.colors == 10 and active.colors[1] == "{first}" and active.colors[10] == "{last}", "accent endpoints")
+assert(math.abs(active.angle - 30) < 0.001, "normalized diagonal")
+assert(hl.get_config("decoration.rounding") == 0, "square corners")
+assert(hl.get_config("general.border_size") == 2, "border width")
+assert(hl.get_config("general.col.inactive_border").colors[1] == "0xFF45475A", "neutral border")
+for _,key in ipairs({{"group.col.border_active", "group.col.border_locked_active", "general.col.nogroup_border_active"}}) do
+local value=hl.get_config(key); assert(value.colors[1] == "{first}" and value.colors[10] == "{last}", key) end'''
+                eventually(lambda: hypr('dispatch', 'function() ' + command + ' end'), lambda value: value == 'ok', 'window appearance')
+
+            def border_capture(name, primary, secondary):
+                window = target()
+                hypr('dispatch',f'hl.dsp.focus({{window="address:{window["address"]}"}})')
+                hypr('dismissnotify')
+                time.sleep(.2)
+                monitor = next(m for m in hypr('monitors', data=True) if m['id'] == window['monitor'])
+                assert monitor['scale'] == 1
+                path = evidence / (name + '.png')
+                subprocess.run([str(base/'grim'), '-o', monitor['name'], '-s', '1', str(path)], env=env, check=True, capture_output=True, timeout=8)
+                rgb = subprocess.run([tool('magick'), str(path), '-depth', '8', 'RGB:-'], env=env, check=True, capture_output=True, timeout=10).stdout
+                width, height = window['size'][0] + 4, window['size'][1] + 4
+                left, top = window['at'][0] - monitor['x'] - 2, window['at'][1] - monitor['y'] - 2
+                first = [int(primary[i:i+2],16) for i in (1,3,5)]
+                last = [int(secondary[i:i+2],16) for i in (1,3,5)]
+                # Corners verify square geometry; the other two corners must
+                # share the midpoint even for a very wide or tall window.
+                for x,y in [(0,0),(width-1,0),(0,height-1),(width-1,height-1),
+                            (width//2,0),(0,height//2),(width-1,height//2),(width//2,height-1)]:
+                    t = ((x+.5)/width + (y+.5)/height)/2
+                    expected = [a+(b-a)*t for a,b in zip(first,last)]
+                    offset = ((top+y)*monitor['width']+left+x)*3
+                    actual = list(rgb[offset:offset+3])
+                    record = dict(image=path.name, x=x, y=y, width=width, height=height, actual=actual, expected=expected)
+                    border_pixels.append(record)
+                    assert len(actual) == 3 and all(abs(a-b) <= 3 for a,b in zip(actual,expected)), record
+            first=stable(); assert not first['problem'], first
+            status=json.loads(ipc('actions','status'))
+            assert status['ready'] and status['applied'] and not status['busy'] and not status['error'],status
+            eventually(clients,lambda cs:any(c['title']=='Putkin keyboard target' for c in cs),'target mapped')
+            hypr('dispatch',f'hl.dsp.focus({{window="address:{target()["address"]}"}})')
+            time.sleep(.2)
+            assert len(bindings())==8, bindings()
+            assert shortcut('screenshot')==[(0,'print')], bindings()
+            passed('startup: eight owned bindings including Print, no duplicates or errors')
+            border_options('#cba6f7', '#89b4fa')
+            border_capture('window-border-default', '#cba6f7', '#89b4fa')
+            passed('native square 2px window borders and shared diagonal GPU pixels')
+            keys('-M','logo','-s','100','-k','space','-m','logo'); opened('launcher')
+            assert state()['mode']==''
+            close()
+            keys('-M','logo','-M','shift','-k','semicolon','-m','shift','-m','logo')
+            result=opened('launcher'); assert result['mode']=='command' and result['text']=='' and result['results']==[], result
+            close()
+            keys('-M','logo','-k','v','-m','logo'); assert opened('launcher')['mode']=='clipboard'
+            close(); passed('real Super+Space / Super+: / Super+V keyboard input')
+            ipc('ui','openSettings'); opened('settings')
+            window=eventually(clients,lambda cs:any(c['title']=='Ustawienia' for c in cs),'settings toplevel')
+            window=next(c for c in window if c['title']=='Ustawienia'); assert window['floating'], window
+            hypr('dispatch',f'hl.dsp.focus({{window="address:{target()["address"]}"}})')
+            assert state()['active']=='settings' and state()['editing'], state()
+            ipc('ui','openSettings')
+            eventually(lambda:hypr('activewindow',data=True),lambda c:c.get('title')=='Ustawienia','reactivate settings')
+            ipc('probe','color','#94e2d5'); border_options('#94e2d5', '#89b4fa')
+            close(); border_options('#cba6f7', '#89b4fa')
+            ipc('ui','openSettings'); opened('settings')
+            passed('appearance preview changes window borders; cancel restores the saved palette')
+            ipc('probe','color','#fab387'); assert ipc('probe','saveColor')=='true'
+            path=Path(env['XDG_CONFIG_HOME'])/'putkin/settings.json'
+            eventually(lambda: json.loads(path.read_text()) if path.exists() else {},lambda d:d.get('appearance',{}).get('accent')=='#fab387','appearance saved')
+            passed('real floating Settings window, preserved on focus loss, appearance persisted')
+            border_options('#fab387', '#89b4fa')
+            border_capture('window-border-saved', '#fab387', '#89b4fa')
+            ipc('ui','openSettings')
+            ipc('probe','capture',str(evidence/'appearance.png'))
+            ipc('probe','keyboardSection')
+            ipc('probe','edit','clipboard','SUPER + ALT + V',':clip')
+            ipc('probe','edit','floating','SUPER + ALT + F',':float')
+            ipc('probe','edit','settings','SUPER + ALT + U',':settings')
+            ipc('probe','edit','workspace3','',':work3')
+            assert ipc('probe','save')=='true'
+            result=stable(); assert not result['problem'],result
+            keyboard_path=path.with_name('keyboard.json'); saved=keyboard_path.read_text()
+            assert next(r for r in json.loads(saved)['bindings'] if r['action']=='clipboard')['shortcut']=='SUPER + ALT + V'
+            assert shortcut('clipboard')==[(72,'v')],bindings()
+            ipc('probe','capture',str(evidence/'keyboard.png'))
+            eventually(lambda:(evidence/'keyboard.png').exists(),bool,'keyboard capture')
+            close()
+            keys('-M','logo','-k','v','-m','logo'); time.sleep(.2); assert state()['active']=='',state()
+            keys('-M','logo','-M','alt','-k','v','-m','alt','-m','logo'); assert opened('launcher')['mode']=='clipboard'
+            close(); passed('save applies changed shortcuts; old shortcut is removed')
+            ipc('launcher','openCommands'); opened('launcher')
+            keys('clip'); eventually(state,lambda s:len(s.get('results',[]))==1,'configured command result')
+            keys('-k','Return'); result=eventually(state,lambda s:s.get('active')=='launcher' and s.get('mode')=='clipboard','command handoff')
+            close()
+            ipc('launcher','openCommands'); opened('launcher'); ipc('probe','query','settings'); assert ipc('probe','activate')=='true'
+            opened('settings'); close()
+            passed('configured colon aliases execute on Enter and hand off focus to destination')
+            before=target(); hypr('dispatch',f'hl.dsp.focus({{window="address:{before["address"]}"}})')
+            ipc('launcher','openCommands'); result=opened('launcher')
+            assert result['captured'].removeprefix('0x')==before['address'].removeprefix('0x'),result
+            ipc('probe','query','float'); assert ipc('probe','activate')=='true'
+            eventually(target,lambda c:c['floating']!=before['floating'],'captured window float')
+            close()
+            ipc('launcher','openCommands'); opened('launcher'); ipc('probe','query','work3'); assert ipc('probe','activate')=='true'
+            eventually(lambda:hypr('activeworkspace',data=True),lambda w:w['id']==3,'workspace action')
+            close(); passed('configured native window and workspace actions use the captured target')
+            keys('-M','logo','-M','alt','-k','u','-m','alt','-m','logo'); opened('settings')
+            ipc('probe','edit','settings','SUPER + ALT + X',':settings'); assert ipc('probe','save')=='true'
+            result=stable(); assert 'Foreign test' in result['problem'],result
+            assert keyboard_path.read_text()==saved
+            assert shortcut('settings')==[(72,'u')]
+            close(); passed('foreign shortcut conflict blocks write and preserves live bindings')
+            assert hypr('reload')=='ok'
+            eventually(lambda:shortcut('clipboard'),lambda rows:rows==[(72,'v')],'compositor reload reapplies custom key')
+            result=stable(); assert not result['problem'],result
+            assert len(bindings())==10,bindings()
+            border_options('#fab387', '#89b4fa')
+            ipc('probe','reload'); result=stable(); assert not result['problem'],result
+            assert len(bindings())==10,bindings()
+            border_options('#fab387', '#89b4fa')
+            passed('Hyprland and Quickshell reload retain settings and do not accumulate bindings')
+            for _ in range(10):
+                ipc('ui','openSettings'); opened('settings')
+                settings_client=eventually(clients,lambda cs:any(c['title']=='Ustawienia' for c in cs),'settings client')
+                settings_client=next(c for c in settings_client if c['title']=='Ustawienia')
+                hypr('dispatch',f'hl.dsp.window.close({{window="address:{settings_client["address"]}"}})')
+                eventually(state,lambda s:not s.get('active') and not s.get('loaded'),'native close')
+                eventually(clients,lambda cs:not any(c['title']=='Ustawienia' for c in cs),'settings client freed')
+            assert not any(hypr('configerrors',data=True)),hypr('configerrors',data=True)
+            assert not qml_errors(runtime_log(app_log)),runtime_log(app_log)
+            passed('ten native open/close cycles, resources released, no QML/import/config errors')
+            (evidence/'result.json').write_text(json.dumps({'checks':checks,'border_pixels':border_pixels,'bindings':bindings(),'version':hypr('version',data=True)},indent=2)+'\n')
+        finally:
+            for process in reversed(processes): stop_process_group(process)
+
+
+def main():
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--inside',type=Path,help=argparse.SUPPRESS)
+    parser.add_argument('--output',type=Path,default=ROOT/'artifacts/keyboard-integration')
+    args=parser.parse_args()
+    if args.inside: inside(args.inside); return 0
+    output=args.output.resolve();output.mkdir(parents=True,exist_ok=True)
+    parent=Path(os.environ['XDG_RUNTIME_DIR'])/os.environ['WAYLAND_DISPLAY']; assert parent.is_socket()
+    with tempfile.TemporaryDirectory(prefix='pk-key-') as directory:
+        base=Path(directory); env=isolated_environment(directory)
+        shutil.copy2(tool('grim'), base/'grim')
+        (base/'r').mkdir(mode=0o700)
+        env.update(XDG_RUNTIME_DIR=str(base/'r'),WAYLAND_DISPLAY='parent-wayland',PUTKIN_KEYBOARD_TEST='1',QS_NO_RELOAD_POPUP='1',HOME=str(base))
+        command=[tool('bwrap'),'--unshare-all','--die-with-parent','--ro-bind','/','/','--dev','/dev','--proc','/proc','--tmpfs','/run','--tmpfs','/tmp','--bind',directory,directory,
+                 '--ro-bind',str(parent),str(base/'r/parent-wayland'),'--dev-bind','/dev/dri/renderD128','/dev/dri/renderD128',
+                 tool('dbus-run-session'),'--',sys.executable,str(Path(__file__).resolve()),'--inside',directory]
+        process=subprocess.Popen(command,env=env,start_new_session=True)
+        try: result=process.wait(timeout=180)
+        finally:
+            stop_process_group(process)
+            if (base/'evidence').exists(): shutil.copytree(base/'evidence',output,dirs_exist_ok=True)
+    (output/'cleanup.json').write_text(json.dumps({'private_directory_removed':not base.exists(),'wrapper_reaped':process.poll() is not None})+'\n')
+    return result
+
+if __name__=='__main__': sys.exit(main())

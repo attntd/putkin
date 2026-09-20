@@ -1,0 +1,12 @@
+Przywrócono poprzedni shell i jego autostart.
+Traceback (most recent call last):
+  File "/tmp/putkin-battery-release/restore", line 199, in <module>
+    elif sys.argv[1:] == ['--apply']: apply()
+                                      ~~~~~^^
+  File "/tmp/putkin-battery-release/restore", line 167, in apply
+    complete_switch()
+    ~~~~~~~~~~~~~~~^^
+  File "/tmp/putkin-battery-release/restore", line 95, in complete_switch
+    assert shown[0][1]['w'] == 360, shown
+           ^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [('eDP-1', {'address': '0x56421ed996e0', 'x': 5748, 'y': 1440, 'w': 368, 'h': 413, 'alpha': 1, 'namespace': 'putkin-panel', 'pid': 356015})]

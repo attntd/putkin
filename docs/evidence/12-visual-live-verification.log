@@ -1,0 +1,44 @@
+{
+  "openSettings": {
+    "reply": "ok",
+    "panels": [
+      {
+        "address": "0x56421e13ccd0",
+        "x": 5748,
+        "y": 1440,
+        "w": 368,
+        "h": 622,
+        "alpha": 1,
+        "namespace": "putkin-panel",
+        "pid": 334942
+      }
+    ]
+  },
+  "openQuickSettings": {
+    "reply": "ok",
+    "panels": [
+      {
+        "address": "0x5642200a9aa0",
+        "x": 5748,
+        "y": 1440,
+        "w": 368,
+        "h": 424,
+        "alpha": 1,
+        "namespace": "putkin-panel",
+        "pid": 334942
+      }
+    ]
+  },
+  "bar_focus": "eDP-1",
+  "settings_unchanged": true,
+  "configerrors": "",
+  "instance": {
+    "config_path": "/home/attntd/.local/share/putkin/releases/20260916-visual-3d0c562aa347/shell.qml",
+    "id": "yf67fx8hlt",
+    "launch_time": "2026-09-16T23:56:03",
+    "pid": 334942,
+    "shell_id": "bf905bbfda87fa952a3595a3934ed3cd"
+  },
+  "notification_pid": 334942
+}
+PASS: loaded bindings, one shell and notification owner, panels/bar, unchanged settings and clean log

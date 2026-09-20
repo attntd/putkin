@@ -1,0 +1,44 @@
+test_default_symlink_relative_imports_duplicate_and_pointer_switch (test_install.DefaultQuickshellTest.test_default_symlink_relative_imports_duplicate_and_pointer_switch) ... FAIL
+test_copy_and_validation_failure_leave_old_complete (test_install.InstallTest.test_copy_and_validation_failure_leave_old_complete) ... ok
+test_corrupted_build_and_source_symlink_are_rejected (test_install.InstallTest.test_corrupted_build_and_source_symlink_are_rejected) ... ok
+test_default_entry_backup_keeps_existing_helpers (test_install.InstallTest.test_default_entry_backup_keeps_existing_helpers) ... ok
+test_dry_run_creates_nothing_and_destination_refuses_host_activation (test_install.InstallTest.test_dry_run_creates_nothing_and_destination_refuses_host_activation) ... ok
+test_locked_or_foreign_session_cannot_be_stopped (test_install.InstallTest.test_locked_or_foreign_session_cannot_be_stopped) ... ok
+test_process_interruption_at_publication_leaves_whole_old_or_new_build (test_install.InstallTest.test_process_interruption_at_publication_leaves_whole_old_or_new_build) ... ok
+test_real_package_install_and_reinstall (test_install.InstallTest.test_real_package_install_and_reinstall) ... FAIL
+test_restore_toggles_complete_builds (test_install.InstallTest.test_restore_toggles_complete_builds) ... ok
+test_retention_preserves_current_previous_and_unrelated_state (test_install.InstallTest.test_retention_preserves_current_previous_and_unrelated_state) ... ok
+test_updates_reuse_identical_builds_keep_five_and_preserve_user_files (test_install.InstallTest.test_updates_reuse_identical_builds_keep_five_and_preserve_user_files) ... ok
+test_bare_qs_uses_uwsm_and_forwards_cli_queries_without_shell_interpolation (test_install.LauncherTest.test_bare_qs_uses_uwsm_and_forwards_cli_queries_without_shell_interpolation) ... ok
+
+======================================================================
+FAIL: test_default_symlink_relative_imports_duplicate_and_pointer_switch (test_install.DefaultQuickshellTest.test_default_symlink_relative_imports_duplicate_and_pointer_switch)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/attntd/projects/putkin/tests/test_install.py", line 227, in test_default_symlink_relative_imports_duplicate_and_pointer_switch
+    self.assertEqual(response.returncode, 0, details + response.stdout + response.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 255 != 0 : dbus-daemon[6]: Failed to start message bus: Failed to bind socket "/tmp/dbus-gzriDotdeh": Operation not permitted
+dbus-run-session: EOF reading address from bus daemon
+No running instances for "/tmp/pk-default-b6y5bkrx/config/quickshell/shell.qml"
+
+
+======================================================================
+FAIL: test_real_package_install_and_reinstall (test_install.InstallTest.test_real_package_install_and_reinstall)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/attntd/projects/putkin/tests/test_install.py", line 176, in test_real_package_install_and_reinstall
+    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : FAIL: 135 plików QML, 1 z błędami.
+FAIL [imports/types, exit=255] /tmp/putkin-install-test-2eprq5tg/real package/data/putkin/releases/.stage-l2cy4vx9/runtime/services/ScreenshotBackend.qml
+Warning: /tmp/putkin-install-test-2eprq5tg/real package/data/putkin/releases/.stage-l2cy4vx9/runtime/services/ScreenshotBackend.qml:59:9: Type QProcess::ExitStatus of parameter exitStatus in signal called exited was not found, but is required to compile onExited. Did you add all imports and dependencies? [signal-handler-parameters]
+        onExited: {
+        ^^^^^^^^
+install: Command '['/home/attntd/projects/putkin/scripts/check', '/tmp/putkin-install-test-2eprq5tg/real package/data/putkin/releases/.stage-l2cy4vx9/runtime']' returned non-zero exit status 1.
+
+
+----------------------------------------------------------------------
+Ran 12 tests in 44.210s
+
+FAILED (failures=2)

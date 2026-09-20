@@ -1,0 +1,25 @@
+{
+  "release": "/home/attntd/.local/share/putkin/releases/20260920-signal-chat-897d94e15725",
+  "runtime_files": 261,
+  "changed_runtime": [
+    "assets/material/Paths.js",
+    "assets/material/README.md",
+    "assets/material/chat_bubble.svg",
+    "assets/material/manifest.json",
+    "core/Icons.js",
+    "modules/tray/TrayButton.qml",
+    "services/SignalTrayState.qml"
+  ],
+  "configurations": [
+    "/home/attntd/.config/hypr/hyprland.lua",
+    "/home/attntd/.local/share/chezmoi/dot_config/hypr/hyprland.lua",
+    "/home/attntd/.config/hypr/autostart.lua",
+    "/home/attntd/.local/share/chezmoi/dot_config/hypr/autostart.lua",
+    "/home/attntd/.config/hypr/modules/system_binds.lua",
+    "/home/attntd/.local/share/chezmoi/dot_config/hypr/modules/system_binds.lua",
+    "/home/attntd/.config/hypr/hypridle.conf",
+    "/home/attntd/.local/share/chezmoi/dot_config/hypr/hypridle.conf"
+  ],
+  "preserved_chezmoi_status": "MM .config/hypr/hyprland.lua\nMM .config/zen/r82xc5xh.Default (release)/chrome/zen-themes.css",
+  "restore": "/home/attntd/.local/state/putkin/update-20260920-signal-chat-897d94e15725/restore"
+}

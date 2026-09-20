@@ -1,0 +1,576 @@
+#!/usr/bin/env python3
+"""Native windows in a private nested Hyprland; all hardware/session data mocked.
+
+Explicit --nested authorizes access to the current parent Wayland socket and
+renderD128. No host system/session buses, input devices, modesetting node or PAM.
+The host compositor receives no IPC. All commands target the private signature.
+"""
+import argparse
+from contextlib import ExitStack
+from datetime import datetime, timezone
+import importlib.machinery
+import importlib.util
+import hashlib
+import json
+import os
+from pathlib import Path
+import resource
+import shlex
+import shutil
+import struct
+import subprocess
+import sys
+import tempfile
+import time
+
+from _common import ROOT, isolated_environment, ipc_json, ipc_reply, qml_errors, runtime_log, stop_process_group, tool
+
+loader = importlib.machinery.SourceFileLoader('putkin_wayland_measurement', str(ROOT/'scripts/measure-idle'))
+spec = importlib.util.spec_from_loader(loader.name, loader)
+measurement = importlib.util.module_from_spec(spec)
+loader.exec_module(measurement)
+
+
+def eventually(read, predicate, description, seconds=8):
+    deadline = time.monotonic() + seconds
+    last = None
+    while time.monotonic() < deadline:
+        last = read()
+        if predicate(last):
+            return last
+        time.sleep(0.04)
+    raise AssertionError(f"{description}: {last}")
+
+
+def inside(base, smoke, idle, native_session=False, screenshot=False, launcher_preview=False):
+    started = time.monotonic()
+    assert os.environ.get("PUTKIN_WAYLAND_TEST_DIR") == str(base)
+    assert Path('/proc/1/comm').read_text().strip() == 'bwrap', 'requires private PID namespace'
+    output = base / 'evidence'
+    output.mkdir()
+    report = {'timestamp_utc': datetime.now(timezone.utc).isoformat(), 'checks': [], 'captures': [],
+              'mode': 'native nested Hyprland, private HEADLESS outputs, GPU renderer, explicit domain mocks',
+              'isolation': 'private PID/network/mount namespaces, XDG and session D-Bus; only parent Wayland socket and GPU render node shared'}
+    def passed(description):
+        report['checks'].append(description)
+        print('PASS: '+description, flush=True)
+    processes = []
+    config = base / 'hyprland.conf'
+    config.write_text('''monitor = ,1920x1080@60,auto,1
+animations {
+ enabled = false
+}
+misc {
+ disable_hyprland_logo = true
+ disable_splash_rendering = true
+}
+xwayland {
+ enabled = false
+}
+debug {
+ disable_logs = false
+ enable_stdout_logs = true
+}
+''')
+    if native_session or screenshot or launcher_preview:
+        config = base / 'hyprland.lua'
+        config.write_text('''hl.monitor({output = "", mode = "1920x1080@60", position = "auto", scale = 1})
+hl.config({animations = {enabled = false}, input = {resolve_binds_by_sym = true}, misc = {disable_hyprland_logo = true, disable_splash_rendering = true}, xwayland = {enabled = false}})
+''')
+    env = dict(os.environ)
+    try:
+        if not smoke:
+            protocol = ROOT/'tests/protocols/wlr-virtual-pointer-unstable-v1.xml'
+            with (output/'pointer-build.log').open('w') as build_log:
+                for mode, name in [('client-header','virtual-pointer.h'),('private-code','virtual-pointer.c')]:
+                    subprocess.run([tool('wayland-scanner'),mode,str(protocol),str(base/name)],check=True,stdout=build_log,stderr=subprocess.STDOUT)
+                flags = shlex.split(subprocess.check_output([tool('pkg-config'),'--cflags','--libs','wayland-client'],text=True))
+                subprocess.run([tool('cc'),'-std=c11','-D_POSIX_C_SOURCE=200809L','-Wall','-Wextra','-Werror','-I',str(base),
+                                str(ROOT/'tests/wayland_click.c'),str(base/'virtual-pointer.c'),'-o',str(base/'click'),*flags],
+                               check=True,stdout=build_log,stderr=subprocess.STDOUT)
+        with ExitStack() as stack:
+            def launch(command, name, environment):
+                log = stack.enter_context((output / (name + '.log')).open('w+'))
+                process = subprocess.Popen(command, env=environment, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+                processes.append(process)
+                return process, log
+            compositor, compositor_log = launch([tool('Hyprland'), '--config', str(config)], 'hyprland', env)
+            def socket_paths():
+                if compositor.poll() is not None:
+                    raise AssertionError(runtime_log(compositor_log))
+                return list((base/'r/hypr').glob('*/.socket.sock'))
+            socket_path = eventually(socket_paths, lambda paths: len(paths) == 1, 'private compositor IPC', 12)[0]
+            env['HYPRLAND_INSTANCE_SIGNATURE'] = socket_path.parent.name
+            displays = eventually(lambda: [p for p in (base/'r').glob('wayland-*') if p.is_socket()],
+                                  lambda paths: len(paths) == 1, 'private Wayland socket')
+            env['WAYLAND_DISPLAY'] = displays[0].name
+            env['QT_QPA_PLATFORM'] = 'wayland'
+            env.pop('QT_QUICK_BACKEND', None)
+            env.pop('QT_SCALE_FACTOR', None)
+
+            def hypr(*args, data=False):
+                command = [tool('hyprctl'), '-i', env['HYPRLAND_INSTANCE_SIGNATURE']]
+                if args[:2] == ('keyword', 'monitor'):
+                    # 0.56.2 queues monitor rules until a frame. Force damage on
+                    # idle headless outputs so the new mode is applied now.
+                    command.append('-r')
+                if data:
+                    command.append('-j')
+                result = subprocess.run(command + list(args), env=env, text=True, capture_output=True, timeout=5)
+                assert result.returncode == 0, result.stdout + result.stderr
+                return json.loads(result.stdout) if data else result.stdout.strip()
+            eventually(lambda: hypr('monitors', data=True), bool, 'parent output configured')
+            hypr('output', 'create', 'headless')
+            first = eventually(lambda: hypr('monitors', data=True), lambda ms: any(m['name'].startswith('HEADLESS-') for m in ms), 'headless output')
+            first = next(m['name'] for m in first if m['name'].startswith('HEADLESS-'))
+            if native_session or screenshot or launcher_preview:
+                hypr('eval', 'hl.monitor({output = ' + json.dumps(first) + ', mode = "1920x1080@60", position = "2000x0", scale = 1})')
+                hypr('dispatch', 'hl.dsp.focus({monitor = ' + json.dumps(first) + '})')
+            else:
+                assert hypr('keyword', 'monitor', f'{first},1920x1080@60,2000x0,1') == 'ok'
+                assert hypr('dispatch', 'focusmonitor', first) == 'ok'
+            report['version'] = hypr('version', data=True)
+            report['initial_monitors'] = hypr('monitors', data=True)
+
+            def shell(entry, name):
+                process, log = launch([tool('quickshell'), '--no-color', '--path', str(ROOT/entry)], name, env)
+                def ipc(target, method, *args, starting=False):
+                    result = subprocess.run([tool('quickshell'), 'ipc', '--path', str(ROOT/entry), 'call', target, method, *map(str,args)],
+                                            env=env, text=True, capture_output=True, timeout=5)
+                    return ipc_reply(result, process, log, starting=starting)
+                return process, log, ipc
+            if native_session:
+                sys.path.insert(0, str(ROOT/'tests'))
+                from native_session_wayland import run
+                report['native_session'] = run(env, base, output, first, hypr, launch)
+                report['result'] = 'PASS'
+                passed('native Quickshell lock, PAM, idle and session integration')
+                return
+            if screenshot:
+                sys.path.insert(0, str(ROOT/'tests'))
+                from screenshot_wayland import run
+                report['screenshot'] = run(env, base, output, first, hypr, launch)
+                report['result'] = 'PASS'
+                passed('native screenshot selection, clipboard, preview and keyboard entry points')
+                return
+            if launcher_preview:
+                sys.path.insert(0, str(ROOT/'tests'))
+                from launcher_preview_wayland import run
+                report['launcher_preview'] = run(env, base, output, first, hypr, launch)
+                report['result'] = 'PASS'
+                passed('native launcher preview layout, pointer mask and keyboard navigation')
+                return
+            app, app_log, ipc = shell('wayland-validation.qml', 'putkin')
+            def state():
+                result = ipc_json(ipc('probe', 'snapshot', starting=True))
+                report['last_state'] = result
+                return result
+            initial = eventually(state, lambda s: s.get('ready') and len(s.get('screens', [])) == 2 and not s.get('busy'), 'native shell ready')
+            report['initial_state'] = initial
+            assert initial['trayCount'] == 40, initial
+            if idle:
+                time.sleep(2)
+                before = state()
+                samples = []
+                start = time.monotonic()
+                print('Native idle: 60 seconds, no IPC during sampling.', flush=True)
+                for second in range(61):
+                    time.sleep(max(0, start + second - time.monotonic()))
+                    samples.append({'elapsed_s': time.monotonic() - start,
+                                    'shell': measurement.snapshot(app.pid), 'compositor': measurement.snapshot(compositor.pid),
+                                    'shell_tree': measurement.process_tree(app.pid)})
+                    if second and second % 20 == 0: print(f'Native idle: {second}/60 s', flush=True)
+                after = state()
+                assert before == after, (before, after)
+                assert not after['scanning'] and not after['discovery'] and after['sessionCalls'] == 0
+                report['idle'] = {'samples': samples, 'before': before, 'after': after, 'ticks_per_second': os.sysconf('SC_CLK_TCK')}
+            def capture_output(name, monitor=first):
+                # Dismiss only the compositor's startup/deprecation banners.
+                # Their full diagnostics remain in hyprland.log; QML is strict.
+                hypr('dismissnotify')
+                time.sleep(0.15)
+                path = output / (name + '.png')
+                monitors = hypr('monitors', data=True)
+                target = next(m for m in monitors if m['name'] == monitor)
+                assert monitor.startswith('HEADLESS-') and path.is_relative_to(base)
+                command = [str(base/'grim'), '-o', monitor, '-s', str(target['scale']), str(path)]
+                result = subprocess.run(command,env=env,text=True,capture_output=True,timeout=8)
+                assert result.returncode == 0, result.stderr
+                size = struct.unpack('>II', path.read_bytes()[16:24])
+                report['captures'].append({'image': path.name, 'output': monitor, 'pixels': size, 'monitors': monitors, 'command':command})
+                return size
+            assert ipc('ui', 'openQuickSettings') == 'ok'
+            opened = eventually(state, lambda s: s.get('loaded') and s['focus'] == 'audioVolume', 'native panel focus')
+            report['opened_state'] = opened
+            report['layers'] = hypr('layers', data=True)
+            assert capture_output('initial-quick') == (1920,1080)
+            passed('native BarWindow/WallpaperWindow/InteractivePanelWindow mapped; initial panel keyboard focus; real output capture')
+            # Assert actual GPU pixels; property-only and software tests cannot
+            # detect a Shape renderer omitting gradient fill geometry.
+            rgb = subprocess.run([tool('magick'), str(output/'initial-quick.png'), '-depth', '8', 'RGB:-'],
+                                 env=env, capture_output=True, check=True, timeout=10).stdout
+            assert len(rgb) == 1920 * 1080 * 3
+            primary = [int(opened['accent'][i:i+2], 16) for i in (1,3,5)]
+            secondary = [int(opened['secondary'][i:i+2], 16) for i in (1,3,5)]
+            report['gradient_pixels'] = []
+            for point in ipc_json(ipc('probe', 'accentSamples'))['samples']:
+                t = (point['localX'] / point['width'] + point['localY'] / point['height']) / 2
+                expected = [a + (b-a) * t for a,b in zip(primary, secondary)]
+                offset = (point['y'] * 1920 + point['x']) * 3
+                actual = list(rgb[offset:offset+3])
+                record = dict(point, expected=expected, actual=actual)
+                report['gradient_pixels'].append(record)
+                assert all(abs(a-b) <= 3 for a,b in zip(actual, expected)), record
+            passed('GPU pixels follow one top-left to bottom-right gradient across the complete bar, panel frame and three tiles')
+            bar_geometry = []
+            for charging in ('false', 'true'):
+                geometry = ipc_json(ipc('probe', 'barGeometry', charging))
+                name = 'bar-charging' if charging == 'true' else 'bar-discharging'
+                assert capture_output(name) == (1920, 1080)
+                # Row lays out the wider button during polish, after the state
+                # changes. Read its settled position after the rendered capture.
+                geometry = ipc_json(ipc('probe', 'barGeometry', charging))
+                pixels = subprocess.run([tool('magick'), str(output / (name + '.png')), '-depth', '8', 'RGB:-'],
+                                        env=env, capture_output=True, check=True, timeout=10).stdout
+                def ink_bounds(rect):
+                    ink = [(x, y) for y in range(round(rect['y']), round(rect['y'] + rect['height']))
+                           for x in range(round(rect['x']), min(1920, round(rect['x'] + rect['width'])))
+                           if all(c > limit for c, limit in zip(pixels[(y * 1920 + x) * 3:(y * 1920 + x) * 3 + 3], [80, 80, 105]))]
+                    assert ink, (name, rect)
+                    return [min(x for x, y in ink), min(y for x, y in ink), max(x for x, y in ink), max(y for x, y in ink)]
+                geometry['battery_ink'] = ink_bounds(geometry['battery'])
+                geometry['battery_body_ink'] = ink_bounds(dict(geometry['battery'], width=20))
+                geometry['clock_ink'] = ink_bounds(geometry['clock'])
+                geometry['clock_top'] = geometry['clock_ink'][1]
+                geometry['clock_bottom'] = geometry['contentHeight'] - 1 - geometry['clock_ink'][3]
+                assert abs(geometry['clock_top'] - geometry['clock_bottom']) <= 1, geometry
+                bar_geometry.append(geometry)
+            normal, charging = bar_geometry
+            assert normal['battery']['width'] == 32 and charging['battery']['width'] == 36, bar_geometry
+            for index in (1, 3):
+                assert normal['battery_body_ink'][index] == charging['battery_body_ink'][index], bar_geometry
+                assert normal['battery_ink'][index] == charging['battery_ink'][index], bar_geometry
+            assert charging['battery_ink'][2] - charging['battery_ink'][0] > normal['battery_ink'][2] - normal['battery_ink'][0], bar_geometry
+            ipc('probe', 'barGeometry', 'false')
+            report['bar_geometry'] = bar_geometry
+            passed('GPU clock ink centered; original Material charging icon preserves battery height in a wider frame')
+            if not smoke:
+                def press(*keys):
+                    command = [tool('wtype')]
+                    for key in keys: command += ['-P', key, '-p', key, '-s', '25']
+                    subprocess.run(command, env=env, check=True, timeout=10, capture_output=True, text=True)
+                def typed(text):
+                    subprocess.run([tool('wtype'), '-d', '20', text], env=env, check=True, timeout=10, capture_output=True, text=True)
+                def control(name): return ipc_json(ipc('probe', 'control', name))
+                def focused(name):
+                    try:
+                        return eventually(lambda: control(name), lambda c: c.get('focus'), 'keyboard focus: '+name)
+                    except AssertionError:
+                        report['focus_failure'] = {'state': state(), 'layers': hypr('layers', data=True), 'client': client_state()}
+                        capture_output('focus-failure')
+                        raise
+                def walk(key, name):
+                    for _ in range(60):
+                        if control(name).get('focus'): return
+                        press(key)
+                    raise AssertionError(f'keyboard cannot reach {name}: {state()}')
+                def closed():
+                    return eventually(state, lambda s: not s['loaded'] and s['created'] == s['destroyed'] and not s['busy'], 'all native panels destroyed')
+                def monitor(name):
+                    assert hypr('dispatch', 'focusmonitor', name) == 'ok'
+                    eventually(state, lambda s: s['focusedMonitor'] == name, 'native monitor focus')
+                def panel(name, focus=None):
+                    assert ipc('probe', 'open', name) == 'true'
+                    eventually(state, lambda s: s['loaded'] and s['surface'] == name and not s['busy'], 'native panel '+name)
+                    if focus: focused(focus)
+                def layers_for(name):
+                    groups = hypr('layers', data=True).get(name, {}).get('levels', {})
+                    return [layer for group in groups.values() for layer in group]
+                def validate_layers():
+                    monitors = hypr('monitors', data=True)
+                    for output_monitor in monitors:
+                        bars = [layer for layer in layers_for(output_monitor['name']) if layer['namespace'] == 'putkin-bar']
+                        assert len(bars) == 1, bars
+                        assert bars[0]['h'] == 32, bars
+                        assert output_monitor['reserved'] == [0,32,0,0], output_monitor
+                    for output_monitor in monitors:
+                        for layer in layers_for(output_monitor['name']):
+                            if layer['namespace'] != 'putkin-panel': continue
+                            assert layer['w'] <= round(output_monitor['width']/output_monitor['scale'])
+                            assert layer['h'] <= round(output_monitor['height']/output_monitor['scale'])
+                    return {'monitors': monitors, 'layers': hypr('layers', data=True)}
+
+                walk('j', 'brightnessSlider'); capture_output('brightness-row-focus')
+                walk('j', 'nightLightTemperature'); capture_output('temperature-row-focus')
+                press('k'); focused('caffeinateToggle')
+                walk('j', 'caffeinateToggle')
+                press('i', 'j'); focused('caffeinateMode-presentation')
+                press('j'); focused('caffeinateMode-background')
+                capture_output('caffeinate-modes')
+                press('Return'); focused('caffeinateToggle')
+                assert state()['caffeinate'] == 'background'
+                press('Return'); assert state()['caffeinate'] == 'off'
+                press('k'); focused('notificationDnd')
+                capture_output('inactive-tile-focus')
+                passed('Caffeinate i/j/Enter mode selection and on/off; inactive tile focus in native window')
+                ipc('ui', 'closePanels'); closed()
+                input_process, input_log, client = shell('wayland-client-test.qml', 'input-client')
+                def client_state(): return ipc_json(client('probe', 'snapshot', starting=True))
+                eventually(client_state, lambda s: s.get('focus'), 'separate application focus')
+                typed('hjkl'); eventually(client_state, lambda s: s['text'] == 'hjkl', 'ordinary input')
+                client('probe', 'clear')
+                ipc('probe', 'notify', 'false')
+                assert ipc('audio', 'changeVolume', 5) == 'accepted'
+                eventually(state, lambda s: s['osdLoaded'] and s['notifications'] == 1, 'native passive overlays')
+                typed('hjkl'); eventually(client_state, lambda s: s['text'] == 'hjkl' and s['focus'], 'OSD and toast preserve foreign application focus')
+                capture_output('passive-overlays')
+                ipc('probe', 'clear')
+                passed('separate Wayland application receives hjkl before and during native OSD/toast; overlays do not steal focus')
+
+                panel('quickSettings','audioVolume')
+                target = next(m for m in hypr('monitors',data=True) if m['name'] == first)
+                assert hypr('dispatch','movecursor',f"{target['x']+100} {target['y']+100}") == 'ok'
+                subprocess.run([str(base/'click')],env=env,check=True,timeout=5)
+                closed()
+                typed('jk'); eventually(client_state,lambda s:s['focus'] and s['text']=='hjkljk','outside click releases grab to the other application')
+                passed('real private virtual-pointer click outside panel closes it and returns input to the separate application')
+
+                for _ in range(10):
+                    ipc('probe', 'notify', 'false')
+                    ipc('audio', 'changeVolume', 1)
+                    eventually(state, lambda s: s['osdLoaded'] and s['notifications'] == 1, 'passive surfaces before panel')
+                    ipc('probe', 'clear')
+                    panel('quickSettings', 'audioVolume')
+                    ipc('ui', 'closePanels'); closed()
+                    eventually(client_state, lambda s: s['focus'], 'foreign focus after panel cycle')
+                passed('ten overlapping passive-overlay destruction and panel openings retain keyboard focus and release it afterwards')
+
+                ipc('probe','notify','false')
+                assert ipc('notifications','focus') == first
+                eventually(client_state,lambda s:not s['windowActive'],'explicit notification focus')
+                press('Escape')
+                eventually(state,lambda s:not s['surface'],'Escape releases notification navigation')
+                assert ipc('notifications','focus') == first
+                eventually(client_state,lambda s:not s['windowActive'],'second explicit notification focus')
+                assert hypr('dispatch','movecursor',f"{target['x']+100} {target['y']+100}") == 'ok'
+                subprocess.run([str(base/'click')],env=env,check=True,timeout=5)
+                eventually(state,lambda s:not s['surface'] and s['notifications']==1,'outside click releases notification grab without dismissing toast')
+                typed('hl'); eventually(client_state,lambda s:s['focus'] and s['text']=='hjkljkhl','notification grab returns foreign input')
+                ipc('probe','clear')
+                passed('explicit notification navigation accepts Escape and outside click; passive toast remains and foreign input returns')
+
+                before_workspace = next(m['activeWorkspace']['id'] for m in hypr('monitors', data=True) if m['name'] == first)
+                assert ipc('bar', 'focus') == first
+                press('l', 'Return')
+                eventually(lambda: hypr('monitors', data=True),
+                           lambda ms: next(m['activeWorkspace']['id'] for m in ms if m['name'] == first) != before_workspace,
+                           'real private workspace activation')
+                assert ipc('bar', 'focus') == first
+                press('End'); walk('l', 'quickSettingsButton'); press('Return'); focused('audioVolume')
+                walk('j', 'lockButton'); press('l'); focused('settingsButton'); press('Return'); focused('backButton')
+                capture_output('settings-mauve')
+                press('j','j','j','l','l'); focused('accentPreset5'); press('Return')
+                assert state()['accent'] == '#94e2d5'
+                press('j','Return'); focused('accentSecondaryPreset0'); press('j','l','Return')
+                assert state()['secondary'] == '#fab387'
+                capture_output('settings-teal-peach')
+                press('j','Return'); walk('j','saveSettingsButton'); press('Return')
+                eventually(state, lambda s: not s['saving'] and s['persisted']['accent'] == '#94e2d5', 'FileView saves keyboard choice')
+                press('Tab','Tab'); focused('appearanceSection'); press('k'); focused('backButton'); press('Return'); focused('audioVolume')
+                walk('j','audioVolume'); volume = state()['volume']; press('l')
+                eventually(state, lambda s: abs(s['volume'] - (volume + 5)) < .01, 'audio keyboard adjustment')
+                walk('j','brightnessSlider'); brightness = state()['brightness']; press('h')
+                eventually(state, lambda s: s['brightness'] == brightness - 5, 'brightness keyboard adjustment')
+                press('Escape'); walk('h','barNetwork'); press('Return'); focused('wifiRadio')
+                capture_output('active-network')
+                press('l'); eventually(state, lambda s: s['scanning'], 'visible network list scans')
+                walk('j','wifiNetwork-0-2'); press('Return'); focused('wifiPassword'); typed('hjkl1234'); press('Return')
+                eventually(state, lambda s: not s['needsPassword'] and s['pskCalls'] == 1, 'PSK text input without vim interception')
+                press('Escape'); walk('l','barBluetooth'); press('Return'); focused('bluetoothRadio')
+                capture_output('active-bluetooth')
+                press('l')
+                walk('j','bluetoothDevice-1'); press('Return'); eventually(state, lambda s: s['keyboardConnected'], 'paired Bluetooth action')
+                press('Escape'); walk('l','barBattery'); press('Return')
+                eventually(state, lambda s: s['loaded'] and s['surface'] == 'battery' and not s['busy'], 'battery panel')
+                capture_output('active-battery')
+                press('Escape'); walk('l','barNotifications'); press('Return'); focused('notificationDnd'); press('Return'); assert state()['dnd']
+                ipc('probe','notify','false'); assert state()['notifications'] == 0
+                ipc('probe','notify','true'); assert state()['notifications'] == 1
+                press('Escape'); walk('l','quickSettingsButton'); press('Return'); focused('audioVolume'); walk('j','lockButton'); press('l','l','Return'); focused('power-logout')
+                press('l','Return'); focused('powerCancel'); capture_output('power-cancel')
+                press('Return'); focused('power-logout'); press('Escape'); closed(); focused('quickSettingsButton')
+                assert state()['sessionCalls'] == 0
+                ipc('probe','clear'); ipc('notifications','setDnd','false'); ipc('bar','close')
+                passed('complete hjkl/Enter journey on native surfaces: workspace, both accents/save, audio, brightness, PSK, Bluetooth, DND, critical toast, Power cancellation and returned bar focus')
+
+                panel('trayOverflow','trayApp-app0'); walk('j','trayApp-app39')
+                last = control('trayApp-app39')
+                assert last['y'] >= 0 and last['y'] + last['height'] <= last['viewportHeight'], last
+                capture_output('tray-overflow-last')
+                press('l','Return'); focused('trayMenuEntry-0'); walk('j','trayMenuEntry-3'); press('l'); focused('trayMenuEntry-0')
+                capture_output('tray-submenu'); press('Return'); closed()
+                assert state()['menuLeafActivations'] == 1
+                passed('fortieth tray item is keyboard reachable and revealed; real panel submenu opens and activates once')
+                client('probe','setWindowVisible','false')
+
+                report['geometry'] = []
+                # Hyprland rejects fractional logical dimensions by default.
+                # The requested 1366-wide fractional matrix needs its explicit
+                # test-only override; every actual mode is still asserted.
+                assert hypr('keyword','debug:disable_scale_checks','true') == 'ok'
+                report['fractional_test_override'] = 'debug:disable_scale_checks=true during physical mode/scale matrix only'
+                for width,height in [(1920,1080),(1366,768)]:
+                    for scale in [1,1.25,1.5,2]:
+                        ipc('ui','closePanels'); closed()
+                        assert hypr('keyword','monitor',f'{first},{width}x{height}@60,2000x0,{scale}') == 'ok'
+                        eventually(lambda: hypr('monitors',data=True), lambda ms: any(m['name']==first and m['width']==width and m['height']==height and m['scale']==scale for m in ms), 'physical mode and scale')
+                        monitor(first); panel('quickSettings','audioVolume'); walk('j','lockButton'); press('l'); focused('settingsButton')
+                        geometry = control('settingsButton')
+                        assert geometry['y'] >= 0 and geometry['y'] + geometry['height'] <= geometry['viewportHeight'], geometry
+                        report['geometry'].append(validate_layers())
+                        pixels = capture_output(f'quick-{width}x{height}-{scale}')
+                        # xdg-output logical dimensions are rounded; grim may
+                        # consequently round the PNG dimension up by one pixel.
+                        assert abs(pixels[0]-width)<=1 and abs(pixels[1]-height)<=1, pixels
+                passed('two physical sizes x four native output scales; panel fits and keyboard reveals bottom controls; one bar and 32 px reservation per output')
+
+                ipc('ui','closePanels'); closed()
+                assert hypr('keyword','debug:disable_scale_checks','false') == 'ok'
+                assert hypr('keyword','monitor',f'{first},1920x1080@60,2000x0,1') == 'ok'
+                def second_output():
+                    names = {m['name'] for m in hypr('monitors',data=True)}
+                    hypr('output','create','headless')
+                    monitors = eventually(lambda: hypr('monitors',data=True), lambda ms: any(m['name'] not in names for m in ms), 'second headless output')
+                    name = next(m['name'] for m in monitors if m['name'] not in names)
+                    assert name.startswith('HEADLESS-')
+                    assert hypr('keyword','monitor',f'{name},1920x1080@60,4000x0,1.5') == 'ok'
+                    eventually(state, lambda s: any(m['name']==name for m in s['screens']), 'second Qt screen')
+                    monitor(name)
+                    return name
+                second = second_output()
+                assert ipc('ui','openQuickSettings') == 'ok'
+                eventually(state,lambda s:s['loaded'] and s['screen']==second,'panel IPC on focused second monitor')
+                report['mixed_monitors'] = validate_layers()
+                capture_output('mixed-first',first); capture_output('mixed-second',second)
+                ipc('ui','closePanels'); closed()
+                assert ipc('audio','changeVolume',5) == 'accepted'
+                eventually(state,lambda s:s['osdLoaded'] and s['osdScreen']==second,'OSD IPC on second monitor')
+                capture_output('osd-second',second); ipc('probe','clear')
+                for surface in ['quickSettings','network','bluetooth','notifications','settings','trayOverflow','power']:
+                    panel(surface)
+                    if surface == 'quickSettings': focused('audioVolume'); assert not state()['scanning']
+                    if surface == 'network': focused('wifiRadio'); eventually(state,lambda s:s['scanning'],'scan before output removal')
+                    if surface == 'bluetooth': focused('bluetoothRadio'); assert not state()['discovery']
+                    if surface == 'notifications': focused('notificationDnd')
+                    if surface == 'settings': ipc('probe','draft'); assert state()['editing']
+                    if surface == 'trayOverflow': focused('trayApp-app0'); press('l','Return'); focused('trayMenuEntry-0'); walk('j','trayMenuEntry-3'); press('l')
+                    if surface == 'power': focused('power-logout'); press('l','Return'); focused('powerCancel')
+                    hypr('output','remove',second)
+                    final = closed()
+                    assert not final['editing'] and not final['scanning'] and not final['barScreen'], final
+                    assert all(m['name'] != second for m in final['screens']), final
+                    second = second_output()
+                passed('mixed native scales, focused-monitor panel/audio IPC; hotplug during Wi-Fi scanning, appearance draft, tray submenu and Power confirmation releases surfaces and temporary state')
+
+                monitor(first)
+                report['cycles'] = []
+                for index in range(20):
+                    panel('quickSettings','audioVolume'); assert not state()['scanning']
+                    panel('network','wifiRadio')
+                    eventually(state,lambda s:s['scanning'],'cycle scan')
+                    panel('settings'); ipc('probe','draft'); panel('power'); panel('trayOverflow')
+                    ipc('ui','closePanels'); final = closed()
+                    assert not final['scanning'] and not final['discovery'] and not final['editing'] and final['sessionCalls']==0, final
+                    report['cycles'].append({'cycle':index+1, 'state':final, 'process':measurement.snapshot(app.pid)})
+                passed('20 native panel cycles release all created views, Wi-Fi scan leases and drafts; no discovery/session calls')
+                for hard in ['false','true']:
+                    panel('network','wifiRadio')
+                    eventually(state,lambda s:s['scanning'],'scan before reload')
+                    ipc('probe','reload',hard)
+                    eventually(state,lambda s:s.get('ready') and s['created']==0 and not s['loaded'] and not s['scanning'],'native reload clears scan and panel')
+                    panel('settings'); ipc('probe','draft'); ipc('probe','reload',hard)
+                    eventually(state,lambda s:s.get('ready') and not s['editing'] and s['accent']=='#94e2d5','native reload discards unsaved draft')
+                passed('native soft/hard reload while scan or appearance draft is open; saved appearance persists')
+                report['final_state'] = closed()
+                report['final_layers'] = validate_layers()
+                assert not qml_errors(runtime_log(input_log)), runtime_log(input_log)
+            ipc('ui', 'closePanels')
+            eventually(state, lambda s: not s['loaded'] and s['created'] == s['destroyed'], 'native panel destroyed')
+            for name, log in [('putkin', app_log)]:
+                assert not qml_errors(runtime_log(log)), name + ':\n' + runtime_log(log)
+            report['result'] = 'PASS smoke only' if smoke else 'PASS'
+    except Exception as error:
+        report['result'] = 'FAIL'
+        report['error'] = str(error)
+        raise
+    finally:
+        for process in reversed(processes):
+            stop_process_group(process)
+        report['process_exit_codes'] = [process.returncode for process in processes]
+        report['remaining_child_pids'] = [process.pid for process in processes if Path(f'/proc/{process.pid}').exists()]
+        report['elapsed_s'] = time.monotonic() - started
+        (output/'report.json').write_text(json.dumps(report, indent=2, ensure_ascii=False)+'\n')
+    print(report['result'], flush=True)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--nested', action='store_true')
+    parser.add_argument('--smoke', action='store_true')
+    parser.add_argument('--idle', action='store_true', help='60 seconds before any interaction or capture clients')
+    parser.add_argument('--native-session', action='store_true', help='test the native lock and idle with isolated fixture PAM')
+    parser.add_argument('--screenshot', action='store_true', help='test screenshots in the private compositor and clipboard')
+    parser.add_argument('--launcher-preview', action='store_true', help='test the launcher preview on native windows with clipboard fixtures')
+    parser.add_argument('--output', type=Path, default=ROOT/'artifacts/wayland')
+    parser.add_argument('--inside', type=Path, help=argparse.SUPPRESS)
+    args = parser.parse_args()
+    resource.setrlimit(resource.RLIMIT_CORE, (0,0))
+    if args.inside:
+        inside(args.inside, args.smoke, args.idle, args.native_session, args.screenshot, args.launcher_preview)
+        return 0
+    if not args.nested:
+        parser.error('--nested explicitly permits the current parent Wayland socket and render node')
+    parent = Path(os.environ['XDG_RUNTIME_DIR']) / os.environ['WAYLAND_DISPLAY']
+    assert parent.is_socket(), 'parent Wayland socket is missing'
+    assert Path('/dev/dri/renderD128').exists(), 'render node is missing'
+    output = args.output.resolve()
+    output.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix='pw-') as directory:
+        base = Path(directory)
+        grim = Path(tool('grim'))
+        shutil.copy2(grim,base/'grim')
+        (output/'capture-tool.json').write_text(json.dumps({'source':str(grim),'sha256':hashlib.sha256(grim.read_bytes()).hexdigest()},indent=2)+'\n')
+        env = isolated_environment(directory)
+        (base/'r').mkdir(mode=0o700)
+        env['XDG_RUNTIME_DIR'] = str(base/'r')
+        env['WAYLAND_DISPLAY'] = 'parent-wayland'
+        env['PUTKIN_WAYLAND_TEST_DIR'] = directory
+        env['QS_NO_RELOAD_POPUP'] = '1'
+        command = [tool('bwrap'), '--unshare-all', '--die-with-parent', '--ro-bind', '/', '/',
+                   '--dev', '/dev', '--proc', '/proc', '--tmpfs', '/run', '--tmpfs', '/tmp', '--bind', directory, directory,
+                   '--ro-bind', str(parent), str(base/'r/parent-wayland'),
+                   '--dev-bind', '/dev/dri/renderD128', '/dev/dri/renderD128']
+        if args.native_session:
+            (base/'pam').mkdir()
+            command += ['--ro-bind', str(base/'pam'), '/etc/pam.d', '--tmpfs', '/usr/lib/pam.d']
+        command += [tool('dbus-run-session'), '--', sys.executable, str(Path(__file__).resolve()), '--inside', directory]
+        if args.native_session: command.append('--native-session')
+        if args.screenshot: command.append('--screenshot')
+        if args.launcher_preview: command.append('--launcher-preview')
+        if args.smoke: command.append('--smoke')
+        if args.idle: command.append('--idle')
+        (output/'command.json').write_text(json.dumps(command, indent=2)+'\n')
+        process = subprocess.Popen(command, env=env, start_new_session=True)
+        try:
+            returncode = process.wait(timeout=120 if args.smoke and args.idle else 45 if args.smoke else 600)
+        finally:
+            stop_process_group(process)
+            if (base/'evidence').exists(): shutil.copytree(base/'evidence', output, dirs_exist_ok=True)
+    (output/'cleanup.json').write_text(json.dumps({'private_directory':directory,'directory_removed':not base.exists(),
+                                                  'wrapper_pid':process.pid,'wrapper_reaped':process.poll() is not None,
+                                                  'exit_code':process.returncode},indent=2)+'\n')
+    return returncode
+
+
+if __name__ == '__main__':
+    sys.exit(main())

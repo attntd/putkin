@@ -1,0 +1,3 @@
+ERROR quickshell.service.pipewire.loop: Failed to connect pipewire context. Errno: 112
+WARN quickshell.service.pipewire.loop: Pipewire error on object 0 with code -32 connection error
+PASS: audio/IPC/OSD, private PipeWire, restart, hot reload, 20 loader cycles; /home/attntd/projects/putkin/docs/evidence/audio-launcher-pipewire.json

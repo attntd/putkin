@@ -1,0 +1,1545 @@
+{
+  "timestamp_utc": "2026-09-16T14:01:54.002457+00:00",
+  "mode": "offscreen/software; real Process/IPC/LazyLoader; fake brightnessctl; mock audio and monitors; no hardware",
+  "cycles": [
+    {
+      "cycle": 1,
+      "pid": 150187,
+      "name": "quickshell",
+      "parent": 150184,
+      "cpu_ticks": 80,
+      "rss_kib": 132784
+    },
+    {
+      "cycle": 2,
+      "pid": 150187,
+      "name": "quickshell",
+      "parent": 150184,
+      "cpu_ticks": 81,
+      "rss_kib": 132784
+    },
+    {
+      "cycle": 3,
+      "pid": 150187,
+      "name": "quickshell",
+      "parent": 150184,
+      "cpu_ticks": 81,
+      "rss_kib": 132784
+    },
+    {
+      "cycle": 4,
+      "pid": 150187,
+      "name": "quickshell",
+      "parent": 150184,
+      "cpu_ticks": 82,
+      "rss_kib": 132784
+    },
+    {
+      "cycle": 5,
+      "pid": 150187,
+      "name": "quickshell",
+      "parent": 150184,
+      "cpu_ticks": 84,
+      "rss_kib": 124008
+    },
+    {
+      "cycle": 6,
+      "pid": 150187,
+      "name": "quickshell",
+      "parent": 150184,
+      "cpu_ticks": 85,
+      "rss_kib": 124008
+    },
+    {
+      "cycle": 7,
+      "pid": 150187,
+      "name": "quickshell",
+      "parent": 150184,
+      "cpu_ticks": 85,
+      "rss_kib": 124008
+    },
+    {
+      "cycle": 8,
+      "pid": 150187,
+      "name": "quickshell",
+      "parent": 150184,
+      "cpu_ticks": 86,
+      "rss_kib": 124008
+    },
+    {
+      "cycle": 9,
+      "pid": 150187,
+      "name": "quickshell",
+      "parent": 150184,
+      "cpu_ticks": 88,
+      "rss_kib": 124008
+    },
+    {
+      "cycle": 10,
+      "pid": 150187,
+      "name": "quickshell",
+      "parent": 150184,
+      "cpu_ticks": 88,
+      "rss_kib": 124008
+    },
+    {
+      "cycle": 11,
+      "pid": 150187,
+      "name": "quickshell",
+      "parent": 150184,
+      "cpu_ticks": 89,
+      "rss_kib": 124008
+    },
+    {
+      "cycle": 12,
+      "pid": 150187,
+      "name": "quickshell",
+      "parent": 150184,
+      "cpu_ticks": 90,
+      "rss_kib": 124008
+    },
+    {
+      "cycle": 13,
+      "pid": 150187,
+      "name": "quickshell",
+      "parent": 150184,
+      "cpu_ticks": 91,
+      "rss_kib": 124008
+    },
+    {
+      "cycle": 14,
+      "pid": 150187,
+      "name": "quickshell",
+      "parent": 150184,
+      "cpu_ticks": 92,
+      "rss_kib": 122944
+    },
+    {
+      "cycle": 15,
+      "pid": 150187,
+      "name": "quickshell",
+      "parent": 150184,
+      "cpu_ticks": 93,
+      "rss_kib": 127552
+    },
+    {
+      "cycle": 16,
+      "pid": 150187,
+      "name": "quickshell",
+      "parent": 150184,
+      "cpu_ticks": 94,
+      "rss_kib": 127552
+    },
+    {
+      "cycle": 17,
+      "pid": 150187,
+      "name": "quickshell",
+      "parent": 150184,
+      "cpu_ticks": 95,
+      "rss_kib": 127552
+    },
+    {
+      "cycle": 18,
+      "pid": 150187,
+      "name": "quickshell",
+      "parent": 150184,
+      "cpu_ticks": 96,
+      "rss_kib": 127552
+    },
+    {
+      "cycle": 19,
+      "pid": 150187,
+      "name": "quickshell",
+      "parent": 150184,
+      "cpu_ticks": 96,
+      "rss_kib": 127552
+    },
+    {
+      "cycle": 20,
+      "pid": 150187,
+      "name": "quickshell",
+      "parent": 150184,
+      "cpu_ticks": 98,
+      "rss_kib": 127552
+    }
+  ],
+  "final": {
+    "available": true,
+    "percent": 50,
+    "device": "test_backlight",
+    "busy": false,
+    "error": "",
+    "diagnostic": "Urządzenie: test_backlight · zakres 0–100. Stan odświeża się po otwarciu panelu i własnej zmianie.",
+    "child": null,
+    "osd": false,
+    "kind": "brightness",
+    "osdLoaded": false,
+    "created": 20,
+    "destroyed": 20,
+    "screen": "",
+    "panel": "",
+    "focus": ""
+  },
+  "events": [
+    {
+      "pid": 150196,
+      "time": 44168.574696427,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 150209,
+      "time": 44168.89674583,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "1"
+      ]
+    },
+    {
+      "pid": 150212,
+      "time": 44168.956998432,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 150217,
+      "time": 44169.080158991,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "100"
+      ]
+    },
+    {
+      "pid": 150220,
+      "time": 44169.13223723,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 150225,
+      "time": 44169.262486163,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "30"
+      ]
+    },
+    {
+      "pid": 150228,
+      "time": 44169.312895777,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 150248,
+      "time": 44169.442124257,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "35"
+      ]
+    },
+    {
+      "pid": 150261,
+      "time": 44169.497735763,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 150289,
+      "time": 44169.635014902,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "75"
+      ]
+    },
+    {
+      "pid": 150309,
+      "time": 44169.767570985,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 150322,
+      "time": 44170.127679428,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "45"
+      ]
+    },
+    {
+      "pid": 150325,
+      "time": 44170.181384499,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 150332,
+      "time": 44170.361259236,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 150347,
+      "time": 44170.930375576,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 150356,
+      "time": 44171.148618689,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "80"
+      ]
+    },
+    {
+      "pid": 150359,
+      "time": 44171.204052969,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 150364,
+      "time": 44171.335420676,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "80"
+      ]
+    },
+    {
+      "pid": 150366,
+      "time": 44171.380832163,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 150372,
+      "time": 44171.528054884,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "80"
+      ]
+    },
+    {
+      "pid": 150414,
+      "time": 44173.182692678,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 150420,
+      "time": 44173.348757529,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "80"
+      ]
+    },
+    {
+      "pid": 150423,
+      "time": 44173.399374596,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 150428,
+      "time": 44173.543288643,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "65"
+      ]
+    },
+    {
+      "pid": 150431,
+      "time": 44173.600556731,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 150436,
+      "time": 44173.725369723,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 150443,
+      "time": 44173.901534052,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 150453,
+      "time": 44174.165066961,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 150465,
+      "time": 44174.476668972,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 150472,
+      "time": 44174.663947347,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 150479,
+      "time": 44174.849969662,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 150524,
+      "time": 44176.622692615,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 150540,
+      "time": 44177.058809878,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 150545,
+      "time": 44177.175189566,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "55"
+      ]
+    },
+    {
+      "pid": 150551,
+      "time": 44177.440322766,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 150558,
+      "time": 44177.615745591,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "55"
+      ]
+    },
+    {
+      "pid": 150564,
+      "time": 44177.863742098,
+      "args": [
+        "--class=backlight",
+        "--machine-readable",
+        "--list"
+      ]
+    },
+    {
+      "pid": 150571,
+      "time": 44178.061517321,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "30"
+      ]
+    },
+    {
+      "pid": 150574,
+      "time": 44178.123730159,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 150581,
+      "time": 44178.311272995,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "31"
+      ]
+    },
+    {
+      "pid": 150583,
+      "time": 44178.365964076,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 150601,
+      "time": 44178.952420537,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "32"
+      ]
+    },
+    {
+      "pid": 150603,
+      "time": 44179.00645308,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 150621,
+      "time": 44179.585532873,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "33"
+      ]
+    },
+    {
+      "pid": 150624,
+      "time": 44179.632963744,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 150639,
+      "time": 44180.147788464,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "34"
+      ]
+    },
+    {
+      "pid": 150641,
+      "time": 44180.198024201,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 150659,
+      "time": 44180.775199014,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "35"
+      ]
+    },
+    {
+      "pid": 150661,
+      "time": 44180.82018928,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 150679,
+      "time": 44181.388817186,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "36"
+      ]
+    },
+    {
+      "pid": 150682,
+      "time": 44181.437951169,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 150699,
+      "time": 44181.994461284,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "37"
+      ]
+    },
+    {
+      "pid": 150702,
+      "time": 44182.049051526,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 150719,
+      "time": 44182.609846184,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "38"
+      ]
+    },
+    {
+      "pid": 150721,
+      "time": 44182.660304532,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 150739,
+      "time": 44183.205454844,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "39"
+      ]
+    },
+    {
+      "pid": 150742,
+      "time": 44183.252206756,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 150759,
+      "time": 44183.814664502,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "40"
+      ]
+    },
+    {
+      "pid": 150762,
+      "time": 44183.868436611,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 150780,
+      "time": 44184.442422855,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "41"
+      ]
+    },
+    {
+      "pid": 150783,
+      "time": 44184.500872594,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 150800,
+      "time": 44185.098512815,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "42"
+      ]
+    },
+    {
+      "pid": 150802,
+      "time": 44185.1587718,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 150820,
+      "time": 44185.754856411,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "43"
+      ]
+    },
+    {
+      "pid": 150823,
+      "time": 44185.807616455,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 150840,
+      "time": 44186.408130148,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "44"
+      ]
+    },
+    {
+      "pid": 150842,
+      "time": 44186.4601813,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 150860,
+      "time": 44187.054540648,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "45"
+      ]
+    },
+    {
+      "pid": 150863,
+      "time": 44187.108251779,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 150878,
+      "time": 44187.645914666,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "46"
+      ]
+    },
+    {
+      "pid": 150881,
+      "time": 44187.704788068,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 150898,
+      "time": 44188.259720699,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "47"
+      ]
+    },
+    {
+      "pid": 150901,
+      "time": 44188.309172812,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 150918,
+      "time": 44188.895866029,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "48"
+      ]
+    },
+    {
+      "pid": 150921,
+      "time": 44188.957396199,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 150938,
+      "time": 44189.526729184,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "49"
+      ]
+    },
+    {
+      "pid": 150940,
+      "time": 44189.574750846,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    },
+    {
+      "pid": 150958,
+      "time": 44190.162997338,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--quiet",
+        "set",
+        "50"
+      ]
+    },
+    {
+      "pid": 150961,
+      "time": 44190.213983144,
+      "args": [
+        "--class=backlight",
+        "--device=test_backlight",
+        "--machine-readable",
+        "info"
+      ]
+    }
+  ],
+  "idle": {
+    "samples": [
+      {
+        "elapsed_s": 0,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 96532
+      },
+      {
+        "elapsed_s": 1.0001838079988374,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 96532
+      },
+      {
+        "elapsed_s": 2.0001819989993237,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 96532
+      },
+      {
+        "elapsed_s": 3.000184878001164,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 96532
+      },
+      {
+        "elapsed_s": 4.0001754719996825,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 96532
+      },
+      {
+        "elapsed_s": 5.000239094995777,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 6.0001792819966795,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 7.0002054599972325,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 8.00019153500034,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 9.000089962995844,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 10.000175803994352,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 11.000174812994373,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 12.0002144329992,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 13.000208323996048,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 14.000183907999599,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 15.000170545994479,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 16.000096392999694,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 17.000165229997947,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 18.000172564999957,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 19.000174779997906,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 20.000171113999386,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 21.00017209300131,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 22.00023618099658,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 23.000171119994775,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 24.000187132995052,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 25.00019605000125,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 26.00013695799862,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 27.000164835997566,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 28.000094324997917,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 29.000206409000384,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 30.00010771599773,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 31.000191980994714,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 32.00017006499547,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 33.000172900996404,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 34.00016667899763,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 35.00022249799804,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 36.0001784759952,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 37.00023436899937,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 38.00017351000133,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 39.00017140300042,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 40.00011947999883,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 41.00017180600116,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 42.000164502998814,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 43.000224969000556,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 44.00016966700059,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 45.00017639299767,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 46.00017378999473,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 47.0001768919974,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 48.00020334999863,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 49.00016913199943,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 50.00018795399956,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 51.00009744599811,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 52.00019109999994,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 53.00018771299801,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 54.00012334899657,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 55.000170483996044,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 56.00017316299636,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 57.000095197996416,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 58.00016888699611,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 59.00023602899455,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      },
+      {
+        "elapsed_s": 60.0001017619943,
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      }
+    ],
+    "duration_s": 60.0001017619943,
+    "warmup_s": 2,
+    "cpu_seconds": 0.0,
+    "cpu_percent_one_core": 0.0,
+    "rss_kib": {
+      "start": 96532,
+      "end": 97684,
+      "min": 96532,
+      "max": 97684
+    },
+    "initial_process_tree": [
+      {
+        "pid": 150978,
+        "name": "dbus-run-sessio",
+        "parent": 150183,
+        "cpu_ticks": 0,
+        "rss_kib": 2252
+      },
+      {
+        "pid": 150980,
+        "name": "dbus-daemon",
+        "parent": 150978,
+        "cpu_ticks": 0,
+        "rss_kib": 3312
+      },
+      {
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 96532
+      }
+    ],
+    "process_tree": [
+      {
+        "pid": 150978,
+        "name": "dbus-run-sessio",
+        "parent": 150183,
+        "cpu_ticks": 0,
+        "rss_kib": 2252
+      },
+      {
+        "pid": 150980,
+        "name": "dbus-daemon",
+        "parent": 150978,
+        "cpu_ticks": 0,
+        "rss_kib": 3312
+      },
+      {
+        "pid": 150981,
+        "name": "quickshell",
+        "parent": 150978,
+        "cpu_ticks": 27,
+        "rss_kib": 97684
+      }
+    ],
+    "brightness_commands": 0
+  },
+  "expected_diagnostics": [
+    "  WARN: Process failed to start, likely because the binary could not be found. Command: QList(\"/tmp/pk-e6sjxa3y/missing-brightnessctl\", \"--class=backlight\", \"--machine-readable\", \"--list\")"
+  ]
+}
