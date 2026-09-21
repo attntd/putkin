@@ -8,7 +8,7 @@ potwierdzenie/odmowę/anulowanie, reset oraz jawne odrzucenie nieobsługiwanych
 wymagań tworzenia hasła. Nie uruchamia agentów użytkownika.
 
 `python3 scripts/test-icons --file tst_authentication.qml` testuje wejście
-Qt, hjkl/Enter/Escape, fokus myszy/klawiatury, czyszczenie sekretów,
+Qt, hjkl/Enter/Escape oraz `q` poza polem hasła, fokus myszy/klawiatury, czyszczenie sekretów,
 zmianę tożsamości, kolejkę i blokadę. Rozróżnia niedopasowanie, błąd
 czytnika oraz sukces odcisku i hasła. Używa atrap i prywatnych XDG/D-Bus.
 Odliczanie ma test wypełnienia, glifu po prawej, niezmiennej geometrii,

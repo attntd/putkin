@@ -1,0 +1,62 @@
+[bus]
+dbus-daemon[510768]: [session uid=1000 pid=510768 pidfd=4] Connection :1.2 (uid=1000 pid=510786 comm="/usr/bin/python3 -B /home/attntd/projects/launcher") became a monitor.
+dbus-daemon[510768]: [session uid=1000 pid=510768 pidfd=4] Monitoring connection :1.2 closed.
+dbus-daemon[510768]: [session uid=1000 pid=510768 pidfd=4] Connection :1.8 (uid=1000 pid=511002 comm="/usr/bin/python3 -B /home/attntd/projects/launcher") became a monitor.
+dbus-daemon[510768]: [session uid=1000 pid=510768 pidfd=4] Monitoring connection :1.8 closed.
+dbus-daemon[510768]: [session uid=1000 pid=510768 pidfd=4] Connection :1.13 (uid=1000 pid=511077 comm="/usr/bin/python3 -B /home/attntd/projects/launcher") became a monitor.
+dbus-daemon[510768]: [session uid=1000 pid=510768 pidfd=4] Monitoring connection :1.13 closed.
+dbus-daemon[510768]: [session uid=1000 pid=510768 pidfd=4] Connection :1.23 (uid=1000 pid=511666 comm="/usr/bin/python3 -B /home/attntd/projects/launcher") became a monitor.
+dbus-daemon[510768]: [session uid=1000 pid=510768 pidfd=4] Monitoring connection :1.23 closed.
+dbus-daemon[510768]: [session uid=1000 pid=510768 pidfd=4] Connection :1.28 (uid=1000 pid=511700 comm="/usr/bin/python3 -B /home/attntd/projects/launcher") became a monitor.
+dbus-daemon[510768]: [session uid=1000 pid=510768 pidfd=4] Monitoring connection :1.28 closed.
+dbus-daemon[510768]: [session uid=1000 pid=510768 pidfd=4] Connection :1.34 (uid=1000 pid=511808 comm="/usr/bin/python3 -B /home/attntd/projects/launcher") became a monitor.
+dbus-daemon[510768]: [session uid=1000 pid=510768 pidfd=4] Monitoring connection :1.34 closed.
+
+[native]
+  INFO: Launching config: "/home/attntd/projects/launcher-suggestions/notifications-test.qml"
+  INFO: Shell ID: "580ad6bc2e56bdb747bb2c6c5c30b8a1" Path ID "580ad6bc2e56bdb747bb2c6c5c30b8a1"
+  INFO: Saving logs to "/tmp/pk-2cr_ekvj/runtime/quickshell/by-id/14ya4gfplt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+  INFO: Reloading configuration...
+  WARN: This plugin does not support setting window masks
+  INFO: Configuration Loaded
+  INFO qml: PUTKIN_PREVIEW_READY
+  INFO: Reloading configuration...
+  WARN: This plugin does not support setting window masks
+  INFO: Configuration Loaded
+  INFO qml: PUTKIN_PREVIEW_READY
+  INFO: Reloading configuration...
+  WARN: This plugin does not support setting window masks
+  INFO: Configuration Loaded
+  INFO qml: PUTKIN_PREVIEW_READY
+  INFO: Reloading configuration...
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+
+[conflict]
+  INFO: Launching config: "/home/attntd/projects/launcher-suggestions/notifications-test.qml"
+  INFO: Shell ID: "580ad6bc2e56bdb747bb2c6c5c30b8a1" Path ID "580ad6bc2e56bdb747bb2c6c5c30b8a1"
+  INFO: Saving logs to "/tmp/pk-2cr_ekvj/runtime/quickshell/by-id/fuyaxgfplt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+
+[recovery]
+  INFO: Launching config: "/home/attntd/projects/launcher-suggestions/notifications-test.qml"
+  INFO: Shell ID: "580ad6bc2e56bdb747bb2c6c5c30b8a1" Path ID "580ad6bc2e56bdb747bb2c6c5c30b8a1"
+  INFO: Saving logs to "/tmp/pk-2cr_ekvj/runtime/quickshell/by-id/2wyaygfplt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO qml: PUTKIN_PREVIEW_READY
+
+[missing-helper]
+  INFO: Launching config: "/home/attntd/projects/launcher-suggestions/notifications-test.qml"
+  INFO: Shell ID: "580ad6bc2e56bdb747bb2c6c5c30b8a1" Path ID "580ad6bc2e56bdb747bb2c6c5c30b8a1"
+  INFO: Saving logs to "/tmp/pk-2cr_ekvj/runtime/quickshell/by-id/4yyazgfplt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  WARN: Process failed to start, likely because the binary could not be found. Command: QList("python3", "-B", "/home/attntd/projects/launcher-suggestions/services/notification-watch.py")
+  INFO qml: PUTKIN_PREVIEW_READY

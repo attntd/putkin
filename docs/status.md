@@ -1,5 +1,42 @@
 # Status implementacji
 
+## Wspólny launcher, powiadomienia i Q — 2026-09-21
+
+Wspólna wersja łączy poprawki launchera i powiadomień z natywnym
+uwierzytelnianiem oraz odliczaniem odcisku. Zmiany wcześniej pozostawały
+w dwóch katalogach roboczych; utrwalono je osobno (`fe096d1`, `d44c13b`)
+i połączono bez utraty żadnego modułu. Q obejmuje także okna uwierzytelniania,
+z zachowaniem zwykłego wpisywania litery w polu hasła.
+
+Opis aplikacji lub ścieżka pliku w launcherze są teraz po prawej stronie
+nazwy w tym samym wierszu. Długi opis jest skracany; komendy nadal pokazują
+sam opis działania, a schowek jedną linię treści. Zachowano dopasowanie
+prefiksów komend, wspólny wynik shutdown/poweroff i trzy profile zasilania.
+Centrum ma dzwonek i kosz w nagłówku, poprawną nawigację J/K oraz H/L,
+aktywację całej karty, usuwanie obsłużonych wpisów i otwieranie aplikacji
+z historii. Q działa jak Escape poza polami tekstowymi.
+
+- Pełna kontrola: **228 QML PASS**, bez błędów.
+- Pełny przebieg Qt: **710 PASS, 0 FAIL**, 26 zestawów, bez ostrzeżeń;
+  limit procesu 480 s, zakończenie po 323 s.
+- Instalator: **15 PASS**; pomocniki uwierzytelniania: **6 PASS**.
+- Natywne powiadomienia: **15 grup PASS**, w tym akcje, zużywanie historii,
+  otwarcie testowej aplikacji z archiwum i 20 cykli życia providera.
+- Obejrzano podglądy 1366×768 (aplikacje) i 320×480 (długa ścieżka).
+- Porównanie wcześniejszych zmian main: 120 plików bez zmian; sześć
+  pozostałych zawiera integrację modułów, Q oraz odpowiadające testy i dokumentację.
+
+[Zestawienie](evidence/launcher-shell-merge-tests.json),
+[QML](evidence/launcher-shell-merge-qml.log),
+[kontrola](evidence/launcher-shell-merge-check.log),
+[Python](evidence/launcher-shell-merge-python.log),
+[powiadomienia](evidence/launcher-shell-merge-notifications.json),
+[zachowanie main](evidence/launcher-shell-merge-preservation.json),
+[aplikacje](evidence/launcher-inline-descriptions.png),
+[mały ekran](evidence/launcher-inline-descriptions-small.png).
+Testy używały atrap i izolacji; nie uruchamiały PAM, czytnika ani
+operacji zasilania hosta. Archiwalny Signal jest sprawdzony na aplikacji testowej.
+
 ## Odliczanie odcisku w Polkit — 2026-09-20
 
 **Wdrożone: `20260920-210039-bf2eb74b4b79`.** Odbiór działającej wersji

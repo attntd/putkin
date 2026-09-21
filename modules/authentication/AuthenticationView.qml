@@ -58,8 +58,12 @@ UI.FadeScope {
     onInteractiveChanged: { clear(); if (interactive) Qt.callLater(focusInitial); else focus = false; }
     Window.onActiveChanged: { if (Window.active) Qt.callLater(focusInitial); }
     Keys.priority: Keys.AfterItem
-    Keys.onPressed: event => navigate(event)
-    Keys.onEscapePressed: { if (request && interactive) request.cancel(); }
+    Keys.onPressed: event => {
+        if (request && interactive && DismissKeys.matches(event, root)) {
+            request.cancel();
+            event.accepted = true;
+        } else navigate(event);
+    }
     Connections {
         target: root.request
         function onResponseRequiredChanged(): void {

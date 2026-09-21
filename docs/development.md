@@ -1,5 +1,15 @@
 # Środowisko i rozwój
 
+## Wspólny launcher i shell — 2026-09-21
+
+Potwierdzono lokalnie Qt **6.11.2** i Quickshell **0.3.1**. Opisy wyników
+launchera korzystają z `RowLayout`, preferowanej i maksymalnej szerokości
+oraz skracania tekstu. Sprawdzono [Layout](https://doc.qt.io/qt-6.11/qml-qtquick-layouts-layout.html)
+i [Text](https://doc.qt.io/qt-6.11/qml-qtquick-text.html) dla tej wersji Qt.
+Podglądy obejmują aplikacje przy 1366×768 i ścieżkę pliku przy 320×480.
+Wspólny `DismissKeys` zachowuje wpisywanie `q` w TextInput/TextEdit,
+także w nowych oknach uwierzytelniania.
+
 ## Okna uwierzytelniania — 2026-09-20
 
 Sprawdzono Quickshell 0.3.1, Qt 6.11.2, Polkit 127, OpenSSH 10.5p1,

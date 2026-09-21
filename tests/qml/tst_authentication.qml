@@ -55,9 +55,9 @@ Item {
             let responses = [];
             request.answered.connect((value, accepted) => { responses.push([value, accepted]); });
             mouseClick(view.passwordField);
-            type("hjkl"); compare(view.passwordField.text, "hjkl");
+            type("hjklq"); compare(view.passwordField.text, "hjklq");
             keyClick(Qt.Key_Return); keyClick(Qt.Key_Return);
-            compare(responses, [["hjkl", true]]); compare(view.passwordField.text, "");
+            compare(responses, [["hjklq", true]]); compare(view.passwordField.text, "");
         }
         function test_pointer_and_keyboard_focus() {
             open();
@@ -66,14 +66,24 @@ Item {
             keyClick(Qt.Key_H); verify(indicator.visible);
             mousePress(field); mouseMove(field, 10, 10); mouseRelease(field); verify(!indicator.visible);
         }
-        function test_confirmation_navigation_and_cancel() {
+        function test_confirmation_navigation_and_cancel_data() {
+            return [{tag: "enter", key: Qt.Key_Return}, {tag: "escape", key: Qt.Key_Escape}, {tag: "q", key: Qt.Key_Q}];
+        }
+        function test_confirmation_navigation_and_cancel(data) {
             const request = open({mode: "confirm", title: "Zezwól na użycie klucza", acceptText: "Zezwól"});
             const cancel = findChild(view, "authCancel"), accept = findChild(view, "authAccept");
             cancel.forceActiveFocus(Qt.TabFocusReason);
             keyClick(Qt.Key_L); verify(accept.activeFocus);
             keyClick(Qt.Key_H); verify(cancel.activeFocus);
-            keyClick(Qt.Key_Return); verify(request.done);
+            keyClick(data.key); verify(request.done);
             verify(!view.enabled); verify(view.visible);
+        }
+        function test_q_cancels_polkit_without_password() {
+            const pair = polkit();
+            findChild(view, "authCancel").forceActiveFocus(Qt.TabFocusReason);
+            keyClick(Qt.Key_Q);
+            verify(pair.flow.isCancelled);
+            verify(pair.request.done);
         }
         function test_fingerprint_only_mismatch_and_device_error() {
             const pair = polkit(), flow = pair.flow, request = pair.request;

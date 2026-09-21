@@ -1,0 +1,13 @@
+{
+  "authentication_commit": "d44c13b",
+  "preserved_files_unchanged": 120,
+  "integrated_files": [
+    "docs/development.md",
+    "docs/testing.md",
+    "modules/authentication/AuthenticationView.qml",
+    "services/qmldir",
+    "shell.qml",
+    "tests/qml/tst_authentication.qml"
+  ],
+  "scope": "Shared shell wiring and Q dismissal outside text inputs; all remaining pre-existing main changes preserved byte-for-byte."
+}

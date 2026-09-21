@@ -1,0 +1,17 @@
+{
+  "qml": {
+    "passed": 710,
+    "failed": 0,
+    "duration_ms": 323435,
+    "suites": 26
+  },
+  "static_qml_files": 228,
+  "installer_tests_passed": 15,
+  "authentication_helper_tests_passed": 6,
+  "notification_integration_groups_passed": 15,
+  "launcher_qml_before_merge": 65,
+  "visual_previews": [
+    "launcher-inline-descriptions.png",
+    "launcher-inline-descriptions-small.png"
+  ]
+}
