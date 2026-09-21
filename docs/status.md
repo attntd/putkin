@@ -2,6 +2,16 @@
 
 ## Wspólny launcher, powiadomienia i Q — 2026-09-21
 
+**Scalone do `main` i wdrożone: `20260921-080356-f26716f87551`.**
+Źródła runtime z commita `8ba66f1`; wszystkie **290 plików** zgodne
+z oboma katalogami roboczymi. Odbiór **PASS**: jedna instancja,
+poprawny właściciel powiadomień, zarejestrowany Polkit, skróty gotowe.
+Ustawienia zachowane; timeout odcisku odczytany jako **10000 ms**, taki
+sam jak bezpośrednio przed instalacją. Log QML i konfiguracja Hyprlanda
+bez błędów. Paczka: **146 QML PASS**.
+[Odbiór](evidence/launcher-shell-merge-activation.json),
+[instalacja](evidence/launcher-shell-merge-install.log).
+
 Wspólna wersja łączy poprawki launchera i powiadomień z natywnym
 uwierzytelnianiem oraz odliczaniem odcisku. Zmiany wcześniej pozostawały
 w dwóch katalogach roboczych; utrwalono je osobno (`fe096d1`, `d44c13b`)

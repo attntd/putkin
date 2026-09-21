@@ -1,0 +1,32 @@
+{
+  "build": "20260921-080356-f26716f87551",
+  "source_commit": "8ba66f19564423e9bea400d9161771f0dc40deb3",
+  "branch": "main",
+  "launcher_and_authentication_commits_merged": true,
+  "both_worktree_runtimes_match": true,
+  "pid": 527124,
+  "runtime_files_verified": 290,
+  "configuration_unchanged": true,
+  "notification_owner": 527124,
+  "service": [
+    "ActiveState=active",
+    "SubState=running",
+    "MainPID=527124"
+  ],
+  "clean_log": true,
+  "keyboard": {
+    "ready": true,
+    "busy": false,
+    "applied": true,
+    "error": "",
+    "shortcuts": 8,
+    "commands": 11
+  },
+  "authentication": {
+    "registered": true,
+    "count": 0,
+    "blocked": false,
+    "fingerprintTimeoutMs": 10000
+  },
+  "hyprland_config_errors": ""
+}

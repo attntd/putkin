@@ -15,5 +15,12 @@
     "launcher-inline-descriptions-small.png"
   ],
   "installer_readiness_regression": "Wait for delayed D-Bus registration; reject a foreign notification owner.",
-  "first_activation": "Missing notification D-Bus name during startup; installer restored the previous release."
+  "first_activation": "Missing notification D-Bus name during startup; installer restored the previous release.",
+  "final_activation": {
+    "result": "PASS",
+    "build": "20260921-080356-f26716f87551",
+    "source_commit": "8ba66f1",
+    "runtime_files_verified": 290,
+    "evidence": "launcher-shell-merge-activation.json"
+  }
 }

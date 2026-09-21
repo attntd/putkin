@@ -1,9 +1,28 @@
 # Lokalne przełączenie na Putkin
 
+## Wspólna wersja main — 2026-09-21
+
+Aktywne wydanie: **`20260921-080356-f26716f87551`**, źródła z **`8ba66f1`**
+na `main`. Łączy opisy launchera w jednej linii, dopasowania komend,
+profile zasilania, nawigację i akcje centrum powiadomień oraz zamykanie
+Q poza polami tekstowymi z wcześniejszym uwierzytelnianiem.
+
+Instalacja przez `scripts/install --activate` i odbiór **PASS**: 146 QML
+w paczce, 290 plików zgodnych z `main` i `launcher-suggestions`, jedna
+instancja usługi i poprawny właściciel powiadomień. Ustawienia zachowane,
+Polkit zarejestrowany, skróty gotowe, log i konfiguracja Hyprlanda czyste.
+Instalator czeka teraz na rejestrację nazwy powiadomień w D-Bus.
+[Odbiór](evidence/launcher-shell-merge-activation.json),
+[instalacja](evidence/launcher-shell-merge-install.log),
+[testy](status.md#wspólny-launcher-powiadomienia-i-q--2026-09-21).
+
+`previous` wskazuje `20260920-210039-bf2eb74b4b79`; zachowano pięć buildów.
+Powrót z odblokowanej sesji: `scripts/install --restore --activate`.
+
 ## Okna uwierzytelniania — 2026-09-20
 
 Putkin przejął agenta Polkit oraz wejścia SSH/sudo askpass i GPG Pinentry.
-Aktywne wydanie: **`20260920-210039-bf2eb74b4b79`**, 287 plików runtime
+Wdrożone wtedy wydanie: **`20260920-210039-bf2eb74b4b79`**, 287 plików runtime
 zgodnych z testowanymi źródłami. Dodaje pasek odliczania, glif po prawej
 i przejście do pola hasła z fokusem. [Odbiór](evidence/authentication-countdown-activation.json),
 [testy korekty](status.md#odliczanie-odcisku-w-polkit--2026-09-20).
