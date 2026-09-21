@@ -1,0 +1,38 @@
+{
+  "result": "PASS",
+  "current": "20260920-204030-237db1e11390",
+  "previous": "20260920-203455-2287216abeef",
+  "instances": [
+    {
+      "config_path": "/home/attntd/.config/quickshell/shell.qml",
+      "id": "j599o4kolt",
+      "launch_time": "2026-09-20T22:41:12",
+      "pid": 431767,
+      "shell_id": "770bba0d0f619c4ab3ab0453a539d542"
+    }
+  ],
+  "authentication": {
+    "registered": true,
+    "count": 0,
+    "blocked": false
+  },
+  "runtime_files": 287,
+  "runtime_matches_tested_sources": true,
+  "settings_unchanged": true,
+  "client_configuration_matches_chezmoi": true,
+  "helpers_executable": true,
+  "putkin_service": "active",
+  "polkit_external": "inactive/disabled",
+  "notification_owner": 431767,
+  "lock_idle_ready": true,
+  "qml_log_clean": true,
+  "hyprland_config_clean": true,
+  "backup": "/home/attntd/.local/state/putkin/authentication-20260920-223538",
+  "retained": [
+    "20260920-204030-237db1e11390",
+    "20260920-203455-2287216abeef",
+    "20260920-194523-432aac686c6c",
+    "20260920-192443-bc17922f70b5",
+    "20260920-190430-6727f3b1f2a6"
+  ]
+}

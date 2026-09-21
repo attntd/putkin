@@ -1,0 +1,12 @@
+PASS: real askpass/socket roundtrip, literal hjkl, no secret in IPC and no false fingerprint success
+PASS: YubiKey PIN cancellation and touch notification terminated by its actual caller
+PASS: FIFO askpass, vim confirmation, and lock cancels pending secrets
+PASS: native AuthFlow password rejection/retry/success through real libpolkit and fixture helper
+PASS: native fingerprint readiness, red mismatch without text, reader error text, and confirmed green success
+PASS: one-attempt fingerprint policy preserves red mismatch feedback when PAM immediately requests a password
+PASS: configured countdown fills toward right-hand glyph; native timeout replaces it with focused password and accepts immediate typing
+PASS: actual private gpg-agent calls Putkin Pinentry; entered passphrase produces a verifiable fixture signature
+PASS: native 1.25 scale and 320×240 logical screen, long key name scrolls to keyboard controls without losing the secret
+PASS: removing the active authentication monitor cancels the request and releases its channel
+PASS: soft/hard reload closes secret channels, releases private sockets and re-registers the native agent; no QML warnings
+PASS: native authentication windows, Polkit and askpass/Pinentry protocols

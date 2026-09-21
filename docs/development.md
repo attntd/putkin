@@ -1,5 +1,25 @@
 # Środowisko i rozwój
 
+## Okna uwierzytelniania — 2026-09-20
+
+Sprawdzono Quickshell 0.3.1, Qt 6.11.2, Polkit 127, OpenSSH 10.5p1,
+Pinentry 1.3.3, GnuPG 2.4.9 i fprintd 1.94.5. Moduł Services.Polkit
+udostępnia natywny agent; nie dodano pluginu C++ ani dodatkowego demona.
+Pomocniki SSH/Pinentry używają standardowej biblioteki Python 3.14,
+prywatnych gniazd Unix i SO_PEERCRED. Widoki otrzymują zależności jawnie.
+
+W qmltypes 0.3.1 typ flow pomija przestrzeń nazw C++, a sygnał Socket.error
+nie opisuje LocalSocketError. Adapter czyta natywne flow przez wariant
+i łączy sygnał błędu przez connect; nie wyłącza kontroli importów.
+Obie ścieżki przetestowano na prawdziwym Quickshell/libpolkit.
+[Oficjalne API i kontrakt](authentication.md), [izolacja testów](testing.md#okna-uwierzytelniania--2026-09-20).
+
+Przy korekcie odliczania ponownie potwierdzono Qt 6.11.2 i Quickshell 0.3.1.
+Sprawdzono [FileView.text / watchChanges](https://quickshell.org/docs/v0.3.1/types/Quickshell.Io/FileView/)
+oraz [NumberAnimation](https://doc.qt.io/qt-6/qml-qtquick-numberanimation.html).
+Lokalny `pam_fprintd(8)` opisuje domyślny timeout 30 s; odczyt
+`/etc/pam.d/polkit-1` potwierdził jawne `max-tries=1 timeout=30`.
+
 ## Interakcje powiadomień — 2026-09-20
 
 Przed zmianą potwierdzono lokalnie `qmake6 -query QT_VERSION`: **6.11.2**

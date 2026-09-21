@@ -1,0 +1,11 @@
+test_confirmation_reject_cancel_and_one_button (test_authentication.PinentryTests.test_confirmation_reject_cancel_and_one_button) ... ok
+test_error_reset_timeout_and_no_secrets_in_request (test_authentication.PinentryTests.test_error_reset_timeout_and_no_secrets_in_request) ... ok
+test_explicit_button_semantics (test_authentication.PinentryTests.test_explicit_button_semantics) ... ok
+test_required_new_password_constraints_never_silently_ignored (test_authentication.PinentryTests.test_required_new_password_constraints_never_silently_ignored) ... ok
+test_unicode_percent_newlines_and_bounded_data (test_authentication.PinentryTests.test_unicode_percent_newlines_and_bounded_data) ... ok
+test_unknown_invalid_and_eof (test_authentication.PinentryTests.test_unknown_invalid_and_eof) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.002s
+
+OK

@@ -30,6 +30,11 @@ NotificationIpc 1.0 NotificationIpc.qml
 SessionBackend 1.0 SessionBackend.qml
 LockService 1.0 LockService.qml
 PamBackend 1.0 PamBackend.qml
+AuthenticationRequest 1.0 AuthenticationRequest.qml
+AuthenticationService 1.0 AuthenticationService.qml
+AuthenticationSocket 1.0 AuthenticationSocket.qml
+AuthenticationBackend 1.0 AuthenticationBackend.qml
+PolkitRequest 1.0 PolkitRequest.qml
 IdleService 1.0 IdleService.qml
 IdleBackend 1.0 IdleBackend.qml
 SessionService 1.0 SessionService.qml

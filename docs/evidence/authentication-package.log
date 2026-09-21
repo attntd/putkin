@@ -1,0 +1,9 @@
+PASS: 144 plików QML, 0 z błędami.
+{
+  "current": "/tmp/putkin-authentication-package/data/putkin/releases/20260920-203140-68abfa802c3b",
+  "active": null,
+  "removed": [],
+  "retained": [
+    "20260920-203140-68abfa802c3b"
+  ]
+}

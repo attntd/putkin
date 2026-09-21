@@ -1,0 +1,24 @@
+{
+  "paths": {
+    "store": "/home/attntd/.local/share/putkin",
+    "state": "/home/attntd/.local/state/putkin",
+    "entry": "/home/attntd/.config/quickshell/shell.qml",
+    "launcher": "/home/attntd/.local/bin/qs"
+  },
+  "keep": 5,
+  "builds": [
+    "20260920-172244-98dd3094da3d",
+    "20260920-170400-e2d7150ad167",
+    "20260920-155210-f60d99e92e0f",
+    "20260920-152319-06db5a42cb5e",
+    "20260920-144910-c522126acd2f"
+  ],
+  "restore": null,
+  "runtime_files": 274,
+  "dependencies": {
+    "quickshell": "Quickshell 0.3.1 (revision , distributed by Arch Linux)",
+    "uwsm": "uwsm 0.27.0",
+    "optional_missing": []
+  },
+  "activate": false
+}

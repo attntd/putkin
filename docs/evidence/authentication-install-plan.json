@@ -1,0 +1,18 @@
+{
+  "paths": {
+    "store": "/tmp/putkin-authentication-install/data/putkin",
+    "state": "/tmp/putkin-authentication-install/state/putkin",
+    "entry": "/tmp/putkin-authentication-install/config/quickshell/shell.qml",
+    "launcher": "/tmp/putkin-authentication-install/bin/qs"
+  },
+  "keep": 5,
+  "builds": [],
+  "restore": null,
+  "runtime_files": 287,
+  "dependencies": {
+    "quickshell": "Quickshell 0.3.1 (revision , distributed by Arch Linux)",
+    "uwsm": "uwsm 0.27.0",
+    "optional_missing": []
+  },
+  "activate": false
+}

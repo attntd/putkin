@@ -1,0 +1,8 @@
+#!/usr/bin/env python3
+"""Stable compatibility entry for SSH clients started before the migration."""
+import os
+from pathlib import Path
+import sys
+
+helper = Path(__file__).resolve().parents[1] / "services/askpass.py"
+os.execv(sys.executable, [sys.executable, str(helper), *sys.argv[1:]])

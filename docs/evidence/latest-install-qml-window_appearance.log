@@ -1,0 +1,11 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::WindowAppearance::initTestCase()
+PASS   : qmltestrunner::WindowAppearance::test_contrast_matches_shell_border()
+PASS   : qmltestrunner::WindowAppearance::test_external_settings_and_invalid_file()
+PASS   : qmltestrunner::WindowAppearance::test_preview_cancel_and_save()
+PASS   : qmltestrunner::WindowAppearance::test_reload_and_reconnect_reapply()
+PASS   : qmltestrunner::WindowAppearance::test_waits_for_backend_and_deduplicates()
+PASS   : qmltestrunner::WindowAppearance::cleanupTestCase()
+Totals: 7 passed, 0 failed, 0 skipped, 0 blacklisted, 44ms
+********* Finished testing of qmltestrunner *********

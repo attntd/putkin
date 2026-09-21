@@ -45,7 +45,7 @@ def manifest(root):
 
 
 def source_files(root):
-    selected = [root / "shell.qml", root / "scripts/lock-session"]
+    selected = [root / "shell.qml", root / "scripts/lock-session", root / "scripts/ssh-askpass"]
     for directory in RUNTIME_DIRS:
         base = root / directory
         if not base.is_dir() or base.is_symlink():

@@ -29,6 +29,7 @@ class InstallTest(unittest.TestCase):
         for directory in (*installer.RUNTIME_DIRS, "scripts", "docs", "tests"):
             (self.source / directory).mkdir(parents=True)
         (self.source / "scripts/lock-session").write_text("#!/usr/bin/env python3\n")
+        (self.source / "scripts/ssh-askpass").write_text("#!/usr/bin/env python3\n")
         (self.source / "docs/private.txt").write_text("not runtime")
         (self.source / "settings.json").write_text("private preferences")
         (self.source / "services/__pycache__").mkdir()

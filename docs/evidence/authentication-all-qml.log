@@ -1,0 +1,1673 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::AccentGroups::initTestCase()
+PASS   : qmltestrunner::AccentGroups::test_each_group_has_its_own_origin()
+PASS   : qmltestrunner::AccentGroups::test_live_palette_change_and_outline_contrast()
+PASS   : qmltestrunner::AccentGroups::test_one_diagonal_field_across_controls_and_frame()
+PASS   : qmltestrunner::AccentGroups::test_resize_move_and_scroll_update_shared_coordinates()
+PASS   : qmltestrunner::AccentGroups::test_wide_group_keeps_vertical_color_progression()
+PASS   : qmltestrunner::AccentGroups::cleanupTestCase()
+PASS   : qmltestrunner::Audio::initTestCase()
+PASS   : qmltestrunner::Audio::test_audio_panel_monitor_exclusivity_and_lifecycle()
+PASS   : qmltestrunner::Audio::test_audio_panel_small_scroll_hotplug_and_unavailable_escape()
+PASS   : qmltestrunner::Audio::test_bar_wheel_and_navigation()
+PASS   : qmltestrunner::Audio::test_burst_delay_rejection_and_timeout()
+PASS   : qmltestrunner::Audio::test_dedicated_panel_levels_devices_keyboard_and_mouse()
+PASS   : qmltestrunner::Audio::test_external_update_shared_state_and_identity()
+PASS   : qmltestrunner::Audio::test_invalid_delta_mute_and_stale_output()
+PASS   : qmltestrunner::Audio::test_invalid_values(negative)
+PASS   : qmltestrunner::Audio::test_invalid_values(over)
+PASS   : qmltestrunner::Audio::test_invalid_values(nan)
+PASS   : qmltestrunner::Audio::test_invalid_values(infinity)
+PASS   : qmltestrunner::Audio::test_invalid_values(string)
+PASS   : qmltestrunner::Audio::test_invalid_values(null)
+PASS   : qmltestrunner::Audio::test_microphone_confirmation_errors_and_independence()
+PASS   : qmltestrunner::Audio::test_no_startup_or_reconnect_osd()
+PASS   : qmltestrunner::Audio::test_output_preference_is_not_actual_and_removal()
+PASS   : qmltestrunner::Audio::test_slider_arrow_burst_with_delayed_backend_and_failed_write()
+PASS   : qmltestrunner::Audio::test_slider_vim_arrows_mouse_mute_and_selection()
+PASS   : qmltestrunner::Audio::test_small_panel_keyboard_reveals_controls_and_skips_missing()
+PASS   : qmltestrunner::Audio::test_timeout_renewal_monitor_removal_theme_and_focus()
+PASS   : qmltestrunner::Audio::cleanupTestCase()
+PASS   : qmltestrunner::Authentication::initTestCase()
+PASS   : qmltestrunner::Authentication::test_confirmation_navigation_and_cancel()
+PASS   : qmltestrunner::Authentication::test_fingerprint_only_mismatch_and_device_error()
+PASS   : qmltestrunner::Authentication::test_fingerprint_success_and_password_not_green()
+PASS   : qmltestrunner::Authentication::test_hjkl_secret_cleared_single_submit()
+PASS   : qmltestrunner::Authentication::test_password_retry_and_identity_clear()
+PASS   : qmltestrunner::Authentication::test_pointer_and_keyboard_focus()
+PASS   : qmltestrunner::Authentication::test_prompt_classification()
+PASS   : qmltestrunner::Authentication::test_queue_lock_and_disconnect()
+PASS   : qmltestrunner::Authentication::test_text_is_plain_and_small_window()
+PASS   : qmltestrunner::Authentication::cleanupTestCase()
+PASS   : qmltestrunner::Bar::initTestCase()
+PASS   : qmltestrunner::Bar::test_action_waits_for_monitor_and_times_out()
+PASS   : qmltestrunner::Bar::test_click_uses_clicked_monitor_and_swaps_visible_workspace()
+PASS   : qmltestrunner::Bar::test_disconnect_clears_stale_state_and_keyboard_mode()
+PASS   : qmltestrunner::Bar::test_global_numbers_and_monitor_states()
+PASS   : qmltestrunner::Bar::test_ipc_controller_fallback_and_hotplug_state()
+PASS   : qmltestrunner::Bar::test_keypad_enter_and_escape()
+PASS   : qmltestrunner::Bar::test_locale_clock_tooltip_and_minute_change()
+PASS   : qmltestrunner::Bar::test_model_updates_preserve_delegate_and_selection()
+PASS   : qmltestrunner::Bar::test_overflow_mouse_and_narrow_layout()
+PASS   : qmltestrunner::Bar::test_text_input_does_not_navigate_bar()
+PASS   : qmltestrunner::Bar::test_vim_overflow_enter_once_and_focus()
+PASS   : qmltestrunner::Bar::cleanupTestCase()
+PASS   : qmltestrunner::BarAlignment::initTestCase()
+PASS   : qmltestrunner::BarAlignment::test_charging_material_body_height_and_wider_frame(0)
+PASS   : qmltestrunner::BarAlignment::test_charging_material_body_height_and_wider_frame(10)
+PASS   : qmltestrunner::BarAlignment::test_charging_material_body_height_and_wider_frame(25)
+PASS   : qmltestrunner::BarAlignment::test_charging_material_body_height_and_wider_frame(40)
+PASS   : qmltestrunner::BarAlignment::test_charging_material_body_height_and_wider_frame(55)
+PASS   : qmltestrunner::BarAlignment::test_charging_material_body_height_and_wider_frame(70)
+PASS   : qmltestrunner::BarAlignment::test_charging_material_body_height_and_wider_frame(85)
+PASS   : qmltestrunner::BarAlignment::test_charging_material_body_height_and_wider_frame(100)
+PASS   : qmltestrunner::BarAlignment::test_clock_visible_glyphs_are_centered(pl_PL0)
+PASS   : qmltestrunner::BarAlignment::test_clock_visible_glyphs_are_centered(pl_PL1)
+PASS   : qmltestrunner::BarAlignment::test_clock_visible_glyphs_are_centered(pl_PL2)
+PASS   : qmltestrunner::BarAlignment::test_clock_visible_glyphs_are_centered(en_US0)
+PASS   : qmltestrunner::BarAlignment::test_clock_visible_glyphs_are_centered(en_US1)
+PASS   : qmltestrunner::BarAlignment::test_clock_visible_glyphs_are_centered(en_US2)
+PASS   : qmltestrunner::BarAlignment::test_equal_canvas_padding_above_separator()
+PASS   : qmltestrunner::BarAlignment::cleanupTestCase()
+PASS   : qmltestrunner::Bluetooth::initTestCase()
+PASS   : qmltestrunner::Bluetooth::test_available_adapter_off_block_and_empty()
+PASS   : qmltestrunner::Bluetooth::test_close_paths(escape)
+PASS   : qmltestrunner::Bluetooth::test_close_paths(outside)
+PASS   : qmltestrunner::Bluetooth::test_close_paths(replace)
+PASS   : qmltestrunner::Bluetooth::test_close_paths(monitor)
+PASS   : qmltestrunner::Bluetooth::test_close_paths(destroy)
+PASS   : qmltestrunner::Bluetooth::test_close_paths(disabled)
+PASS   : qmltestrunner::Bluetooth::test_connect_disconnect_and_rejection()
+PASS   : qmltestrunner::Bluetooth::test_device_loss_service_restart_and_timeout()
+PASS   : qmltestrunner::Bluetooth::test_keyboard_tooltip_manager_and_small_panel()
+PASS   : qmltestrunner::Bluetooth::test_multiple_adapters_and_late_operation()
+PASS   : qmltestrunner::Bluetooth::test_radio_requests_are_confirmed_and_serial()
+PASS   : qmltestrunner::Bluetooth::test_stable_focus_model_literal_names_and_battery()
+PASS   : qmltestrunner::Bluetooth::test_twenty_cycles()
+PASS   : qmltestrunner::Bluetooth::cleanupTestCase()
+PASS   : qmltestrunner::Brightness::initTestCase()
+PASS   : qmltestrunner::Brightness::test_coalescing_and_late_replies()
+PASS   : qmltestrunner::Brightness::test_invalid_delta()
+PASS   : qmltestrunner::Brightness::test_invalid_input(zero)
+PASS   : qmltestrunner::Brightness::test_invalid_input(negative)
+PASS   : qmltestrunner::Brightness::test_invalid_input(over)
+PASS   : qmltestrunner::Brightness::test_invalid_input(nan)
+PASS   : qmltestrunner::Brightness::test_invalid_input(infinity)
+PASS   : qmltestrunner::Brightness::test_invalid_input(string)
+PASS   : qmltestrunner::Brightness::test_invalid_input(null)
+PASS   : qmltestrunner::Brightness::test_lost_device_focus_and_small_panel()
+PASS   : qmltestrunner::Brightness::test_panel_reopen_refresh_and_no_idle_poll()
+PASS   : qmltestrunner::Brightness::test_permission_error_and_unconfirmed_write_no_success()
+PASS   : qmltestrunner::Brightness::test_read_error_is_diagnostic_not_zero()
+PASS   : qmltestrunner::Brightness::test_refresh_reply_cannot_overwrite_new_intent()
+PASS   : qmltestrunner::Brightness::test_selection_stable_and_device_disappears()
+PASS   : qmltestrunner::Brightness::test_shared_osd_switches_kind_color_monitor_and_timer()
+PASS   : qmltestrunner::Brightness::test_timeout_result_retains_confirmed_level()
+PASS   : qmltestrunner::Brightness::test_unavailable_or_invalid_range(absent)
+PASS   : qmltestrunner::Brightness::test_unavailable_or_invalid_range(zero-max)
+PASS   : qmltestrunner::Brightness::test_unavailable_or_invalid_range(unknown-max)
+PASS   : qmltestrunner::Brightness::test_unavailable_or_invalid_range(outside-range)
+PASS   : qmltestrunner::Brightness::test_unavailable_or_invalid_range(wildcard-name)
+PASS   : qmltestrunner::Brightness::test_vim_standard_input_and_final_drag()
+PASS   : qmltestrunner::Brightness::test_zero_observed_and_small_range_never_write_zero()
+PASS   : qmltestrunner::Brightness::cleanupTestCase()
+PASS   : qmltestrunner::DesktopExtras::initTestCase()
+PASS   : qmltestrunner::DesktopExtras::test_absent_backend_has_no_switch_and_recovers()
+PASS   : qmltestrunner::DesktopExtras::test_confirmation_no_optimism_or_double_write()
+PASS   : qmltestrunner::DesktopExtras::test_existing_state_no_start_or_write()
+PASS   : qmltestrunner::DesktopExtras::test_failure(timeout)
+PASS   : qmltestrunner::DesktopExtras::test_failure(denied)
+PASS   : qmltestrunner::DesktopExtras::test_failure(restart)
+PASS   : qmltestrunner::DesktopExtras::test_failure(version)
+PASS   : qmltestrunner::DesktopExtras::test_failure(protocol)
+PASS   : qmltestrunner::DesktopExtras::test_failure(unconfirmed)
+PASS   : qmltestrunner::DesktopExtras::test_keyboard_temperature_and_section_order()
+PASS   : qmltestrunner::DesktopExtras::test_restart_rejects_stale_action_without_retry()
+PASS   : qmltestrunner::DesktopExtras::test_small_panel_scroll_and_lifecycle()
+PASS   : qmltestrunner::DesktopExtras::test_temperature_bounds_and_external_refresh()
+PASS   : qmltestrunner::DesktopExtras::test_wallpaper_fallback_path_and_input()
+PASS   : qmltestrunner::DesktopExtras::test_wallpaper_image_load_and_release()
+PASS   : qmltestrunner::DesktopExtras::test_wallpaper_missing_file_falls_back()
+PASS   : qmltestrunner::DesktopExtras::cleanupTestCase()
+PASS   : qmltestrunner::Fade::initTestCase()
+PASS   : qmltestrunner::Fade::test_close_during_preparation_and_replace_content()
+PASS   : qmltestrunner::Fade::test_column_preserves_outer_focus_ring()
+PASS   : qmltestrunner::Fade::test_exit_preserves_last_frame(panel)
+PASS   : qmltestrunner::Fade::test_exit_preserves_last_frame(column)
+PASS   : qmltestrunner::Fade::test_group_pixels(quarter)
+PASS   : qmltestrunner::Fade::test_group_pixels(half)
+PASS   : qmltestrunner::Fade::test_group_pixels(three_quarters)
+PASS   : qmltestrunner::Fade::test_layer_preserves_opaque_pixels_and_position()
+PASS   : qmltestrunner::Fade::test_nested_content_enters_with_parent()
+PASS   : qmltestrunner::Fade::test_waits_for_content_and_stable_layout()
+PASS   : qmltestrunner::Fade::cleanupTestCase()
+PASS   : qmltestrunner::Foundation::initTestCase()
+PASS   : qmltestrunner::Foundation::test_button_keyboard_mouse_and_disabled()
+PASS   : qmltestrunner::Foundation::test_slider_keyboard_bounds_and_reset_binding()
+PASS   : qmltestrunner::Foundation::test_slider_mouse_updates_model()
+PASS   : qmltestrunner::Foundation::test_tab_skips_disabled_and_focus_is_visible()
+PASS   : qmltestrunner::Foundation::test_tooltip_and_accessible_name()
+PASS   : qmltestrunner::Foundation::cleanupTestCase()
+PASS   : qmltestrunner::Keyboard::initTestCase()
+PASS   : qmltestrunner::Keyboard::test_actions_route_to_shared_services()
+PASS   : qmltestrunner::Keyboard::test_command_captures_window_and_clear_chip()
+PASS   : qmltestrunner::Keyboard::test_command_chip_alias_and_panel_handoff()
+PASS   : qmltestrunner::Keyboard::test_compositor_conflict_and_write_failure()
+PASS   : qmltestrunner::Keyboard::test_default_settings_command()
+PASS   : qmltestrunner::Keyboard::test_duplicate_and_reserved_commands_do_not_write()
+PASS   : qmltestrunner::Keyboard::test_external_change_and_late_validation_cannot_save_closed_editor()
+PASS   : qmltestrunner::Keyboard::test_future_schema_preserved_and_backend_reload()
+PASS   : qmltestrunner::Keyboard::test_migrate_session_commands_and_shortcut()
+PASS   : qmltestrunner::Keyboard::test_migration_preserves_custom_bindings_and_conflicts()
+PASS   : qmltestrunner::Keyboard::test_power_command_cancel_and_unavailable_session()
+PASS   : qmltestrunner::Keyboard::test_session_commands(shutdown)
+PASS   : qmltestrunner::Keyboard::test_session_commands(poweroff)
+PASS   : qmltestrunner::Keyboard::test_session_commands(reboot)
+PASS   : qmltestrunner::Keyboard::test_session_commands(sleep)
+PASS   : qmltestrunner::Keyboard::test_session_commands(hibernate)
+PASS   : qmltestrunner::Keyboard::test_session_commands(lock)
+PASS   : qmltestrunner::Keyboard::test_small_window_keeps_list_and_editor_focus_visible()
+PASS   : qmltestrunner::Keyboard::test_text_letters_and_draft_across_sections()
+PASS   : qmltestrunner::Keyboard::test_ui_keyboard_navigation_save_and_reopen()
+PASS   : qmltestrunner::Keyboard::cleanupTestCase()
+PASS   : qmltestrunner::Launcher::initTestCase()
+PASS   : qmltestrunner::Launcher::test_all_prefixes_paste_and_literal_colon()
+PASS   : qmltestrunner::Launcher::test_application_icons(known)
+PASS   : qmltestrunner::Launcher::test_application_icons(tether)
+PASS   : qmltestrunner::Launcher::test_application_icons(signal)
+PASS   : qmltestrunner::Launcher::test_application_icons(otherMessenger)
+PASS   : qmltestrunner::Launcher::test_application_icons(missing)
+PASS   : qmltestrunner::Launcher::test_application_icons(empty)
+PASS   : qmltestrunner::Launcher::test_application_icons(bitmap)
+PASS   : qmltestrunner::Launcher::test_async_results_keep_selected_identity()
+PASS   : qmltestrunner::Launcher::test_chips_and_backspace_with_real_text_input()
+PASS   : qmltestrunner::Launcher::test_clipboard_preview_text_image_and_vim_scroll()
+PASS   : qmltestrunner::Launcher::test_debounce_stale_search_and_close_cancellation()
+PASS   : qmltestrunner::Launcher::test_direct_modes_reset_query_and_focus()
+PASS   : qmltestrunner::Launcher::test_error_toast_beside_centered_launcher()
+PASS   : qmltestrunner::Launcher::test_escape_vim_enter_once_and_text_return()
+PASS   : qmltestrunner::Launcher::test_exclusivity_monitor_hotplug_and_cycles()
+PASS   : qmltestrunner::Launcher::test_filtered_lists_and_compact_clipboard()
+PASS   : qmltestrunner::Launcher::test_late_activation_cannot_close_reopened_panel()
+PASS   : qmltestrunner::Launcher::test_missing_backend_and_clipboard_are_not_empty_success()
+PASS   : qmltestrunner::Launcher::test_monitor_handoff_invalidates_old_activation()
+PASS   : qmltestrunner::Launcher::test_preview_disappears_while_focused()
+PASS   : qmltestrunner::Launcher::test_preview_geometry(wide)
+PASS   : qmltestrunner::Launcher::test_preview_geometry(laptop)
+PASS   : qmltestrunner::Launcher::test_preview_geometry(shifted)
+PASS   : qmltestrunner::Launcher::test_preview_geometry(smaller)
+PASS   : qmltestrunner::Launcher::test_preview_geometry(narrow)
+PASS   : qmltestrunner::Launcher::test_preview_geometry(tiny)
+PASS   : qmltestrunner::Launcher::test_preview_ignores_stale_replies_filter_and_close()
+PASS   : qmltestrunner::Launcher::test_preview_pointer_selection_and_focus()
+PASS   : qmltestrunner::Launcher::test_recent_default_rank_and_filters()
+PASS   : qmltestrunner::Launcher::test_search_focus_colors_its_own_border()
+PASS   : qmltestrunner::Launcher::test_small_screen_and_last_result_reachable()
+PASS   : qmltestrunner::Launcher::test_tab_mouse_clipboard_and_pending_failure()
+PASS   : qmltestrunner::Launcher::test_workspace_commands(switch0)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(switch1)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(switch2)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(switch3)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(switch4)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(switch5)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(switch6)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(switch7)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(switch8)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(switch9)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(move0)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(move1)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(move2)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(move3)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(move4)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(move5)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(move6)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(move7)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(move8)
+PASS   : qmltestrunner::Launcher::test_workspace_commands(move9)
+PASS   : qmltestrunner::Launcher::test_workspace_incomplete_and_invalid_commands()
+PASS   : qmltestrunner::Launcher::test_workspace_monitor_and_helper_unavailable()
+PASS   : qmltestrunner::Launcher::test_workspace_move_acknowledgement_and_duplicate_enter()
+PASS   : qmltestrunner::Launcher::test_workspace_move_closes_while_pending()
+PASS   : qmltestrunner::Launcher::test_workspace_move_missing_and_closed_window()
+PASS   : qmltestrunner::Launcher::test_workspace_text_in_filter_is_literal()
+PASS   : qmltestrunner::Launcher::test_workspace_timeout_disconnect_and_late_session()
+PASS   : qmltestrunner::Launcher::cleanupTestCase()
+PASS   : qmltestrunner::LockIdle::initTestCase()
+PASS   : qmltestrunner::LockIdle::test_background_allows_lock_and_display_but_no_sleep()
+PASS   : qmltestrunner::LockIdle::test_fingerprint_error_resets_without_unlock()
+PASS   : qmltestrunner::LockIdle::test_hold_invalidates_late_authentication()
+PASS   : qmltestrunner::LockIdle::test_idle_threshold_actions_and_restore()
+PASS   : qmltestrunner::LockIdle::test_keyboard_focus_and_pointer_hide_frame()
+PASS   : qmltestrunner::LockIdle::test_missing_or_replaced_backlight_and_resume()
+PASS   : qmltestrunner::LockIdle::test_password_input_hjkl_enter_escape_and_duplicate()
+PASS   : qmltestrunner::LockIdle::test_presentation_restores_and_blocks_automatic_actions()
+PASS   : qmltestrunner::LockIdle::test_protocol_and_authentication_are_both_required()
+PASS   : qmltestrunner::LockIdle::cleanupTestCase()
+PASS   : qmltestrunner::MaterialIcons::initTestCase()
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(apps)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(balance)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(battery_android_0)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(battery_android_1)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(battery_android_2)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(battery_android_3)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(battery_android_4)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(battery_android_5)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(battery_android_6)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(battery_android_full)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(battery_android_question)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(battery_charging_20_2)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(battery_charging_30_2)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(battery_charging_50_2)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(battery_charging_60_2)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(battery_charging_80_2)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(battery_charging_full_2)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(bedtime)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(bluetooth)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(bluetooth_disabled)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(bolt)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(brightness_6)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(chat)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(chat_bubble)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(check)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(check_box)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(check_box_outline_blank)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(chevron_right)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(close)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(code)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(coffee)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(content_paste)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(description)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(desktop_windows)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(developer_board)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(device_thermostat)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(devices)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(eco)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(expand_more)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(fingerprint)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(folder)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(font_download)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(graphic_eq)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(help)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(indeterminate_check_box)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(language)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(link)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(lock)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(logout)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(mic)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(mic_off)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(monitoring)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(more_horiz)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(movie)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(music_note)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(network_wifi)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(network_wifi_1_bar)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(network_wifi_2_bar)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(network_wifi_3_bar)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(notifications)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(notifications_off)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(notifications_unread)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(open_in_new)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(palette)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(power_settings_new)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(print)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(putkin_tether)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(radio_button_checked)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(radio_button_unchecked)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(refresh)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(restart_alt)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(search)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(settings)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(settings_ethernet)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(share)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(signal_wifi_0_bar)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(signal_wifi_off)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(sync)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(terminal)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(translate)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(tune)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(videocam)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(volume_off)
+PASS   : qmltestrunner::MaterialIcons::test_all_vectors_paint_one_color(volume_up)
+PASS   : qmltestrunner::MaterialIcons::test_color_changes_do_not_change_geometry()
+PASS   : qmltestrunner::MaterialIcons::test_sections_keep_canvas_padding_and_center(bar)
+PASS   : qmltestrunner::MaterialIcons::test_sections_keep_canvas_padding_and_center(launcher)
+PASS   : qmltestrunner::MaterialIcons::test_sections_keep_canvas_padding_and_center(slider)
+PASS   : qmltestrunner::MaterialIcons::test_sections_keep_canvas_padding_and_center(tile)
+PASS   : qmltestrunner::MaterialIcons::test_sections_keep_canvas_padding_and_center(list)
+PASS   : qmltestrunner::MaterialIcons::test_sections_keep_canvas_padding_and_center(notification)
+PASS   : qmltestrunner::MaterialIcons::test_sections_keep_canvas_padding_and_center(osd)
+PASS   : qmltestrunner::MaterialIcons::cleanupTestCase()
+PASS   : qmltestrunner::Network::initTestCase()
+PASS   : qmltestrunner::Network::test_close_paths(escape)
+PASS   : qmltestrunner::Network::test_close_paths(outside)
+PASS   : qmltestrunner::Network::test_close_paths(button)
+PASS   : qmltestrunner::Network::test_close_paths(replace)
+PASS   : qmltestrunner::Network::test_close_paths(monitor)
+PASS   : qmltestrunner::Network::test_close_paths(destroy)
+PASS   : qmltestrunner::Network::test_close_paths(radio)
+PASS   : qmltestrunner::Network::test_close_paths(hardware)
+PASS   : qmltestrunner::Network::test_close_paths(adapter)
+PASS   : qmltestrunner::Network::test_close_paths(unavailable)
+PASS   : qmltestrunner::Network::test_close_paths(disabled)
+PASS   : qmltestrunner::Network::test_keyboard_editor_and_small_geometry()
+PASS   : qmltestrunner::Network::test_managed_devices_release_independently()
+PASS   : qmltestrunner::Network::test_open_saved_and_disconnect()
+PASS   : qmltestrunner::Network::test_psk_retry_clear_and_no_text_navigation()
+PASS   : qmltestrunner::Network::test_scans_are_owned_and_stop_on_unavailable()
+PASS   : qmltestrunner::Network::test_stable_delegate_literal_ssid_empty_and_duplicates()
+PASS   : qmltestrunner::Network::test_status_and_internet(unknown)
+PASS   : qmltestrunner::Network::test_status_and_internet(none)
+PASS   : qmltestrunner::Network::test_status_and_internet(portal)
+PASS   : qmltestrunner::Network::test_status_and_internet(limited)
+PASS   : qmltestrunner::Network::test_status_and_internet(full)
+PASS   : qmltestrunner::Network::test_timeout_switch_target_and_stale_result()
+PASS   : qmltestrunner::Network::test_twenty_cycles()
+PASS   : qmltestrunner::Network::test_unavailable_no_wifi_blocked_and_radio_confirmation()
+PASS   : qmltestrunner::Network::cleanupTestCase()
+PASS   : qmltestrunner::Notifications::initTestCase()
+PASS   : qmltestrunner::Notifications::test_arrival_mouse_close_and_action_preserve_focus()
+PASS   : qmltestrunner::Notifications::test_backend_loss_and_disabled_dnd()
+PASS   : qmltestrunner::Notifications::test_card_activation(enter)
+PASS   : qmltestrunner::Notifications::test_card_activation(keypad-enter)
+PASS   : qmltestrunner::Notifications::test_card_activation(summary-click)
+PASS   : qmltestrunner::Notifications::test_card_activation(body-click)
+PASS   : qmltestrunner::Notifications::test_card_activation(header-click)
+PASS   : qmltestrunner::Notifications::test_card_without_action_does_not_dismiss_and_single_action_works()
+PASS   : qmltestrunner::Notifications::test_center_expand_navigation_and_escape(desktop)
+PASS   : qmltestrunner::Notifications::test_center_expand_navigation_and_escape(small)
+PASS   : qmltestrunner::Notifications::test_center_wheel_over_cards_and_reveal_last(short)
+PASS   : qmltestrunner::Notifications::test_center_wheel_over_cards_and_reveal_last(long)
+PASS   : qmltestrunner::Notifications::test_dnd_discards_without_replay_and_critical_does_not_expire()
+PASS   : qmltestrunner::Notifications::test_expand_pointer_and_no_keyboard_ring()
+PASS   : qmltestrunner::Notifications::test_flood_bounds_fifo_and_critical_priority()
+PASS   : qmltestrunner::Notifications::test_identical_replacement_restarts_deadline_and_retains_card()
+PASS   : qmltestrunner::Notifications::test_keyboard_hjkl_enter_escape_and_tooltip()
+PASS   : qmltestrunner::Notifications::test_keyboard_pause_and_focus_repair()
+PASS   : qmltestrunner::Notifications::test_kitty_default_has_no_button(toast-summary)
+PASS   : qmltestrunner::Notifications::test_kitty_default_has_no_button(toast-header)
+PASS   : qmltestrunner::Notifications::test_kitty_default_has_no_button(center-body)
+PASS   : qmltestrunner::Notifications::test_kitty_default_has_no_button(center-enter)
+PASS   : qmltestrunner::Notifications::test_kitty_default_has_no_button(named-default)
+PASS   : qmltestrunner::Notifications::test_missing_data_plain_text_and_limits()
+PASS   : qmltestrunner::Notifications::test_monitor_routing_hotplug_and_geometry()
+PASS   : qmltestrunner::Notifications::test_quick_settings_center_dnd_and_intentional_handoff()
+PASS   : qmltestrunner::Notifications::test_replaced_actions_and_client_close()
+PASS   : qmltestrunner::Notifications::test_resident_transient_and_nonresident_actions()
+PASS   : qmltestrunner::Notifications::test_screen_resize_rebalances_without_duplicate_views()
+PASS   : qmltestrunner::Notifications::test_small_screen_bounds_images_scroll_and_queue()
+PASS   : qmltestrunner::Notifications::test_small_screen_critical_queue_rejects_normal_before_tracking()
+PASS   : qmltestrunner::Notifications::test_timeout_default_zero_and_queue_deadline()
+PASS   : qmltestrunner::Notifications::test_toast_expand_navigation_and_body_click()
+PASS   : qmltestrunner::Notifications::test_twenty_lifecycles()
+PASS   : qmltestrunner::Notifications::test_unread_bell_expiry_center_replacement_and_dnd()
+PASS   : qmltestrunner::Notifications::cleanupTestCase()
+PASS   : qmltestrunner::Panels::initTestCase()
+PASS   : qmltestrunner::Panels::test_close_before_async_load_and_switch_monitor_hotplug()
+PASS   : qmltestrunner::Panels::test_directions_enter_keypad_space_and_escape_layers()
+PASS   : qmltestrunner::Panels::test_disabled_tab_arrows_and_text_editing()
+PASS   : qmltestrunner::Panels::test_keyboard_bar_entry_and_return_focus()
+PASS   : qmltestrunner::Panels::test_long_content_and_resize_preserve_visible_focus()
+PASS   : qmltestrunner::Panels::test_mouse_active_indicator_tooltip_and_outside_consumption()
+PASS   : qmltestrunner::Panels::test_reject_unknown_surface_and_missing_screen()
+PASS   : qmltestrunner::Panels::test_settings_replaces_page_and_keeps_local_state_local()
+PASS   : qmltestrunner::Panels::test_small_screen_scroll_and_visible_focus()
+PASS   : qmltestrunner::Panels::test_twenty_cycles_and_reopen_during_fade()
+PASS   : qmltestrunner::Panels::cleanupTestCase()
+PASS   : qmltestrunner::PointerFocus::initTestCase()
+PASS   : qmltestrunner::PointerFocus::test_bar(workspace)
+PASS   : qmltestrunner::PointerFocus::test_bar(tray)
+PASS   : qmltestrunner::PointerFocus::test_bar(tray-menu)
+PASS   : qmltestrunner::PointerFocus::test_bar(overflow)
+PASS   : qmltestrunner::PointerFocus::test_bar(network)
+PASS   : qmltestrunner::PointerFocus::test_bar(bluetooth)
+PASS   : qmltestrunner::PointerFocus::test_bar(audio)
+PASS   : qmltestrunner::PointerFocus::test_bar(battery)
+PASS   : qmltestrunner::PointerFocus::test_bar(notifications)
+PASS   : qmltestrunner::PointerFocus::test_bar(quick)
+PASS   : qmltestrunner::PointerFocus::test_keyboard_bar_entry_on_clicked_workspace()
+PASS   : qmltestrunner::PointerFocus::test_keyboard_entry_and_return_after_mouse()
+PASS   : qmltestrunner::PointerFocus::test_mouse_close_does_not_resume_bar_navigation()
+PASS   : qmltestrunner::PointerFocus::test_mouse_page_changes_and_power_confirmation()
+PASS   : qmltestrunner::PointerFocus::test_notification_entry_from_bar()
+PASS   : qmltestrunner::PointerFocus::test_quick_controls(audioMute)
+PASS   : qmltestrunner::PointerFocus::test_quick_controls(audioOutputs)
+PASS   : qmltestrunner::PointerFocus::test_quick_controls(brightnessDetails)
+PASS   : qmltestrunner::PointerFocus::test_quick_controls(wifiRadio)
+PASS   : qmltestrunner::PointerFocus::test_quick_controls(bluetoothRadio)
+PASS   : qmltestrunner::PointerFocus::test_quick_controls(nightLightToggle)
+PASS   : qmltestrunner::PointerFocus::test_quick_controls(notificationDnd)
+PASS   : qmltestrunner::PointerFocus::test_quick_controls(caffeinateToggle)
+PASS   : qmltestrunner::PointerFocus::test_quick_details_mouse_actions()
+PASS   : qmltestrunner::PointerFocus::test_shared_buttons(button)
+PASS   : qmltestrunner::PointerFocus::test_shared_buttons(navigation)
+PASS   : qmltestrunner::PointerFocus::test_shared_buttons(module)
+PASS   : qmltestrunner::PointerFocus::test_shared_buttons(tile)
+PASS   : qmltestrunner::PointerFocus::test_shared_buttons(icon)
+PASS   : qmltestrunner::PointerFocus::test_slider_and_text_keep_standard_input()
+PASS   : qmltestrunner::PointerFocus::test_tray_mouse_buttons_submenu_and_keyboard()
+PASS   : qmltestrunner::PointerFocus::test_wifi_password_and_cancel_keep_mouse_reason()
+PASS   : qmltestrunner::PointerFocus::cleanupTestCase()
+PASS   : qmltestrunner::QuickMenu::initTestCase()
+PASS   : qmltestrunner::QuickMenu::test_audio_becoming_ready_keeps_row_focus()
+PASS   : qmltestrunner::QuickMenu::test_audio_is_one_keyboard_row()
+PASS   : qmltestrunner::QuickMenu::test_brightness_and_temperature_focus_span_the_row(brightness-slider)
+PASS   : qmltestrunner::QuickMenu::test_brightness_and_temperature_focus_span_the_row(brightness-details)
+PASS   : qmltestrunner::QuickMenu::test_brightness_and_temperature_focus_span_the_row(temperature)
+PASS   : qmltestrunner::QuickMenu::test_caffeinate_collapse_keeps_scroll_in_bounds(220)
+PASS   : qmltestrunner::QuickMenu::test_caffeinate_collapse_keeps_scroll_in_bounds(480)
+PASS   : qmltestrunner::QuickMenu::test_caffeinate_collapse_keeps_scroll_in_bounds(768)
+PASS   : qmltestrunner::QuickMenu::test_caffeinate_modes_keyboard_mouse_and_confirmed_state()
+PASS   : qmltestrunner::QuickMenu::test_caffeinate_modes_navigation_round_trip(vim-normal)
+PASS   : qmltestrunner::QuickMenu::test_caffeinate_modes_navigation_round_trip(arrows-normal)
+PASS   : qmltestrunner::QuickMenu::test_caffeinate_modes_navigation_round_trip(tab-normal)
+PASS   : qmltestrunner::QuickMenu::test_caffeinate_modes_navigation_round_trip(vim-small)
+PASS   : qmltestrunner::QuickMenu::test_caffeinate_modes_navigation_round_trip(arrows-small)
+PASS   : qmltestrunner::QuickMenu::test_caffeinate_modes_navigation_round_trip(tab-small)
+PASS   : qmltestrunner::QuickMenu::test_caffeinate_rejection_only_notifies_and_keeps_previous_mode()
+PASS   : qmltestrunner::QuickMenu::test_center_mouse_dismiss_and_expired_action_recover_focus()
+PASS   : qmltestrunner::QuickMenu::test_center_small_panel_and_lifecycles()
+PASS   : qmltestrunner::QuickMenu::test_collapse_keeps_top_row_stationary(audio)
+PASS   : qmltestrunner::QuickMenu::test_collapse_keeps_top_row_stationary(brightness)
+PASS   : qmltestrunner::QuickMenu::test_collapse_keeps_top_row_stationary(caffeinate)
+PASS   : qmltestrunner::QuickMenu::test_collapse_keeps_top_row_stationary(caffeinate-select)
+PASS   : qmltestrunner::QuickMenu::test_collapse_keeps_top_row_stationary(nightLight)
+PASS   : qmltestrunner::QuickMenu::test_distinct_audio_names_follow_device_not_default()
+PASS   : qmltestrunner::QuickMenu::test_error_is_only_a_notification()
+PASS   : qmltestrunner::QuickMenu::test_history_keeps_expired_dnd_and_transient()
+PASS   : qmltestrunner::QuickMenu::test_history_replacements_limit_and_live_actions()
+PASS   : qmltestrunner::QuickMenu::test_night_light_temperature_has_no_refresh()
+PASS   : qmltestrunner::QuickMenu::test_notification_center_empty_and_mouse_focus()
+PASS   : qmltestrunner::QuickMenu::test_radio_modules_own_lists_and_scanning()
+PASS   : qmltestrunner::QuickMenu::test_small_grid_and_modes_remain_reachable()
+PASS   : qmltestrunner::QuickMenu::test_tiles_toggle_without_management_or_progress_messages()
+PASS   : qmltestrunner::QuickMenu::test_toggle_grid_geometry_focus_and_navigation()
+PASS   : qmltestrunner::QuickMenu::cleanupTestCase()
+PASS   : qmltestrunner::Screenshot::initTestCase()
+PASS   : qmltestrunner::Screenshot::test_buttons_vim_and_pointer_focus()
+PASS   : qmltestrunner::Screenshot::test_cancel_without_any_capture(row 0)
+PASS   : qmltestrunner::Screenshot::test_cancel_without_any_capture(row 1)
+PASS   : qmltestrunner::Screenshot::test_cancelled_request_ignores_late_result()
+PASS   : qmltestrunner::Screenshot::test_click_and_zero_area_capture_whole_screen()
+PASS   : qmltestrunner::Screenshot::test_hotplug_and_lock_cancel_before_capture()
+PASS   : qmltestrunner::Screenshot::test_keyboard_catalog_migrates_existing_settings()
+PASS   : qmltestrunner::Screenshot::test_missing_monitor_does_not_capture_another_screen()
+PASS   : qmltestrunner::Screenshot::test_missing_window_stays_in_selection()
+PASS   : qmltestrunner::Screenshot::test_preview_close(row 0)
+PASS   : qmltestrunner::Screenshot::test_preview_close(row 1)
+PASS   : qmltestrunner::Screenshot::test_preview_save(row 0)
+PASS   : qmltestrunner::Screenshot::test_preview_save(row 1)
+PASS   : qmltestrunner::Screenshot::test_preview_save(row 2)
+PASS   : qmltestrunner::Screenshot::test_reverse_drag_waits_for_enter_and_native_unmap()
+PASS   : qmltestrunner::Screenshot::test_save_failure_can_retry_and_fatal_clears()
+PASS   : qmltestrunner::Screenshot::test_window_preserves_target_and_overrides_selection()
+PASS   : qmltestrunner::Screenshot::cleanupTestCase()
+PASS   : qmltestrunner::Session::initTestCase()
+PASS   : qmltestrunner::Session::test_centered_geometry_and_twenty_cycles()
+PASS   : qmltestrunner::Session::test_confirmation_discarded_hotplug_replacement_and_reopen()
+PASS   : qmltestrunner::Session::test_disabled_actions_and_small_centered_menu()
+PASS   : qmltestrunner::Session::test_escape_returns_to_menu_then_bar()
+PASS   : qmltestrunner::Session::test_lock_confirm_suspend_and_resume_brightness()
+PASS   : qmltestrunner::Session::test_navigation_confirmation_cancel_and_single_request()
+PASS   : qmltestrunner::Session::test_quicksettings_lock_power_settings_and_errors()
+PASS   : qmltestrunner::Session::test_timeout_late_completion_and_backend_loss()
+PASS   : qmltestrunner::Session::cleanupTestCase()
+PASS   : qmltestrunner::Settings::initTestCase()
+PASS   : qmltestrunner::Settings::test_all_dismissal_routes_discard_preview(cancel)
+PASS   : qmltestrunner::Settings::test_all_dismissal_routes_discard_preview(close)
+PASS   : qmltestrunner::Settings::test_all_dismissal_routes_discard_preview(escape)
+PASS   : qmltestrunner::Settings::test_all_dismissal_routes_discard_preview(back)
+PASS   : qmltestrunner::Settings::test_all_dismissal_routes_discard_preview(replace)
+PASS   : qmltestrunner::Settings::test_all_dismissal_routes_discard_preview(monitor)
+PASS   : qmltestrunner::Settings::test_all_dismissal_routes_discard_preview(hotplug)
+PASS   : qmltestrunner::Settings::test_all_dismissal_routes_discard_preview(bar)
+PASS   : qmltestrunner::Settings::test_all_dismissal_routes_discard_preview(early)
+PASS   : qmltestrunner::Settings::test_contrast_and_navigation_without_motion_option()
+PASS   : qmltestrunner::Settings::test_corrupt_file_preserves_last_good_state_and_future_version_is_read_only()
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(optional appearance)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(optional colors)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(valid)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(legacy motion enabled)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(legacy motion disabled)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(malformed)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(null)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(array)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(missing version)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(future)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(old)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(string version)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(short color)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(transparent)
+PASS   : qmltestrunner::Settings::test_defaults_and_schema_validation(named color)
+Received signal 15 (SIGTERM) sent by PID 420367 UID 1000
+         Settings::test_defaults_and_schema_validation function time: 6134ms, total time: 239916ms
+
+=== Stack trace ===
+[New LWP 423060]
+[New LWP 420380]
+[New LWP 420379]
+[New LWP 420378]
+[New LWP 420377]
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/usr/lib/libthread_db.so.1".
+0x00007f207c2a0952 in ?? () from /usr/lib/qt6/bin/../../libc.so.6
+
+Thread 6 (Thread 0x7f20749fe6c0 (LWP 420377) "Thread (pooled)"):
+#0  0x00007f207c2a0952 in ?? () from /usr/lib/qt6/bin/../../libc.so.6
+#1  0x00007f207c294cd9 in ?? () from /usr/lib/qt6/bin/../../libc.so.6
+#2  0x00007f207c297762 in pthread_cond_timedwait () from /usr/lib/qt6/bin/../../libc.so.6
+#3  0x00007f207c96b549 in QWaitCondition::wait(QMutex*, QDeadlineTimer) () from /usr/lib/qt6/bin/../../libQt6Core.so.6
+#4  0x00007f207c8b5817 in ?? () from /usr/lib/qt6/bin/../../libQt6Core.so.6
+#5  0x00007f207c9721eb in ?? () from /usr/lib/qt6/bin/../../libQt6Core.so.6
+#6  0x00007f207c2980a2 in ?? () from /usr/lib/qt6/bin/../../libc.so.6
+#7  0x00007f207c32080c in ?? () from /usr/lib/qt6/bin/../../libc.so.6
+
+Thread 5 (Thread 0x7f206ffff6c0 (LWP 420378) "Thread (pooled)"):
+#0  0x00007f207c2a0952 in ?? () from /usr/lib/qt6/bin/../../libc.so.6
+#1  0x00007f207c294cd9 in ?? () from /usr/lib/qt6/bin/../../libc.so.6
+#2  0x00007f207c297762 in pthread_cond_timedwait () from /usr/lib/qt6/bin/../../libc.so.6
+#3  0x00007f207c96b549 in QWaitCondition::wait(QMutex*, QDeadlineTimer) () from /usr/lib/qt6/bin/../../libQt6Core.so.6
+#4  0x00007f207c8b5817 in ?? () from /usr/lib/qt6/bin/../../libQt6Core.so.6
+#5  0x00007f207c9721eb in ?? () from /usr/lib/qt6/bin/../../libQt6Core.so.6
+#6  0x00007f207c2980a2 in ?? () from /usr/lib/qt6/bin/../../libc.so.6
+#7  0x00007f207c32080c in ?? () from /usr/lib/qt6/bin/../../libc.so.6
+
+Thread 4 (Thread 0x7f206f7fe6c0 (LWP 420379) "Thread (pooled)"):
+#0  0x00007f207c2a0952 in ?? () from /usr/lib/qt6/bin/../../libc.so.6
+#1  0x00007f207c294cd9 in ?? () from /usr/lib/qt6/bin/../../libc.so.6
+#2  0x00007f207c297762 in pthread_cond_timedwait () from /usr/lib/qt6/bin/../../libc.so.6
+#3  0x00007f207c96b549 in QWaitCondition::wait(QMutex*, QDeadlineTimer) () from /usr/lib/qt6/bin/../../libQt6Core.so.6
+#4  0x00007f207c8b5817 in ?? () from /usr/lib/qt6/bin/../../libQt6Core.so.6
+#5  0x00007f207c9721eb in ?? () from /usr/lib/qt6/bin/../../libQt6Core.so.6
+#6  0x00007f207c2980a2 in ?? () from /usr/lib/qt6/bin/../../libc.so.6
+#7  0x00007f207c32080c in ?? () from /usr/lib/qt6/bin/../../libc.so.6
+
+Thread 3 (Thread 0x7f205edff6c0 (LWP 420380) "Thread (pooled)"):
+#0  0x00007f207c2a0952 in ?? () from /usr/lib/qt6/bin/../../libc.so.6
+#1  0x00007f207c294cd9 in ?? () from /usr/lib/qt6/bin/../../libc.so.6
+#2  0x00007f207c297762 in pthread_cond_timedwait () from /usr/lib/qt6/bin/../../libc.so.6
+#3  0x00007f207c96b549 in QWaitCondition::wait(QMutex*, QDeadlineTimer) () from /usr/lib/qt6/bin/../../libQt6Core.so.6
+#4  0x00007f207c8b5817 in ?? () from /usr/lib/qt6/bin/../../libQt6Core.so.6
+#5  0x00007f207c9721eb in ?? () from /usr/lib/qt6/bin/../../libQt6Core.so.6
+#6  0x00007f207c2980a2 in ?? () from /usr/lib/qt6/bin/../../libc.so.6
+#7  0x00007f207c32080c in ?? () from /usr/lib/qt6/bin/../../libc.so.6
+
+Thread 2 (Thread 0x7f20751ff6c0 (LWP 423060) "QQmlThread"):
+#0  0x00007f207c2a0952 in ?? () from /usr/lib/qt6/bin/../../libc.so.6
+#1  0x00007f207c311a57 in ppoll () from /usr/lib/qt6/bin/../../libc.so.6
+#2  0x00007f207c500f59 in ?? () from /usr/lib/qt6/bin/../../libglib-2.0.so.0
+#3  0x00007f207c501055 in g_main_context_iteration () from /usr/lib/qt6/bin/../../libglib-2.0.so.0
+#4  0x00007f207ca96f32 in QEventDispatcherGlib::processEvents(QFlags<QEventLoop::ProcessEventsFlag>) () from /usr/lib/qt6/bin/../../libQt6Core.so.6
+#5  0x00007f207c78f664 in QEventLoop::exec(QFlags<QEventLoop::ProcessEventsFlag>) () from /usr/lib/qt6/bin/../../libQt6Core.so.6
+#6  0x00007f207c8b7ce2 in QThread::exec() () from /usr/lib/qt6/bin/../../libQt6Core.so.6
+#7  0x00007f207c972285 in ?? () from /usr/lib/qt6/bin/../../libQt6Core.so.6
+#8  0x00007f207c2980a2 in ?? () from /usr/lib/qt6/bin/../../libc.so.6
+#9  0x00007f207c32080c in ?? () from /usr/lib/qt6/bin/../../libc.so.6
+
+Thread 1 (Thread 0x7f2076344bc0 (LWP 420373) "qmltestrunner"):
+#0  0x00007f207c2a0952 in ?? () from /usr/lib/qt6/bin/../../libc.so.6
+#1  0x00007f207c30550b in wait4 () from /usr/lib/qt6/bin/../../libc.so.6
+#2  0x00007f207cdff71f in ?? () from /usr/lib/qt6/bin/../../libQt6Test.so.6
+#3  0x00007f207cdffc2c in ?? () from /usr/lib/qt6/bin/../../libQt6Test.so.6
+#4  <signal handler called>
+#5  0x00007f207c2a0952 in ?? () from /usr/lib/qt6/bin/../../libc.so.6
+#6  0x00007f207c2e4aed in clock_nanosleep () from /usr/lib/qt6/bin/../../libc.so.6
+#7  0x00007f207c2f0f27 in nanosleep () from /usr/lib/qt6/bin/../../libc.so.6
+#8  0x00007f207c800d68 in QTest::qWait(std::chrono::duration<long, std::ratio<1l, 1000l> >) () from /usr/lib/qt6/bin/../../libQt6Core.so.6
+#9  0x00007f207ce43237 in QuickTestResult::qt_metacall(QMetaObject::Call, int, void**) () from /usr/lib/qt6/bin/../../libQt6QuickTest.so.6
+#10 0x00007f207ad66ca3 in ?? () from /usr/lib/qt6/bin/../../libQt6Qml.so.6
+#11 0x00007f207ac016bb in ?? () from /usr/lib/qt6/bin/../../libQt6Qml.so.6
+#12 0x00007f207ac03508 in QV4::QObjectMethod::callPrecise(QQmlObjectOrGadget const&, QQmlPropertyData const&, QV4::ExecutionEngine*, QV4::CallData*, QMetaObject::Call) () from /usr/lib/qt6/bin/../../libQt6Qml.so.6
+#13 0x00007f207ac05855 in QV4::QObjectMethod::callInternal(QV4::Value const*, QV4::Value const*, int) const () from /usr/lib/qt6/bin/../../libQt6Qml.so.6
+#14 0x00007f207ac297d6 in QV4::Runtime::CallPropertyLookup::call(QV4::ExecutionEngine*, QV4::Value const&, unsigned int, QV4::Value*, int) () from /usr/lib/qt6/bin/../../libQt6Qml.so.6
+#15 0x00007f206df9ec0e in ?? ()
+#16 0x00007f2075a01960 in ?? ()
+#17 0x0000000000000000 in ?? ()
+
+process 420373
+Mapped address spaces:
+
+Start Addr         End Addr           Size               Offset             Perms File 
+0x0000558b53ece000 0x0000558b53ecf000 0x1000             0x0                r--p  /usr/lib/qt6/bin/qmltestrunner 
+0x0000558b53ecf000 0x0000558b53ed0000 0x1000             0x1000             r-xp  /usr/lib/qt6/bin/qmltestrunner 
+0x0000558b53ed0000 0x0000558b53ed1000 0x1000             0x2000             r--p  /usr/lib/qt6/bin/qmltestrunner 
+0x0000558b53ed1000 0x0000558b53ed2000 0x1000             0x2000             r--p  /usr/lib/qt6/bin/qmltestrunner 
+0x0000558b53ed2000 0x0000558b53ed3000 0x1000             0x3000             rw-p  /usr/lib/qt6/bin/qmltestrunner 
+0x0000558b86852000 0x0000558b8b4c9000 0x4c77000          0x0                rw-p  [heap] 
+0x00007f2047a00000 0x00007f2047a04000 0x4000             0x0                r--p  /usr/lib/libSvtAv1Enc.so.4.2.0 
+0x00007f2047a04000 0x00007f2047e66000 0x462000           0x4000             r-xp  /usr/lib/libSvtAv1Enc.so.4.2.0 
+0x00007f2047e66000 0x00007f2047f2a000 0xc4000            0x466000           r--p  /usr/lib/libSvtAv1Enc.so.4.2.0 
+0x00007f2047f2a000 0x00007f2047f2e000 0x4000             0x529000           r--p  /usr/lib/libSvtAv1Enc.so.4.2.0 
+0x00007f2047f2e000 0x00007f2047f30000 0x2000             0x52d000           rw-p  /usr/lib/libSvtAv1Enc.so.4.2.0 
+0x00007f2047f30000 0x00007f204ff6e000 0x803e000          0x0                rw-p   
+0x00007f2050000000 0x00007f2050021000 0x21000            0x0                rw-p   
+0x00007f2050021000 0x00007f2054000000 0x3fdf000          0x0                ---p   
+0x00007f2054000000 0x00007f2054356000 0x356000           0x0                rw-p   
+0x00007f2054356000 0x00007f2058000000 0x3caa000          0x0                ---p   
+0x00007f2058000000 0x00007f2058021000 0x21000            0x0                rw-p   
+0x00007f2058021000 0x00007f205c000000 0x3fdf000          0x0                ---p   
+0x00007f205e5ff000 0x00007f205ee00000 0x801000           0x0                rw-p   
+0x00007f2060000000 0x00007f2060021000 0x21000            0x0                rw-p   
+0x00007f2060021000 0x00007f2064000000 0x3fdf000          0x0                ---p   
+0x00007f2066a00000 0x00007f2066b10000 0x110000           0x0                ---p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f2066b10000 0x00007f2066b50000 0x40000            0x110000           rw-p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f2066b50000 0x00007f2066bb0000 0x60000            0x150000           ---p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f2066bb0000 0x00007f2066bc0000 0x10000            0x1b0000           rw-p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f2066bc0000 0x00007f2066e00000 0x240000           0x1c0000           ---p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f2066e00000 0x00007f2066f40000 0x140000           0x0                ---p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f2066f40000 0x00007f2066f50000 0x10000            0x140000           rw-p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f2066f50000 0x00007f20670c0000 0x170000           0x150000           ---p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f20670c0000 0x00007f20670d0000 0x10000            0x2c0000           rw-p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f20670d0000 0x00007f2067200000 0x130000           0x2d0000           ---p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f2067200000 0x00007f2067210000 0x10000            0x0                rw-p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f2067210000 0x00007f20672c0000 0xb0000            0x10000            ---p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f20672c0000 0x00007f20672d0000 0x10000            0xc0000            rw-p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f20672d0000 0x00007f2067320000 0x50000            0xd0000            ---p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f2067320000 0x00007f2067330000 0x10000            0x120000           rw-p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f2067330000 0x00007f2067400000 0xd0000            0x130000           ---p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f2067400000 0x00007f2067420000 0x20000            0x200000           rw-p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f2067420000 0x00007f2067510000 0xf0000            0x220000           ---p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f2067510000 0x00007f2067520000 0x10000            0x310000           rw-p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f2067520000 0x00007f20675a0000 0x80000            0x320000           ---p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f20675a0000 0x00007f20675b0000 0x10000            0x3a0000           rw-p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f20675b0000 0x00007f20675e0000 0x30000            0x3b0000           ---p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f20675e0000 0x00007f20675f0000 0x10000            0x3e0000           rw-p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f20675f0000 0x00007f2067600000 0x10000            0x3f0000           ---p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f2067600000 0x00007f2067870000 0x270000           0x0                rw-p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f2067870000 0x00007f20678a0000 0x30000            0x270000           ---p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f20678a0000 0x00007f20678b0000 0x10000            0x2a0000           rw-p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f20678b0000 0x00007f20678e0000 0x30000            0x2b0000           ---p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f20678e0000 0x00007f2067900000 0x20000            0x2e0000           rw-p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f2067900000 0x00007f2067920000 0x20000            0x300000           ---p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f2067920000 0x00007f2067960000 0x40000            0x320000           rw-p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f2067960000 0x00007f2067970000 0x10000            0x360000           ---p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f2067970000 0x00007f2067980000 0x10000            0x370000           rw-p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f2067980000 0x00007f2067990000 0x10000            0x380000           ---p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f2067990000 0x00007f20679a0000 0x10000            0x390000           rw-p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f20679a0000 0x00007f20679c0000 0x20000            0x3a0000           ---p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f20679c0000 0x00007f20679e0000 0x20000            0x3c0000           rw-p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f20679e0000 0x00007f2067a00000 0x20000            0x3e0000           ---p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f2067a00000 0x00007f2067a12000 0x12000            0x0                r--p  /usr/lib/libQt6Pdf.so.6.11.2 
+0x00007f2067a12000 0x00007f2067c57000 0x245000           0x12000            r-xp  /usr/lib/libQt6Pdf.so.6.11.2 
+0x00007f2067c57000 0x00007f2067de6000 0x18f000           0x257000           r--p  /usr/lib/libQt6Pdf.so.6.11.2 
+0x00007f2067de6000 0x00007f2067df7000 0x11000            0x3e6000           r--p  /usr/lib/libQt6Pdf.so.6.11.2 
+0x00007f2067df7000 0x00007f2067e0a000 0x13000            0x3f7000           rw-p  /usr/lib/libQt6Pdf.so.6.11.2 
+0x00007f2067e0a000 0x00007f2067e11000 0x7000             0x0                rw-p   
+0x00007f2068000000 0x00007f2068021000 0x21000            0x0                rw-p   
+0x00007f2068021000 0x00007f206c000000 0x3fdf000          0x0                ---p   
+0x00007f206c200000 0x00007f206c203000 0x3000             0x0                r--p  /usr/lib/libaom.so.3.15.0 
+0x00007f206c203000 0x00007f206c9ac000 0x7a9000           0x3000             r-xp  /usr/lib/libaom.so.3.15.0 
+0x00007f206c9ac000 0x00007f206caba000 0x10e000           0x7ac000           r--p  /usr/lib/libaom.so.3.15.0 
+0x00007f206caba000 0x00007f206cacb000 0x11000            0x8b9000           r--p  /usr/lib/libaom.so.3.15.0 
+0x00007f206cacb000 0x00007f206cacd000 0x2000             0x8ca000           rw-p  /usr/lib/libaom.so.3.15.0 
+0x00007f206cacd000 0x00007f206cae0000 0x13000            0x0                rw-p   
+0x00007f206cc00000 0x00007f206cc88000 0x88000            0x0                r--p  /usr/lib/librav1e.so.0.8.1 
+0x00007f206cc88000 0x00007f206ceff000 0x277000           0x87000            r-xp  /usr/lib/librav1e.so.0.8.1 
+0x00007f206ceff000 0x00007f206cf22000 0x23000            0x2fd000           r--p  /usr/lib/librav1e.so.0.8.1 
+0x00007f206cf22000 0x00007f206cf23000 0x1000             0x31f000           rw-p  /usr/lib/librav1e.so.0.8.1 
+0x00007f206cf23000 0x00007f206cf24000 0x1000             0x0                rw-p   
+0x00007f206cf9c000 0x00007f206cfa3000 0x7000             0x0                r--p  /usr/lib/libopenjp2.so.2.5.4 
+0x00007f206cfa3000 0x00007f206cffb000 0x58000            0x7000             r-xp  /usr/lib/libopenjp2.so.2.5.4 
+0x00007f206cffb000 0x00007f206d00d000 0x12000            0x5f000            r--p  /usr/lib/libopenjp2.so.2.5.4 
+0x00007f206d00d000 0x00007f206d00f000 0x2000             0x71000            r--p  /usr/lib/libopenjp2.so.2.5.4 
+0x00007f206d00f000 0x00007f206d010000 0x1000             0x73000            rw-p  /usr/lib/libopenjp2.so.2.5.4 
+0x00007f206d010000 0x00007f206d012000 0x2000             0x0                r--p  /usr/lib/libdav1d.so.7.0.0 
+0x00007f206d012000 0x00007f206d190000 0x17e000           0x2000             r-xp  /usr/lib/libdav1d.so.7.0.0 
+0x00007f206d190000 0x00007f206d1c8000 0x38000            0x180000           r--p  /usr/lib/libdav1d.so.7.0.0 
+0x00007f206d1c8000 0x00007f206d1cc000 0x4000             0x1b7000           r--p  /usr/lib/libdav1d.so.7.0.0 
+0x00007f206d1cc000 0x00007f206d1cd000 0x1000             0x1bb000           rw-p  /usr/lib/libdav1d.so.7.0.0 
+0x00007f206d1cd000 0x00007f206d1f1000 0x24000            0x0                rw-p   
+0x00007f206d1f1000 0x00007f206d20a000 0x19000            0x0                r--p  /usr/lib/libyuv.so 
+0x00007f206d20a000 0x00007f206d27c000 0x72000            0x19000            r-xp  /usr/lib/libyuv.so 
+0x00007f206d27c000 0x00007f206d294000 0x18000            0x8b000            r--p  /usr/lib/libyuv.so 
+0x00007f206d294000 0x00007f206d297000 0x3000             0xa2000            r--p  /usr/lib/libyuv.so 
+0x00007f206d297000 0x00007f206d298000 0x1000             0xa5000            rw-p  /usr/lib/libyuv.so 
+0x00007f206d298000 0x00007f206d29e000 0x6000             0x0                r--p  /usr/lib/libavif.so.16.4.2 
+0x00007f206d29e000 0x00007f206d2d0000 0x32000            0x6000             r-xp  /usr/lib/libavif.so.16.4.2 
+0x00007f206d2d0000 0x00007f206d2dc000 0xc000             0x38000            r--p  /usr/lib/libavif.so.16.4.2 
+0x00007f206d2dc000 0x00007f206d2df000 0x3000             0x43000            r--p  /usr/lib/libavif.so.16.4.2 
+0x00007f206d2df000 0x00007f206d2e0000 0x1000             0x46000            rw-p  /usr/lib/libavif.so.16.4.2 
+0x00007f206d2e0000 0x00007f206d2e3000 0x3000             0x0                r--p  /usr/lib/libwebp.so.7.2.0 
+0x00007f206d2e3000 0x00007f206d354000 0x71000            0x3000             r-xp  /usr/lib/libwebp.so.7.2.0 
+0x00007f206d354000 0x00007f206d364000 0x10000            0x74000            r--p  /usr/lib/libwebp.so.7.2.0 
+0x00007f206d364000 0x00007f206d365000 0x1000             0x83000            r--p  /usr/lib/libwebp.so.7.2.0 
+0x00007f206d365000 0x00007f206d366000 0x1000             0x84000            rw-p  /usr/lib/libwebp.so.7.2.0 
+0x00007f206d366000 0x00007f206d367000 0x1000             0x0                rw-p   
+0x00007f206d367000 0x00007f206d36e000 0x7000             0x0                r--p  /usr/lib/libtiff.so.6.3.0 
+0x00007f206d36e000 0x00007f206d3c6000 0x58000            0x7000             r-xp  /usr/lib/libtiff.so.6.3.0 
+0x00007f206d3c6000 0x00007f206d3fa000 0x34000            0x5f000            r--p  /usr/lib/libtiff.so.6.3.0 
+0x00007f206d3fa000 0x00007f206d3fe000 0x4000             0x93000            r--p  /usr/lib/libtiff.so.6.3.0 
+0x00007f206d3fe000 0x00007f206d3ff000 0x1000             0x97000            rw-p  /usr/lib/libtiff.so.6.3.0 
+0x00007f206d3ff000 0x00007f206dc00000 0x801000           0x0                rw-p   
+0x00007f206df6b000 0x00007f206df6c000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206df6c000 0x00007f206df6d000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206df6e000 0x00007f206df6f000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206df6f000 0x00007f206df70000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206df70000 0x00007f206df71000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206df71000 0x00007f206df73000 0x2000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206df73000 0x00007f206df75000 0x2000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206df75000 0x00007f206df76000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206df76000 0x00007f206df77000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206df77000 0x00007f206df78000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206df78000 0x00007f206df79000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206df79000 0x00007f206df7a000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206df7a000 0x00007f206df7b000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206df7b000 0x00007f206df7c000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206df7c000 0x00007f206df7e000 0x2000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206df7e000 0x00007f206df7f000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206df7f000 0x00007f206df82000 0x3000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206df82000 0x00007f206df83000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206df83000 0x00007f206df85000 0x2000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206df85000 0x00007f206df86000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206df86000 0x00007f206df87000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206df87000 0x00007f206df88000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206df88000 0x00007f206df89000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206df89000 0x00007f206df8a000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206df8a000 0x00007f206df8b000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206df8b000 0x00007f206df8c000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206df8c000 0x00007f206df8d000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206df8d000 0x00007f206df8e000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206df8e000 0x00007f206df8f000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206df8f000 0x00007f206df91000 0x2000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206df91000 0x00007f206df92000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206df92000 0x00007f206df93000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206df93000 0x00007f206df94000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206df94000 0x00007f206df95000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206df95000 0x00007f206df96000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206df96000 0x00007f206df97000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206df97000 0x00007f206df98000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206df98000 0x00007f206df99000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206df99000 0x00007f206df9a000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206df9a000 0x00007f206df9b000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206df9b000 0x00007f206df9c000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206df9c000 0x00007f206df9d000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206df9d000 0x00007f206df9e000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206df9e000 0x00007f206df9f000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206df9f000 0x00007f206dfa0000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfa0000 0x00007f206dfa1000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfa1000 0x00007f206dfa2000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206dfa2000 0x00007f206dfa4000 0x2000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfa4000 0x00007f206dfa6000 0x2000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfa6000 0x00007f206dfa7000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfa7000 0x00007f206dfa8000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfa8000 0x00007f206dfab000 0x3000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfab000 0x00007f206dfac000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfac000 0x00007f206dfad000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfad000 0x00007f206dfae000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfae000 0x00007f206dfaf000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206dfaf000 0x00007f206dfb0000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206dfb0000 0x00007f206dfb1000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206dfb1000 0x00007f206dfb2000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfb2000 0x00007f206dfb3000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfb3000 0x00007f206dfb4000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfb4000 0x00007f206dfb5000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfb5000 0x00007f206dfb6000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206dfb6000 0x00007f206dfb7000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206dfb7000 0x00007f206dfb8000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206dfb8000 0x00007f206dfb9000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206dfb9000 0x00007f206dfba000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfba000 0x00007f206dfbb000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206dfbb000 0x00007f206dfbc000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206dfbc000 0x00007f206dfbd000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206dfbd000 0x00007f206dfbe000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206dfbe000 0x00007f206dfbf000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206dfbf000 0x00007f206dfc0000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfc0000 0x00007f206dfc1000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfc1000 0x00007f206dfc2000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfc2000 0x00007f206dfc3000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfc3000 0x00007f206dfc4000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206dfc4000 0x00007f206dfc5000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206dfc5000 0x00007f206dfc6000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfc6000 0x00007f206dfc7000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206dfc7000 0x00007f206dfc8000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206dfc8000 0x00007f206dfc9000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfc9000 0x00007f206dfca000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfca000 0x00007f206dfcb000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfcb000 0x00007f206dfcc000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206dfcc000 0x00007f206dfcd000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206dfcd000 0x00007f206dfce000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfce000 0x00007f206dfcf000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206dfcf000 0x00007f206dfd0000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfd0000 0x00007f206dfd1000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfd1000 0x00007f206dfd2000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfd2000 0x00007f206dfd4000 0x2000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfd4000 0x00007f206dfd5000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfd5000 0x00007f206dfd6000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfd6000 0x00007f206dfd7000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfd7000 0x00007f206dfd8000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206dfd8000 0x00007f206dfe0000 0x8000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/115cc6ccb03c8792cd47040f83a6e13a60dba108.qmlc (deleted) 
+0x00007f206dfe0000 0x00007f206dfe5000 0x5000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/2c14cd9cfa5673d4891cc9450f2abcd9d3523368.qmlc (deleted) 
+0x00007f206dfe5000 0x00007f206dfe9000 0x4000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/c1fffe59e918cd0b8778156bf020ba25b15254be.qmlc (deleted) 
+0x00007f206dfe9000 0x00007f206dff7000 0xe000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/76ea993ecbb9881a3885f81432a95b3039e27ca6.qmlc (deleted) 
+0x00007f206dff7000 0x00007f206e000000 0x9000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/a7bdcf9c61e0fd16f95c0b5ed8a8ad0f9da13110.qmlc (deleted) 
+0x00007f206e000000 0x00007f206e276000 0x276000           0x0                r--p  /usr/share/fonts/TTF/JetBrainsMonoNerdFontMono-Bold.ttf 
+0x00007f206e276000 0x00007f206e277000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206e277000 0x00007f206e278000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206e278000 0x00007f206e279000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206e279000 0x00007f206e27c000 0x3000             0x0                r--p  /usr/lib/qt6/plugins/imageformats/libqpdf.so 
+0x00007f206e27c000 0x00007f206e27e000 0x2000             0x3000             r-xp  /usr/lib/qt6/plugins/imageformats/libqpdf.so 
+0x00007f206e27e000 0x00007f206e27f000 0x1000             0x5000             r--p  /usr/lib/qt6/plugins/imageformats/libqpdf.so 
+0x00007f206e27f000 0x00007f206e280000 0x1000             0x5000             r--p  /usr/lib/qt6/plugins/imageformats/libqpdf.so 
+0x00007f206e280000 0x00007f206e281000 0x1000             0x6000             rw-p  /usr/lib/qt6/plugins/imageformats/libqpdf.so 
+0x00007f206e281000 0x00007f206e284000 0x3000             0x0                r--p  /usr/lib/qt6/plugins/imageformats/libqavif6.so 
+0x00007f206e284000 0x00007f206e289000 0x5000             0x3000             r-xp  /usr/lib/qt6/plugins/imageformats/libqavif6.so 
+0x00007f206e289000 0x00007f206e28a000 0x1000             0x8000             r--p  /usr/lib/qt6/plugins/imageformats/libqavif6.so 
+0x00007f206e28a000 0x00007f206e28b000 0x1000             0x9000             r--p  /usr/lib/qt6/plugins/imageformats/libqavif6.so 
+0x00007f206e28b000 0x00007f206e28c000 0x1000             0xa000             rw-p  /usr/lib/qt6/plugins/imageformats/libqavif6.so 
+0x00007f206e28c000 0x00007f206e28e000 0x2000             0x0                r--p  /usr/lib/libwebpmux.so.3.1.2 
+0x00007f206e28e000 0x00007f206e295000 0x7000             0x2000             r-xp  /usr/lib/libwebpmux.so.3.1.2 
+0x00007f206e295000 0x00007f206e296000 0x1000             0x9000             r--p  /usr/lib/libwebpmux.so.3.1.2 
+0x00007f206e296000 0x00007f206e297000 0x1000             0xa000             r--p  /usr/lib/libwebpmux.so.3.1.2 
+0x00007f206e297000 0x00007f206e298000 0x1000             0xb000             rw-p  /usr/lib/libwebpmux.so.3.1.2 
+0x00007f206e298000 0x00007f206e29c000 0x4000             0x0                r--p  /usr/lib/liblzma.so.5.8.4 
+0x00007f206e29c000 0x00007f206e2c0000 0x24000            0x4000             r-xp  /usr/lib/liblzma.so.5.8.4 
+0x00007f206e2c0000 0x00007f206e2cc000 0xc000             0x28000            r--p  /usr/lib/liblzma.so.5.8.4 
+0x00007f206e2cc000 0x00007f206e2cd000 0x1000             0x34000            r--p  /usr/lib/liblzma.so.5.8.4 
+0x00007f206e2cd000 0x00007f206e2ce000 0x1000             0x35000            rw-p  /usr/lib/liblzma.so.5.8.4 
+0x00007f206e2ce000 0x00007f206e2d7000 0x9000             0x0                r--p  /usr/lib/liblcms2.so.2.0.19 
+0x00007f206e2d7000 0x00007f206e31e000 0x47000            0x9000             r-xp  /usr/lib/liblcms2.so.2.0.19 
+0x00007f206e31e000 0x00007f206e333000 0x15000            0x50000            r--p  /usr/lib/liblcms2.so.2.0.19 
+0x00007f206e333000 0x00007f206e336000 0x3000             0x64000            r--p  /usr/lib/liblcms2.so.2.0.19 
+0x00007f206e336000 0x00007f206e339000 0x3000             0x67000            rw-p  /usr/lib/liblcms2.so.2.0.19 
+0x00007f206e339000 0x00007f206e33a000 0x1000             0x0                rw-p   
+0x00007f206e33a000 0x00007f206e34f000 0x15000            0x0                r--p  /usr/lib/libmng.so.2.0.2 
+0x00007f206e34f000 0x00007f206e395000 0x46000            0x15000            r-xp  /usr/lib/libmng.so.2.0.2 
+0x00007f206e395000 0x00007f206e3a4000 0xf000             0x5b000            r--p  /usr/lib/libmng.so.2.0.2 
+0x00007f206e3a4000 0x00007f206e3a8000 0x4000             0x69000            r--p  /usr/lib/libmng.so.2.0.2 
+0x00007f206e3a8000 0x00007f206e3a9000 0x1000             0x6d000            rw-p  /usr/lib/libmng.so.2.0.2 
+0x00007f206e3a9000 0x00007f206e3ae000 0x5000             0x0                r--p  /usr/lib/libjasper.so.7.0.0 
+0x00007f206e3ae000 0x00007f206e3e9000 0x3b000            0x5000             r-xp  /usr/lib/libjasper.so.7.0.0 
+0x00007f206e3e9000 0x00007f206e3f9000 0x10000            0x40000            r--p  /usr/lib/libjasper.so.7.0.0 
+0x00007f206e3f9000 0x00007f206e3fc000 0x3000             0x50000            r--p  /usr/lib/libjasper.so.7.0.0 
+0x00007f206e3fc000 0x00007f206e3fd000 0x1000             0x53000            rw-p  /usr/lib/libjasper.so.7.0.0 
+0x00007f206e3fd000 0x00007f206e400000 0x3000             0x0                rw-p   
+0x00007f206e400000 0x00007f206e675000 0x275000           0x0                r--p  /usr/share/fonts/TTF/JetBrainsMonoNerdFontMono-SemiBold.ttf 
+0x00007f206e675000 0x00007f206e676000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206e676000 0x00007f206e677000 0x1000             0x0                r-xp  /memfd:JITCode:QtQml (deleted) 
+0x00007f206e677000 0x00007f206e67a000 0x3000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/9817d568d26f25a37c72d4d3903c1b7541eb64dd.qmlc (deleted) 
+0x00007f206e67a000 0x00007f206e67b000 0x1000             0x0                r--p  /usr/lib/libwebpdemux.so.2.0.17 
+0x00007f206e67b000 0x00007f206e67e000 0x3000             0x1000             r-xp  /usr/lib/libwebpdemux.so.2.0.17 
+0x00007f206e67e000 0x00007f206e67f000 0x1000             0x4000             r--p  /usr/lib/libwebpdemux.so.2.0.17 
+0x00007f206e67f000 0x00007f206e680000 0x1000             0x4000             r--p  /usr/lib/libwebpdemux.so.2.0.17 
+0x00007f206e680000 0x00007f206e681000 0x1000             0x5000             rw-p  /usr/lib/libwebpdemux.so.2.0.17 
+0x00007f206e681000 0x00007f206e684000 0x3000             0x0                r--p  /usr/lib/qt6/plugins/imageformats/libqwebp.so 
+0x00007f206e684000 0x00007f206e687000 0x3000             0x3000             r-xp  /usr/lib/qt6/plugins/imageformats/libqwebp.so 
+0x00007f206e687000 0x00007f206e688000 0x1000             0x6000             r--p  /usr/lib/qt6/plugins/imageformats/libqwebp.so 
+0x00007f206e688000 0x00007f206e689000 0x1000             0x6000             r--p  /usr/lib/qt6/plugins/imageformats/libqwebp.so 
+0x00007f206e689000 0x00007f206e68a000 0x1000             0x7000             rw-p  /usr/lib/qt6/plugins/imageformats/libqwebp.so 
+0x00007f206e68a000 0x00007f206e68c000 0x2000             0x0                r--p  /usr/lib/qt6/plugins/imageformats/libqwbmp.so 
+0x00007f206e68c000 0x00007f206e68e000 0x2000             0x2000             r-xp  /usr/lib/qt6/plugins/imageformats/libqwbmp.so 
+0x00007f206e68e000 0x00007f206e68f000 0x1000             0x4000             r--p  /usr/lib/qt6/plugins/imageformats/libqwbmp.so 
+0x00007f206e68f000 0x00007f206e690000 0x1000             0x4000             r--p  /usr/lib/qt6/plugins/imageformats/libqwbmp.so 
+0x00007f206e690000 0x00007f206e691000 0x1000             0x5000             rw-p  /usr/lib/qt6/plugins/imageformats/libqwbmp.so 
+0x00007f206e691000 0x00007f206e692000 0x1000             0x0                r--p  /usr/lib/libsharpyuv.so.0.1.2 
+0x00007f206e692000 0x00007f206e696000 0x4000             0x1000             r-xp  /usr/lib/libsharpyuv.so.0.1.2 
+0x00007f206e696000 0x00007f206e697000 0x1000             0x5000             r--p  /usr/lib/libsharpyuv.so.0.1.2 
+0x00007f206e697000 0x00007f206e698000 0x1000             0x5000             r--p  /usr/lib/libsharpyuv.so.0.1.2 
+0x00007f206e698000 0x00007f206e699000 0x1000             0x6000             rw-p  /usr/lib/libsharpyuv.so.0.1.2 
+0x00007f206e699000 0x00007f206e69a000 0x1000             0x0                rw-p   
+0x00007f206e69a000 0x00007f206e69b000 0x1000             0x0                r--p  /usr/lib/libdeflate.so.0 
+0x00007f206e69b000 0x00007f206e6ab000 0x10000            0x1000             r-xp  /usr/lib/libdeflate.so.0 
+0x00007f206e6ab000 0x00007f206e6b0000 0x5000             0x11000            r--p  /usr/lib/libdeflate.so.0 
+0x00007f206e6b0000 0x00007f206e6b1000 0x1000             0x15000            r--p  /usr/lib/libdeflate.so.0 
+0x00007f206e6b1000 0x00007f206e6b2000 0x1000             0x16000            rw-p  /usr/lib/libdeflate.so.0 
+0x00007f206e6b2000 0x00007f206e6d1000 0x1f000            0x0                r--p  /usr/lib/libQt6Svg.so.6.11.2 
+0x00007f206e6d1000 0x00007f206e743000 0x72000            0x1f000            r-xp  /usr/lib/libQt6Svg.so.6.11.2 
+0x00007f206e743000 0x00007f206e753000 0x10000            0x91000            r--p  /usr/lib/libQt6Svg.so.6.11.2 
+0x00007f206e753000 0x00007f206e757000 0x4000             0xa1000            r--p  /usr/lib/libQt6Svg.so.6.11.2 
+0x00007f206e757000 0x00007f206e758000 0x1000             0xa5000            rw-p  /usr/lib/libQt6Svg.so.6.11.2 
+0x00007f206e758000 0x00007f206e75d000 0x5000             0x0                r--p  /usr/lib/libjpeg.so.8.3.2 
+0x00007f206e75d000 0x00007f206e7d7000 0x7a000            0x5000             r-xp  /usr/lib/libjpeg.so.8.3.2 
+0x00007f206e7d7000 0x00007f206e7fe000 0x27000            0x7f000            r--p  /usr/lib/libjpeg.so.8.3.2 
+0x00007f206e7fe000 0x00007f206e7ff000 0x1000             0xa6000            r--p  /usr/lib/libjpeg.so.8.3.2 
+0x00007f206e7ff000 0x00007f206e800000 0x1000             0xa7000            rw-p  /usr/lib/libjpeg.so.8.3.2 
+0x00007f206e800000 0x00007f206ea75000 0x275000           0x0                r--p  /usr/share/fonts/TTF/JetBrainsMonoNerdFontMono-Regular.ttf 
+0x00007f206ea75000 0x00007f206ea76000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206ea76000 0x00007f206ea77000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206ea77000 0x00007f206ea7a000 0x3000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/f77f1b9589a5ea95995ebc5c75ed5dafcdeb9f67.qmlc (deleted) 
+0x00007f206ea7a000 0x00007f206ea7b000 0x1000             0x0                r--p  /usr/lib/libjbig.so.2.1 
+0x00007f206ea7b000 0x00007f206ea83000 0x8000             0x1000             r-xp  /usr/lib/libjbig.so.2.1 
+0x00007f206ea83000 0x00007f206ea84000 0x1000             0x9000             r--p  /usr/lib/libjbig.so.2.1 
+0x00007f206ea84000 0x00007f206ea85000 0x1000             0x9000             r--p  /usr/lib/libjbig.so.2.1 
+0x00007f206ea85000 0x00007f206ea88000 0x3000             0xa000             rw-p  /usr/lib/libjbig.so.2.1 
+0x00007f206ea88000 0x00007f206ea8b000 0x3000             0x0                r--p  /usr/lib/qt6/plugins/imageformats/libqtiff.so 
+0x00007f206ea8b000 0x00007f206ea90000 0x5000             0x3000             r-xp  /usr/lib/qt6/plugins/imageformats/libqtiff.so 
+0x00007f206ea90000 0x00007f206ea91000 0x1000             0x8000             r--p  /usr/lib/qt6/plugins/imageformats/libqtiff.so 
+0x00007f206ea91000 0x00007f206ea92000 0x1000             0x9000             r--p  /usr/lib/qt6/plugins/imageformats/libqtiff.so 
+0x00007f206ea92000 0x00007f206ea93000 0x1000             0xa000             rw-p  /usr/lib/qt6/plugins/imageformats/libqtiff.so 
+0x00007f206ea93000 0x00007f206ea95000 0x2000             0x0                r--p  /usr/lib/qt6/plugins/imageformats/libqtga.so 
+0x00007f206ea95000 0x00007f206ea97000 0x2000             0x2000             r-xp  /usr/lib/qt6/plugins/imageformats/libqtga.so 
+0x00007f206ea97000 0x00007f206ea98000 0x1000             0x4000             r--p  /usr/lib/qt6/plugins/imageformats/libqtga.so 
+0x00007f206ea98000 0x00007f206ea99000 0x1000             0x4000             r--p  /usr/lib/qt6/plugins/imageformats/libqtga.so 
+0x00007f206ea99000 0x00007f206ea9a000 0x1000             0x5000             rw-p  /usr/lib/qt6/plugins/imageformats/libqtga.so 
+0x00007f206ea9a000 0x00007f206ea9d000 0x3000             0x0                r--p  /usr/lib/qt6/plugins/imageformats/libqmng.so 
+0x00007f206ea9d000 0x00007f206ea9f000 0x2000             0x3000             r-xp  /usr/lib/qt6/plugins/imageformats/libqmng.so 
+0x00007f206ea9f000 0x00007f206eaa0000 0x1000             0x5000             r--p  /usr/lib/qt6/plugins/imageformats/libqmng.so 
+0x00007f206eaa0000 0x00007f206eaa1000 0x1000             0x6000             r--p  /usr/lib/qt6/plugins/imageformats/libqmng.so 
+0x00007f206eaa1000 0x00007f206eaa2000 0x1000             0x7000             rw-p  /usr/lib/qt6/plugins/imageformats/libqmng.so 
+0x00007f206eaa2000 0x00007f206eaa5000 0x3000             0x0                r--p  /usr/lib/qt6/plugins/imageformats/libqjp2.so 
+0x00007f206eaa5000 0x00007f206eaa8000 0x3000             0x3000             r-xp  /usr/lib/qt6/plugins/imageformats/libqjp2.so 
+0x00007f206eaa8000 0x00007f206eaa9000 0x1000             0x6000             r--p  /usr/lib/qt6/plugins/imageformats/libqjp2.so 
+0x00007f206eaa9000 0x00007f206eaaa000 0x1000             0x7000             r--p  /usr/lib/qt6/plugins/imageformats/libqjp2.so 
+0x00007f206eaaa000 0x00007f206eaab000 0x1000             0x8000             rw-p  /usr/lib/qt6/plugins/imageformats/libqjp2.so 
+0x00007f206eaab000 0x00007f206eaae000 0x3000             0x0                r--p  /usr/lib/qt6/plugins/imageformats/libqicns.so 
+0x00007f206eaae000 0x00007f206eab3000 0x5000             0x3000             r-xp  /usr/lib/qt6/plugins/imageformats/libqicns.so 
+0x00007f206eab3000 0x00007f206eab5000 0x2000             0x8000             r--p  /usr/lib/qt6/plugins/imageformats/libqicns.so 
+0x00007f206eab5000 0x00007f206eab6000 0x1000             0x9000             r--p  /usr/lib/qt6/plugins/imageformats/libqicns.so 
+0x00007f206eab6000 0x00007f206eab7000 0x1000             0xa000             rw-p  /usr/lib/qt6/plugins/imageformats/libqicns.so 
+0x00007f206eab7000 0x00007f206eaba000 0x3000             0x0                r--p  /usr/lib/qt6/plugins/imageformats/libqsvg.so 
+0x00007f206eaba000 0x00007f206eabc000 0x2000             0x3000             r-xp  /usr/lib/qt6/plugins/imageformats/libqsvg.so 
+0x00007f206eabc000 0x00007f206eabd000 0x1000             0x5000             r--p  /usr/lib/qt6/plugins/imageformats/libqsvg.so 
+0x00007f206eabd000 0x00007f206eabe000 0x1000             0x5000             r--p  /usr/lib/qt6/plugins/imageformats/libqsvg.so 
+0x00007f206eabe000 0x00007f206eabf000 0x1000             0x6000             rw-p  /usr/lib/qt6/plugins/imageformats/libqsvg.so 
+0x00007f206eabf000 0x00007f206eac3000 0x4000             0x0                r--p  /usr/lib/qt6/plugins/imageformats/libqjpeg.so 
+0x00007f206eac3000 0x00007f206eac9000 0x6000             0x4000             r-xp  /usr/lib/qt6/plugins/imageformats/libqjpeg.so 
+0x00007f206eac9000 0x00007f206eaca000 0x1000             0xa000             r--p  /usr/lib/qt6/plugins/imageformats/libqjpeg.so 
+0x00007f206eaca000 0x00007f206eacb000 0x1000             0xb000             r--p  /usr/lib/qt6/plugins/imageformats/libqjpeg.so 
+0x00007f206eacb000 0x00007f206eacc000 0x1000             0xc000             rw-p  /usr/lib/qt6/plugins/imageformats/libqjpeg.so 
+0x00007f206eacc000 0x00007f206eacf000 0x3000             0x0                r--p  /usr/lib/qt6/plugins/imageformats/libqico.so 
+0x00007f206eacf000 0x00007f206ead3000 0x4000             0x3000             r-xp  /usr/lib/qt6/plugins/imageformats/libqico.so 
+0x00007f206ead3000 0x00007f206ead4000 0x1000             0x7000             r--p  /usr/lib/qt6/plugins/imageformats/libqico.so 
+0x00007f206ead4000 0x00007f206ead5000 0x1000             0x7000             r--p  /usr/lib/qt6/plugins/imageformats/libqico.so 
+0x00007f206ead5000 0x00007f206ead6000 0x1000             0x8000             rw-p  /usr/lib/qt6/plugins/imageformats/libqico.so 
+0x00007f206ead6000 0x00007f206eb68000 0x92000            0x0                r--p  /usr/share/fonts/noto/NotoSansMono-Regular.ttf 
+0x00007f206eb68000 0x00007f206ec00000 0x98000            0x0                r--p  /usr/share/fonts/noto/NotoSans-Regular.ttf 
+0x00007f206ec00000 0x00007f206ec8d000 0x8d000            0x0                r--p  /usr/lib/libQt6QuickTemplates2.so.6.11.2 
+0x00007f206ec8d000 0x00007f206eddf000 0x152000           0x8d000            r-xp  /usr/lib/libQt6QuickTemplates2.so.6.11.2 
+0x00007f206eddf000 0x00007f206ee4c000 0x6d000            0x1df000           r--p  /usr/lib/libQt6QuickTemplates2.so.6.11.2 
+0x00007f206ee4c000 0x00007f206ee79000 0x2d000            0x24b000           r--p  /usr/lib/libQt6QuickTemplates2.so.6.11.2 
+0x00007f206ee79000 0x00007f206ee85000 0xc000             0x278000           rw-p  /usr/lib/libQt6QuickTemplates2.so.6.11.2 
+0x00007f206ee85000 0x00007f206ee88000 0x3000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/4042f26665ffd9be71c54f22c4ee75075b8554cb.qmlc (deleted) 
+0x00007f206ee88000 0x00007f206ee8a000 0x2000             0x0                r--p  /usr/lib/qt6/plugins/imageformats/libqgif.so 
+0x00007f206ee8a000 0x00007f206ee8e000 0x4000             0x2000             r-xp  /usr/lib/qt6/plugins/imageformats/libqgif.so 
+0x00007f206ee8e000 0x00007f206ee8f000 0x1000             0x6000             r--p  /usr/lib/qt6/plugins/imageformats/libqgif.so 
+0x00007f206ee8f000 0x00007f206ee90000 0x1000             0x6000             r--p  /usr/lib/qt6/plugins/imageformats/libqgif.so 
+0x00007f206ee90000 0x00007f206ee91000 0x1000             0x7000             rw-p  /usr/lib/qt6/plugins/imageformats/libqgif.so 
+0x00007f206ee91000 0x00007f206ee92000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f206ee92000 0x00007f206ee93000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/1257f8fccb5273426b129bc57ebb6c0427965d27.qmlc (deleted) 
+0x00007f206ee93000 0x00007f206ee94000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/6a4fc4d5dedf45af6dfd5f454341b698e015ddf5.qmlc (deleted) 
+0x00007f206ee94000 0x00007f206ee95000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/22f94e991cf4dd3472650749605a95d2476757d7.qmlc (deleted) 
+0x00007f206ee95000 0x00007f206ee97000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/730977508cdcb83e51b26ec1a0dd1e100631989c.qmlc (deleted) 
+0x00007f206ee97000 0x00007f206ee98000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/a0b44bcc83ba215b83c352ff363cb799ea7b2262.qmlc (deleted) 
+0x00007f206ee98000 0x00007f206ee99000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/0c15f237920448aff8864b985f1408431b70aa8c.qmlc (deleted) 
+0x00007f206ee99000 0x00007f206ee9b000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/faa6ee1a8561a9000669851d6ef6c9b2bc6c5ffe.qmlc (deleted) 
+0x00007f206ee9b000 0x00007f206ee9c000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/515827f964207f02a32fb26b3fd55e7b9fcb8860.qmlc (deleted) 
+0x00007f206ee9c000 0x00007f206ee9d000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/58ac9a396a6c5ea7acdb18bce6b3eec1e1b0bb26.qmlc (deleted) 
+0x00007f206ee9d000 0x00007f206eea3000 0x6000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/53b2070f2c2d47396c1aba5d19bb78f0f25a6a5d.qmlc (deleted) 
+0x00007f206eea3000 0x00007f206eeaf000 0xc000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/509b73a476f8224cee3b6bb55998acadf41d0a76.qmlc (deleted) 
+0x00007f206eeaf000 0x00007f206eeb6000 0x7000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/81e8ccda9ebaf25d8ff3b2700bd317084c557c23.qmlc (deleted) 
+0x00007f206eeb6000 0x00007f206eebc000 0x6000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/5d464c32ca516e562483536a43cd08f215660b4e.qmlc (deleted) 
+0x00007f206eebc000 0x00007f206eebe000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/9cf49c9644caad722bf4f1f1c695d93e8da6ba3d.qmlc (deleted) 
+0x00007f206eebe000 0x00007f206eebf000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/34f139740b8828ebeba109c687c41c4083a312e7.qmlc (deleted) 
+0x00007f206eebf000 0x00007f206eec0000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/fa8b1310fe8a993ce466055d80d5ef8425e9cbd4.qmlc (deleted) 
+0x00007f206eec0000 0x00007f206eec1000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/6b4c6d975bb351c572081615dd92b8d6265db88d.jsc (deleted) 
+0x00007f206eec1000 0x00007f206eec3000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/cf2e6984aec18a3091406130040e89947b2fccda.qmlc (deleted) 
+0x00007f206eec3000 0x00007f206eec7000 0x4000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/72d354da7cf754f9fcf25e49d410c355703b6a7f.qmlc (deleted) 
+0x00007f206eec7000 0x00007f206eecb000 0x4000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/cec79597b9d39dcf221d0c6553f8659ff2770bd0.qmlc (deleted) 
+0x00007f206eecb000 0x00007f206eed9000 0xe000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/908e87f3516312816d5945282bb671895610df2c.qmlc (deleted) 
+0x00007f206eed9000 0x00007f206eee4000 0xb000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/5d1eef4dcdbc168f28c1fcbce4d6ae055d426863.qmlc (deleted) 
+0x00007f206eee4000 0x00007f206effe000 0x11a000           0x0                r--s  /var/cache/fontconfig/923e285e415b1073c8df160bee08820f-le64.cache-12 
+0x00007f206effe000 0x00007f2070000000 0x1002000          0x0                rw-p   
+0x00007f2070000000 0x00007f20706f2000 0x6f2000           0x0                rw-p   
+0x00007f20706f2000 0x00007f2074000000 0x390e000          0x0                ---p   
+0x00007f2074000000 0x00007f2074001000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/9f2620d5e36bc801aa663ef8a7dd2b5b932ac606.qmlc (deleted) 
+0x00007f2074001000 0x00007f2074002000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/fa228dc42752b9ccf804502ed7fc09a445c6bd52.qmlc (deleted) 
+0x00007f2074002000 0x00007f2074003000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/2f0e1f3df49ec09073ae783f1be8019926c9457d.qmlc (deleted) 
+0x00007f2074003000 0x00007f2074005000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/00ec70ff9c5097b145093ce9644a06ef49a7e76a.qmlc (deleted) 
+0x00007f2074005000 0x00007f2074006000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/f4c4dbf02ab83083613c087c1b879f035ec9d143.jsc (deleted) 
+0x00007f2074006000 0x00007f2074008000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/f82d59e2dcdfdaadd19df4e0cbaadc06fbbabbd0.qmlc (deleted) 
+0x00007f2074008000 0x00007f2074009000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/c79788ccba88ca6bf7db2daa98732a85486ac252.qmlc (deleted) 
+0x00007f2074009000 0x00007f207400b000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/c611cc9233e62408b7ab6b04051573eb6ab00c23.qmlc (deleted) 
+0x00007f207400b000 0x00007f207400d000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/25838b96acb5cb1ec7f678e5ba0febc2a484aaa9.qmlc (deleted) 
+0x00007f207400d000 0x00007f2074011000 0x4000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/2441715438391603fb53ba8add68c80b8f6e8027.qmlc (deleted) 
+0x00007f2074011000 0x00007f2074014000 0x3000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/ff9751f03f1ba12880b1d0d6cdd943280e481865.jsc (deleted) 
+0x00007f2074014000 0x00007f2074016000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/afc8913758c6dae4e73631b4fc0e69979afa6166.qmlc (deleted) 
+0x00007f2074016000 0x00007f2074017000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/fbe91a19e6da5aa0e6a5bd7ed8f89c387610b053.qmlc (deleted) 
+0x00007f2074017000 0x00007f207401c000 0x5000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/baa9932b21d1e23d501a67a2bd9f9d1ed83b0143.qmlc (deleted) 
+0x00007f207401c000 0x00007f207401d000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/e56f8ff24443d2b3e036bf5fa5efaa5b35e8bdb1.qmlc (deleted) 
+0x00007f207401d000 0x00007f207401e000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/70a383bb655534901b55b51905abdc541bdeabd7.qmlc (deleted) 
+0x00007f207401e000 0x00007f2074022000 0x4000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/53a3e9e459c76995feb5e68976cca5340618710c.qmlc (deleted) 
+0x00007f2074022000 0x00007f2074028000 0x6000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/a9267aec8196bf7e6af50796c3bdf48745264e82.qmlc (deleted) 
+0x00007f2074028000 0x00007f2074029000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/a08befdb5aaf6fb7b9d3e91b521560835f981dee.qmlc (deleted) 
+0x00007f2074029000 0x00007f207402b000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/d79de27fc2582b2f9a5bdb4adf472281ae8b6a92.qmlc (deleted) 
+0x00007f207402b000 0x00007f207402c000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/2c7db114ccc3d57e6ac9a2cac6e721c14f718558.qmlc (deleted) 
+0x00007f207402c000 0x00007f207402d000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/dac07a5bf495be056504e098d6d7dc712c7d4716.qmlc (deleted) 
+0x00007f207402d000 0x00007f2074033000 0x6000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/f6e2bc8cf1aa7059b193ef351807a477375f98bd.qmlc (deleted) 
+0x00007f2074033000 0x00007f2074036000 0x3000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/e17f576b9a378cd233f996662523c1a400a8a063.qmlc (deleted) 
+0x00007f2074036000 0x00007f2074037000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/9772396ba869f660c98b56f0c02c2dcd6b8a8a4b.qmlc (deleted) 
+0x00007f2074037000 0x00007f2074039000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/c31ceb372b62ec9dba5a23707b38859ae4a2f776.qmlc (deleted) 
+0x00007f2074039000 0x00007f2074041000 0x8000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/afac69cecaf117303da12e98bceb8b1d595f7711.qmlc (deleted) 
+0x00007f2074041000 0x00007f2074045000 0x4000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/75dbbfe8e9a2b7aa0f5b85cf2731b076db242958.qmlc (deleted) 
+0x00007f2074045000 0x00007f2074046000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/ef3edb03ebbc734f31983969dc1b5b65a4dd0700.jsc (deleted) 
+0x00007f2074046000 0x00007f2074048000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/c4b49b73e1e8875f4f19a2c7aacf1d00c9a11127.qmlc (deleted) 
+0x00007f2074048000 0x00007f207404e000 0x6000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/b8f8448c8040cf8a2855eceb3190c6728e25e1ea.qmlc (deleted) 
+0x00007f207404e000 0x00007f2074050000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/ed9cfa15da4f8090d1bacd4b3f43a28fa5bb0740.qmlc (deleted) 
+0x00007f2074050000 0x00007f2074051000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/b5f0e2b5a9f710ae7b9ed8b1b280de3e1d046dd9.qmlc (deleted) 
+0x00007f2074051000 0x00007f2074052000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/786794362f234294c9550c908ef8827bbbd6acc3.qmlc (deleted) 
+0x00007f2074052000 0x00007f2074057000 0x5000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/35a4363eea1c6a52774f5b026efb819aa66b293d.qmlc (deleted) 
+0x00007f2074057000 0x00007f2074058000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/551a7ef517abb1fea02f660aa4ed817aa659ce1a.qmlc (deleted) 
+0x00007f2074058000 0x00007f207405b000 0x3000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/b40c3fbb0370984d8999603f8f88968ab33d343d.qmlc (deleted) 
+0x00007f207405b000 0x00007f207405d000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/fc43b1b63c25abc43f68dec5113ed5f938a3410f.qmlc (deleted) 
+0x00007f207405d000 0x00007f2074062000 0x5000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/796eb684f0373aadf625a6cf8cd26661c1440cf0.qmlc (deleted) 
+0x00007f2074062000 0x00007f2074067000 0x5000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/a2aaf0e0574b03ee30dad59dc9bedfc66d64362a.qmlc (deleted) 
+0x00007f2074067000 0x00007f207406f000 0x8000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/76f221cc725a19c06c86bf71b2cac237e5ead53e.qmlc (deleted) 
+0x00007f207406f000 0x00007f2074071000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/940e56460006a8ed967855f914dd0ea92c2674c6.qmlc (deleted) 
+0x00007f2074071000 0x00007f2074073000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/656d563248e6892cb4066af05fb1a77b9dd252fc.qmlc (deleted) 
+0x00007f2074073000 0x00007f2074074000 0x1000             0x0                r--s  /var/cache/fontconfig/787b69f04c7448ed6c581b040220c91f-le64.cache-12 
+0x00007f2074074000 0x00007f2074077000 0x3000             0x0                r--s  /var/cache/fontconfig/e552019f4ed2e530c25d313cf4ffa813-le64.cache-12 
+0x00007f2074077000 0x00007f2074083000 0xc000             0x0                r--s  /var/cache/fontconfig/7d660be5d4eca970fa91d6ca176f5ce2-le64.cache-12 
+0x00007f2074083000 0x00007f2074089000 0x6000             0x0                r--s  /var/cache/fontconfig/b67b32625a2bb51b023d3814a918f351-le64.cache-12 
+0x00007f2074089000 0x00007f2074099000 0x10000            0x0                r--s  /var/cache/fontconfig/491f45a0a771fef1c10b9b647a97fb82-le64.cache-12 
+0x00007f2074099000 0x00007f20740e4000 0x4b000            0x0                r--s  /var/cache/fontconfig/f6b893a7224233d96cb72fd88691c0b4-le64.cache-12 
+0x00007f20740e4000 0x00007f20740e7000 0x3000             0x0                r--s  /var/cache/fontconfig/f349e9996a5320f6dd491cedd2b1f964-le64.cache-12 
+0x00007f20740e7000 0x00007f20740f3000 0xc000             0x0                r--s  /var/cache/fontconfig/4b31aef11cb0687b6d280d34cbe23592-le64.cache-12 
+0x00007f20740f3000 0x00007f20740f4000 0x1000             0x0                rw-p   
+0x00007f20740f4000 0x00007f20740f5000 0x1000             0x0                rw-p   
+0x00007f20740f5000 0x00007f20740f6000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/ebf5d56a390b3fd5e4b05e4bb3c4f40668c0de1f.qmlc (deleted) 
+0x00007f20740f6000 0x00007f20740f7000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/fd26e8671e7f09482345b29db5cf2dce3e782ea5.qmlc (deleted) 
+0x00007f20740f7000 0x00007f20740f9000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/2d042e1430447dc49f781dc4035983c0bd007af4.jsc (deleted) 
+0x00007f20740f9000 0x00007f2074101000 0x8000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/0588a5c5f3627a6d85d2d53aae53e6d8ca6b49a1.qmlc (deleted) 
+0x00007f2074101000 0x00007f207410b000 0xa000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/c5905ee3582a1fc29c7b16f44f41ea019dbff48d.qmlc (deleted) 
+0x00007f207410b000 0x00007f207410c000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/5645131c201665f0807d4f7de32dda97cb671820.qmlc (deleted) 
+0x00007f207410c000 0x00007f207410d000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/34112621f84487b2fed51cccac49351b5238e40e.qmlc (deleted) 
+0x00007f207410d000 0x00007f207410f000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/4133e2fb5c9dff773dd774ece8cecd3c640ca669.qmlc (deleted) 
+0x00007f207410f000 0x00007f2074110000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/49841418e7a660fd04122d55cc91de9d95454312.qmlc (deleted) 
+0x00007f2074110000 0x00007f2074112000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/03444ab998b85b5ec377b1acd26d311de75e264c.qmlc (deleted) 
+0x00007f2074112000 0x00007f2074115000 0x3000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/dcd0238029dda2ecfda107a7cdaeb4695c30fbbe.qmlc (deleted) 
+0x00007f2074115000 0x00007f2074118000 0x3000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/2dd727874ee4f43da85c9e38aeccd27256a94d33.qmlc (deleted) 
+0x00007f2074118000 0x00007f207411f000 0x7000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/c9948440a4b02711641c8f881f4cbe4a06483676.qmlc (deleted) 
+0x00007f207411f000 0x00007f2074121000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/8f37221f48b28b68082b2470fb730772863be190.qmlc (deleted) 
+0x00007f2074121000 0x00007f2074126000 0x5000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/c247edb1e58c86b84a10ec832363ae49b9199351.qmlc (deleted) 
+0x00007f2074126000 0x00007f2074128000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/5ff965ce54bc25b81521c9ae8210a7f3004e276d.qmlc (deleted) 
+0x00007f2074128000 0x00007f207412e000 0x6000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/6b192ce7935a4571e790d193cba49dc35bb5202a.qmlc (deleted) 
+0x00007f207412e000 0x00007f2074130000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/e9af1772312a3a5282ce8514663c3a43822da200.qmlc (deleted) 
+0x00007f2074130000 0x00007f2074133000 0x3000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/cd6735e0ce405a3c8d69b5ce4600be3065008893.qmlc (deleted) 
+0x00007f2074133000 0x00007f2074138000 0x5000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/8872a01fb82e396360d56138da37be9d91c425dc.jsc (deleted) 
+0x00007f2074138000 0x00007f2074139000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/479bdc075ce9bad85a32733562be02ece570b9d2.qmlc (deleted) 
+0x00007f2074139000 0x00007f207413c000 0x3000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/87a33f35a52d454b955b1f4176e26456eabcd81a.qmlc (deleted) 
+0x00007f207413c000 0x00007f207413e000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/c34fa2b97620a7b74d18a2edaf5c0ac3a3b007d5.qmlc (deleted) 
+0x00007f207413e000 0x00007f2074141000 0x3000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/3528c7819750f2e7a1a8d0806818ff016a9cfec4.qmlc (deleted) 
+0x00007f2074141000 0x00007f2074148000 0x7000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/e565fb11ba31ac2680d6c45fa423ac61bdc781d2.qmlc (deleted) 
+0x00007f2074148000 0x00007f2074149000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/8bb77173339acee6846f77dcbb01f44b7471f5af.qmlc (deleted) 
+0x00007f2074149000 0x00007f2074150000 0x7000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/4283138f2db650fd930d034fcabbc44140d89642.qmlc (deleted) 
+0x00007f2074150000 0x00007f2074155000 0x5000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/35f78ebed1385fa19318715f50b4a0dd279e9148.qmlc (deleted) 
+0x00007f2074155000 0x00007f2074159000 0x4000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/a02b596e93b1abe56d015604629c0b9dc2b21920.qmlc (deleted) 
+0x00007f2074159000 0x00007f207415e000 0x5000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/50c35dd3a787e79930a14458be5897f5392768ec.qmlc (deleted) 
+0x00007f207415e000 0x00007f2074168000 0xa000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/a37654b674324dbcba0317621aa122c79dec69e5.qmlc (deleted) 
+0x00007f2074168000 0x00007f207416b000 0x3000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/0b50e03215f319498ef4d5f4aef83ba3abf8e2b4.qmlc (deleted) 
+0x00007f207416b000 0x00007f207416d000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/30cf67e26afb706ab9bb942bd557fa3847878ee7.qmlc (deleted) 
+0x00007f207416d000 0x00007f2074172000 0x5000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/79b1542dcaa39e2991c3a17db489f78aee87d884.qmlc (deleted) 
+0x00007f2074172000 0x00007f2074179000 0x7000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/0a806cdb9fb21656dabd60ba58a22a876fdb5d41.qmlc (deleted) 
+0x00007f2074179000 0x00007f207417c000 0x3000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/9ca65ecdc35bae8fde708e4c283e4e509c68b678.qmlc (deleted) 
+0x00007f207417c000 0x00007f2074180000 0x4000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/d8d372ee5a01caa4377260923553d0c9865508d2.qmlc (deleted) 
+0x00007f2074180000 0x00007f2074181000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/05ea560c88dfddb4d74b05662c6fb235017e97c7.qmlc (deleted) 
+0x00007f2074181000 0x00007f207418b000 0xa000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/e9f5d30de7f36017837bd76ea881f4b5b4913b3b.qmlc (deleted) 
+0x00007f207418b000 0x00007f207418c000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/01eef0de3f78311bed2162824898c05de3677b77.qmlc (deleted) 
+0x00007f207418c000 0x00007f207418e000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/54b9fcbadc20fa00be66dd3094ad8d36ce741897.qmlc (deleted) 
+0x00007f207418e000 0x00007f2074197000 0x9000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/3dc65df07918e440490c19db18776516ecd34f64.qmlc (deleted) 
+0x00007f2074197000 0x00007f207419b000 0x4000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/d24ebce94f0dccc6d3f3dfd728dee52a0962c2e0.qmlc (deleted) 
+0x00007f207419b000 0x00007f20741a1000 0x6000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/df7d419e87bef42868b6f7dc33c6b9253b05342b.qmlc (deleted) 
+0x00007f20741a1000 0x00007f20741a5000 0x4000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/e2b535f336fc66225e591a89f3c273934fa62ae7.qmlc (deleted) 
+0x00007f20741a5000 0x00007f20741b7000 0x12000            0x0                r--p  /usr/lib/libQt6QuickLayouts.so.6.11.2 
+0x00007f20741b7000 0x00007f20741e8000 0x31000            0x12000            r-xp  /usr/lib/libQt6QuickLayouts.so.6.11.2 
+0x00007f20741e8000 0x00007f20741f7000 0xf000             0x43000            r--p  /usr/lib/libQt6QuickLayouts.so.6.11.2 
+0x00007f20741f7000 0x00007f20741fc000 0x5000             0x52000            r--p  /usr/lib/libQt6QuickLayouts.so.6.11.2 
+0x00007f20741fc000 0x00007f20741fe000 0x2000             0x57000            rw-p  /usr/lib/libQt6QuickLayouts.so.6.11.2 
+0x00007f20741fe000 0x00007f2075200000 0x1002000          0x0                rw-p   
+0x00007f2075200000 0x00007f2075400000 0x200000           0x0                rw-p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f2075400000 0x00007f2075410000 0x10000            0x200000           ---p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f2075410000 0x00007f2075600000 0x1f0000           0x210000           rw-p  /memfd:JSGCHeap:QtQml (deleted) 
+0x00007f2075600000 0x00007f2075601000 0x1000             0x0                ---p   
+0x00007f2075601000 0x00007f2075801000 0x200000           0x1000             rw-p  /memfd:JSVMStack:QtQml (deleted) 
+0x00007f2075801000 0x00007f2075802000 0x1000             0x0                ---p   
+0x00007f2075802000 0x00007f2075804000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/83e3201c7e7fbc1465ac7655482cba95c7df1364.qmlc (deleted) 
+0x00007f2075804000 0x00007f2075805000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/2a9324434ca601974792b403ac1f9d52afe01534.qmlc (deleted) 
+0x00007f2075805000 0x00007f207580c000 0x7000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/f445cdabbb29564588af59c70e6b948512777a36.qmlc (deleted) 
+0x00007f207580c000 0x00007f2075810000 0x4000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/b470f866a75a0c37a3399121b75fbe8d81b0d026.qmlc (deleted) 
+0x00007f2075810000 0x00007f2075814000 0x4000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/c9fd337582d96814a8ebf3536d27f80dbd18f3b7.qmlc (deleted) 
+0x00007f2075814000 0x00007f2075818000 0x4000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/caff444f76a568d14c7a79460d7fa61ecc30291c.qmlc (deleted) 
+0x00007f2075818000 0x00007f2075823000 0xb000             0x0                r--p  /usr/lib/libQt6QuickControls2Basic.so.6.11.2 
+0x00007f2075823000 0x00007f2075917000 0xf4000            0xb000             r-xp  /usr/lib/libQt6QuickControls2Basic.so.6.11.2 
+0x00007f2075917000 0x00007f20759e4000 0xcd000            0xff000            r--p  /usr/lib/libQt6QuickControls2Basic.so.6.11.2 
+0x00007f20759e4000 0x00007f20759f9000 0x15000            0x1cb000           r--p  /usr/lib/libQt6QuickControls2Basic.so.6.11.2 
+0x00007f20759f9000 0x00007f20759fa000 0x1000             0x1e0000           rw-p  /usr/lib/libQt6QuickControls2Basic.so.6.11.2 
+0x00007f20759fa000 0x00007f2075a00000 0x6000             0x0                rw-p   
+0x00007f2075a00000 0x00007f2075a01000 0x1000             0x0                ---p   
+0x00007f2075a01000 0x00007f2075e41000 0x440000           0x1000             rw-p  /memfd:JSVMStack:QtQml (deleted) 
+0x00007f2075e41000 0x00007f2075e42000 0x1000             0x0                ---p   
+0x00007f2075e42000 0x00007f2075e44000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/e6427ea6fab18e85d75d8fc9b7f5a636dff78b4c.qmlc (deleted) 
+0x00007f2075e44000 0x00007f2075e49000 0x5000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/ab7144933d121ecdb019a9e2bbe80f73cef1c756.qmlc (deleted) 
+0x00007f2075e49000 0x00007f2075e4b000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/1a4479ff9bf27b97ca4eb8bb837703c2d51a4bdb.qmlc (deleted) 
+0x00007f2075e4b000 0x00007f2075e55000 0xa000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/8a1496841e73b59ca7381ff0f71eb1aef6b2399a.qmlc (deleted) 
+0x00007f2075e55000 0x00007f2075e57000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/7a534a6b69bbdfc486023350dbb1b1965b2c3847.qmlc (deleted) 
+0x00007f2075e57000 0x00007f2075e5e000 0x7000             0x0                r--p  /usr/lib/libQt6QuickControls2BasicStyleImpl.so.6.11.2 
+0x00007f2075e5e000 0x00007f2075e66000 0x8000             0x7000             r-xp  /usr/lib/libQt6QuickControls2BasicStyleImpl.so.6.11.2 
+0x00007f2075e66000 0x00007f2075e6b000 0x5000             0xf000             r--p  /usr/lib/libQt6QuickControls2BasicStyleImpl.so.6.11.2 
+0x00007f2075e6b000 0x00007f2075e6d000 0x2000             0x13000            r--p  /usr/lib/libQt6QuickControls2BasicStyleImpl.so.6.11.2 
+0x00007f2075e6d000 0x00007f2075e6e000 0x1000             0x15000            rw-p  /usr/lib/libQt6QuickControls2BasicStyleImpl.so.6.11.2 
+0x00007f2075e6e000 0x00007f2075e70000 0x2000             0x0                r--p  /usr/lib/qt6/qml/QtQuick/Controls/Basic/impl/libqtquickcontrols2basicstyleimplplugin.so 
+0x00007f2075e70000 0x00007f2075e71000 0x1000             0x2000             r-xp  /usr/lib/qt6/qml/QtQuick/Controls/Basic/impl/libqtquickcontrols2basicstyleimplplugin.so 
+0x00007f2075e71000 0x00007f2075e72000 0x1000             0x3000             r--p  /usr/lib/qt6/qml/QtQuick/Controls/Basic/impl/libqtquickcontrols2basicstyleimplplugin.so 
+0x00007f2075e72000 0x00007f2075e73000 0x1000             0x3000             r--p  /usr/lib/qt6/qml/QtQuick/Controls/Basic/impl/libqtquickcontrols2basicstyleimplplugin.so 
+0x00007f2075e73000 0x00007f2075e74000 0x1000             0x4000             rw-p  /usr/lib/qt6/qml/QtQuick/Controls/Basic/impl/libqtquickcontrols2basicstyleimplplugin.so 
+0x00007f2075e74000 0x00007f2075e77000 0x3000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/fb2fa94b03d8ea004698bedb19d162561f74d1e3.jsc (deleted) 
+0x00007f2075e77000 0x00007f2075e79000 0x2000             0x0                r--p  /usr/lib/qt6/qml/QtQuick/Layouts/libqquicklayoutsplugin.so 
+0x00007f2075e79000 0x00007f2075e7a000 0x1000             0x2000             r-xp  /usr/lib/qt6/qml/QtQuick/Layouts/libqquicklayoutsplugin.so 
+0x00007f2075e7a000 0x00007f2075e7b000 0x1000             0x3000             r--p  /usr/lib/qt6/qml/QtQuick/Layouts/libqquicklayoutsplugin.so 
+0x00007f2075e7b000 0x00007f2075e7c000 0x1000             0x3000             r--p  /usr/lib/qt6/qml/QtQuick/Layouts/libqquicklayoutsplugin.so 
+0x00007f2075e7c000 0x00007f2075e7d000 0x1000             0x4000             rw-p  /usr/lib/qt6/qml/QtQuick/Layouts/libqquicklayoutsplugin.so 
+0x00007f2075e7d000 0x00007f2075e7e000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/d1fca363c9a917d6f7abd67e2b9a5f3126dc1acd.qmlc (deleted) 
+0x00007f2075e7e000 0x00007f2075e82000 0x4000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/e8a96e634f0cd2bfa406a24f448dceffeb6b88f7.qmlc (deleted) 
+0x00007f2075e82000 0x00007f2075e86000 0x4000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/d7785a80a7e17e14c953fd4ccd981e6b1aeb6666.qmlc (deleted) 
+0x00007f2075e86000 0x00007f2075e91000 0xb000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/c0678f22400737003ee98be67d273016caec8d15.qmlc (deleted) 
+0x00007f2075e91000 0x00007f2075e92000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/5bc7c2715c3617226f6b4e8030e2e3ab8bd97a40.qmlc (deleted) 
+0x00007f2075e92000 0x00007f2075e94000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/1a34fe62b221ef1c82f8d380d960a11242569d69.qmlc (deleted) 
+0x00007f2075e94000 0x00007f2075e97000 0x3000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/e460e392b4200316311b24ad0aadddcecd0fbc86.qmlc (deleted) 
+0x00007f2075e97000 0x00007f2075e99000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/1c6d4292c9ca6da33a61a69ef1df444c1c3d188f.qmlc (deleted) 
+0x00007f2075e99000 0x00007f2075e9c000 0x3000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/c41f820cfa291daeec4235de017f0d0823cbc26f.qmlc (deleted) 
+0x00007f2075e9c000 0x00007f2075eaa000 0xe000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/491e54abab239d78f84971dca3bb18b91ac20548.jsc (deleted) 
+0x00007f2075eaa000 0x00007f2075eab000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/8835ab24cc58f9c90a1104855cb7cd9ea3db6071.qmlc (deleted) 
+0x00007f2075eab000 0x00007f2075ec5000 0x1a000            0x0                r--p  /usr/lib/libQt6QuickControls2Impl.so.6.11.2 
+0x00007f2075ec5000 0x00007f2075eef000 0x2a000            0x1a000            r-xp  /usr/lib/libQt6QuickControls2Impl.so.6.11.2 
+0x00007f2075eef000 0x00007f2075f01000 0x12000            0x44000            r--p  /usr/lib/libQt6QuickControls2Impl.so.6.11.2 
+0x00007f2075f01000 0x00007f2075f08000 0x7000             0x55000            r--p  /usr/lib/libQt6QuickControls2Impl.so.6.11.2 
+0x00007f2075f08000 0x00007f2075f0b000 0x3000             0x5c000            rw-p  /usr/lib/libQt6QuickControls2Impl.so.6.11.2 
+0x00007f2075f0b000 0x00007f2075f0d000 0x2000             0x0                r--p  /usr/lib/qt6/qml/QtQuick/Controls/impl/libqtquickcontrols2implplugin.so 
+0x00007f2075f0d000 0x00007f2075f0e000 0x1000             0x2000             r-xp  /usr/lib/qt6/qml/QtQuick/Controls/impl/libqtquickcontrols2implplugin.so 
+0x00007f2075f0e000 0x00007f2075f0f000 0x1000             0x3000             r--p  /usr/lib/qt6/qml/QtQuick/Controls/impl/libqtquickcontrols2implplugin.so 
+0x00007f2075f0f000 0x00007f2075f10000 0x1000             0x3000             r--p  /usr/lib/qt6/qml/QtQuick/Controls/impl/libqtquickcontrols2implplugin.so 
+0x00007f2075f10000 0x00007f2075f11000 0x1000             0x4000             rw-p  /usr/lib/qt6/qml/QtQuick/Controls/impl/libqtquickcontrols2implplugin.so 
+0x00007f2075f11000 0x00007f2075f12000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/876675f069306ee7a5734a5f1c5396c28305efec.qmlc (deleted) 
+0x00007f2075f12000 0x00007f2075f13000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/a3fd1a15bea79d185c8b8392414282f09c621a82.qmlc (deleted) 
+0x00007f2075f13000 0x00007f2075f15000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/af9902950347b126e74a159c226428cb4a27c335.qmlc (deleted) 
+0x00007f2075f15000 0x00007f2075f17000 0x2000             0x0                r--p  /usr/lib/qt6/qml/QtQuick/Templates/libqtquicktemplates2plugin.so 
+0x00007f2075f17000 0x00007f2075f18000 0x1000             0x2000             r-xp  /usr/lib/qt6/qml/QtQuick/Templates/libqtquicktemplates2plugin.so 
+0x00007f2075f18000 0x00007f2075f19000 0x1000             0x3000             r--p  /usr/lib/qt6/qml/QtQuick/Templates/libqtquicktemplates2plugin.so 
+0x00007f2075f19000 0x00007f2075f1a000 0x1000             0x3000             r--p  /usr/lib/qt6/qml/QtQuick/Templates/libqtquicktemplates2plugin.so 
+0x00007f2075f1a000 0x00007f2075f1b000 0x1000             0x4000             rw-p  /usr/lib/qt6/qml/QtQuick/Templates/libqtquicktemplates2plugin.so 
+0x00007f2075f1b000 0x00007f2075f21000 0x6000             0x0                r--p  /usr/lib/libQt6QuickControls2.so.6.11.2 
+0x00007f2075f21000 0x00007f2075f2e000 0xd000             0x6000             r-xp  /usr/lib/libQt6QuickControls2.so.6.11.2 
+0x00007f2075f2e000 0x00007f2075f31000 0x3000             0x13000            r--p  /usr/lib/libQt6QuickControls2.so.6.11.2 
+0x00007f2075f31000 0x00007f2075f32000 0x1000             0x16000            r--p  /usr/lib/libQt6QuickControls2.so.6.11.2 
+0x00007f2075f32000 0x00007f2075f33000 0x1000             0x17000            rw-p  /usr/lib/libQt6QuickControls2.so.6.11.2 
+0x00007f2075f33000 0x00007f2075f35000 0x2000             0x0                r--p  /usr/lib/qt6/qml/QtQuick/Controls/Basic/libqtquickcontrols2basicstyleplugin.so 
+0x00007f2075f35000 0x00007f2075f36000 0x1000             0x2000             r-xp  /usr/lib/qt6/qml/QtQuick/Controls/Basic/libqtquickcontrols2basicstyleplugin.so 
+0x00007f2075f36000 0x00007f2075f37000 0x1000             0x3000             r--p  /usr/lib/qt6/qml/QtQuick/Controls/Basic/libqtquickcontrols2basicstyleplugin.so 
+0x00007f2075f37000 0x00007f2075f38000 0x1000             0x3000             r--p  /usr/lib/qt6/qml/QtQuick/Controls/Basic/libqtquickcontrols2basicstyleplugin.so 
+0x00007f2075f38000 0x00007f2075f39000 0x1000             0x4000             rw-p  /usr/lib/qt6/qml/QtQuick/Controls/Basic/libqtquickcontrols2basicstyleplugin.so 
+0x00007f2075f39000 0x00007f2075f3a000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/0b7aede6762db59efff1e6b22579a58a58e8349f.qmlc (deleted) 
+0x00007f2075f3a000 0x00007f2075f3b000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/7bf90391716fe148a4de784d12071e3724a4c83f.qmlc (deleted) 
+0x00007f2075f3b000 0x00007f2075f3f000 0x4000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/9adfe2c2784fd877556b582e73b29ec4b2576be8.qmlc (deleted) 
+0x00007f2075f3f000 0x00007f2075f40000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/f663eb94a026c41100cf84336a09e834fc5d86aa.qmlc (deleted) 
+0x00007f2075f40000 0x00007f2075f42000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/7047da6c0fbd60d04d675ee50cac3970ba27f34d.qmlc (deleted) 
+0x00007f2075f42000 0x00007f2075f43000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/32d72365a08c164cdc9427b2806ea7a085f14fc8.qmlc (deleted) 
+0x00007f2075f43000 0x00007f2075f46000 0x3000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/5dbbaa59dd64f03e37a6eea214440efcc9c9b07d.qmlc (deleted) 
+0x00007f2075f46000 0x00007f2075f48000 0x2000             0x0                r--p  /usr/lib/qt6/qml/QtQuick/Window/libquickwindowplugin.so 
+0x00007f2075f48000 0x00007f2075f49000 0x1000             0x2000             r-xp  /usr/lib/qt6/qml/QtQuick/Window/libquickwindowplugin.so 
+0x00007f2075f49000 0x00007f2075f4a000 0x1000             0x3000             r--p  /usr/lib/qt6/qml/QtQuick/Window/libquickwindowplugin.so 
+0x00007f2075f4a000 0x00007f2075f4b000 0x1000             0x3000             r--p  /usr/lib/qt6/qml/QtQuick/Window/libquickwindowplugin.so 
+0x00007f2075f4b000 0x00007f2075f4c000 0x1000             0x4000             rw-p  /usr/lib/qt6/qml/QtQuick/Window/libquickwindowplugin.so 
+0x00007f2075f4c000 0x00007f2075f5e000 0x12000            0x0                r--p  /usr/lib/libQt6QuickShapes.so.6.11.2 
+0x00007f2075f5e000 0x00007f2075f8a000 0x2c000            0x12000            r-xp  /usr/lib/libQt6QuickShapes.so.6.11.2 
+0x00007f2075f8a000 0x00007f2075f9f000 0x15000            0x3e000            r--p  /usr/lib/libQt6QuickShapes.so.6.11.2 
+0x00007f2075f9f000 0x00007f2075fa3000 0x4000             0x52000            r--p  /usr/lib/libQt6QuickShapes.so.6.11.2 
+0x00007f2075fa3000 0x00007f2075fa5000 0x2000             0x56000            rw-p  /usr/lib/libQt6QuickShapes.so.6.11.2 
+0x00007f2075fa5000 0x00007f2076000000 0x5b000            0x0                r--p  /usr/lib/locale/C.utf8/LC_CTYPE 
+0x00007f2076000000 0x00007f20762ed000 0x2ed000           0x0                r--p  /usr/lib/locale/locale-archive 
+0x00007f20762ed000 0x00007f20762ef000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/89b56b44ce10b1d9d6f5421f03fb69fde6acaa58.qmlc (deleted) 
+0x00007f20762ef000 0x00007f20762f0000 0x1000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/f395a0a3b3c9446d161f53df82bb7a289f7d5da5.qmlc (deleted) 
+0x00007f20762f0000 0x00007f20762f2000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/7b2dc94a92ff3458663cd3a1991a45f220d062d1.qmlc (deleted) 
+0x00007f20762f2000 0x00007f20762f4000 0x2000             0x0                r--p  /usr/lib/qt6/qml/QtQuick/Shapes/libqmlshapesplugin.so 
+0x00007f20762f4000 0x00007f20762f5000 0x1000             0x2000             r-xp  /usr/lib/qt6/qml/QtQuick/Shapes/libqmlshapesplugin.so 
+0x00007f20762f5000 0x00007f20762f6000 0x1000             0x3000             r--p  /usr/lib/qt6/qml/QtQuick/Shapes/libqmlshapesplugin.so 
+0x00007f20762f6000 0x00007f20762f7000 0x1000             0x3000             r--p  /usr/lib/qt6/qml/QtQuick/Shapes/libqmlshapesplugin.so 
+0x00007f20762f7000 0x00007f20762f8000 0x1000             0x4000             rw-p  /usr/lib/qt6/qml/QtQuick/Shapes/libqmlshapesplugin.so 
+0x00007f20762f8000 0x00007f20762fa000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/8a3273fee69bc99ccfb24c57bbe97c5591a024be.qmlc (deleted) 
+0x00007f20762fa000 0x00007f20762fc000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/4431f286e14aa34c78a03ab8fd38702b98c0cc1b.qmlc (deleted) 
+0x00007f20762fc000 0x00007f20762fe000 0x2000             0x0                r--s  /tmp/pk-icons-yxz5isiu/cache/qmltestrunner/qmlcache/a43e1f70d643fc2cac4e0946f03819646643cb6d.jsc (deleted) 
+0x00007f20762fe000 0x00007f20762ff000 0x1000             0x0                rw-p  /memfd:unknown-usage:QtQml (deleted) 
+0x00007f20762ff000 0x00007f2076300000 0x1000             0x0                ---p   
+0x00007f2076300000 0x00007f2076308000 0x8000             0x0                rw-p   
+0x00007f2076308000 0x00007f2076318000 0x10000            0x0                rwxp   
+0x00007f2076318000 0x00007f2076321000 0x9000             0x0                r--p  /usr/lib/qt6/plugins/platforms/libqoffscreen.so 
+0x00007f2076321000 0x00007f207632f000 0xe000             0x9000             r-xp  /usr/lib/qt6/plugins/platforms/libqoffscreen.so 
+0x00007f207632f000 0x00007f2076331000 0x2000             0x17000            r--p  /usr/lib/qt6/plugins/platforms/libqoffscreen.so 
+0x00007f2076331000 0x00007f2076333000 0x2000             0x19000            r--p  /usr/lib/qt6/plugins/platforms/libqoffscreen.so 
+0x00007f2076333000 0x00007f2076334000 0x1000             0x1b000            rw-p  /usr/lib/qt6/plugins/platforms/libqoffscreen.so 
+0x00007f2076334000 0x00007f2076335000 0x1000             0x0                r--p  /usr/lib/locale/C.utf8/LC_NUMERIC 
+0x00007f2076335000 0x00007f2076336000 0x1000             0x0                r--p  /usr/lib/locale/C.utf8/LC_TIME 
+0x00007f2076336000 0x00007f2076337000 0x1000             0x0                r--p  /usr/lib/locale/C.utf8/LC_COLLATE 
+0x00007f2076337000 0x00007f2076338000 0x1000             0x0                r--p  /usr/lib/locale/C.utf8/LC_MONETARY 
+0x00007f2076338000 0x00007f2076339000 0x1000             0x0                r--p  /usr/lib/locale/C.utf8/LC_MESSAGES/SYS_LC_MESSAGES 
+0x00007f2076339000 0x00007f207633a000 0x1000             0x0                r--p  /usr/lib/locale/C.utf8/LC_PAPER 
+0x00007f207633a000 0x00007f207633b000 0x1000             0x0                r--p  /usr/lib/locale/C.utf8/LC_NAME 
+0x00007f207633b000 0x00007f207633c000 0x1000             0x0                r--p  /usr/lib/locale/C.utf8/LC_ADDRESS 
+0x00007f207633c000 0x00007f207633d000 0x1000             0x0                r--p  /usr/lib/locale/C.utf8/LC_TELEPHONE 
+0x00007f207633d000 0x00007f2076344000 0x7000             0x0                r--s  /usr/lib/gconv/gconv-modules.cache 
+0x00007f2076344000 0x00007f2076347000 0x3000             0x0                rw-p   
+0x00007f2076347000 0x00007f207634c000 0x5000             0x0                r--p  /usr/lib/libblkid.so.1.1.0 
+0x00007f207634c000 0x00007f2076375000 0x29000            0x5000             r-xp  /usr/lib/libblkid.so.1.1.0 
+0x00007f2076375000 0x00007f2076380000 0xb000             0x2e000            r--p  /usr/lib/libblkid.so.1.1.0 
+0x00007f2076380000 0x00007f2076386000 0x6000             0x38000            r--p  /usr/lib/libblkid.so.1.1.0 
+0x00007f2076386000 0x00007f2076387000 0x1000             0x3e000            rw-p  /usr/lib/libblkid.so.1.1.0 
+0x00007f2076387000 0x00007f2076396000 0xf000             0x0                r--p  /usr/lib/libunistring.so.5.2.1 
+0x00007f2076396000 0x00007f20763da000 0x44000            0xf000             r-xp  /usr/lib/libunistring.so.5.2.1 
+0x00007f20763da000 0x00007f2076569000 0x18f000           0x53000            r--p  /usr/lib/libunistring.so.5.2.1 
+0x00007f2076569000 0x00007f207656d000 0x4000             0x1e2000           r--p  /usr/lib/libunistring.so.5.2.1 
+0x00007f207656d000 0x00007f207656e000 0x1000             0x1e6000           rw-p  /usr/lib/libunistring.so.5.2.1 
+0x00007f207656e000 0x00007f2076578000 0xa000             0x0                r--p  /usr/lib/libmount.so.1.1.0 
+0x00007f2076578000 0x00007f20765b7000 0x3f000            0xa000             r-xp  /usr/lib/libmount.so.1.1.0 
+0x00007f20765b7000 0x00007f20765c8000 0x11000            0x49000            r--p  /usr/lib/libmount.so.1.1.0 
+0x00007f20765c8000 0x00007f20765ca000 0x2000             0x5a000            r--p  /usr/lib/libmount.so.1.1.0 
+0x00007f20765ca000 0x00007f20765cb000 0x1000             0x5c000            rw-p  /usr/lib/libmount.so.1.1.0 
+0x00007f20765cb000 0x00007f20765cd000 0x2000             0x0                r--p  /usr/lib/libgmodule-2.0.so.0.8800.3 
+0x00007f20765cd000 0x00007f20765cf000 0x2000             0x2000             r-xp  /usr/lib/libgmodule-2.0.so.0.8800.3 
+0x00007f20765cf000 0x00007f20765d0000 0x1000             0x4000             r--p  /usr/lib/libgmodule-2.0.so.0.8800.3 
+0x00007f20765d0000 0x00007f20765d1000 0x1000             0x4000             r--p  /usr/lib/libgmodule-2.0.so.0.8800.3 
+0x00007f20765d1000 0x00007f20765d2000 0x1000             0x5000             rw-p  /usr/lib/libgmodule-2.0.so.0.8800.3 
+0x00007f20765d2000 0x00007f20765e6000 0x14000            0x0                r--p  /usr/lib/libssl.so.3 
+0x00007f20765e6000 0x00007f2076693000 0xad000            0x14000            r-xp  /usr/lib/libssl.so.3 
+0x00007f2076693000 0x00007f20766bb000 0x28000            0xc1000            r--p  /usr/lib/libssl.so.3 
+0x00007f20766bb000 0x00007f20766c5000 0xa000             0xe9000            r--p  /usr/lib/libssl.so.3 
+0x00007f20766c5000 0x00007f20766c9000 0x4000             0xf3000            rw-p  /usr/lib/libssl.so.3 
+0x00007f20766c9000 0x00007f20766cb000 0x2000             0x0                r--p  /usr/lib/libpsl.so.5.3.5 
+0x00007f20766cb000 0x00007f20766cd000 0x2000             0x2000             r-xp  /usr/lib/libpsl.so.5.3.5 
+0x00007f20766cd000 0x00007f20766db000 0xe000             0x4000             r--p  /usr/lib/libpsl.so.5.3.5 
+0x00007f20766db000 0x00007f20766dc000 0x1000             0x11000            r--p  /usr/lib/libpsl.so.5.3.5 
+0x00007f20766dc000 0x00007f20766dd000 0x1000             0x12000            rw-p  /usr/lib/libpsl.so.5.3.5 
+0x00007f20766dd000 0x00007f20766e3000 0x6000             0x0                r--p  /usr/lib/libssh2.so.1.0.1 
+0x00007f20766e3000 0x00007f207671b000 0x38000            0x6000             r-xp  /usr/lib/libssh2.so.1.0.1 
+0x00007f207671b000 0x00007f2076728000 0xd000             0x3e000            r--p  /usr/lib/libssh2.so.1.0.1 
+0x00007f2076728000 0x00007f207672a000 0x2000             0x4b000            r--p  /usr/lib/libssh2.so.1.0.1 
+0x00007f207672a000 0x00007f207672b000 0x1000             0x4d000            rw-p  /usr/lib/libssh2.so.1.0.1 
+0x00007f207672b000 0x00007f207672d000 0x2000             0x0                r--p  /usr/lib/libidn2.so.0.4.0 
+0x00007f207672d000 0x00007f2076731000 0x4000             0x2000             r-xp  /usr/lib/libidn2.so.0.4.0 
+0x00007f2076731000 0x00007f207674b000 0x1a000            0x6000             r--p  /usr/lib/libidn2.so.0.4.0 
+0x00007f207674b000 0x00007f207674c000 0x1000             0x1f000            r--p  /usr/lib/libidn2.so.0.4.0 
+0x00007f207674c000 0x00007f207674d000 0x1000             0x20000            rw-p  /usr/lib/libidn2.so.0.4.0 
+0x00007f207674d000 0x00007f2076751000 0x4000             0x0                r--p  /usr/lib/libnghttp2.so.14.29.5 
+0x00007f2076751000 0x00007f2076767000 0x16000            0x4000             r-xp  /usr/lib/libnghttp2.so.14.29.5 
+0x00007f2076767000 0x00007f2076773000 0xc000             0x1a000            r--p  /usr/lib/libnghttp2.so.14.29.5 
+0x00007f2076773000 0x00007f2076776000 0x3000             0x25000            r--p  /usr/lib/libnghttp2.so.14.29.5 
+0x00007f2076776000 0x00007f2076777000 0x1000             0x28000            rw-p  /usr/lib/libnghttp2.so.14.29.5 
+0x00007f2076777000 0x00007f207677b000 0x4000             0x0                r--p  /usr/lib/libngtcp2.so.16.11.0 
+0x00007f207677b000 0x00007f20767c2000 0x47000            0x4000             r-xp  /usr/lib/libngtcp2.so.16.11.0 
+0x00007f20767c2000 0x00007f20767d1000 0xf000             0x4b000            r--p  /usr/lib/libngtcp2.so.16.11.0 
+0x00007f20767d1000 0x00007f20767d2000 0x1000             0x5a000            r--p  /usr/lib/libngtcp2.so.16.11.0 
+0x00007f20767d2000 0x00007f20767d3000 0x1000             0x5b000            rw-p  /usr/lib/libngtcp2.so.16.11.0 
+0x00007f20767d3000 0x00007f20767d6000 0x3000             0x0                r--p  /usr/lib/libngtcp2_crypto_ossl.so.0.3.1 
+0x00007f20767d6000 0x00007f20767dc000 0x6000             0x3000             r-xp  /usr/lib/libngtcp2_crypto_ossl.so.0.3.1 
+0x00007f20767dc000 0x00007f20767de000 0x2000             0x9000             r--p  /usr/lib/libngtcp2_crypto_ossl.so.0.3.1 
+0x00007f20767de000 0x00007f20767df000 0x1000             0xa000             r--p  /usr/lib/libngtcp2_crypto_ossl.so.0.3.1 
+0x00007f20767df000 0x00007f20767e0000 0x1000             0xb000             rw-p  /usr/lib/libngtcp2_crypto_ossl.so.0.3.1 
+0x00007f20767e0000 0x00007f20767e3000 0x3000             0x0                r--p  /usr/lib/libnghttp3.so.9.9.0 
+0x00007f20767e3000 0x00007f20767f8000 0x15000            0x3000             r-xp  /usr/lib/libnghttp3.so.9.9.0 
+0x00007f20767f8000 0x00007f2076805000 0xd000             0x18000            r--p  /usr/lib/libnghttp3.so.9.9.0 
+0x00007f2076805000 0x00007f2076806000 0x1000             0x24000            r--p  /usr/lib/libnghttp3.so.9.9.0 
+0x00007f2076806000 0x00007f2076808000 0x2000             0x25000            rw-p  /usr/lib/libnghttp3.so.9.9.0 
+0x00007f2076808000 0x00007f207680a000 0x2000             0x0                r--p  /usr/lib/libffi.so.8.5.0 
+0x00007f207680a000 0x00007f2076812000 0x8000             0x2000             r-xp  /usr/lib/libffi.so.8.5.0 
+0x00007f2076812000 0x00007f2076814000 0x2000             0xa000             r--p  /usr/lib/libffi.so.8.5.0 
+0x00007f2076814000 0x00007f2076815000 0x1000             0xb000             r--p  /usr/lib/libffi.so.8.5.0 
+0x00007f2076815000 0x00007f2076816000 0x1000             0xc000             rw-p  /usr/lib/libffi.so.8.5.0 
+0x00007f2076816000 0x00007f207681c000 0x6000             0x0                r--p  /usr/lib/libduktape.so.207.20700 
+0x00007f207681c000 0x00007f2076850000 0x34000            0x6000             r-xp  /usr/lib/libduktape.so.207.20700 
+0x00007f2076850000 0x00007f2076860000 0x10000            0x3a000            r--p  /usr/lib/libduktape.so.207.20700 
+0x00007f2076860000 0x00007f2076861000 0x1000             0x4a000            r--p  /usr/lib/libduktape.so.207.20700 
+0x00007f2076861000 0x00007f2076862000 0x1000             0x4b000            rw-p  /usr/lib/libduktape.so.207.20700 
+0x00007f2076862000 0x00007f2076894000 0x32000            0x0                r--p  /usr/lib/libgio-2.0.so.0.8800.3 
+0x00007f2076894000 0x00007f20769bb000 0x127000           0x32000            r-xp  /usr/lib/libgio-2.0.so.0.8800.3 
+0x00007f20769bb000 0x00007f2076a35000 0x7a000            0x159000           r--p  /usr/lib/libgio-2.0.so.0.8800.3 
+0x00007f2076a35000 0x00007f2076a3e000 0x9000             0x1d2000           r--p  /usr/lib/libgio-2.0.so.0.8800.3 
+0x00007f2076a3e000 0x00007f2076a3f000 0x1000             0x1db000           rw-p  /usr/lib/libgio-2.0.so.0.8800.3 
+0x00007f2076a3f000 0x00007f2076a41000 0x2000             0x0                rw-p   
+0x00007f2076a41000 0x00007f2076a4e000 0xd000             0x0                r--p  /usr/lib/libcurl.so.4.8.0 
+0x00007f2076a4e000 0x00007f2076b15000 0xc7000            0xd000             r-xp  /usr/lib/libcurl.so.4.8.0 
+0x00007f2076b15000 0x00007f2076b42000 0x2d000            0xd4000            r--p  /usr/lib/libcurl.so.4.8.0 
+0x00007f2076b42000 0x00007f2076b49000 0x7000             0x100000           r--p  /usr/lib/libcurl.so.4.8.0 
+0x00007f2076b49000 0x00007f2076b4a000 0x1000             0x107000           rw-p  /usr/lib/libcurl.so.4.8.0 
+0x00007f2076b4a000 0x00007f2076b4b000 0x1000             0x0                rw-p   
+0x00007f2076b4b000 0x00007f2076b57000 0xc000             0x0                r--p  /usr/lib/libgobject-2.0.so.0.8800.3 
+0x00007f2076b57000 0x00007f2076b90000 0x39000            0xc000             r-xp  /usr/lib/libgobject-2.0.so.0.8800.3 
+0x00007f2076b90000 0x00007f2076baa000 0x1a000            0x45000            r--p  /usr/lib/libgobject-2.0.so.0.8800.3 
+0x00007f2076baa000 0x00007f2076bad000 0x3000             0x5e000            r--p  /usr/lib/libgobject-2.0.so.0.8800.3 
+0x00007f2076bad000 0x00007f2076bae000 0x1000             0x61000            rw-p  /usr/lib/libgobject-2.0.so.0.8800.3 
+0x00007f2076bae000 0x00007f2076bb1000 0x3000             0x0                r--p  /usr/lib/libproxy/libpxbackend-1.0.so 
+0x00007f2076bb1000 0x00007f2076bb7000 0x6000             0x3000             r-xp  /usr/lib/libproxy/libpxbackend-1.0.so 
+0x00007f2076bb7000 0x00007f2076bbb000 0x4000             0x9000             r--p  /usr/lib/libproxy/libpxbackend-1.0.so 
+0x00007f2076bbb000 0x00007f2076bbc000 0x1000             0xd000             r--p  /usr/lib/libproxy/libpxbackend-1.0.so 
+0x00007f2076bbc000 0x00007f2076bbd000 0x1000             0xe000             rw-p  /usr/lib/libproxy/libpxbackend-1.0.so 
+0x00007f2076bbd000 0x00007f2076bc0000 0x3000             0x0                r--p  /usr/lib/libresolv.so.2 
+0x00007f2076bc0000 0x00007f2076bc9000 0x9000             0x3000             r-xp  /usr/lib/libresolv.so.2 
+0x00007f2076bc9000 0x00007f2076bcc000 0x3000             0xc000             r--p  /usr/lib/libresolv.so.2 
+0x00007f2076bcc000 0x00007f2076bcd000 0x1000             0xf000             r--p  /usr/lib/libresolv.so.2 
+0x00007f2076bcd000 0x00007f2076bce000 0x1000             0x10000            rw-p  /usr/lib/libresolv.so.2 
+0x00007f2076bce000 0x00007f2076bd0000 0x2000             0x0                rw-p   
+0x00007f2076bd0000 0x00007f2076bd3000 0x3000             0x0                r--p  /usr/lib/libkrb5support.so.0.1 
+0x00007f2076bd3000 0x00007f2076bda000 0x7000             0x3000             r-xp  /usr/lib/libkrb5support.so.0.1 
+0x00007f2076bda000 0x00007f2076bdd000 0x3000             0xa000             r--p  /usr/lib/libkrb5support.so.0.1 
+0x00007f2076bdd000 0x00007f2076bde000 0x1000             0xc000             r--p  /usr/lib/libkrb5support.so.0.1 
+0x00007f2076bde000 0x00007f2076bdf000 0x1000             0xd000             rw-p  /usr/lib/libkrb5support.so.0.1 
+0x00007f2076bdf000 0x00007f2076be2000 0x3000             0x0                r--p  /usr/lib/libk5crypto.so.3.1 
+0x00007f2076be2000 0x00007f2076bfe000 0x1c000            0x3000             r-xp  /usr/lib/libk5crypto.so.3.1 
+0x00007f2076bfe000 0x00007f2076c0a000 0xc000             0x1f000            r--p  /usr/lib/libk5crypto.so.3.1 
+0x00007f2076c0a000 0x00007f2076c0c000 0x2000             0x2a000            r--p  /usr/lib/libk5crypto.so.3.1 
+0x00007f2076c0c000 0x00007f2076c0d000 0x1000             0x2c000            rw-p  /usr/lib/libk5crypto.so.3.1 
+0x00007f2076c0d000 0x00007f2076c1e000 0x11000            0x0                r--p  /usr/lib/libkrb5.so.3.3 
+0x00007f2076c1e000 0x00007f2076c8e000 0x70000            0x11000            r-xp  /usr/lib/libkrb5.so.3.3 
+0x00007f2076c8e000 0x00007f2076ccc000 0x3e000            0x81000            r--p  /usr/lib/libkrb5.so.3.3 
+0x00007f2076ccc000 0x00007f2076cda000 0xe000             0xbf000            r--p  /usr/lib/libkrb5.so.3.3 
+0x00007f2076cda000 0x00007f2076cdc000 0x2000             0xcd000            rw-p  /usr/lib/libkrb5.so.3.3 
+0x00007f2076cdc000 0x00007f2076cea000 0xe000             0x0                r--p  /usr/lib/libdbus-1.so.3.38.3 
+0x00007f2076cea000 0x00007f2076d1b000 0x31000            0xe000             r-xp  /usr/lib/libdbus-1.so.3.38.3 
+0x00007f2076d1b000 0x00007f2076d2c000 0x11000            0x3f000            r--p  /usr/lib/libdbus-1.so.3.38.3 
+0x00007f2076d2c000 0x00007f2076d2e000 0x2000             0x4f000            r--p  /usr/lib/libdbus-1.so.3.38.3 
+0x00007f2076d2e000 0x00007f2076d2f000 0x1000             0x51000            rw-p  /usr/lib/libdbus-1.so.3.38.3 
+0x00007f2076d2f000 0x00007f2076d31000 0x2000             0x0                r--p  /usr/lib/libGLdispatch.so.0.0.0 
+0x00007f2076d31000 0x00007f2076d70000 0x3f000            0x2000             r-xp  /usr/lib/libGLdispatch.so.0.0.0 
+0x00007f2076d70000 0x00007f2076d83000 0x13000            0x41000            r--p  /usr/lib/libGLdispatch.so.0.0.0 
+0x00007f2076d83000 0x00007f2076d9f000 0x1c000            0x54000            r--p  /usr/lib/libGLdispatch.so.0.0.0 
+0x00007f2076d9f000 0x00007f2076da0000 0x1000             0x70000            rw-p  /usr/lib/libGLdispatch.so.0.0.0 
+0x00007f2076da0000 0x00007f2076da8000 0x8000             0x0                rw-p   
+0x00007f2076da8000 0x00007f2076db1000 0x9000             0x0                r--p  /usr/lib/libgssapi_krb5.so.2.2 
+0x00007f2076db1000 0x00007f2076df1000 0x40000            0x9000             r-xp  /usr/lib/libgssapi_krb5.so.2.2 
+0x00007f2076df1000 0x00007f2076dfd000 0xc000             0x49000            r--p  /usr/lib/libgssapi_krb5.so.2.2 
+0x00007f2076dfd000 0x00007f2076dff000 0x2000             0x55000            r--p  /usr/lib/libgssapi_krb5.so.2.2 
+0x00007f2076dff000 0x00007f2076e00000 0x1000             0x57000            rw-p  /usr/lib/libgssapi_krb5.so.2.2 
+0x00007f2076e00000 0x00007f2078d94000 0x1f94000          0x0                r--p  /usr/lib/libicudata.so.78.3 
+0x00007f2078d94000 0x00007f2078d95000 0x1000             0x1f93000          r--p  /usr/lib/libicudata.so.78.3 
+0x00007f2078d95000 0x00007f2078d99000 0x4000             0x0                rw-p   
+0x00007f2078d99000 0x00007f2078d9b000 0x2000             0x0                r--p  /usr/lib/libXdmcp.so.6.0.0 
+0x00007f2078d9b000 0x00007f2078d9d000 0x2000             0x2000             r-xp  /usr/lib/libXdmcp.so.6.0.0 
+0x00007f2078d9d000 0x00007f2078d9f000 0x2000             0x4000             r--p  /usr/lib/libXdmcp.so.6.0.0 
+0x00007f2078d9f000 0x00007f2078da0000 0x1000             0x5000             r--p  /usr/lib/libXdmcp.so.6.0.0 
+0x00007f2078da0000 0x00007f2078da1000 0x1000             0x6000             rw-p  /usr/lib/libXdmcp.so.6.0.0 
+0x00007f2078da1000 0x00007f2078da2000 0x1000             0x0                r--p  /usr/lib/libbrotlicommon.so.1.2.0 
+0x00007f2078da2000 0x00007f2078da3000 0x1000             0x1000             r-xp  /usr/lib/libbrotlicommon.so.1.2.0 
+0x00007f2078da3000 0x00007f2078dc2000 0x1f000            0x2000             r--p  /usr/lib/libbrotlicommon.so.1.2.0 
+0x00007f2078dc2000 0x00007f2078dc3000 0x1000             0x21000            r--p  /usr/lib/libbrotlicommon.so.1.2.0 
+0x00007f2078dc3000 0x00007f2078dc4000 0x1000             0x22000            rw-p  /usr/lib/libbrotlicommon.so.1.2.0 
+0x00007f2078dc4000 0x00007f2078dc5000 0x1000             0x0                r--p  /usr/lib/libbrotlienc.so.1.2.0 
+0x00007f2078dc5000 0x00007f2078e32000 0x6d000            0x1000             r-xp  /usr/lib/libbrotlienc.so.1.2.0 
+0x00007f2078e32000 0x00007f2078e82000 0x50000            0x6e000            r--p  /usr/lib/libbrotlienc.so.1.2.0 
+0x00007f2078e82000 0x00007f2078e83000 0x1000             0xbd000            r--p  /usr/lib/libbrotlienc.so.1.2.0 
+0x00007f2078e83000 0x00007f2078e84000 0x1000             0xbe000            rw-p  /usr/lib/libbrotlienc.so.1.2.0 
+0x00007f2078e84000 0x00007f2078e8f000 0xb000             0x0                r--p  /usr/lib/libgomp.so.1.0.0 
+0x00007f2078e8f000 0x00007f2078ecd000 0x3e000            0xb000             r-xp  /usr/lib/libgomp.so.1.0.0 
+0x00007f2078ecd000 0x00007f2078edc000 0xf000             0x49000            r--p  /usr/lib/libgomp.so.1.0.0 
+0x00007f2078edc000 0x00007f2078edd000 0x1000             0x57000            r--p  /usr/lib/libgomp.so.1.0.0 
+0x00007f2078edd000 0x00007f2078ede000 0x1000             0x58000            rw-p  /usr/lib/libgomp.so.1.0.0 
+0x00007f2078ede000 0x00007f2078ee1000 0x3000             0x0                r--p  /usr/lib/libpcre2-8.so.0.16.0 
+0x00007f2078ee1000 0x00007f2078f63000 0x82000            0x3000             r-xp  /usr/lib/libpcre2-8.so.0.16.0 
+0x00007f2078f63000 0x00007f2078f8f000 0x2c000            0x85000            r--p  /usr/lib/libpcre2-8.so.0.16.0 
+0x00007f2078f8f000 0x00007f2078f90000 0x1000             0xb0000            r--p  /usr/lib/libpcre2-8.so.0.16.0 
+0x00007f2078f90000 0x00007f2078f91000 0x1000             0xb1000            rw-p  /usr/lib/libpcre2-8.so.0.16.0 
+0x00007f2078f91000 0x00007f2078f97000 0x6000             0x0                r--p  /usr/lib/libfreetype.so.6.20.6 
+0x00007f2078f97000 0x00007f207902f000 0x98000            0x6000             r-xp  /usr/lib/libfreetype.so.6.20.6 
+0x00007f207902f000 0x00007f2079058000 0x29000            0x9e000            r--p  /usr/lib/libfreetype.so.6.20.6 
+0x00007f2079058000 0x00007f2079060000 0x8000             0xc6000            r--p  /usr/lib/libfreetype.so.6.20.6 
+0x00007f2079060000 0x00007f2079061000 0x1000             0xce000            rw-p  /usr/lib/libfreetype.so.6.20.6 
+0x00007f2079061000 0x00007f207906e000 0xd000             0x0                r--p  /usr/lib/libharfbuzz.so.0.61440.0 
+0x00007f207906e000 0x00007f2079169000 0xfb000            0xd000             r-xp  /usr/lib/libharfbuzz.so.0.61440.0 
+0x00007f2079169000 0x00007f207919d000 0x34000            0x108000           r--p  /usr/lib/libharfbuzz.so.0.61440.0 
+0x00007f207919d000 0x00007f207919f000 0x2000             0x13b000           r--p  /usr/lib/libharfbuzz.so.0.61440.0 
+0x00007f207919f000 0x00007f20791a0000 0x1000             0x13d000           rw-p  /usr/lib/libharfbuzz.so.0.61440.0 
+0x00007f20791a0000 0x00007f20791bb000 0x1b000            0x0                r--p  /usr/lib/libQt6DBus.so.6.11.2 
+0x00007f20791bb000 0x00007f207924b000 0x90000            0x1b000            r-xp  /usr/lib/libQt6DBus.so.6.11.2 
+0x00007f207924b000 0x00007f2079266000 0x1b000            0xab000            r--p  /usr/lib/libQt6DBus.so.6.11.2 
+0x00007f2079266000 0x00007f207926a000 0x4000             0xc6000            r--p  /usr/lib/libQt6DBus.so.6.11.2 
+0x00007f207926a000 0x00007f207926c000 0x2000             0xca000            rw-p  /usr/lib/libQt6DBus.so.6.11.2 
+0x00007f207926c000 0x00007f207926d000 0x1000             0x0                rw-p   
+0x00007f207926d000 0x00007f2079284000 0x17000            0x0                r--p  /usr/lib/libX11.so.6.4.0 
+0x00007f2079284000 0x00007f2079319000 0x95000            0x17000            r-xp  /usr/lib/libX11.so.6.4.0 
+0x00007f2079319000 0x00007f20793a8000 0x8f000            0xac000            r--p  /usr/lib/libX11.so.6.4.0 
+0x00007f20793a8000 0x00007f20793ab000 0x3000             0x13a000           r--p  /usr/lib/libX11.so.6.4.0 
+0x00007f20793ab000 0x00007f20793af000 0x4000             0x13d000           rw-p  /usr/lib/libX11.so.6.4.0 
+0x00007f20793af000 0x00007f20793f4000 0x45000            0x0                r--p  /usr/lib/libQt6Network.so.6.11.2 
+0x00007f20793f4000 0x00007f2079538000 0x144000           0x45000            r-xp  /usr/lib/libQt6Network.so.6.11.2 
+0x00007f2079538000 0x00007f2079595000 0x5d000            0x189000           r--p  /usr/lib/libQt6Network.so.6.11.2 
+0x00007f2079595000 0x00007f207959f000 0xa000             0x1e5000           r--p  /usr/lib/libQt6Network.so.6.11.2 
+0x00007f207959f000 0x00007f20795a4000 0x5000             0x1ef000           rw-p  /usr/lib/libQt6Network.so.6.11.2 
+0x00007f20795a4000 0x00007f20795a6000 0x2000             0x0                rw-p   
+0x00007f20795a6000 0x00007f20795ce000 0x28000            0x0                r--p  /usr/lib/libQt6QmlModels.so.6.11.2 
+0x00007f20795ce000 0x00007f2079694000 0xc6000            0x28000            r-xp  /usr/lib/libQt6QmlModels.so.6.11.2 
+0x00007f2079694000 0x00007f20796bb000 0x27000            0xee000            r--p  /usr/lib/libQt6QmlModels.so.6.11.2 
+0x00007f20796bb000 0x00007f20796c4000 0x9000             0x114000           r--p  /usr/lib/libQt6QmlModels.so.6.11.2 
+0x00007f20796c4000 0x00007f20796c9000 0x5000             0x11d000           rw-p  /usr/lib/libQt6QmlModels.so.6.11.2 
+0x00007f20796c9000 0x00007f20796d9000 0x10000            0x0                r--p  /usr/lib/libm.so.6 
+0x00007f20796d9000 0x00007f2079775000 0x9c000            0x10000            r-xp  /usr/lib/libm.so.6 
+0x00007f2079775000 0x00007f20797fe000 0x89000            0xac000            r--p  /usr/lib/libm.so.6 
+0x00007f20797fe000 0x00007f20797ff000 0x1000             0x134000           r--p  /usr/lib/libm.so.6 
+0x00007f20797ff000 0x00007f2079800000 0x1000             0x135000           rw-p  /usr/lib/libm.so.6 
+0x00007f2079800000 0x00007f2079853000 0x53000            0x0                r--p  /usr/lib/libcrypto.so.3 
+0x00007f2079853000 0x00007f2079bff000 0x3ac000           0x53000            r-xp  /usr/lib/libcrypto.so.3 
+0x00007f2079bff000 0x00007f2079d25000 0x126000           0x3ff000           r--p  /usr/lib/libcrypto.so.3 
+0x00007f2079d25000 0x00007f2079da3000 0x7e000            0x525000           r--p  /usr/lib/libcrypto.so.3 
+0x00007f2079da3000 0x00007f2079da6000 0x3000             0x5a3000           rw-p  /usr/lib/libcrypto.so.3 
+0x00007f2079da6000 0x00007f2079dad000 0x7000             0x0                rw-p   
+0x00007f2079dad000 0x00007f2079dae000 0x1000             0x0                r--p  /usr/lib/libXau.so.6.0.0 
+0x00007f2079dae000 0x00007f2079daf000 0x1000             0x1000             r-xp  /usr/lib/libXau.so.6.0.0 
+0x00007f2079daf000 0x00007f2079db0000 0x1000             0x2000             r--p  /usr/lib/libXau.so.6.0.0 
+0x00007f2079db0000 0x00007f2079db1000 0x1000             0x2000             r--p  /usr/lib/libXau.so.6.0.0 
+0x00007f2079db1000 0x00007f2079db2000 0x1000             0x3000             rw-p  /usr/lib/libXau.so.6.0.0 
+0x00007f2079db2000 0x00007f2079db4000 0x2000             0x0                r--p  /usr/lib/libgraphite2.so.3.3.1 
+0x00007f2079db4000 0x00007f2079dcd000 0x19000            0x2000             r-xp  /usr/lib/libgraphite2.so.3.3.1 
+0x00007f2079dcd000 0x00007f2079dd2000 0x5000             0x1b000            r--p  /usr/lib/libgraphite2.so.3.3.1 
+0x00007f2079dd2000 0x00007f2079dd4000 0x2000             0x1f000            r--p  /usr/lib/libgraphite2.so.3.3.1 
+0x00007f2079dd4000 0x00007f2079dd5000 0x1000             0x21000            rw-p  /usr/lib/libgraphite2.so.3.3.1 
+0x00007f2079dd5000 0x00007f2079de1000 0xc000             0x0                r--p  /usr/lib/libxcb.so.1.1.0 
+0x00007f2079de1000 0x00007f2079df5000 0x14000            0xc000             r-xp  /usr/lib/libxcb.so.1.1.0 
+0x00007f2079df5000 0x00007f2079dfe000 0x9000             0x20000            r--p  /usr/lib/libxcb.so.1.1.0 
+0x00007f2079dfe000 0x00007f2079dff000 0x1000             0x28000            r--p  /usr/lib/libxcb.so.1.1.0 
+0x00007f2079dff000 0x00007f2079e00000 0x1000             0x29000            rw-p  /usr/lib/libxcb.so.1.1.0 
+0x00007f2079e00000 0x00007f2079e48000 0x48000            0x0                r--p  /usr/lib/libicuuc.so.78.3 
+0x00007f2079e48000 0x00007f2079f65000 0x11d000           0x48000            r-xp  /usr/lib/libicuuc.so.78.3 
+0x00007f2079f65000 0x00007f2079ff8000 0x93000            0x165000           r--p  /usr/lib/libicuuc.so.78.3 
+0x00007f2079ff8000 0x00007f207a00b000 0x13000            0x1f8000           r--p  /usr/lib/libicuuc.so.78.3 
+0x00007f207a00b000 0x00007f207a00c000 0x1000             0x20b000           rw-p  /usr/lib/libicuuc.so.78.3 
+0x00007f207a00c000 0x00007f207a00e000 0x2000             0x0                rw-p   
+0x00007f207a00e000 0x00007f207a030000 0x22000            0x0                r--p  /usr/lib/libQt6OpenGL.so.6.11.2 
+0x00007f207a030000 0x00007f207a08f000 0x5f000            0x22000            r-xp  /usr/lib/libQt6OpenGL.so.6.11.2 
+0x00007f207a08f000 0x00007f207a0b2000 0x23000            0x81000            r--p  /usr/lib/libQt6OpenGL.so.6.11.2 
+0x00007f207a0b2000 0x00007f207a0b5000 0x3000             0xa3000            r--p  /usr/lib/libQt6OpenGL.so.6.11.2 
+0x00007f207a0b5000 0x00007f207a0b6000 0x1000             0xa6000            rw-p  /usr/lib/libQt6OpenGL.so.6.11.2 
+0x00007f207a0b6000 0x00007f207a0b7000 0x1000             0x0                rw-p   
+0x00007f207a0b7000 0x00007f207a0cc000 0x15000            0x0                r--p  /usr/lib/libsystemd.so.0.44.0 
+0x00007f207a0cc000 0x00007f207a1a5000 0xd9000            0x15000            r-xp  /usr/lib/libsystemd.so.0.44.0 
+0x00007f207a1a5000 0x00007f207a1f4000 0x4f000            0xee000            r--p  /usr/lib/libsystemd.so.0.44.0 
+0x00007f207a1f4000 0x00007f207a1fe000 0xa000             0x13c000           r--p  /usr/lib/libsystemd.so.0.44.0 
+0x00007f207a1fe000 0x00007f207a1ff000 0x1000             0x146000           rw-p  /usr/lib/libsystemd.so.0.44.0 
+0x00007f207a1ff000 0x00007f207a200000 0x1000             0x0                rw-p   
+0x00007f207a200000 0x00007f207a2dc000 0xdc000            0x0                r--p  /usr/lib/libicui18n.so.78.3 
+0x00007f207a2dc000 0x00007f207a4e6000 0x20a000           0xdc000            r-xp  /usr/lib/libicui18n.so.78.3 
+0x00007f207a4e6000 0x00007f207a579000 0x93000            0x2e6000           r--p  /usr/lib/libicui18n.so.78.3 
+0x00007f207a579000 0x00007f207a58c000 0x13000            0x379000           r--p  /usr/lib/libicui18n.so.78.3 
+0x00007f207a58c000 0x00007f207a58d000 0x1000             0x38c000           rw-p  /usr/lib/libicui18n.so.78.3 
+0x00007f207a58d000 0x00007f207a58e000 0x1000             0x0                rw-p   
+0x00007f207a58e000 0x00007f207a590000 0x2000             0x0                r--p  /usr/lib/libkeyutils.so.1.10 
+0x00007f207a590000 0x00007f207a592000 0x2000             0x2000             r-xp  /usr/lib/libkeyutils.so.1.10 
+0x00007f207a592000 0x00007f207a593000 0x1000             0x4000             r--p  /usr/lib/libkeyutils.so.1.10 
+0x00007f207a593000 0x00007f207a594000 0x1000             0x4000             r--p  /usr/lib/libkeyutils.so.1.10 
+0x00007f207a594000 0x00007f207a595000 0x1000             0x5000             rw-p  /usr/lib/libkeyutils.so.1.10 
+0x00007f207a595000 0x00007f207a597000 0x2000             0x0                r--p  /usr/lib/libexpat.so.1.12.4 
+0x00007f207a597000 0x00007f207a5b7000 0x20000            0x2000             r-xp  /usr/lib/libexpat.so.1.12.4 
+0x00007f207a5b7000 0x00007f207a5c0000 0x9000             0x22000            r--p  /usr/lib/libexpat.so.1.12.4 
+0x00007f207a5c0000 0x00007f207a5c2000 0x2000             0x2a000            r--p  /usr/lib/libexpat.so.1.12.4 
+0x00007f207a5c2000 0x00007f207a5c3000 0x1000             0x2c000            rw-p  /usr/lib/libexpat.so.1.12.4 
+0x00007f207a5c3000 0x00007f207a5c9000 0x6000             0x0                r--p  /usr/lib/libpng16.so.16.58.0 
+0x00007f207a5c9000 0x00007f207a5f4000 0x2b000            0x6000             r-xp  /usr/lib/libpng16.so.16.58.0 
+0x00007f207a5f4000 0x00007f207a5fe000 0xa000             0x31000            r--p  /usr/lib/libpng16.so.16.58.0 
+0x00007f207a5fe000 0x00007f207a5ff000 0x1000             0x3a000            r--p  /usr/lib/libpng16.so.16.58.0 
+0x00007f207a5ff000 0x00007f207a600000 0x1000             0x3b000            rw-p  /usr/lib/libpng16.so.16.58.0 
+0x00007f207a600000 0x00007f207a69a000 0x9a000            0x0                r--p  /usr/lib/libstdc++.so.6.0.36 
+0x00007f207a69a000 0x00007f207a81d000 0x183000           0x9a000            r-xp  /usr/lib/libstdc++.so.6.0.36 
+0x00007f207a81d000 0x00007f207a8bd000 0xa0000            0x21d000           r--p  /usr/lib/libstdc++.so.6.0.36 
+0x00007f207a8bd000 0x00007f207a8ce000 0x11000            0x2bc000           r--p  /usr/lib/libstdc++.so.6.0.36 
+0x00007f207a8ce000 0x00007f207a8cf000 0x1000             0x2cd000           rw-p  /usr/lib/libstdc++.so.6.0.36 
+0x00007f207a8cf000 0x00007f207a8d3000 0x4000             0x0                rw-p   
+0x00007f207a8d3000 0x00007f207a8d4000 0x1000             0x0                r--p  /usr/lib/locale/C.utf8/LC_MEASUREMENT 
+0x00007f207a8d4000 0x00007f207a8d6000 0x2000             0x0                rw-p   
+0x00007f207a8d6000 0x00007f207a8d8000 0x2000             0x0                r--p  /usr/lib/libbz2.so.1.0.8 
+0x00007f207a8d8000 0x00007f207a8e5000 0xd000             0x2000             r-xp  /usr/lib/libbz2.so.1.0.8 
+0x00007f207a8e5000 0x00007f207a8e7000 0x2000             0xf000             r--p  /usr/lib/libbz2.so.1.0.8 
+0x00007f207a8e7000 0x00007f207a8e8000 0x1000             0x10000            r--p  /usr/lib/libbz2.so.1.0.8 
+0x00007f207a8e8000 0x00007f207a8e9000 0x1000             0x11000            rw-p  /usr/lib/libbz2.so.1.0.8 
+0x00007f207a8e9000 0x00007f207a8eb000 0x2000             0x0                r--p  /usr/lib/libGLX.so.0.0.0 
+0x00007f207a8eb000 0x00007f207a905000 0x1a000            0x2000             r-xp  /usr/lib/libGLX.so.0.0.0 
+0x00007f207a905000 0x00007f207a908000 0x3000             0x1c000            r--p  /usr/lib/libGLX.so.0.0.0 
+0x00007f207a908000 0x00007f207a909000 0x1000             0x1f000            r--p  /usr/lib/libGLX.so.0.0.0 
+0x00007f207a909000 0x00007f207a90a000 0x1000             0x20000            rw-p  /usr/lib/libGLX.so.0.0.0 
+0x00007f207a90a000 0x00007f207a91a000 0x10000            0x0                rw-p   
+0x00007f207a91a000 0x00007f207a926000 0xc000             0x0                r--p  /usr/lib/libzstd.so.1.5.7 
+0x00007f207a926000 0x00007f207a9ed000 0xc7000            0xc000             r-xp  /usr/lib/libzstd.so.1.5.7 
+0x00007f207a9ed000 0x00007f207a9fe000 0x11000            0xd3000            r--p  /usr/lib/libzstd.so.1.5.7 
+0x00007f207a9fe000 0x00007f207a9ff000 0x1000             0xe4000            r--p  /usr/lib/libzstd.so.1.5.7 
+0x00007f207a9ff000 0x00007f207aa00000 0x1000             0xe5000            rw-p  /usr/lib/libzstd.so.1.5.7 
+0x00007f207aa00000 0x00007f207aa8d000 0x8d000            0x0                r--p  /usr/lib/libQt6Qml.so.6.11.2 
+0x00007f207aa8d000 0x00007f207aec6000 0x439000           0x8d000            r-xp  /usr/lib/libQt6Qml.so.6.11.2 
+0x00007f207aec6000 0x00007f207afa9000 0xe3000            0x4c6000           r--p  /usr/lib/libQt6Qml.so.6.11.2 
+0x00007f207afa9000 0x00007f207afcb000 0x22000            0x5a9000           r--p  /usr/lib/libQt6Qml.so.6.11.2 
+0x00007f207afcb000 0x00007f207afd6000 0xb000             0x5cb000           rw-p  /usr/lib/libQt6Qml.so.6.11.2 
+0x00007f207afd6000 0x00007f207afdc000 0x6000             0x0                rw-p   
+0x00007f207afdc000 0x00007f207afea000 0xe000             0x0                r--p  /usr/lib/libOpenGL.so.0.0.0 
+0x00007f207afea000 0x00007f207aff5000 0xb000             0xe000             r-xp  /usr/lib/libOpenGL.so.0.0.0 
+0x00007f207aff5000 0x00007f207affa000 0x5000             0x19000            r--p  /usr/lib/libOpenGL.so.0.0.0 
+0x00007f207affa000 0x00007f207afff000 0x5000             0x1e000            r--p  /usr/lib/libOpenGL.so.0.0.0 
+0x00007f207afff000 0x00007f207b000000 0x1000             0x23000            rw-p  /usr/lib/libOpenGL.so.0.0.0 
+0x00007f207b000000 0x00007f207b0e5000 0xe5000            0x0                r--p  /usr/lib/libQt6Gui.so.6.11.2 
+0x00007f207b0e5000 0x00007f207b7fc000 0x717000           0xe5000            r-xp  /usr/lib/libQt6Gui.so.6.11.2 
+0x00007f207b7fc000 0x00007f207b92c000 0x130000           0x7fc000           r--p  /usr/lib/libQt6Gui.so.6.11.2 
+0x00007f207b92c000 0x00007f207b947000 0x1b000            0x92b000           r--p  /usr/lib/libQt6Gui.so.6.11.2 
+0x00007f207b947000 0x00007f207b954000 0xd000             0x946000           rw-p  /usr/lib/libQt6Gui.so.6.11.2 
+0x00007f207b954000 0x00007f207b96a000 0x16000            0x0                rw-p   
+0x00007f207b96a000 0x00007f207b96c000 0x2000             0x0                r--p  /usr/lib/libcom_err.so.2.1 
+0x00007f207b96c000 0x00007f207b96d000 0x1000             0x2000             r-xp  /usr/lib/libcom_err.so.2.1 
+0x00007f207b96d000 0x00007f207b96e000 0x1000             0x3000             r--p  /usr/lib/libcom_err.so.2.1 
+0x00007f207b96e000 0x00007f207b96f000 0x1000             0x3000             r--p  /usr/lib/libcom_err.so.2.1 
+0x00007f207b96f000 0x00007f207b970000 0x1000             0x4000             rw-p  /usr/lib/libcom_err.so.2.1 
+0x00007f207b970000 0x00007f207b976000 0x6000             0x0                r--p  /usr/lib/libQt6QmlWorkerScript.so.6.11.2 
+0x00007f207b976000 0x00007f207b980000 0xa000             0x6000             r-xp  /usr/lib/libQt6QmlWorkerScript.so.6.11.2 
+0x00007f207b980000 0x00007f207b983000 0x3000             0x10000            r--p  /usr/lib/libQt6QmlWorkerScript.so.6.11.2 
+0x00007f207b983000 0x00007f207b984000 0x1000             0x13000            r--p  /usr/lib/libQt6QmlWorkerScript.so.6.11.2 
+0x00007f207b984000 0x00007f207b985000 0x1000             0x14000            rw-p  /usr/lib/libQt6QmlWorkerScript.so.6.11.2 
+0x00007f207b985000 0x00007f207b98b000 0x6000             0x0                r--p  /usr/lib/libfontconfig.so.1.17.0 
+0x00007f207b98b000 0x00007f207b9c0000 0x35000            0x6000             r-xp  /usr/lib/libfontconfig.so.1.17.0 
+0x00007f207b9c0000 0x00007f207b9f6000 0x36000            0x3b000            r--p  /usr/lib/libfontconfig.so.1.17.0 
+0x00007f207b9f6000 0x00007f207b9ff000 0x9000             0x71000            r--p  /usr/lib/libfontconfig.so.1.17.0 
+0x00007f207b9ff000 0x00007f207ba00000 0x1000             0x7a000            rw-p  /usr/lib/libfontconfig.so.1.17.0 
+0x00007f207ba00000 0x00007f207bb0f000 0x10f000           0x0                r--p  /usr/lib/libQt6Quick.so.6.11.2 
+0x00007f207bb0f000 0x00007f207bfba000 0x4ab000           0x10f000           r-xp  /usr/lib/libQt6Quick.so.6.11.2 
+0x00007f207bfba000 0x00007f207c12d000 0x173000           0x5ba000           r--p  /usr/lib/libQt6Quick.so.6.11.2 
+0x00007f207c12d000 0x00007f207c16a000 0x3d000            0x72c000           r--p  /usr/lib/libQt6Quick.so.6.11.2 
+0x00007f207c16a000 0x00007f207c186000 0x1c000            0x769000           rw-p  /usr/lib/libQt6Quick.so.6.11.2 
+0x00007f207c186000 0x00007f207c189000 0x3000             0x0                rw-p   
+0x00007f207c189000 0x00007f207c18a000 0x1000             0x0                r--p  /usr/lib/locale/C.utf8/LC_IDENTIFICATION 
+0x00007f207c18a000 0x00007f207c192000 0x8000             0x0                rw-p   
+0x00007f207c192000 0x00007f207c193000 0x1000             0x0                r--p  /usr/lib/libbrotlidec.so.1.2.0 
+0x00007f207c193000 0x00007f207c19c000 0x9000             0x1000             r-xp  /usr/lib/libbrotlidec.so.1.2.0 
+0x00007f207c19c000 0x00007f207c19f000 0x3000             0xa000             r--p  /usr/lib/libbrotlidec.so.1.2.0 
+0x00007f207c19f000 0x00007f207c1a0000 0x1000             0xc000             r--p  /usr/lib/libbrotlidec.so.1.2.0 
+0x00007f207c1a0000 0x00007f207c1a1000 0x1000             0xd000             rw-p  /usr/lib/libbrotlidec.so.1.2.0 
+0x00007f207c1a1000 0x00007f207c1a5000 0x4000             0x0                r--p  /usr/lib/libxkbcommon.so.0.13.2 
+0x00007f207c1a5000 0x00007f207c1d4000 0x2f000            0x4000             r-xp  /usr/lib/libxkbcommon.so.0.13.2 
+0x00007f207c1d4000 0x00007f207c1fd000 0x29000            0x33000            r--p  /usr/lib/libxkbcommon.so.0.13.2 
+0x00007f207c1fd000 0x00007f207c1ff000 0x2000             0x5b000            r--p  /usr/lib/libxkbcommon.so.0.13.2 
+0x00007f207c1ff000 0x00007f207c200000 0x1000             0x5d000            rw-p  /usr/lib/libxkbcommon.so.0.13.2 
+0x00007f207c200000 0x00007f207c224000 0x24000            0x0                r--p  /usr/lib/libc.so.6 
+0x00007f207c224000 0x00007f207c39f000 0x17b000           0x24000            r-xp  /usr/lib/libc.so.6 
+0x00007f207c39f000 0x00007f207c415000 0x76000            0x19f000           r--p  /usr/lib/libc.so.6 
+0x00007f207c415000 0x00007f207c419000 0x4000             0x214000           r--p  /usr/lib/libc.so.6 
+0x00007f207c419000 0x00007f207c41b000 0x2000             0x218000           rw-p  /usr/lib/libc.so.6 
+0x00007f207c41b000 0x00007f207c423000 0x8000             0x0                rw-p   
+0x00007f207c423000 0x00007f207c424000 0x1000             0x0                r--p  /usr/lib/libproxy.so.0.5.12 
+0x00007f207c424000 0x00007f207c425000 0x1000             0x1000             r-xp  /usr/lib/libproxy.so.0.5.12 
+0x00007f207c425000 0x00007f207c426000 0x1000             0x2000             r--p  /usr/lib/libproxy.so.0.5.12 
+0x00007f207c426000 0x00007f207c427000 0x1000             0x2000             r--p  /usr/lib/libproxy.so.0.5.12 
+0x00007f207c427000 0x00007f207c428000 0x1000             0x3000             rw-p  /usr/lib/libproxy.so.0.5.12 
+0x00007f207c428000 0x00007f207c42c000 0x4000             0x0                rw-p   
+0x00007f207c42c000 0x00007f207c42d000 0x1000             0x0                r--p  /usr/lib/libmd4c.so.0.5.3 
+0x00007f207c42d000 0x00007f207c43d000 0x10000            0x1000             r-xp  /usr/lib/libmd4c.so.0.5.3 
+0x00007f207c43d000 0x00007f207c440000 0x3000             0x11000            r--p  /usr/lib/libmd4c.so.0.5.3 
+0x00007f207c440000 0x00007f207c441000 0x1000             0x14000            r--p  /usr/lib/libmd4c.so.0.5.3 
+0x00007f207c441000 0x00007f207c442000 0x1000             0x15000            rw-p  /usr/lib/libmd4c.so.0.5.3 
+0x00007f207c442000 0x00007f207c446000 0x4000             0x0                rw-p   
+0x00007f207c446000 0x00007f207c451000 0xb000             0x0                r--p  /usr/lib/libQt6QmlMeta.so.6.11.2 
+0x00007f207c451000 0x00007f207c467000 0x16000            0xb000             r-xp  /usr/lib/libQt6QmlMeta.so.6.11.2 
+0x00007f207c467000 0x00007f207c46d000 0x6000             0x21000            r--p  /usr/lib/libQt6QmlMeta.so.6.11.2 
+0x00007f207c46d000 0x00007f207c46f000 0x2000             0x26000            r--p  /usr/lib/libQt6QmlMeta.so.6.11.2 
+0x00007f207c46f000 0x00007f207c470000 0x1000             0x28000            rw-p  /usr/lib/libQt6QmlMeta.so.6.11.2 
+0x00007f207c470000 0x00007f207c474000 0x4000             0x0                r--p  /usr/lib/libgcc_s.so.1 
+0x00007f207c474000 0x00007f207c497000 0x23000            0x4000             r-xp  /usr/lib/libgcc_s.so.1 
+0x00007f207c497000 0x00007f207c49b000 0x4000             0x27000            r--p  /usr/lib/libgcc_s.so.1 
+0x00007f207c49b000 0x00007f207c49c000 0x1000             0x2b000            r--p  /usr/lib/libgcc_s.so.1 
+0x00007f207c49c000 0x00007f207c49d000 0x1000             0x2c000            rw-p  /usr/lib/libgcc_s.so.1 
+0x00007f207c49d000 0x00007f207c4bb000 0x1e000            0x0                r--p  /usr/lib/libglib-2.0.so.0.8800.3 
+0x00007f207c4bb000 0x00007f207c569000 0xae000            0x1e000            r-xp  /usr/lib/libglib-2.0.so.0.8800.3 
+0x00007f207c569000 0x00007f207c5fd000 0x94000            0xcc000            r--p  /usr/lib/libglib-2.0.so.0.8800.3 
+0x00007f207c5fd000 0x00007f207c5fe000 0x1000             0x160000           r--p  /usr/lib/libglib-2.0.so.0.8800.3 
+0x00007f207c5fe000 0x00007f207c5ff000 0x1000             0x161000           rw-p  /usr/lib/libglib-2.0.so.0.8800.3 
+0x00007f207c5ff000 0x00007f207c600000 0x1000             0x0                rw-p   
+0x00007f207c600000 0x00007f207c694000 0x94000            0x0                r--p  /usr/lib/libQt6Core.so.6.11.2 
+0x00007f207c694000 0x00007f207cac4000 0x430000           0x94000            r-xp  /usr/lib/libQt6Core.so.6.11.2 
+0x00007f207cac4000 0x00007f207cc73000 0x1af000           0x4c4000           r--p  /usr/lib/libQt6Core.so.6.11.2 
+0x00007f207cc73000 0x00007f207cc83000 0x10000            0x673000           r--p  /usr/lib/libQt6Core.so.6.11.2 
+0x00007f207cc83000 0x00007f207cc8c000 0x9000             0x683000           rw-p  /usr/lib/libQt6Core.so.6.11.2 
+0x00007f207cc8c000 0x00007f207cc90000 0x4000             0x0                rw-p   
+0x00007f207cc90000 0x00007f207cc92000 0x2000             0x0                r--p  /usr/lib/libEGL.so.1.1.0 
+0x00007f207cc92000 0x00007f207cc9c000 0xa000             0x2000             r-xp  /usr/lib/libEGL.so.1.1.0 
+0x00007f207cc9c000 0x00007f207cca0000 0x4000             0xc000             r--p  /usr/lib/libEGL.so.1.1.0 
+0x00007f207cca0000 0x00007f207cca1000 0x1000             0xf000             r--p  /usr/lib/libEGL.so.1.1.0 
+0x00007f207cca1000 0x00007f207cca2000 0x1000             0x10000            rw-p  /usr/lib/libEGL.so.1.1.0 
+0x00007f207cca2000 0x00007f207cca4000 0x2000             0x0                rw-p   
+0x00007f207cca4000 0x00007f207cca7000 0x3000             0x0                r--p  /usr/lib/libpcre2-16.so.0.16.0 
+0x00007f207cca7000 0x00007f207cd1c000 0x75000            0x3000             r-xp  /usr/lib/libpcre2-16.so.0.16.0 
+0x00007f207cd1c000 0x00007f207cd48000 0x2c000            0x78000            r--p  /usr/lib/libpcre2-16.so.0.16.0 
+0x00007f207cd48000 0x00007f207cd49000 0x1000             0xa3000            r--p  /usr/lib/libpcre2-16.so.0.16.0 
+0x00007f207cd49000 0x00007f207cd4a000 0x1000             0xa4000            rw-p  /usr/lib/libpcre2-16.so.0.16.0 
+0x00007f207cd4a000 0x00007f207cd4c000 0x2000             0x0                rw-p   
+0x00007f207cd4c000 0x00007f207cd4f000 0x3000             0x0                r--p  /usr/lib/libb2.so.1.0.4 
+0x00007f207cd4f000 0x00007f207cd66000 0x17000            0x3000             r-xp  /usr/lib/libb2.so.1.0.4 
+0x00007f207cd66000 0x00007f207cd68000 0x2000             0x1a000            r--p  /usr/lib/libb2.so.1.0.4 
+0x00007f207cd68000 0x00007f207cd69000 0x1000             0x1c000            r--p  /usr/lib/libb2.so.1.0.4 
+0x00007f207cd69000 0x00007f207cd6a000 0x1000             0x1d000            rw-p  /usr/lib/libb2.so.1.0.4 
+0x00007f207cd6a000 0x00007f207cd6d000 0x3000             0x0                r--p  /usr/lib/libdouble-conversion.so.3.4.0 
+0x00007f207cd6d000 0x00007f207cd7a000 0xd000             0x3000             r-xp  /usr/lib/libdouble-conversion.so.3.4.0 
+0x00007f207cd7a000 0x00007f207cd7f000 0x5000             0x10000            r--p  /usr/lib/libdouble-conversion.so.3.4.0 
+0x00007f207cd7f000 0x00007f207cd80000 0x1000             0x15000            r--p  /usr/lib/libdouble-conversion.so.3.4.0 
+0x00007f207cd80000 0x00007f207cd81000 0x1000             0x16000            rw-p  /usr/lib/libdouble-conversion.so.3.4.0 
+0x00007f207cd81000 0x00007f207cd84000 0x3000             0x0                r--p  /usr/lib/libz.so.1.3.2 
+0x00007f207cd84000 0x00007f207cd94000 0x10000            0x3000             r-xp  /usr/lib/libz.so.1.3.2 
+0x00007f207cd94000 0x00007f207cd9a000 0x6000             0x13000            r--p  /usr/lib/libz.so.1.3.2 
+0x00007f207cd9a000 0x00007f207cd9b000 0x1000             0x18000            r--p  /usr/lib/libz.so.1.3.2 
+0x00007f207cd9b000 0x00007f207cd9c000 0x1000             0x19000            rw-p  /usr/lib/libz.so.1.3.2 
+0x00007f207cd9c000 0x00007f207cd9e000 0x2000             0x0                rw-p   
+0x00007f207cd9e000 0x00007f207cda0000 0x2000             0x0                r--p  /usr/lib/liburing.so.2.15 
+0x00007f207cda0000 0x00007f207cda3000 0x3000             0x2000             r-xp  /usr/lib/liburing.so.2.15 
+0x00007f207cda3000 0x00007f207cda4000 0x1000             0x5000             r--p  /usr/lib/liburing.so.2.15 
+0x00007f207cda4000 0x00007f207cda5000 0x1000             0x5000             r--p  /usr/lib/liburing.so.2.15 
+0x00007f207cda5000 0x00007f207cdb5000 0x10000            0x0                r--p  /usr/lib/libQt6Test.so.6.11.2 
+0x00007f207cdb5000 0x00007f207ce01000 0x4c000            0x10000            r-xp  /usr/lib/libQt6Test.so.6.11.2 
+0x00007f207ce01000 0x00007f207ce16000 0x15000            0x5c000            r--p  /usr/lib/libQt6Test.so.6.11.2 
+0x00007f207ce16000 0x00007f207ce18000 0x2000             0x71000            r--p  /usr/lib/libQt6Test.so.6.11.2 
+0x00007f207ce18000 0x00007f207ce19000 0x1000             0x73000            rw-p  /usr/lib/libQt6Test.so.6.11.2 
+0x00007f207ce19000 0x00007f207ce1b000 0x2000             0x0                rw-p   
+0x00007f207ce1b000 0x00007f207ce2b000 0x10000            0x0                r--p  /usr/lib/libQt6QuickTest.so.6.11.2 
+0x00007f207ce2b000 0x00007f207ce4a000 0x1f000            0x10000            r-xp  /usr/lib/libQt6QuickTest.so.6.11.2 
+0x00007f207ce4a000 0x00007f207ce66000 0x1c000            0x2f000            r--p  /usr/lib/libQt6QuickTest.so.6.11.2 
+0x00007f207ce66000 0x00007f207ce69000 0x3000             0x4a000            r--p  /usr/lib/libQt6QuickTest.so.6.11.2 
+0x00007f207ce69000 0x00007f207ce6a000 0x1000             0x4d000            rw-p  /usr/lib/libQt6QuickTest.so.6.11.2 
+0x00007f207ce6a000 0x00007f207ce6c000 0x2000             0x0                rw-p   
+0x00007f207ce6c000 0x00007f207ce90000 0x24000            0x0                r--p  /etc/ld.so.cache 
+0x00007f207ce90000 0x00007f207ce94000 0x4000             0x0                r--p  [vvar] 
+0x00007f207ce94000 0x00007f207ce96000 0x2000             0x0                r--p  [vvar_vclock] 
+0x00007f207ce96000 0x00007f207ce98000 0x2000             0x0                r-xp  [vdso] 
+0x00007f207ce98000 0x00007f207ce99000 0x1000             0x0                r--p  /usr/lib/ld-linux-x86-64.so.2 
+0x00007f207ce99000 0x00007f207cec6000 0x2d000            0x1000             r-xp  /usr/lib/ld-linux-x86-64.so.2 
+0x00007f207cec6000 0x00007f207ced5000 0xf000             0x2e000            r--p  /usr/lib/ld-linux-x86-64.so.2 
+0x00007f207ced5000 0x00007f207ced7000 0x2000             0x3d000            r--p  /usr/lib/ld-linux-x86-64.so.2 
+0x00007f207ced7000 0x00007f207ced8000 0x1000             0x3f000            rw-p  /usr/lib/ld-linux-x86-64.so.2 
+0x00007f207ced8000 0x00007f207ced9000 0x1000             0x0                rw-p   
+0x00007fff686c6000 0x00007fff686f3000 0x2d000            0x0                rw-p  [stack] 
+0xffffffffff600000 0xffffffffff601000 0x1000             0x0                --xp  [vsyscall] 
+[Inferior 1 (process 420373) detached]
+=== End of stack trace ===
