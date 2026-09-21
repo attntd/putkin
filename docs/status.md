@@ -19,7 +19,7 @@ z historii. Q działa jak Escape poza polami tekstowymi.
 - Pełna kontrola: **228 QML PASS**, bez błędów.
 - Pełny przebieg Qt: **710 PASS, 0 FAIL**, 26 zestawów, bez ostrzeżeń;
   limit procesu 480 s, zakończenie po 323 s.
-- Instalator: **15 PASS**; pomocniki uwierzytelniania: **6 PASS**.
+- Instalator po poprawce gotowości D-Bus: **17 PASS**; pomocniki uwierzytelniania: **6 PASS**.
 - Natywne powiadomienia: **15 grup PASS**, w tym akcje, zużywanie historii,
   otwarcie testowej aplikacji z archiwum i 20 cykli życia providera.
 - Obejrzano podglądy 1366×768 (aplikacje) i 320×480 (długa ścieżka).
@@ -36,6 +36,13 @@ z historii. Q działa jak Escape poza polami tekstowymi.
 [mały ekran](evidence/launcher-inline-descriptions-small.png).
 Testy używały atrap i izolacji; nie uruchamiały PAM, czytnika ani
 operacji zasilania hosta. Archiwalny Signal jest sprawdzony na aplikacji testowej.
+
+Pierwsza próba aktywacji wykryła wyścig instalatora: gotowość blokady/idle
+wyprzedziła rejestrację nazwy powiadomień w D-Bus. Instalator prawidłowo
+przywrócił poprzednią wersję. Poprawka czeka na rejestrację serwera
+w istniejącym limicie 15 s, nadal odrzucając właściciela z innym PID.
+[Końcowe testy instalatora](evidence/launcher-shell-merge-installer-final.log),
+[pierwsza próba](evidence/launcher-shell-merge-first-install.log).
 
 ## Odliczanie odcisku w Polkit — 2026-09-20
 

@@ -312,11 +312,19 @@ class Session:
             state = json.loads(result)
             return state if state["idle"]["ready"] and state["capabilities"]["lock"]["available"] else False
         until(ready)
-        owner = json.loads(run(["busctl", "--user", "--json=short", "call", "org.freedesktop.DBus",
-                               "/org/freedesktop/DBus", "org.freedesktop.DBus", "GetConnectionUnixProcessID",
-                               "s", "org.freedesktop.Notifications"]))["data"][0]
-        if owner != instance["pid"] or len(instances()) != 1:
-            raise RuntimeError("Konflikt instancji lub właściciela powiadomień.")
+        def notifications_ready():
+            # Lock/idle readiness can precede the notification watcher and
+            # server. A missing D-Bus name during that startup is not a conflict.
+            result = run(["busctl", "--user", "--json=short", "call", "org.freedesktop.DBus",
+                          "/org/freedesktop/DBus", "org.freedesktop.DBus", "GetConnectionUnixProcessID",
+                          "s", "org.freedesktop.Notifications"], check=False)
+            if not result:
+                return False
+            owner = json.loads(result)["data"][0]
+            if owner != instance["pid"] or len(instances()) != 1:
+                raise RuntimeError("Konflikt instancji lub właściciela powiadomień.")
+            return True
+        until(notifications_ready)
         until(lambda: not json.loads(self.ipc(entry, "caffeinate", "status"))["busy"])
         if self.mode != "off":
             self.ipc(entry, "caffeinate", "setMode", self.mode)

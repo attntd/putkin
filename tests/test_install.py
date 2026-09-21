@@ -338,5 +338,42 @@ class LauncherTest(unittest.TestCase):
             self.assertEqual(len(record.read_text().splitlines()), 1)
 
 
+class SessionReadinessTest(unittest.TestCase):
+    def start_with_owners(self, responses):
+        layout = installer.paths(Path('/unused-private-install-test'))
+        instance = {'pid': 42, 'id': 'fixture', 'config_path': str(layout['entry'])}
+        responses = iter(responses)
+
+        def run(command, check=True):
+            if command[0] == layout['launcher']:
+                return ''
+            if command[0] == 'busctl':
+                self.assertFalse(check)
+                return next(responses)
+            if command[:2] == ['quickshell', 'log']:
+                return 'INFO: Configuration Loaded'
+            if command[0] == 'quickshell' and 'session' in command:
+                return json.dumps({'idle': {'ready': True}, 'capabilities': {'lock': {'available': True}}})
+            if command[0] == 'quickshell' and 'caffeinate' in command:
+                return json.dumps({'busy': False, 'mode': 'off', 'error': ''})
+            raise AssertionError(command)
+
+        with patch.object(installer, 'run', side_effect=run) as runner, \
+                patch.object(installer, 'instances', return_value=[instance]), \
+                patch.object(installer.time, 'sleep'):
+            result = installer.Session(layout).start()
+            calls = [call for call in runner.call_args_list if call.args[0][0] == 'busctl']
+        return result, len(calls)
+
+    def test_waits_for_notification_name_after_lock_service_is_ready(self):
+        result, queries = self.start_with_owners(['', '', json.dumps({'data': [42]})])
+        self.assertEqual(result['pid'], 42)
+        self.assertEqual(queries, 3)
+
+    def test_existing_foreign_notification_owner_still_aborts(self):
+        with self.assertRaisesRegex(RuntimeError, 'Konflikt instancji'):
+            self.start_with_owners([json.dumps({'data': [99]})])
+
+
 if __name__ == "__main__":
     unittest.main()

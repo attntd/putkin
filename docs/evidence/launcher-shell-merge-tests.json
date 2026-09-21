@@ -6,12 +6,14 @@
     "suites": 26
   },
   "static_qml_files": 228,
-  "installer_tests_passed": 15,
+  "installer_tests_passed": 17,
   "authentication_helper_tests_passed": 6,
   "notification_integration_groups_passed": 15,
   "launcher_qml_before_merge": 65,
   "visual_previews": [
     "launcher-inline-descriptions.png",
     "launcher-inline-descriptions-small.png"
-  ]
+  ],
+  "installer_readiness_regression": "Wait for delayed D-Bus registration; reject a foreign notification owner.",
+  "first_activation": "Missing notification D-Bus name during startup; installer restored the previous release."
 }
