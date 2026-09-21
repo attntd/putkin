@@ -1,0 +1,169 @@
+#!/usr/bin/env python3
+"""Verify real JVM exec/lease/parent death with an empty store and no network."""
+import argparse
+import ctypes
+import fcntl
+import json
+import os
+from pathlib import Path
+import select
+import shutil
+import signal
+import subprocess
+import sys
+import tempfile
+import time
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def inside(executable, idle=False):
+    ctypes.CDLL(None).prctl(36, 1, 0, 0, 0)
+    report = {"passed": False, "scope": "real signal-cli 0.14.8 JVM, empty account, network/PID/mount isolation", "checks": []}
+    with tempfile.TemporaryDirectory(prefix="signal-jvm-") as tmp:
+        base = Path(tmp)
+        env = dict(os.environ)
+        for kind in ("DATA", "CONFIG", "CACHE", "RUNTIME"):
+            path = base / kind.lower()
+            path.mkdir(mode=0o700)
+            env[f"XDG_{kind}_{'DIR' if kind == 'RUNTIME' else 'HOME'}"] = str(path)
+        lock_path = base / "data/putkin/signal/owner.lock"
+        real_java = str(Path(env["JAVA_HOME"]) / "bin/java")
+        gate_bin = base / "gate/bin"
+        gate_bin.mkdir(parents=True)
+        gate = gate_bin / "java"
+        gate.write_text("#!/usr/bin/python3\nimport os, signal, sys\nos.kill(os.getpid(), signal.SIGSTOP)\n"
+                        + f"os.execv({real_java!r}, [{real_java!r}, *sys.argv[1:]])\n")
+        gate.chmod(0o700)
+        owner = None
+        cli_pids = []
+
+        def line():
+            if not select.select([owner.stdout], [], [], 25)[0]:
+                raise AssertionError("JVM owner deadline")
+            raw = owner.stdout.readline()
+            if not raw:
+                raise AssertionError("isolated JVM owner EOF: " + owner.stderr.read().decode())
+            value = json.loads(raw)
+            cli_pids.append(value["pid"])
+            return value
+
+        def gone(pid):
+            deadline = time.monotonic() + 6
+            while time.monotonic() < deadline:
+                try:
+                    os.waitpid(pid, os.WNOHANG)
+                except ChildProcessError:
+                    pass
+                if not Path(f"/proc/{pid}").exists():
+                    return True
+                time.sleep(.01)
+            return False
+
+        try:
+            for phase, sig in (("ready", signal.SIGTERM), ("ready", signal.SIGKILL),
+                               ("spawned", signal.SIGKILL), ("jvm-exec-gate", signal.SIGKILL)):
+                child_env = {**env, "JAVA_HOME": str(gate_bin.parent)} if phase == "jvm-exec-gate" else env
+                owner = subprocess.Popen([sys.executable, "-B", str(ROOT / "tests/signal_jvm_owner.py"), executable],
+                                         env=child_env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=0)
+                value = line()
+                if phase == "jvm-exec-gate":
+                    deadline = time.monotonic() + 5
+                    while time.monotonic() < deadline:
+                        status = Path(f'/proc/{value["pid"]}/status').read_text()
+                        if "State:\tT" in status:
+                            break
+                        time.sleep(.01)
+                    else:
+                        raise AssertionError("real wrapper did not reach JVM exec gate")
+                if phase == "ready":
+                    value = line()
+                    assert value["phase"] == "ready" and value["lockInherited"] and value["executable"] == "java", value
+                    with lock_path.open("r+") as lock:
+                        try:
+                            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                            raise AssertionError("real JVM lost owner.lock")
+                        except BlockingIOError:
+                            pass
+                if idle and sig == signal.SIGTERM:
+                    # JVM alone, empty account and private network namespace.
+                    # This is a baseline, not the cost of a linked account.
+                    def sample():
+                        fields = Path(f'/proc/{value["pid"]}/stat').read_text().rsplit(')', 1)[1].split()
+                        return {"cpuTicks": int(fields[11]) + int(fields[12]),
+                                "rssKiB": int(fields[21]) * os.sysconf('SC_PAGE_SIZE') // 1024}
+                    time.sleep(2)
+                    started, samples = time.monotonic(), []
+                    for second in range(61):
+                        time.sleep(max(0, started + second - time.monotonic()))
+                        samples.append({"elapsedSeconds": time.monotonic() - started, **sample()})
+                    report["idle"] = {"samples": samples, "subscriptionCount": value["subscriptionCount"],
+                        "cpuSeconds": (samples[-1]["cpuTicks"] - samples[0]["cpuTicks"]) / os.sysconf('SC_CLK_TCK'),
+                        "scope": "real pinned JVM, empty account, networkless; linked-account cost remains S12"}
+                os.kill(owner.pid, sig)
+                owner.wait(timeout=6)
+                stderr = owner.stderr.read().decode()
+                assert not stderr, stderr
+                assert gone(value["pid"]), "orphan JVM/shim"
+                with lock_path.open("r+") as lock:
+                    fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                report["checks"].append({"phase": phase, "signal": sig.name, "samePidExecAndLock": phase == "ready", "cleanup": True})
+                owner.stdout.close()
+                owner.stderr.close()
+            report["passed"] = True
+        except (OSError, ValueError, AssertionError, subprocess.SubprocessError) as error:
+            report["failure"] = str(error)
+        finally:
+            if owner and owner.poll() is None:
+                owner.kill()
+                owner.wait(timeout=6)
+            report["remainingCliProcesses"] = [pid for pid in set(cli_pids) if not gone(pid)]
+            if report["remainingCliProcesses"]:
+                report["passed"] = False
+    return report
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--executable", required=True, type=Path)
+    parser.add_argument("--java-home", type=Path)
+    parser.add_argument("--output", type=Path)
+    parser.add_argument("--inside", action="store_true")
+    parser.add_argument("--idle", action="store_true", help="measure the real empty-account JVM for 60 seconds")
+    args = parser.parse_args()
+    if args.inside:
+        if args.idle:
+            os.environ["PUTKIN_SIGNAL_MEASURE"] = "1"
+        result = inside(str(args.executable), args.idle)
+        print(json.dumps(result))
+        return 0 if result["passed"] else 1
+    if not args.java_home or not args.output:
+        parser.error("--java-home and --output required")
+    executable = args.executable.resolve(strict=True)
+    jre = args.java_home.resolve(strict=True)
+    bwrap = shutil.which("bwrap")
+    if not bwrap:
+        parser.error("bwrap required; no unisolated fallback")
+    command = [bwrap, "--unshare-all", "--die-with-parent", "--new-session", "--clearenv",
+               "--ro-bind", "/usr", "/usr", "--symlink", "usr/bin", "/bin", "--symlink", "usr/lib", "/lib",
+               "--symlink", "usr/lib", "/lib64", "--proc", "/proc", "--dev", "/dev", "--tmpfs", "/tmp",
+               "--ro-bind", str(ROOT), "/project", "--ro-bind", str(executable.parent.parent), "/tool/distribution",
+               "--ro-bind", str(jre), "/tool/jre", "--setenv", "PATH", "/usr/bin", "--setenv", "LANG", "C.UTF-8",
+               "--setenv", "JAVA_HOME", "/tool/jre", "--", "/usr/bin/python3", "-B",
+               "/project/scripts/test-signal-process", "--inside", "--executable", "/tool/distribution/bin/signal-cli"]
+    if args.idle:
+        command.append("--idle")
+    result = subprocess.run(command, capture_output=True, text=True, timeout=180 if args.idle else 100)
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.with_suffix(".log").write_text(result.stderr)
+    if not result.stdout:
+        print(result.stderr, file=sys.stderr)
+        return 1
+    report = json.loads(result.stdout)
+    args.output.write_text(json.dumps(report, indent=2) + "\n")
+    print(json.dumps(report, indent=2))
+    return result.returncode
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

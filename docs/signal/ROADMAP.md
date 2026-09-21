@@ -1,12 +1,47 @@
 # Signal w Putkinie — roadmapa wdrożenia
 
 Przygotowano 2026-09-20 na podstawie rozmowy z użytkownikiem i odczytu
-źródeł `/home/attntd/projects/putkin`. **To plan; implementacja S00–S12
-jeszcze się nie rozpoczęła.** [Bieżący status](STATUS.md).
+źródeł `/home/attntd/projects/putkin`. **S00–S11 ukończone lokalnie
+2026-09-20–21 w checkoutcie `/home/attntd/projects/signal`. S12 wdrożony 2026-09-21; podstawowy odbiór telefonu PASS.**
+Proces usługi, transport, SQLite, historia, wspólny outbox oraz parowanie
+w ustawieniach oraz natywne okno wiadomości są zaimplementowane.
+Wspólny interfejs jest oddzielony od adaptera Signala, z adresem rozmowy
+uwzględniającym usługę i konto. Odbiór działa także po zamknięciu okna.
+S05 dodaje własne powiadomienia, routing i quick reply również w centrum,
+osobny trwały szkic, wyciszenie/DND/lock oraz SQLite v2. S06 dodaje
+monotoniczne receipts, częściowe statusy grup, odczyt faktycznie widocznego
+zakresu, read sync i wspólny unread/toasty; SQLite v3. Nieznana lista
+odbiorców grupy wysłanej z telefonu pozostaje jawną granicą API.
+S07 dodaje media, trwałe pliki szkicu/outboxu, miniatury i odtwarzacz Qt;
+SQLite v4. Obowiązkowa polityka `putkin-media-1` dla CLI 0.14.8 ogranicza
+pobieranie/cache i pomija view-once/expiring przed zapisem. Produkcyjne
+pakowanie tego builda oraz transfer z telefonem pozostają w S12.
+S08 dodaje reakcje, edycje z trwałą mapą wersji, cytaty, wzmianki UTF-16
+i wskaźnik pisania; SQLite v5, ten sam pin CLI. Pisanie ma osobne lokalne
+ustawienie, domyślnie wyłączone, ponieważ API nie eksportuje ustawienia
+telefonu. S09 dodaje usuwanie lokalne/remoteDelete, trwałe znikanie od
+odczytu/wysłania i czyszczenie kontrolowanych kopii; SQLite v6 i nowy pin
+CLI putkin-retention-2 eksportujący początek oraz rzeczywisty czas trwania.
+View-once pozostaje niedostępny; resend log CLI jest wyłączony.
+S10 dodaje profile/kontakty, tworzenie i administrację grup, zaproszenia,
+rekoncyliację unknown, akceptację próśb, blokadę oraz lokalne mute/hidden.
+SQLite v7; pin CLI bez zmian. Członkostwo steruje composerem i quick reply.
+S11 domyka [macierz odbioru](ACCEPTANCE.md), fault injection, prywatny
+Wayland i pomiary 10 000 wiadomości / 60 s idle / 20 cykli okna. Pełna
+regresja: 202 Python, 667 Qt i 23 integracje PASS; JVM mierzony osobno.
+S12 dodał przypięty pakiet CLI/JRE, zgodność migracji/rollbacku oraz aktywację
+`20260921-091350-39f9ddda75b4`. Kontrola lifecycle na pulpicie PASS.
+Telefon sparowany. Naprawiono odbiór `STARTED`/`STOPPED`; konto gotowe.
+Tekst w Notatce działa w obie strony; reakcje/załączniki z drugą osobą
+potwierdzone. Edycja, oba działania powiadomienia, status odczytu, usuwanie
+wiadomości i rozmowy grupowe także potwierdzone. Podstawowy odbiór live PASS;
+rozszerzona macierz pozostaje otwarta.
+[Bieżący status i dowody](STATUS.md).
 
 ## Jak uruchamiać kolejne sesje
 
-1. Ustaw katalog pracy Codex Max na `/home/attntd/projects/putkin`.
+1. Ustaw katalog pracy na checkout zawierający tę roadmapę (obecnie
+   `/home/attntd/projects/signal`; prompty historycznie wskazują `putkin`).
 2. Otwórz plik następnego promptu z tabeli i wklej **całą treść**
    do nowej sesji. Jeden prompt odpowiada jednemu etapowi.
 3. Realizuj liniowo S00 → S01 → … → S12. Sprawdź wynik poprzedniego etapu
@@ -27,6 +62,12 @@ Nie rozpoczynamy ponownie jej etapów 00–13. Ten dokument rozszerza
 [roadmapę główną](../../ROADMAP.md).
 
 ## Obowiązujące decyzje użytkownika
+
+- **Okno jako przyszły hub wiadomości (S04).** Wspólny interfejs i routing
+  są oddzielone od logiki Signala. Pełny adres zawiera usługę, konto i
+  rozmowę, również dla przyszłych akcji powiadomień. Obecnie działa tylko
+  Signal. BlueFerry będzie osobnym adapterem do tego samego okna;
+  bez implementowania teraz drugiej usługi lub systemu wtyczek.
 
 - **Mocha i akcenty shella.** Cały interfejs Signala, w tym quick reply,
   używa Catppuccin Mocha i wspólnego Theme. Oba akcenty/gradient zmieniają
@@ -83,14 +124,17 @@ Nie planujemy wdrażania niekompletnego S05 do codziennego konta przed
 obsługą retencji wiadomości i pełnym odbiorem. S03 przygotowuje parowanie;
 rzeczywiste podłączenie w proponowanej kolejności odbywa się w S12.
 
-## Ustalenia implementacyjne do potwierdzenia w S00
+## Ustalenia implementacyjne po S00
 
-To propozycje techniczne, nie dodatkowe decyzje użytkownika:
+Kontrakty: [CONTRACTS.md](CONTRACTS.md), [API.md](API.md),
+[TESTING.md](TESTING.md). To decyzje techniczne, nie nowe funkcje produktu:
 
 - Cienkie adaptery QML i pomocnik Python zgodny z obecnymi backendami,
   SQLite oraz signal-cli. QML nie wykonuje bezpośrednio poleceń.
-- JSON-RPC lokalnie, przez stdin/stdout lub prywatny UNIX socket;
-  jeden transport ustalony podczas audytu.
+- JSON-RPC lokalnie przez stdin/stdout, `jsonRpc --receive-mode manual`,
+  jedna jawna subskrypcja po otwarciu bazy. Bez HTTP/TCP i UNIX socketu.
+- signal-cli **0.14.8 JVM** z JRE ≥25; izolowany odbiór na Temurin
+  25.0.4.1+1. Wariant native nie przeszedł lokalnego zakończenia po EOF.
 - Jedno konto i jedno leniwie tworzone natywne okno z listą rozmów;
   na małej szerokości osobny widok listy i rozmowy.
 - Prywatne dane w katalogach XDG Putkina, poza katalogami wydania.
@@ -123,11 +167,33 @@ Odczytano istniejące źródła i kontrakty:
   a nie odbioru wiadomości. Nowa integracja nie opiera na nim historii.
 - `scripts/qs` i instalator używają UWSM, `putkin.service`,
   katalogów wydań i dowiązania `current`. Nie edytujemy opublikowanej kopii.
-- W odczycie PATH narzędzie `signal-cli` nie było dostępne.
-  Wersje z istniejącej dokumentacji (Quickshell 0.3.1 / Qt 6.11.2)
-  trzeba ponownie sprawdzić w sesji implementacyjnej.
-- W tym udostępnionym katalogu nie wykryto metadanych Git.
-  Żaden prompt nie uprawnia do deklarowania nieistniejących commitów.
+- S00 potwierdził Quickshell 0.3.1 / Qt 6.11.2 / Python 3.14.7.
+  Przy braku CLI i Javy w PATH przygotowano prywatne narzędzia w
+  `artifacts/signal-s00/tool/`, bez pakietów systemowych.
+- S00 pracuje w repozytorium Git, gałąź `signal`, baza `f168407`.
+  Prompty są celowo ignorowane przez Git; przywrócono ich lokalne kopie
+  z katalogu źródłowego. Nie zmieniono reguł wykluczenia materiałów AI.
+
+## Luki API wykryte w S00
+
+- JSON-RPC nie eksportuje `expirationStartTimestamp` z sent sync.
+  **S09 musi najpierw uzupełnić tę lukę w sprawdzonym wydaniu/adapterze
+  i zaktualizować pin API.** Nie wolno uznać timera od odebrania za
+  równoważny timerowi Signala ani odebrać S09/S12 bez rozwiązania.
+- View-once-open i viewed sync istnieją w modelu biblioteki, lecz nie
+  w serializerze JSON. View-once pozostaje jawnie niedostępne zgodnie
+  z S09. S07 zweryfikował pominięcie pobierania takich plików w poprawionym
+  CLI; pełna obsługa i retencja nadal należą do S09.
+- „Usuń u mnie” jest lokalne; nie potwierdzono delete-for-me sync.
+  Remote delete oraz jego sent sync pozostają wymagane.
+- CLI pobiera media przed JSON; `getAttachment` czyta już lokalny plik.
+  S07 używa przypiętej polityki pobierania przed JSON; nie obiecuje
+  pobierania na żądanie przy `--ignore-attachments`.
+- Cache/ACK CLI nie czeka na commit bridge. Zachowujemy unknown i jawną
+  granicę utraty; brak obietnicy bezstratnego replay/exactly-once.
+
+Nie usunięto z zakresu wiadomości znikających ani mediów. Konkretny
+problem i warunki domknięcia zapisano w [API.md](API.md).
 
 ## Pliki przekazywane między sesjami
 
@@ -135,16 +201,17 @@ Odczytano istniejące źródła i kontrakty:
 | --- | --- |
 | `docs/signal/ROADMAP.md` | Ten plan i odnośniki do promptów. |
 | `docs/signal/STATUS.md` | Każdy etap: faktycznie wykonane prace, wyniki i następny krok. |
-| `docs/signal/CONTRACTS.md` | S00 tworzy; kolejne etapy aktualizują model, lifecycle, UI, retencję i decyzje. |
-| `docs/signal/API.md` | S00 tworzy; konkretna wersja, transport, API i schematy eventów. |
-| `docs/signal/TESTING.md` | S00 tworzy; testy, komendy, fixtures i wymagania izolacji. |
+| `docs/signal/CONTRACTS.md` | Utworzony w S00; kolejne etapy aktualizują model, lifecycle, UI, retencję i decyzje. |
+| `docs/signal/API.md` | Utworzony w S00; konkretna wersja, transport, API i schematy eventów. |
+| `docs/signal/TESTING.md` | Utworzony w S00; testy, komendy, fixtures i wymagania izolacji. |
 | `docs/signal/ACCEPTANCE.md` | S11 tworzy; macierz wymagań i dowodów, S12 dodaje wyniki live. |
 | `docs/signal/OPERATIONS.md` | S12 tworzy; zależności, start/stop, wdrożenie, aktualizacja, rollback. |
 | `docs/evidence/signal/SXX/` | Faktycznie uruchomione testy i syntetyczne zrzuty; bez danych konta. |
 | `docs/status.md` | Krótki wpis każdej sesji z odnośnikiem do statusu integracji. |
 
-Pliki zapowiedziane dla S00/S11/S12 powstają dopiero w tych etapach.
-Nie są brakującą częścią tej roadmapy. Każdy prompt ma własne kryteria
+ACCEPTANCE.md powstał w S11 i zawiera macierz S12. [OPERATIONS.md](OPERATIONS.md)
+opisuje wdrożony pakiet, zależności, start/stop i zgodny rollback.
+Każdy prompt ma własne kryteria
 odbioru; konkretne API i wersje są utrwalane w repo, żeby następna sesja
 nie odtwarzała decyzji z pamięci rozmowy.
 
@@ -181,7 +248,11 @@ odtworzenie wszystkich ustawień oficjalnego klienta. Przesyłanie plików
 audio/wideo jest częścią S07. Cytaty, wzmianki i wskaźnik pisania
 są uwzględnione w S08. Brak pełnego wsparcia view-once ma być jawny.
 
-## Źródła do weryfikacji API
+## Źródła API
+
+S00 przypiął źródła i zweryfikowane przykłady do **v0.14.8** w
+[API.md](API.md). Linki `master` z pierwotnego planu poniżej służą
+odszukaniu upstreamu, nie są podstawą kontraktu wersji.
 
 - [signal-cli — polecenia](https://github.com/AsamK/signal-cli/blob/master/man/signal-cli.1.adoc):
   link, wiadomości, załączniki, grupy, reakcje, edycje i usuwanie.

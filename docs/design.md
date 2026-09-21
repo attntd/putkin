@@ -109,6 +109,28 @@ Tether ma własne jednobarwne uzupełnienie na tej samej siatce.
 Nieznane aplikacje używają `apps`.
 Zastępuje to wcześniejszy kontrakt Papirus-Dark i odcieni szarości.
 
+## Okno wiadomości — 2026-09-21
+
+Okno, szczegóły rozmowy i podgląd załącznika nie rysują własnej zewnętrznej
+ramki. Jedyną ramką okna zarządza Hyprland, zgodnie z aktywnością okna.
+Nazwa rozmowy i przycisk „Szczegóły” zajmują jeden wiersz, przycisk po prawej.
+Ustawienie znikania wiadomości znajduje się w Szczegółach.
+
+Menu ⋯ jest w prawym górnym rogu dymka, wyrównane do pierwszego wiersza
+treści. Kropki i reakcje nie mają tła ani ramki; używają kontrastowego
+koloru tekstu dymka, z obrysem tylko przy fokusie klawiatury. Reakcje są
+po lewej, a godzina i stan wiadomości po prawej we wspólnym dolnym wierszu.
+Własne wiadomości
+mają wypełnienie bieżącym akcentem oraz kontrastowy tekst, także przy
+załącznikach. Pole wpisywania zaczyna od 36 px, jak przyciski załącznika
+i wysyłania; rośnie wraz z tekstem do 144 px, potem przewija zawartość.
+
+W rozmowie załącznik pokazuje klikalną miniaturę, a bez miniatury prosty
+symbol pliku/filmu/dźwięku. Nie pokazuje nazwy, rozmiaru ani osobnych
+przycisków Podgląd/Zapisz/Otwórz. Kliknięcie lub Enter otwiera podgląd,
+w którym są nazwa, rozmiar oraz Zapisz, Otwórz i Zamknij. Escape wraca
+do miniatury. Brak dekodera nie odbiera dostępu do zapisu/otwarcia pliku.
+
 ## Ramki okien Hyprlanda — 2026-09-20
 
 Okna mają kwadratowe narożniki i ramkę 2 px, zgodnie z tokenami Shella.

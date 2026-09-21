@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/home/attntd/projects/signal/artifacts/signal-s12/live-verify.py", line 21, in <module>
+    run(['hyprctl','dispatch','closewindow','address:'+window['address']])
+    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/signal/scripts/_install.py", line 237, in run
+    raise RuntimeError(result.stderr.strip() or result.stdout.strip() or str(args))
+RuntimeError: error: [string "return hl.dispatch(closewindow address:0x5606..."]:1: ')' expected near 'address'
+
+ → Note: dispatch in lua is a shorthand for hl.dispatch(...), your syntax might need to be updated.

@@ -1,0 +1,18 @@
+--- AttachmentStore.java
++++ AttachmentStore.java
+@@ -84,11 +84,10 @@
+     }
+ 
+     private static String getAttachmentExtension(final Optional<String> filename, final Optional<String> contentType) {
+-        return filename.filter(f -> f.contains("."))
+-                .map(f -> f.substring(f.lastIndexOf(".") + 1))
+-                .or(() -> contentType.flatMap(MimeUtils::guessExtensionFromMimeType))
+-                .map(ext -> "." + ext)
+-                .orElse("");
++        // A remote filename never controls even an extension in the local path.
++        return contentType.flatMap(MimeUtils::guessExtensionFromMimeType)
++                .filter(ext -> ext.matches("[A-Za-z0-9]{1,10}"))
++                .map(ext -> "." + ext).orElse("");
+     }
+ 
+     private void createAttachmentsDir() throws IOException {

@@ -14,7 +14,7 @@ import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
 DEST = ROOT / "assets/material"
-NAMES = """apps chat chat_bubble search close check check_box check_box_outline_blank indeterminate_check_box
+NAMES = """add send apps chat chat_bubble search close check check_box check_box_outline_blank indeterminate_check_box
 radio_button_checked radio_button_unchecked chevron_right expand_more more_horiz
 network_wifi network_wifi_1_bar network_wifi_2_bar network_wifi_3_bar
 signal_wifi_0_bar signal_wifi_off settings_ethernet bluetooth bluetooth_disabled

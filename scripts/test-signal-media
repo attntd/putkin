@@ -1,0 +1,153 @@
+#!/usr/bin/env python3
+"""S07 media QML windows/SQLite/bridge with synthetic CLI and private XDG/D-Bus."""
+import argparse
+from contextlib import closing
+import ctypes
+import json
+from pathlib import Path
+import sqlite3
+import subprocess
+import sys
+import tempfile
+import time
+import traceback
+
+from _common import ROOT, ipc_json, ipc_reply, isolated_environment, qml_errors, runtime_log, stop_process_group, tool
+sys.path.insert(0, str(ROOT / "tests"))
+from test_signal_history import event
+from test_signal_media import fixtures, png, attachment_event
+from test_signal_lifecycle import gone
+
+
+def eventually(read, predicate, seconds=15):
+    deadline = time.monotonic() + seconds
+    value = None
+    while time.monotonic() < deadline:
+        value = read()
+        if predicate(value):
+            return value
+        time.sleep(.04)
+    raise AssertionError("Receipt condition timed out: " + str(value))
+
+
+def run(output):
+    output.parent.mkdir(parents=True, exist_ok=True)
+    report = {"passed": False, "scope": "production QML windows/SQLite/bridge; synthetic CLI; offscreen/private XDG/D-Bus; no phone/compositor", "checks": []}
+    ctypes.CDLL(None).prctl(36, 1, 0, 0, 0)
+    with tempfile.TemporaryDirectory(prefix="pk-s07-") as tmp:
+        base = Path(tmp)
+        env = isolated_environment(tmp)
+        env["QS_NO_RELOAD_POPUP"] = "1"
+        address = "unix:path=" + str(base / "bus")
+        env["DBUS_SESSION_BUS_ADDRESS"] = address
+        fixture, record = base / "fixture.json", base / "processes.jsonl"
+        fixture.write_text(json.dumps({"format": 1, "synthetic": True, "record": str(record), "receiveEvents": [], "readReceipts": False}))
+        config = Path(env["XDG_CONFIG_HOME"]) / "putkin"
+        config.mkdir(mode=0o700)
+        (config / "signal.json").write_text(json.dumps({"v": 1, "enabled": True, "deviceName": "Putkin"}))
+        (config / "signal.json").chmod(0o600)
+        env["PUTKIN_SIGNAL_TEST_SCENARIO"] = str(fixture)
+        entrypoint = str(ROOT / "signal-media-test.qml")
+        processes, logs, helpers = [], [], set()
+        def start(cmd, name):
+            log = (base / (name + ".log")).open("w+")
+            logs.append((name, log))
+            process = subprocess.Popen(cmd, env=env, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+            processes.append(process)
+            return process
+        def ipc(method, *args):
+            result = subprocess.run([tool("quickshell"), "ipc", "--path", entrypoint, "call", "probe", method, *map(str, args)],
+                env=env, capture_output=True, text=True, timeout=5)
+            return ipc_reply(result, shell, logs, starting=method == "snapshot")
+        def snapshot():
+            value = ipc_json(ipc("snapshot"))
+            if value.get("pid"): helpers.add(value["pid"])
+            return value
+        def records(kind):
+            return [v for v in map(json.loads, record.read_text().splitlines()) if v["kind"] == kind] if record.exists() else []
+        def query(sql):
+            with closing(sqlite3.connect(Path(env["XDG_DATA_HOME"]) / "putkin/signal/history.sqlite3")) as db:
+                return db.execute(sql).fetchall()
+        def receive(wire):
+            ipc("receive", json.dumps(wire))
+        def assert_no_receipts(count):
+            time.sleep(.6)
+            assert len(records("receipt")) == count, records("receipt")
+        try:
+            start([tool("dbus-daemon"), "--session", "--nofork", "--address=" + address], "bus")
+            eventually(lambda: (base / "bus").exists(), bool)
+            shell = start([tool("quickshell"), "--no-color", "--path", entrypoint], "shell")
+            ready = eventually(snapshot, lambda v: v.get("state") == "ready")
+            receive(event(body="Syntetyczna rozmowa z mediami"))
+            eventually(snapshot, lambda v: v.get("entries") == 1 and not v.get("pending"))
+            assert ipc("select", 0) == "true"
+            eventually(snapshot, lambda v: v.get("draftReady") and v.get("loaded") and v.get("canSend"))
+            paths = fixtures(base)
+            staged_result = ipc("stage", json.dumps({"paths": [p.as_uri() for p in paths]}))
+            assert staged_result == "true", (staged_result, snapshot())
+            staged = eventually(snapshot, lambda v: len(v.get("attachments", [])) == 4 and not v.get("mediaBusy"))
+            assert all(a["state"] == "ready" for a in staged["attachments"])
+            ipc("remove", staged["attachments"][0]["attachment_id"])
+            eventually(snapshot, lambda v: len(v.get("attachments", [])) == 3)
+            removed = paths[next(i for i,p in enumerate(paths) if p.name == staged["attachments"][0]["filename"])]
+            ipc("stage", json.dumps({"paths": [removed.as_uri()]}))
+            eventually(snapshot, lambda v: len(v.get("attachments", [])) == 4 and not v.get("mediaBusy"))
+            ipc("draft", "Tekst i cztery załączniki")
+            assert ipc("capture", str(output.with_name("composer.png"))) == "true"
+            eventually(snapshot, lambda v: v.get("captured"))
+            assert ipc("send") == "true"
+            eventually(snapshot, lambda v: "Wysłano" in v.get("statuses", []) and not v.get("attachments"))
+            assert len(records("media-send")[0]["params"]["files"]) == 4
+            report["checks"].append("native composer stages/removes/restages four real files; actual send RPC contains four durable paths and text")
+            # Close the conversation so its incoming image remains a notification.
+            ipc("close"); eventually(snapshot, lambda v: not v.get("loaded"))
+            cli = Path(env["XDG_DATA_HOME"]) / "putkin/signal/cli/attachments"
+            cli.mkdir(mode=0o700, exist_ok=True)
+            inbound = png(cli / "incoming.png")
+            receive(attachment_event(inbound, "image/png", timestamp=1790000500000))
+            notice = eventually(snapshot, lambda v: any(row.get("imageSource") for row in v.get("history", [])))
+            assert not inbound.exists()
+            ipc("locked", "true")
+            eventually(snapshot, lambda v: all(not row.get("imageSource") for row in v.get("history", [])))
+            ipc("locked", "false")
+            report["checks"].append("received image imported into bounded thumbnail; notification uses it and lock clears it")
+            ipc("select", 0)
+            selected = eventually(snapshot, lambda v: v.get("count") == 3 and v.get("loaded") and not v.get("pending"))
+            ipc("preview", 2)
+            eventually(snapshot, lambda v: v.get("mediaPreview"))
+            ipc("accent", "#a6e3a1", "#fab387")
+            time.sleep(.5)
+            assert ipc("capture", str(output.with_name("image-preview.png"))) == "true"
+            eventually(snapshot, lambda v: v.get("captured"))
+            ipc("closePreview")
+            report["checks"].append("real image preview keeps proportions and uses both live theme accents")
+            ipc("reload")
+            after = eventually(snapshot, lambda v: v.get("state") == "ready" and v.get("generation") != ready["generation"] and not v.get("pending"))
+            assert gone(ready["pid"])
+            ipc("select", 0)
+            restored = eventually(snapshot, lambda v: v.get("count") == 3 and not v.get("pending"))
+            assert sum(len(a) for a in restored["mediaRows"]) == 5
+            assert len(records("media-send")) == 1
+            report["checks"].append("QML hard reload preserves five attachments in history and never repeats send")
+            ipc("quit"); shell.wait(timeout=8)
+            report["passed"] = True
+        except (OSError, AssertionError, subprocess.SubprocessError) as error:
+            report["failure"] = traceback.format_exc()
+        finally:
+            for process in reversed(processes): stop_process_group(process)
+            remaining = [pid for pid in helpers | {v["pid"] for v in records("start")} if not gone(pid)]
+            combined = runtime_log(logs)
+            output.with_suffix(".log").write_text(combined)
+            report["qmlErrors"] = qml_errors(combined, allow_offscreen_masks=True)
+            report["remainingOwnedProcesses"] = remaining
+            if remaining or report["qmlErrors"]: report["passed"] = False
+            for _, log in logs: log.close()
+    output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
+    print(json.dumps(report, ensure_ascii=False, indent=2))
+    return int(not report["passed"])
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, default=ROOT / "artifacts/signal-s07/media.json")
+    raise SystemExit(run(parser.parse_args().output.resolve()))

@@ -1,0 +1,2905 @@
+{
+  "passed": true,
+  "scope": "synthetic CLI + real QML/SQLite/pipes, private D-Bus/XDG, offscreen; no phone",
+  "history": {
+    "count": 10000,
+    "seedAndPageSeconds": 61.925,
+    "pageCount": 200,
+    "pageMs": {
+      "median": 10.04460800322704,
+      "p95": 13.11173899739515,
+      "max": 15.820002008695155
+    },
+    "queryPlan": [
+      "SEARCH messages USING INDEX messages_page (conversation_id=? AND (sort_ms,message_id)<(?,?))"
+    ]
+  },
+  "performance": {
+    "idleSeconds": 60.00016130899894,
+    "idleSummary": [
+      {
+        "pid": 513035,
+        "role": "qml",
+        "name": "quickshell",
+        "rssStartKiB": 159508,
+        "rssEndKiB": 133352,
+        "cpuSeconds": 0.05
+      },
+      {
+        "pid": 513317,
+        "role": "signal-bridge",
+        "name": "python3",
+        "rssStartKiB": 37224,
+        "rssEndKiB": 37224,
+        "cpuSeconds": 0.0
+      },
+      {
+        "pid": 513320,
+        "role": "notification-watcher",
+        "name": "python3",
+        "rssStartKiB": 27584,
+        "rssEndKiB": 27584,
+        "cpuSeconds": 0.0
+      },
+      {
+        "pid": 513332,
+        "role": "synthetic-cli",
+        "name": "python3",
+        "rssStartKiB": 22960,
+        "rssEndKiB": 22960,
+        "cpuSeconds": 0.0
+      }
+    ],
+    "samples": [
+      {
+        "elapsed": 5.220000457484275e-05,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 318,
+            "rss_kib": 159508
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 1.000187437995919,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 318,
+            "rss_kib": 159508
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 2.0002078440011246,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 318,
+            "rss_kib": 159508
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 3.000114852999104,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 318,
+            "rss_kib": 159508
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 4.000194485997781,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 318,
+            "rss_kib": 159508
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 5.0002019020030275,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 318,
+            "rss_kib": 159508
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 6.000119575008284,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 318,
+            "rss_kib": 159508
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 7.000200555004994,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 319,
+            "rss_kib": 159508
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 8.000158473994816,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 319,
+            "rss_kib": 159508
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 9.000101858007838,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 319,
+            "rss_kib": 159508
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 10.000152615000843,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 319,
+            "rss_kib": 159508
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 11.000194931999431,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 319,
+            "rss_kib": 159508
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 12.000182203002623,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 319,
+            "rss_kib": 159508
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 13.000202259005164,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 319,
+            "rss_kib": 159508
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 14.00017761500203,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 319,
+            "rss_kib": 159508
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 15.000196341003175,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 319,
+            "rss_kib": 159508
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 16.000163933000294,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 319,
+            "rss_kib": 159508
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 17.00014006899437,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 319,
+            "rss_kib": 159508
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 18.000115493996418,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 319,
+            "rss_kib": 159508
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 19.00015665400133,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 319,
+            "rss_kib": 159508
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 20.000141862998134,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 319,
+            "rss_kib": 159508
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 21.000194028005353,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 319,
+            "rss_kib": 159508
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 22.000142788994708,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 319,
+            "rss_kib": 159508
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 23.00011592199735,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 319,
+            "rss_kib": 159508
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 24.000145630998304,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 319,
+            "rss_kib": 159508
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 25.00018531800015,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 319,
+            "rss_kib": 159508
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 26.000193211002625,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 320,
+            "rss_kib": 142840
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 27.00013601599494,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 320,
+            "rss_kib": 142840
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 28.000137740003993,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 320,
+            "rss_kib": 142840
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 29.00017580599524,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 321,
+            "rss_kib": 142840
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 30.000093388996902,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 321,
+            "rss_kib": 142840
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 31.00009587200475,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 321,
+            "rss_kib": 142840
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 32.000237624000874,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 321,
+            "rss_kib": 142840
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 33.00014541800192,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 321,
+            "rss_kib": 142840
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 34.00020047300495,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 321,
+            "rss_kib": 133352
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 35.00017607300833,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 321,
+            "rss_kib": 133352
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 36.000176849003765,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 321,
+            "rss_kib": 133352
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 37.00019260600675,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 321,
+            "rss_kib": 133352
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 38.00016407799558,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 321,
+            "rss_kib": 133352
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 39.00014264200581,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 321,
+            "rss_kib": 133352
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 40.00010344199836,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 321,
+            "rss_kib": 133352
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 41.00013537600171,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 322,
+            "rss_kib": 133352
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 42.00018227900728,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 322,
+            "rss_kib": 133352
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 43.00016787000641,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 322,
+            "rss_kib": 133352
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 44.000155728004756,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 322,
+            "rss_kib": 133352
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 45.00015973999689,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 322,
+            "rss_kib": 133352
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 46.000092963004136,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 322,
+            "rss_kib": 133352
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 47.000094946997706,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 322,
+            "rss_kib": 133352
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 48.00018724100664,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 322,
+            "rss_kib": 133352
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 49.00014501900296,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 322,
+            "rss_kib": 133352
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 50.000196092994884,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 322,
+            "rss_kib": 133352
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 51.00018305699632,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 322,
+            "rss_kib": 133352
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 52.00014437000209,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 322,
+            "rss_kib": 133352
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 53.00018326099962,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 322,
+            "rss_kib": 133352
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 54.00010271099745,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 323,
+            "rss_kib": 133352
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 55.00015526199422,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 323,
+            "rss_kib": 133352
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 56.000190799997654,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 323,
+            "rss_kib": 133352
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 57.00010634600767,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 323,
+            "rss_kib": 133352
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 58.0001966090058,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 323,
+            "rss_kib": 133352
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 59.00014471799659,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 323,
+            "rss_kib": 133352
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "elapsed": 60.00016130899894,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 323,
+            "rss_kib": 133352
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 44,
+            "rss_kib": 37224
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      }
+    ],
+    "cycles": [
+      {
+        "cycle": 1,
+        "elapsedMs": 1506.8639190139947,
+        "created": 1,
+        "destroyed": 1,
+        "firstPageRows": 49,
+        "secondPageRows": 99,
+        "firstPageDelegates": 8,
+        "secondPageDelegates": 8,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 413,
+            "rss_kib": 170532
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 50,
+            "rss_kib": 37480
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "cycle": 2,
+        "elapsedMs": 1385.8730969950557,
+        "created": 2,
+        "destroyed": 2,
+        "firstPageRows": 49,
+        "secondPageRows": 99,
+        "firstPageDelegates": 8,
+        "secondPageDelegates": 8,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 498,
+            "rss_kib": 171124
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 54,
+            "rss_kib": 37608
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "cycle": 3,
+        "elapsedMs": 1315.644724003505,
+        "created": 3,
+        "destroyed": 3,
+        "firstPageRows": 49,
+        "secondPageRows": 99,
+        "firstPageDelegates": 8,
+        "secondPageDelegates": 8,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 577,
+            "rss_kib": 171036
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 59,
+            "rss_kib": 37608
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "cycle": 4,
+        "elapsedMs": 1455.6376359978458,
+        "created": 4,
+        "destroyed": 4,
+        "firstPageRows": 49,
+        "secondPageRows": 99,
+        "firstPageDelegates": 8,
+        "secondPageDelegates": 8,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 662,
+            "rss_kib": 171932
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 63,
+            "rss_kib": 37608
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "cycle": 5,
+        "elapsedMs": 1430.250477991649,
+        "created": 5,
+        "destroyed": 5,
+        "firstPageRows": 49,
+        "secondPageRows": 99,
+        "firstPageDelegates": 8,
+        "secondPageDelegates": 8,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 752,
+            "rss_kib": 171260
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 68,
+            "rss_kib": 37608
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "cycle": 6,
+        "elapsedMs": 1486.7543779982952,
+        "created": 6,
+        "destroyed": 6,
+        "firstPageRows": 49,
+        "secondPageRows": 99,
+        "firstPageDelegates": 8,
+        "secondPageDelegates": 8,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 841,
+            "rss_kib": 169072
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 73,
+            "rss_kib": 37608
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "cycle": 7,
+        "elapsedMs": 1554.3667919992004,
+        "created": 7,
+        "destroyed": 7,
+        "firstPageRows": 49,
+        "secondPageRows": 99,
+        "firstPageDelegates": 8,
+        "secondPageDelegates": 8,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 938,
+            "rss_kib": 169724
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 78,
+            "rss_kib": 37608
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "cycle": 8,
+        "elapsedMs": 1566.9106870045653,
+        "created": 8,
+        "destroyed": 8,
+        "firstPageRows": 49,
+        "secondPageRows": 99,
+        "firstPageDelegates": 8,
+        "secondPageDelegates": 8,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 1034,
+            "rss_kib": 168576
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 82,
+            "rss_kib": 37608
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "cycle": 9,
+        "elapsedMs": 1357.6717370015103,
+        "created": 9,
+        "destroyed": 9,
+        "firstPageRows": 49,
+        "secondPageRows": 99,
+        "firstPageDelegates": 8,
+        "secondPageDelegates": 8,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 1113,
+            "rss_kib": 168328
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 88,
+            "rss_kib": 37608
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "cycle": 10,
+        "elapsedMs": 1363.7253409979166,
+        "created": 10,
+        "destroyed": 10,
+        "firstPageRows": 49,
+        "secondPageRows": 99,
+        "firstPageDelegates": 8,
+        "secondPageDelegates": 8,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 1197,
+            "rss_kib": 170240
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 92,
+            "rss_kib": 37608
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "cycle": 11,
+        "elapsedMs": 1374.7344660077943,
+        "created": 11,
+        "destroyed": 11,
+        "firstPageRows": 49,
+        "secondPageRows": 99,
+        "firstPageDelegates": 8,
+        "secondPageDelegates": 8,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 1276,
+            "rss_kib": 169040
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 97,
+            "rss_kib": 37608
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "cycle": 12,
+        "elapsedMs": 1383.0514429864706,
+        "created": 12,
+        "destroyed": 12,
+        "firstPageRows": 49,
+        "secondPageRows": 99,
+        "firstPageDelegates": 8,
+        "secondPageDelegates": 8,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 1362,
+            "rss_kib": 168304
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 102,
+            "rss_kib": 37608
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "cycle": 13,
+        "elapsedMs": 1472.1196680038702,
+        "created": 13,
+        "destroyed": 13,
+        "firstPageRows": 49,
+        "secondPageRows": 99,
+        "firstPageDelegates": 8,
+        "secondPageDelegates": 8,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 1450,
+            "rss_kib": 171632
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 106,
+            "rss_kib": 37608
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "cycle": 14,
+        "elapsedMs": 1536.2517019966617,
+        "created": 14,
+        "destroyed": 14,
+        "firstPageRows": 49,
+        "secondPageRows": 99,
+        "firstPageDelegates": 8,
+        "secondPageDelegates": 8,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 1542,
+            "rss_kib": 171044
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 111,
+            "rss_kib": 37608
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "cycle": 15,
+        "elapsedMs": 1448.8613420107868,
+        "created": 15,
+        "destroyed": 15,
+        "firstPageRows": 49,
+        "secondPageRows": 99,
+        "firstPageDelegates": 8,
+        "secondPageDelegates": 8,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 1631,
+            "rss_kib": 169140
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 116,
+            "rss_kib": 37608
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "cycle": 16,
+        "elapsedMs": 1433.2305839925539,
+        "created": 16,
+        "destroyed": 16,
+        "firstPageRows": 49,
+        "secondPageRows": 99,
+        "firstPageDelegates": 8,
+        "secondPageDelegates": 8,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 1720,
+            "rss_kib": 171424
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 120,
+            "rss_kib": 37608
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "cycle": 17,
+        "elapsedMs": 1460.236830986105,
+        "created": 17,
+        "destroyed": 17,
+        "firstPageRows": 49,
+        "secondPageRows": 99,
+        "firstPageDelegates": 8,
+        "secondPageDelegates": 8,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 1805,
+            "rss_kib": 169492
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 125,
+            "rss_kib": 37608
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "cycle": 18,
+        "elapsedMs": 1401.4835679990938,
+        "created": 18,
+        "destroyed": 18,
+        "firstPageRows": 49,
+        "secondPageRows": 99,
+        "firstPageDelegates": 8,
+        "secondPageDelegates": 8,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 1895,
+            "rss_kib": 170716
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 130,
+            "rss_kib": 37608
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "cycle": 19,
+        "elapsedMs": 1518.5707839991665,
+        "created": 19,
+        "destroyed": 19,
+        "firstPageRows": 49,
+        "secondPageRows": 99,
+        "firstPageDelegates": 8,
+        "secondPageDelegates": 8,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 1985,
+            "rss_kib": 172244
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 134,
+            "rss_kib": 37608
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      },
+      {
+        "cycle": 20,
+        "elapsedMs": 1484.2261309968308,
+        "created": 20,
+        "destroyed": 20,
+        "firstPageRows": 49,
+        "secondPageRows": 99,
+        "firstPageDelegates": 8,
+        "secondPageDelegates": 8,
+        "processes": [
+          {
+            "pid": 513035,
+            "name": "quickshell",
+            "parent": 512838,
+            "cpu_ticks": 2083,
+            "rss_kib": 173088
+          },
+          {
+            "pid": 513317,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 138,
+            "rss_kib": 37608
+          },
+          {
+            "pid": 513320,
+            "name": "python3",
+            "parent": 513035,
+            "cpu_ticks": 19,
+            "rss_kib": 27584
+          },
+          {
+            "pid": 513332,
+            "name": "python3",
+            "parent": 513317,
+            "cpu_ticks": 19,
+            "rss_kib": 22960
+          }
+        ]
+      }
+    ],
+    "settledRssGrowthKiB": 2352,
+    "growthBudgetKiB": 16384,
+    "metricsBefore": {
+      "retentionTimers": 1,
+      "typingTimers": 0,
+      "rpcPending": 0,
+      "lateResults": 0,
+      "outputBytes": 0,
+      "mediaWorker": false,
+      "directoryWorker": false
+    },
+    "metricsAfter": {
+      "retentionTimers": 1,
+      "typingTimers": 0,
+      "rpcPending": 0,
+      "lateResults": 0,
+      "outputBytes": 0,
+      "mediaWorker": false,
+      "directoryWorker": false
+    },
+    "qmlTimersClosed": 0,
+    "totalSubscriptions": 2,
+    "concurrentSubscriptions": 1,
+    "scope": "synthetic subscribed CLI; real empty-account JVM measured separately"
+  },
+  "scenarioOnly": false,
+  "checks": [
+    "closed-window text/media notification → exact-recipient quick reply → history → reaction → edit → reverse receipts",
+    "phone sent-sync creates history without toast; reverse edit/reaction and delete-before-original preserve identity and redaction",
+    "same process creates group, confirms admin roles and routes incoming group notification",
+    "local deletion and deadline survive hard reload; no send replay or expired body",
+    "60 s closed-window idle; 20 opens/closes release every window; paginated history in batches of up to 50 rows, bounded delegates/processes/RSS"
+  ],
+  "qmlErrors": [],
+  "remainingOwnedProcesses": []
+}

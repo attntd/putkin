@@ -1,0 +1,12 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::SignalGroups::initTestCase()
+PASS   : qmltestrunner::SignalGroups::test_destructive_action_targets_member_and_defaults_cancel()
+PASS   : qmltestrunner::SignalGroups::test_group_creation_selects_members_once_and_opens_result()
+PASS   : qmltestrunner::SignalGroups::test_lost_membership_disables_composer_and_admin_controls()
+PASS   : qmltestrunner::SignalGroups::test_profiles_refresh_keep_selection_and_both_accents()
+PASS   : qmltestrunner::SignalGroups::test_request_accept_mute_hide_and_block_are_distinct()
+PASS   : qmltestrunner::SignalGroups::test_unknown_create_stays_blocked_and_offers_readback()
+PASS   : qmltestrunner::SignalGroups::cleanupTestCase()
+Totals: 8 passed, 0 failed, 0 skipped, 0 blacklisted, 4016ms
+********* Finished testing of qmltestrunner *********

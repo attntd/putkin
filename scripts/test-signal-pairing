@@ -1,0 +1,151 @@
+#!/usr/bin/env python3
+"""S03 native settings preview/acceptance: isolated XDG/D-Bus, synthetic CLI only."""
+import argparse
+import ctypes
+import json
+import os
+import signal
+from pathlib import Path
+import subprocess
+import tempfile
+import time
+
+from _common import ROOT, ipc_json, ipc_reply, isolated_environment, qml_errors, runtime_log, stop_process_group, tool
+
+
+def eventually(read, predicate, seconds=15):
+    deadline = time.monotonic() + seconds
+    while time.monotonic() < deadline:
+        if predicate(value := read()):
+            return value
+        time.sleep(.04)
+    raise AssertionError("Synthetic pairing condition timed out")
+
+
+def reaped(pid):
+    try:
+        os.waitpid(pid, os.WNOHANG)
+    except ChildProcessError:
+        pass
+    return not Path(f"/proc/{pid}").exists()
+
+
+def run(output):
+    report = {"passed": False, "scope": "synthetic CLI + production settings/bridge, private XDG/D-Bus, offscreen; no phone", "checks": []}
+    output.parent.mkdir(parents=True, exist_ok=True)
+    ctypes.CDLL(None).prctl(36, 1, 0, 0, 0)
+    with tempfile.TemporaryDirectory(prefix="pk-signal-pairing-") as tmp:
+        base = Path(tmp)
+        env = isolated_environment(tmp)
+        env["QS_NO_RELOAD_POPUP"] = "1"
+        address = "unix:path=" + str(base / "bus")
+        env["DBUS_SESSION_BUS_ADDRESS"] = address
+        fixture, gate, linked, record = [base / name for name in ("scenario.json", "scan", "linked", "processes.jsonl")]
+        fixture.write_text(json.dumps({"format": 1, "synthetic": True, "accounts": [], "receiveEvents": [],
+            "record": str(record), "linkedFile": str(linked), "linkGate": str(gate)}))
+        env["PUTKIN_SIGNAL_TEST_SCENARIO"] = str(fixture)
+        entrypoint = str(ROOT / "signal-pairing-test.qml")
+        processes, logs, helpers = [], [], set()
+        def start(command, name):
+            log = (base / (name + ".log")).open("w+")
+            logs.append((name, log))
+            process = subprocess.Popen(command, env=env, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+            processes.append(process)
+            return process
+        def ipc(method, *args):
+            result = subprocess.run([tool("quickshell"), "ipc", "--path", entrypoint, "call", "probe", method, *map(str, args)],
+                                    env=env, capture_output=True, text=True, timeout=4)
+            return ipc_reply(result, shell, logs, starting=method == "snapshot")
+        def snapshot():
+            value = ipc_json(ipc("snapshot"))
+            if value.get("pid"):
+                helpers.add(value["pid"])
+            return value
+        def state(value):
+            return eventually(snapshot, lambda v: v.get("state") == value and not v.get("reconciling"))
+        def records(kind):
+            return [v for v in map(json.loads, record.read_text().splitlines()) if v["kind"] == kind] if record.exists() else []
+        def open_settings():
+            ipc("open")
+            eventually(snapshot, lambda v: v.get("pageReady"))
+            ipc("section", "signal")
+            time.sleep(.3)
+        try:
+            start([tool("dbus-daemon"), "--session", "--nofork", "--address=" + address], "bus")
+            eventually(lambda: (base / "bus").exists(), bool)
+            shell = start([tool("quickshell"), "--no-color", "--path", entrypoint], "shell")
+            state("idle")
+            open_settings()
+            state("idle")
+            assert ipc("activate", "signalPrimary") == "true", "primary action unavailable: " + str(snapshot())
+            qr = eventually(snapshot, lambda v: v.get("qrSize", 0) >= 21)
+            assert qr["linking"], "QR without active attempt"
+            assert ipc("capture", str(output.with_suffix(".png"))) == "false", "capture accepted during pairing"
+            report["checks"].append("real SettingsWindow renders an in-memory QR; capture refused while pairing")
+            ipc("close")
+            eventually(snapshot, lambda v: not v.get("loaded") and not v.get("qrSize") and not v.get("linking")
+                       and not v.get("reconciling") and v.get("state") == "idle")
+            assert not linked.exists()
+            assert all(reaped(v["pid"]) for v in records("link-start"))
+            report["checks"].append("closing settings cancels attempt, clears QR and reaps CLI")
+            open_settings()
+            ipc("activate", "signalPrimary")
+            interrupted = eventually(snapshot, lambda v: v.get("qrSize", 0) >= 21)
+            os.kill(interrupted["pid"], signal.SIGKILL)
+            failed = state("failed")
+            assert not failed["linking"] and not failed["qrSize"]
+            assert ipc("activate", "signalRefresh") == "true"
+            state("idle")
+            report["checks"].append("bridge SIGKILL during QR clears the attempt; settings can restart the service")
+            ipc("activate", "signalPrimary")
+            eventually(snapshot, lambda v: v.get("qrSize", 0) >= 21)
+            gate.touch()
+            connected = state("ready")
+            assert connected["account"] == "linked" and connected["accountId"]
+            assert connected["qrSize"] == 0 and not connected["linking"]
+            assert len(records("subscribe")) == 1
+            report["checks"].append("new attempt succeeds; exactly one receiver after durable identity, QR removed")
+            ipc("close")
+            eventually(snapshot, lambda v: not v.get("loaded"))
+            assert snapshot()["pid"] == connected["pid"]
+            assert len(records("subscribe")) == 1
+            ipc("reload")
+            restarted = eventually(snapshot, lambda v: v.get("state") == "ready" and v.get("generation") != connected["generation"])
+            assert restarted["accountId"] == connected["accountId"]
+            assert len(records("link-start")) == 3
+            report["checks"].append("window closure keeps linked receiver; hard reload restores identity without pairing")
+            open_settings()
+            assert ipc("activate", "signalPrimary") == "true"
+            state("disabled")
+            time.sleep(.3)
+            assert ipc("capture", str(output.with_suffix(".png"))) == "true"
+            eventually(snapshot, lambda v: v.get("captured"))
+            report["checks"].append("settings disable receiver; review screenshot contains no QR or URI")
+            ipc("quit")
+            shell.wait(timeout=8)
+            report["passed"] = True
+        except (OSError, AssertionError, subprocess.SubprocessError) as error:
+            report["failure"] = str(error)
+        finally:
+            for process in reversed(processes):
+                stop_process_group(process)
+            for pid in helpers | {v["pid"] for v in records("start")}:
+                eventually(lambda: reaped(pid), bool)
+            combined = runtime_log(logs)
+            # No raw IPC payloads are part of this log.
+            output.with_suffix(".log").write_text(combined)
+            report["qmlErrors"] = qml_errors(combined, allow_offscreen_masks=True)
+            report["cleanup"] = {"remainingOwnedProcesses": []}
+            if report["qmlErrors"] or "sgnl://" in combined:
+                report["passed"] = False
+            for _, log in logs:
+                log.close()
+    output.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n")
+    print(json.dumps(report, indent=2, ensure_ascii=False))
+    return 0 if report["passed"] else 1
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, default=ROOT / "artifacts/signal-s03/pairing.json")
+    raise SystemExit(run(parser.parse_args().output.resolve()))

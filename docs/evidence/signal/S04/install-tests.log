@@ -1,0 +1,20 @@
+test_default_symlink_relative_imports_duplicate_and_pointer_switch (test_install.DefaultQuickshellTest.test_default_symlink_relative_imports_duplicate_and_pointer_switch) ... ok
+test_copy_and_validation_failure_leave_old_complete (test_install.InstallTest.test_copy_and_validation_failure_leave_old_complete) ... ok
+test_corrupted_build_and_source_symlink_are_rejected (test_install.InstallTest.test_corrupted_build_and_source_symlink_are_rejected) ... ok
+test_default_entry_backup_keeps_existing_helpers (test_install.InstallTest.test_default_entry_backup_keeps_existing_helpers) ... ok
+test_dry_run_creates_nothing_and_destination_refuses_host_activation (test_install.InstallTest.test_dry_run_creates_nothing_and_destination_refuses_host_activation) ... ok
+test_dry_run_existing_install_and_cli_restore (test_install.InstallTest.test_dry_run_existing_install_and_cli_restore) ... ok
+test_failed_activation_restores_original_default_and_instance_path (test_install.InstallTest.test_failed_activation_restores_original_default_and_instance_path) ... ok
+test_locked_or_foreign_session_cannot_be_stopped (test_install.InstallTest.test_locked_or_foreign_session_cannot_be_stopped) ... ok
+test_process_interruption_at_publication_leaves_whole_old_or_new_build (test_install.InstallTest.test_process_interruption_at_publication_leaves_whole_old_or_new_build) ... ok
+test_real_package_install_and_reinstall (test_install.InstallTest.test_real_package_install_and_reinstall) ... ok
+test_restore_toggles_complete_builds (test_install.InstallTest.test_restore_toggles_complete_builds) ... ok
+test_retention_preserves_current_previous_and_unrelated_state (test_install.InstallTest.test_retention_preserves_current_previous_and_unrelated_state) ... ok
+test_updates_reuse_identical_builds_keep_five_and_preserve_user_files (test_install.InstallTest.test_updates_reuse_identical_builds_keep_five_and_preserve_user_files) ... ok
+test_bare_qs_uses_uwsm_and_forwards_cli_queries_without_shell_interpolation (test_install.LauncherTest.test_bare_qs_uses_uwsm_and_forwards_cli_queries_without_shell_interpolation) ... ok
+test_lock_helper_uses_stable_config_identity (test_install.LauncherTest.test_lock_helper_uses_stable_config_identity) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 5.606s
+
+OK

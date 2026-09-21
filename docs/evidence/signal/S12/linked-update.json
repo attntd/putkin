@@ -1,0 +1,18 @@
+{
+  "result": "PASS",
+  "scope": "linked account survives source update; phone message acceptance pending",
+  "build": "20260921-091350-39f9ddda75b4",
+  "state": {
+    "state": "ready",
+    "accountState": "linked",
+    "schemaVersion": 7,
+    "cliVersion": "0.14.8",
+    "errorCode": "",
+    "linkError": "",
+    "eventErrorLocation": "",
+    "qrVisible": false,
+    "processId": 585963
+  },
+  "phoneQrScan": "confirmed by user",
+  "relinkRequired": false
+}

@@ -1,0 +1,10 @@
+{
+  "state": "idle",
+  "accountState": "linking",
+  "schemaVersion": 7,
+  "cliVersion": "0.14.8",
+  "errorCode": "",
+  "linkError": "",
+  "qrVisible": true,
+  "processId": 581355
+}

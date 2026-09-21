@@ -1,0 +1,13 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::Messages::initTestCase()
+PASS   : qmltestrunner::Messages::test_burst_refresh_queue_and_missing_target()
+PASS   : qmltestrunner::Messages::test_draft_pending_switch_and_window_recreation()
+PASS   : qmltestrunner::Messages::test_keyboard_send_shift_enter_and_ime_guard()
+PASS   : qmltestrunner::Messages::test_new_conversation_small_layout_disabled_send()
+PASS   : qmltestrunner::Messages::test_route_scope_and_stale_replies()
+PASS   : qmltestrunner::Messages::test_scroll_anchor_pagination_and_incoming()
+PASS   : qmltestrunner::Messages::test_search_names_numbers_group_authors_and_accents()
+PASS   : qmltestrunner::Messages::cleanupTestCase()
+Totals: 9 passed, 0 failed, 0 skipped, 0 blacklisted, 5637ms
+********* Finished testing of qmltestrunner *********

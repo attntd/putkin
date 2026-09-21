@@ -1,0 +1,11 @@
+FAIL [imports/types, exit=255] /home/attntd/projects/signal/signal-notifications-test.qml
+Warning: /home/attntd/projects/signal/signal-notifications-test.qml:55:83: Member "key" not found on type "QQuickItem" [missing-property]
+                for (let i = 0; i < center.cards.count; i++) if (center.cardAt(i).key === row.historyKey) center.cardAt(i).focusReply();
+                                                                                  ^^^
+Info: Did you mean "y"?
+                for (let i = 0; i < center.cards.count; i++) if (center.cardAt(i).y === row.historyKey) center.cardAt(i).focusReply();
+                                                                                  ^
+Warning: /home/attntd/projects/signal/signal-notifications-test.qml:55:124: Member "focusReply" not found on type "QQuickItem" [missing-property]
+                for (let i = 0; i < center.cards.count; i++) if (center.cardAt(i).key === row.historyKey) center.cardAt(i).focusReply();
+                                                                                                                           ^^^^^^^^^^
+FAIL: 243 plików QML, 1 z błędami.

@@ -1,0 +1,9 @@
+{
+  "reason": "Enabled shebang executables used by repository commands/tests: three tracked helpers had mode 100644, and the new S11 runner needed executable mode. Existing executable files were preserved.",
+  "files": [
+    "scripts/test-fade-wayland",
+    "scripts/test-icons",
+    "scripts/update-icons",
+    "scripts/test-signal-acceptance"
+  ]
+}

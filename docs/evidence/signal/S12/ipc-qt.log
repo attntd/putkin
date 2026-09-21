@@ -1,0 +1,20 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+QWARN  : qmltestrunner::tst_signal_ipc::compile() 
+  /home/attntd/projects/signal/tests/qml/tst_signal_ipc.qml produced 2 error(s):
+    /home/attntd/projects/signal/tests/qml/tst_signal_ipc.qml:28,5: Type SignalIpc unavailable
+    /home/attntd/projects/signal/services/SignalIpc.qml:2,1: module "Quickshell.Io" plugin "quickshell-ioplugin" not found
+  Working directory: /home/attntd/projects/signal
+  Import paths:
+    '/home/attntd/projects/signal'
+    '/usr/lib/qt6/bin'
+    'qrc:/qt-project.org/imports'
+    'qrc:/qt/qml'
+    '/usr/lib/qt6/qml'
+  Plugin paths:
+    '.'
+
+FAIL!  : qmltestrunner::tst_signal_ipc::compile() Type SignalIpc unavailable
+   Loc: [/home/attntd/projects/signal/tests/qml/tst_signal_ipc.qml(28)]
+Totals: 0 passed, 1 failed, 0 skipped, 0 blacklisted, 2ms
+********* Finished testing of qmltestrunner *********

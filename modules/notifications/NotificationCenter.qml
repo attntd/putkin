@@ -101,6 +101,7 @@ Column {
             required property int index
             required property int key
             entry: root.service.historyEntry(key)
+            service: root.service
             width: root.width
             height: implicitHeight
             scrollable: false
@@ -114,6 +115,11 @@ Column {
                 root.focusInitial(reason);
             }
             onActionRequested: identifier => {
+                const value = entry;
+                if (value && value.messageReference && identifier !== "open") {
+                    if (root.service.invoke(value, identifier) && identifier === "reply") card.focusReply(Qt.TabFocusReason);
+                    return;
+                }
                 const historyKey = key;
                 root.dismissed();
                 root.service.invokeHistory(historyKey, identifier);

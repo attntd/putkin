@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "scope": "production QML + SQLite + synthetic CLI; offscreen/private XDG/D-Bus; no phone",
+  "checks": [
+    "one private NotificationServer; no global inline reply; committed incoming only; duplicate/phone sync silent; real S04 routing; closed window reply uses one existing outbox",
+    "archived descriptor replies; replacement preserves draft/recipient; locked receive redacts cards and disables actions; unlock and DND do not replay toasts",
+    "hard reload restores separate draft; ambiguous RPC preserves text/UUID across another full reload; no duplicate send or receipts; archive resets per session"
+  ],
+  "capabilities": "as 3 \"body\" \"actions\" \"icon-static\"",
+  "qmlErrors": [],
+  "remainingOwnedProcesses": []
+}

@@ -1,0 +1,12 @@
+bus:
+
+shell:
+  INFO: Launching config: "/home/attntd/projects/signal/signal-pairing-test.qml"
+  INFO: Shell ID: "b4671d1a39fa615d93ec6490a46cc438" Path ID "b4671d1a39fa615d93ec6490a46cc438"
+  INFO: Saving logs to "/tmp/pk-signal-pairing-vq5ll5jf/runtime/quickshell/by-id/76r8j3iolt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  INFO: Reloading configuration...
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks

@@ -1,0 +1,44 @@
+bus:
+dbus-daemon[513034]: [session uid=1000 pid=513034 pidfd=4] Connection :1.1 (uid=1000 pid=513045 comm="/usr/bin/python3 -B /home/attntd/projects/signal/s") became a monitor.
+dbus-daemon[513034]: [session uid=1000 pid=513034 pidfd=4] Monitoring connection :1.1 closed.
+dbus-daemon[513034]: [session uid=1000 pid=513034 pidfd=4] Connection :1.7 (uid=1000 pid=513320 comm="/usr/bin/python3 -B /home/attntd/projects/signal/s") became a monitor.
+dbus-daemon[513034]: [session uid=1000 pid=513034 pidfd=4] Monitoring connection :1.7 closed.
+
+shell:
+  INFO: Launching config: "/home/attntd/projects/signal/signal-acceptance-test.qml"
+  INFO: Shell ID: "286145526025216d239ec042db20ebf4" Path ID "286145526025216d239ec042db20ebf4"
+  INFO: Saving logs to "/tmp/pk-s11-rqzz8a7g/runtime/quickshell/by-id/zuzalkfplt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+ DEBUG qml: S11_PHASE before-direct-close
+ DEBUG qml: S11_PHASE after-direct-close
+ DEBUG qml: S11_PHASE before-group-create
+  WARN: This plugin does not support setting window masks
+ DEBUG qml: S11_PHASE group-details
+ DEBUG qml: S11_PHASE before-direct-reopen
+  WARN: This plugin does not support setting window masks
+ DEBUG qml: S11_PHASE after-direct-reopen
+  INFO: Reloading configuration...
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks

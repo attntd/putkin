@@ -1,4 +1,5 @@
 NotificationCard 1.0 NotificationCard.qml
+NotificationReply 1.0 NotificationReply.qml
 NotificationStack 1.0 NotificationStack.qml
 NotificationWindow 1.0 NotificationWindow.qml
 NotificationWindows 1.0 NotificationWindows.qml

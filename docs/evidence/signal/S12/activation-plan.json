@@ -1,0 +1,38 @@
+{
+  "paths": {
+    "store": "/home/attntd/.local/share/putkin",
+    "state": "/home/attntd/.local/state/putkin",
+    "entry": "/home/attntd/.config/quickshell/shell.qml",
+    "launcher": "/home/attntd/.local/bin/qs"
+  },
+  "keep": 5,
+  "builds": [
+    "20260921-080356-f26716f87551",
+    "20260920-210039-bf2eb74b4b79",
+    "20260920-205823-94b71f317b3f",
+    "20260920-204030-237db1e11390",
+    "20260920-203455-2287216abeef"
+  ],
+  "restore": null,
+  "runtime_files": 357,
+  "dependencies": {
+    "quickshell": "Quickshell 0.3.1 (revision , distributed by Arch Linux)",
+    "uwsm": "uwsm 0.27.0",
+    "optional_missing": []
+  },
+  "activate": true,
+  "signalRuntime": {
+    "platform": "linux-x86_64",
+    "cliVersion": "0.14.8",
+    "javaVersion": "25.0.4.1+1",
+    "policy": "putkin-retention-2",
+    "treeSha256": "bcfcebef74761e3c69690d0be6836303c7d7edbd1675395361da765f266f116f"
+  },
+  "signalCompatibility": {
+    "schema": 0,
+    "targetSchema": 7,
+    "cliStore": "signal-cli-0.14.8",
+    "retention": 2,
+    "data": "preserved"
+  }
+}

@@ -4,3 +4,5 @@ AppearanceView 1.0 AppearanceView.qml
 KeyboardView 1.0 KeyboardView.qml
 SettingsWindow 1.0 SettingsWindow.qml
 ColorEditor 1.0 ColorEditor.qml
+SignalSettings 1.0 SignalSettings.qml
+SignalQr 1.0 SignalQr.qml

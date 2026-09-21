@@ -1,0 +1,61 @@
+{
+  "version": "signal-cli v0.14.8",
+  "sourceRoot": "https://github.com/AsamK/signal-cli/tree/v0.14.8",
+  "files": {
+    "JsonQuote.java": {
+      "sha256": "e5f14034a221de6bebf057940200fe4bdb164eddd56a5527313b2e9950c72097"
+    },
+    "JsonMention.java": {
+      "sha256": "a3d7e1253ff4a39f87475fd773b21378f26234a5e2de64f43ed7c9f38a742f2f"
+    },
+    "JsonTypingMessage.java": {
+      "sha256": "6ceed67c3dbc98fd95b1dfe5ddb7961dd20e20df3ba6ffe801863d3613380ddd"
+    },
+    "JsonTextStyle.java": {
+      "sha256": "842391038111a26c6482171ecc4f685a6de1dd9c66bc56442003b7ddc4e3e23c"
+    },
+    "SendReactionCommand.java": {
+      "sha256": "29168cf69ce3a148082f58c420f5fef050866218c63cabe89a16ceed8e40e9db"
+    },
+    "SendCommand.java": {
+      "sha256": "c3e81e7a4176fa639318de6c42c36aa97db8a6c4a669e73d7f30e3dd2a94fd4d"
+    },
+    "SendTypingCommand.java": {
+      "sha256": "49b66ef7c0b6bcbe197919c35f938b2310212801c73958a14563f72816baa170"
+    },
+    "JsonSyncMessage.java": {
+      "sha256": "aab2543fa7bbc1198d651c1f8ed7b8862990b5d76c7b511a0054f8315485bb3b"
+    },
+    "SendHelper.java": {
+      "sha256": "2410c6762c0d81ea02eb54bfd4b49827462f873a685bf723047e88627625df7a"
+    },
+    "ManagerImpl.java": {
+      "sha256": "26bb692c34fb65ed1a6e945138ea545f26676d3e1ff32cf2c987807519948d20"
+    },
+    "MultiAccountManagerImpl.java": {
+      "sha256": "11bfc052a370ce957436514fec0560890617ba958b6f9ea40c3a3b588b68ee6c"
+    },
+    "ProvisioningManagerImpl.java": {
+      "sha256": "c295c16c249705fbef176c1670f1af113ce0bf51279f4659551980a56cf91385"
+    },
+    "RegistrationManagerImpl.java": {
+      "sha256": "e5c45aba11950b04537f2cb1df9b2de57941450f88610c6456ef48ff0659cb20"
+    },
+    "UpdateConfigurationCommand.java": {
+      "sha256": "503e81e57bf5978585d1adf3603236c36dae895c8368fbf55e8848f37256b449"
+    },
+    "DbusManagerImpl.java": {
+      "sha256": "680a2722c0e865ea04867e09d5d8bae3ba20aed804bc28fd70314cb0478c4fc6"
+    },
+    "DbusMultiAccountManagerImpl.java": {
+      "sha256": "cff751d4b80f7361a0009c47860892e32a985c5632d65407bab3c29a015ca442"
+    },
+    "DbusProvisioningManagerImpl.java": {
+      "sha256": "59b3c5e0cc5ee1795d68b0b2e6264285ce6d35f8e7dec947b8a8b9d6cc9af396"
+    },
+    "DbusRegistrationManagerImpl.java": {
+      "sha256": "c5984ab3267ed1ea871152443f779b1becfb511bf9feadbd11ba9a5eccef21eb"
+    }
+  },
+  "scope": "Read-only upstream audit; production remains putkin-media-1. No live account or transfer."
+}

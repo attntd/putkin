@@ -1,0 +1,35 @@
+--- SendHelper.java
++++ SendHelper.java
+@@ -106,6 +106,7 @@
+         }
+ 
+         final var message = messageBuilder.build();
++        PutkinRetention.observe(message.getTimestamp(), message.getExpiresInSeconds());
+         return sendMessage(message, recipientId, editTargetTimestamp, urgent);
+     }
+ 
+@@ -207,6 +208,7 @@
+         messageBuilder.withExpireTimerVersion(contact != null ? contact.messageExpirationTimeVersion() : 1);
+ 
+         var message = messageBuilder.build();
++        PutkinRetention.observe(message.getTimestamp(), message.getExpiresInSeconds());
+         return sendSelfMessage(message, editTargetTimestamp);
+     }
+ 
+@@ -428,6 +430,7 @@
+         messageBuilder.withExpiration(g.getMessageExpirationTimer());
+ 
+         final var message = messageBuilder.build();
++        PutkinRetention.observe(message.getTimestamp(), message.getExpiresInSeconds());
+         final var recipients = includeSelf
+                 ? g.getMemberRecipientIds()
+                 : g.getMembersWithout(account.getSelfRecipientId());
+@@ -921,7 +924,7 @@
+         var transcript = new SentTranscriptMessage(Optional.of(address),
+                 message.getTimestamp(),
+                 editTargetTimestamp.isEmpty() ? Optional.of(message) : Optional.empty(),
+-                message.getExpiresInSeconds(),
++                message.getExpiresInSeconds() > 0 ? System.currentTimeMillis() : 0,
+                 Map.of(address.getServiceId(), true),
+                 false,
+                 Optional.empty(),

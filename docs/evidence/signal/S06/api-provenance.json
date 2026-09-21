@@ -1,0 +1,31 @@
+{
+  "version": "signal-cli 0.14.8 JVM",
+  "tag": "v0.14.8",
+  "scope": "official source audit only; no live account or network receipt test",
+  "sources": [
+    {
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/src/main/java/org/asamk/signal/commands/SendReceiptCommand.java",
+      "sha256": "5e4dbf933065194e30cdd72e837dd7749c787d614fe5e62a367843b84c307a6a"
+    },
+    {
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/lib/src/main/java/org/asamk/signal/manager/internal/ManagerImpl.java",
+      "sha256": "26bb692c34fb65ed1a6e945138ea545f26676d3e1ff32cf2c987807519948d20"
+    },
+    {
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/lib/src/main/java/org/asamk/signal/manager/helper/SyncHelper.java",
+      "sha256": "031c258158dfdb01d00a0480b687cf4f6a1138ce8e972ba42cd837750b35842e"
+    },
+    {
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/src/main/java/org/asamk/signal/json/JsonSyncMessage.java",
+      "sha256": "aab2543fa7bbc1198d651c1f8ed7b8862990b5d76c7b511a0054f8315485bb3b"
+    },
+    {
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/src/main/java/org/asamk/signal/json/JsonSyncDataMessage.java",
+      "sha256": "c94ba89cd35ebfb2ddb0d09a032ee58d80663d3d07d8bc8584faa85dbc7dc6b4"
+    },
+    {
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/src/main/java/org/asamk/signal/util/SendMessageResultUtils.java",
+      "sha256": "c4edad52dc0f011572a9bd3706be785b3d0523782547643b7e12426e998c619e"
+    }
+  ]
+}

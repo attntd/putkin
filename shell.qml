@@ -8,6 +8,7 @@ import "services"
 import "modules/bar"
 import "modules/quicksettings" as Panels
 import "modules/settings"
+import "modules/messages"
 import "modules/osd"
 import "modules/notifications"
 import "modules/wallpaper"
@@ -32,6 +33,19 @@ ShellRoot {
     LauncherBackend { id: launcherBackend }
     LauncherService { id: launcherService; backend: launcherBackend; workspaceService: hyprland; keyboard: keyboard; actions: actions }
     LauncherIpc { coordinator: panels; service: launcherService }
+    SignalBackend { id: signalBackend }
+    SignalService { id: signalService; backend: signalBackend }
+    SignalIpc { service: signalService; coordinator: panels; blocked: lockService.locked || sessionService.busy }
+    SignalMessagingAdapter { id: signalMessages; service: signalService }
+    MessageHub { id: messageHub; adapters: [signalMessages] }
+    MessagesController {
+        id: messagesController; hub: messageHub; loader: messagesLoader
+        screens: Quickshell.screens; monitorService: hyprland; panels: panels; barFocus: barFocus
+        blocked: lockService.locked
+    }
+    LazyLoader { id: messagesLoader; MessagesWindow { controller: messagesController } }
+    MessagesFocus { controller: messagesController; service: hyprland; processId: Quickshell.processId }
+    MessagesIpc { controller: messagesController }
     ScreenshotBackend { id: screenshotBackend }
     ScreenshotService { id: screenshotService; backend: screenshotBackend; screens: Quickshell.screens; blocked: lockService.locked }
     ScreenshotHost { service: screenshotService }
@@ -79,7 +93,8 @@ ShellRoot {
     BluetoothService { id: bluetoothService; backend: bluetoothBackend }
     NotificationBackend { id: notificationBackend }
     NotificationApplicationService { id: notificationApplications; workspaceService: hyprland; applications: DesktopEntries.applications.values }
-    NotificationService { id: notifications; backend: notificationBackend; screens: Quickshell.screens; monitorService: hyprland; applicationService: notificationApplications }
+    NotificationService { id: notifications; backend: notificationBackend; screens: Quickshell.screens; monitorService: hyprland; locked: lockService.locked; messaging: signalNotices; applicationService: notificationApplications }
+    SignalNotifications { id: signalNotices; service: signalService; notifications: notifications; messagesController: messagesController }
     ErrorNotifications {
         notifications: notifications
         sources: [
@@ -87,6 +102,8 @@ ShellRoot {
             {source: keyboardBackend, property: "lastError", title: "Klawiatura"},
             {source: launcherService, property: "lastError", title: "Launcher"},
             {source: screenshotService, property: "lastError", title: "Zrzut ekranu"},
+            {source: messageHub, property: "lastError", title: "Wiadomości"},
+            {source: signalService, property: "lastError", title: "Signal"},
             {source: powerProfiles, property: "lastError", title: "Tryb pracy"},
             {source: hyprland, property: "lastError", title: "Workspace"},
             {source: audioService, property: "lastError", title: "Dźwięk"},
@@ -137,6 +154,7 @@ ShellRoot {
         coordinator: panels; launcher: launcherService; hyprland: hyprland; windowActions: windowActions
         barFocus: barFocus; notificationFocus: notificationFocus; notifications: notifications
         audio: audioService; brightness: brightnessService; sessionService: sessionService
+        messages: messagesController
         screenshot: screenshotService; powerProfiles: powerProfiles
     }
     ActionIpc { controller: actions }
@@ -156,6 +174,7 @@ ShellRoot {
         bluetooth: bluetoothService
         notifications: notifications
         sessionService: sessionService
+        signalService: signalService
         notificationController: notificationFocus
         trayMenuComponent: Component { TrayMenuAdapter {} }
     }
@@ -179,6 +198,7 @@ ShellRoot {
             network: networkService
             bluetooth: bluetoothService
             notifications: notifications
+            messages: messagesController
             date: clock.date
         }
     }

@@ -1,0 +1,23 @@
+FAIL [imports/types, exit=255] /home/attntd/projects/signal/signal-release-test.qml
+Warning: /home/attntd/projects/signal/signal-release-test.qml:33:37: Member "status" not found on type "qs::io::ipc::IpcHandler" [missing-property]
+            const raw = ipc.handler.status();
+                                    ^^^^^^
+Warning: /home/attntd/projects/signal/signal-release-test.qml:35:30: Member "pair" not found on type "qs::io::ipc::IpcHandler" [missing-property]
+            if (!ipc.handler.pair() || service.links !== 1 || panels.settingsSection !== "signal" || panels.active !== "settings") return "FAIL: pairing";
+                             ^^^^
+Warning: /home/attntd/projects/signal/signal-release-test.qml:37:30: Member "openSettings" not found on type "qs::io::ipc::IpcHandler" [missing-property]
+            if (!ipc.handler.openSettings() || panels.settingsRequest !== revision + 1) return "FAIL: repeated settings";
+                             ^^^^^^^^^^^^
+Warning: /home/attntd/projects/signal/signal-release-test.qml:39:29: Member "pair" not found on type "qs::io::ipc::IpcHandler" [missing-property]
+            if (ipc.handler.pair() || ipc.handler.openSettings() || service.links !== 1) return "FAIL: blocked";
+                            ^^^^
+Warning: /home/attntd/projects/signal/signal-release-test.qml:39:51: Member "openSettings" not found on type "qs::io::ipc::IpcHandler" [missing-property]
+            if (ipc.handler.pair() || ipc.handler.openSettings() || service.links !== 1) return "FAIL: blocked";
+                                                  ^^^^^^^^^^^^
+Warning: /home/attntd/projects/signal/signal-release-test.qml:42:29: Member "pair" not found on type "qs::io::ipc::IpcHandler" [missing-property]
+            if (ipc.handler.pair() || service.links !== 1 || !ipc.handler.openSettings()) return "FAIL: linked";
+                            ^^^^
+Warning: /home/attntd/projects/signal/signal-release-test.qml:42:75: Member "openSettings" not found on type "qs::io::ipc::IpcHandler" [missing-property]
+            if (ipc.handler.pair() || service.links !== 1 || !ipc.handler.openSettings()) return "FAIL: linked";
+                                                                          ^^^^^^^^^^^^
+FAIL: 272 plików QML, 1 z błędami.

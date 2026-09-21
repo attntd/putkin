@@ -9,6 +9,19 @@ UI.FadeScope {
     id: root
     readonly property bool accentScope: true
     required property var entry
+    property var service: null
+    readonly property var messageReference: entry ? entry.messageReference || null : null
+    readonly property bool redacted: !!messageReference && !!service && service.locked
+    readonly property var presentation: messageReference && service
+        ? service.history.find(row => row.historyKey === entry.historyKey) || {summary: "Signal", body: ""} : entry
+    readonly property var replySession: service ? service.messageSession(messageReference) : null
+    property bool replyExpanded: false
+    readonly property NotificationReply replyEditor: replyLoader.item as NotificationReply
+    function focusReply(reason = Qt.TabFocusReason): void {
+        if (!replySession || redacted) return;
+        replyExpanded = true;
+        Qt.callLater(() => { if (root.replyEditor) root.replyEditor.focusEditor(reason); });
+    }
     property bool navigating: false
     property bool scrollable: true
     property bool expanded: false
@@ -16,7 +29,7 @@ UI.FadeScope {
         && content.y + (body.visible ? body.y + body.height : summary.y + summary.height) > flick.height + 1)
     readonly property bool expandable: expanded || textClipped
     readonly property string defaultAction: {
-        const values = entry ? entry.actions : [];
+        const values = messageReference && service ? service.messageActions(messageReference) : entry ? entry.actions : [];
         const action = values.find(value => value.identifier === "default") || values[0];
         return action ? action.identifier : "";
     }
@@ -28,7 +41,7 @@ UI.FadeScope {
     readonly property alias expandControl: expand
     readonly property var actionItems: actions
     readonly property alias viewport: flick
-    implicitHeight: Math.min(scrollable ? Metrics.toastMaxHeight : Infinity, header.height + content.implicitHeight + Metrics.space12 * 3 + Metrics.space8)
+    implicitHeight: Math.min(scrollable ? (replyExpanded ? 420 : Metrics.toastMaxHeight) : Infinity, header.height + content.implicitHeight + Metrics.space12 * 3 + Metrics.space8)
     signal dismissRequested()
     signal actionRequested(string identifier)
     signal controlFocused(Item control)
@@ -50,7 +63,7 @@ UI.FadeScope {
     }
     function reveal(item: Item): void {
         controlFocused(item);
-        if (!scrollable || item === selection || item === close || item === expand) return;
+        if (!scrollable || item === selection || item === close || item === expand || item === mute) return;
         const point = item.mapToItem(flick.contentItem, 0, 0);
         const margin = Metrics.focusOffset + Metrics.focusWidth;
         if (point.y - margin < flick.contentY) flick.contentY = Math.max(0, point.y - margin);
@@ -71,12 +84,12 @@ UI.FadeScope {
         objectName: "notificationSelection"
         anchors.fill: parent
         padding: 0
-        text: root.entry ? root.entry.summary : ""
+        text: root.redacted ? "Signal" : root.presentation ? root.presentation.summary : ""
         tooltip: ""
         focusPolicy: root.navigating ? Qt.StrongFocus : Qt.NoFocus
         upTarget: root.previousControl
         downTarget: root.nextControl
-        rightTarget: expand.visible ? expand : close
+        rightTarget: mute.visible ? mute : expand.visible ? expand : close
         KeyNavigation.tab: rightTarget
         KeyNavigation.backtab: upTarget
         hasDetails: root.expandable
@@ -106,7 +119,7 @@ UI.FadeScope {
             symbol: root.entry ? root.entry.iconName || "apps" : "apps"
         }
         UI.PanelText {
-            width: Math.max(1, parent.width - appIcon.width - timeLabel.width - close.width - parent.spacing * 3 - (expand.visible ? expand.width + parent.spacing : 0))
+            width: Math.max(1, parent.width - appIcon.width - timeLabel.width - close.width - (mute.visible ? mute.width + parent.spacing : 0) - parent.spacing * 3 - (expand.visible ? expand.width + parent.spacing : 0))
             height: parent.height
             text: root.entry ? (root.entry.critical ? qsTr("Pilne · ") : "") + root.entry.appName : ""
             textFormat: Text.PlainText
@@ -124,6 +137,25 @@ UI.FadeScope {
             verticalAlignment: Text.AlignVCenter
             color: Theme.textMuted
             font.pixelSize: Metrics.smallFontSize
+        }
+        UI.NavigationButton {
+            id: mute
+            objectName: "notificationMute"
+            visible: !!root.messageReference && !!root.service && root.service.messageActions(root.messageReference).length > 0
+            width: Metrics.controlHeight
+            padding: 0
+            readonly property bool muted: visible && root.service.messaging.conversationMuted(root.messageReference)
+            text: muted ? qsTr("Włącz powiadomienia") : qsTr("Wycisz")
+            Accessible.name: text
+            contentItem: UI.Glyph { section: "notification"; symbol: mute.muted ? "notifications_off" : "notifications"; color: mute.foreground }
+            focusPolicy: root.navigating ? Qt.StrongFocus : Qt.NoFocus
+            rightTarget: close
+            upTarget: root.previousControl
+            downTarget: root.actionAt(0) || root.nextControl
+            KeyNavigation.tab: close
+            KeyNavigation.backtab: root.previousControl
+            onClicked: root.actionRequested("mute")
+            onEnsureVisible: item => root.reveal(item)
         }
         UI.NavigationButton {
             id: expand
@@ -169,7 +201,7 @@ UI.FadeScope {
             tooltip: qsTr("Zamknij powiadomienie")
             Accessible.name: tooltip
             focusPolicy: root.navigating ? Qt.StrongFocus : Qt.NoFocus
-            leftTarget: expand.visible ? expand : selection
+            leftTarget: expand.visible ? expand : mute.visible ? mute : selection
             upTarget: root.previousControl
             downTarget: root.actionAt(0) || root.nextControl
             KeyNavigation.tab: downTarget
@@ -204,6 +236,7 @@ UI.FadeScope {
                         const button = root.actionAt(index);
                         if (button && button.visible && button.contains(button.mapFromItem(flick, eventPoint.position.x, eventPoint.position.y))) return;
                     }
+                    if (root.replyEditor && root.replyEditor.contains(root.replyEditor.mapFromItem(flick, eventPoint.position.x, eventPoint.position.y))) return;
                     root.activateFromPointer();
                 }
             }
@@ -220,7 +253,7 @@ UI.FadeScope {
                         id: summary
                         objectName: "notificationSummary"
                         width: parent.width
-                        text: root.entry ? root.entry.summary : ""
+                        text: root.redacted ? "Signal" : root.presentation ? root.presentation.summary : ""
                         textFormat: Text.PlainText
                         font.bold: true
                         maximumLineCount: root.expanded ? 2147483647 : 3
@@ -232,7 +265,7 @@ UI.FadeScope {
                         objectName: "notificationBody"
                         width: parent.width
                         visible: text.length > 0
-                        text: root.entry ? root.entry.body : ""
+                        text: root.redacted ? qsTr("Nowa wiadomość") : root.presentation ? root.presentation.body : ""
                         textFormat: Text.PlainText
                         color: Theme.textMuted
                         maximumLineCount: root.expanded ? 2147483647 : 6
@@ -262,7 +295,7 @@ UI.FadeScope {
                     Repeater {
                         id: actions
                         // The card invokes default; only additional actions need buttons.
-                        model: root.entry ? root.entry.actions.filter(action => action.identifier !== "default") : []
+                        model: root.messageReference && root.service ? root.service.messageActions(root.messageReference) : root.entry ? root.entry.actions.filter(action => action.identifier !== "default") : []
                         delegate: UI.NavigationButton {
                             id: actionButton
                             required property int index
@@ -281,11 +314,24 @@ UI.FadeScope {
                             rightTarget: index % 2 === 0 ? root.actionAt(index + 1) : null
                             upTarget: index > 1 ? root.actionAt(index - 2) : selection
                             downTarget: root.actionAt(index + 2) || root.nextControl
-                            KeyNavigation.tab: root.actionAt(index + 1) || root.nextControl || close
+                            KeyNavigation.tab: root.actionAt(index + 1) || (root.replyEditor ? root.replyEditor.editor : root.nextControl) || close
                             KeyNavigation.backtab: index > 0 ? root.actionAt(index - 1) : close
                             onClicked: root.actionRequested(modelData.identifier)
                             onEnsureVisible: item => root.reveal(item)
                         }
+                    }
+                }
+                Loader {
+                    id: replyLoader
+                    width: parent.width
+                    active: root.replyExpanded && !!root.replySession && !root.redacted && root.shown
+                    visible: active
+                    sourceComponent: NotificationReply {
+                        session: root.replySession
+                        previousControl: root.actionAt(actions.count - 1) || close
+                        nextControl: root.nextControl || close
+                        onControlFocused: item => root.reveal(item)
+                        onCollapsed: { root.replyExpanded = false; close.forceActiveFocus(Qt.TabFocusReason); }
                     }
                 }
             }

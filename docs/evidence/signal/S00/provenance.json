@@ -1,0 +1,116 @@
+{
+  "checkedAt": "2026-09-20",
+  "signalCli": {
+    "tag": "v0.14.8",
+    "publishedAt": "2026-09-10T18:12:37Z",
+    "commit": "22b028bbb9cee8f6aa22af71c6b3e9d09028a16a",
+    "tagObject": "ddc9cea2cdbd2d6b6087db962e5589ae9ab4f686",
+    "releaseUrl": "https://github.com/AsamK/signal-cli/releases/tag/v0.14.8",
+    "assets": [
+      {
+        "name": "signal-cli-0.14.8-json-schemas.tar.gz",
+        "digest": "sha256:ac950a1a9c3e34b4eb7ca46a1a2ccd63dc183b78447ca7d654bac97af0b0096d",
+        "size": 4160,
+        "browser_download_url": "https://github.com/AsamK/signal-cli/releases/download/v0.14.8/signal-cli-0.14.8-json-schemas.tar.gz"
+      },
+      {
+        "name": "signal-cli-0.14.8-Linux-client.tar.gz",
+        "digest": "sha256:fd3a722668879fb8cb9c5f7fb2d1a1a90e4a2b5c0466920af73fc4ef56698c33",
+        "size": 2858104,
+        "browser_download_url": "https://github.com/AsamK/signal-cli/releases/download/v0.14.8/signal-cli-0.14.8-Linux-client.tar.gz"
+      },
+      {
+        "name": "signal-cli-0.14.8-Linux-native.tar.gz",
+        "digest": "sha256:36569af20c709e0c5e6e677b74f50f147b21f3740620b8a7affde70f6027f82a",
+        "size": 113821552,
+        "browser_download_url": "https://github.com/AsamK/signal-cli/releases/download/v0.14.8/signal-cli-0.14.8-Linux-native.tar.gz"
+      },
+      {
+        "name": "signal-cli-0.14.8.tar.gz",
+        "digest": "sha256:ccd408e831eff7e41ebaaf309704840bb00d78a7869f35ad700dbae5b5a5bb65",
+        "size": 125387917,
+        "browser_download_url": "https://github.com/AsamK/signal-cli/releases/download/v0.14.8/signal-cli-0.14.8.tar.gz"
+      }
+    ],
+    "sourceArchiveSha256": "9ab95c12fd0b7cfe22e36d752d935fa0e989e4774c498ab3bacb089679bf93aa"
+  },
+  "jre": {
+    "release": "jdk-25.0.4.1+1",
+    "version": "25.0.4.1+1-LTS",
+    "package": {
+      "checksum": "1731a34baadec5479258ea0202e4d5d865d2efeee60cb0c7d7eb056fe96ca219",
+      "checksum_link": "https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.4.1%2B1/OpenJDK25U-jre_x64_linux_hotspot_25.0.4.1_1.tar.gz.sha256.txt",
+      "download_count": 56557,
+      "link": "https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.4.1%2B1/OpenJDK25U-jre_x64_linux_hotspot_25.0.4.1_1.tar.gz",
+      "metadata_link": "https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.4.1%2B1/OpenJDK25U-jre_x64_linux_hotspot_25.0.4.1_1.tar.gz.json",
+      "name": "OpenJDK25U-jre_x64_linux_hotspot_25.0.4.1_1.tar.gz",
+      "signature_link": "https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.4.1%2B1/OpenJDK25U-jre_x64_linux_hotspot_25.0.4.1_1.tar.gz.sig",
+      "size": 61718288
+    }
+  },
+  "environment": {
+    "architecture": "x86_64",
+    "libc": [
+      "glibc",
+      "2.44"
+    ],
+    "quickshell": "Quickshell 0.3.1 (revision , distributed by Arch Linux)",
+    "qt": "6.11.2",
+    "python": "3.14.7",
+    "sqlite": "3.53.4",
+    "signalCliInitiallyOnPath": null,
+    "javaInitiallyOnPath": null,
+    "gitHead": "f16840763eb030efea9eb21585c3b7b9aa5e8bc6"
+  },
+  "integrity": "Archive SHA-256 checked against HTTPS publisher metadata; detached signatures not verified.",
+  "sourceHashes": {
+    "README.md": "c0b96326ff869ba17e86339b7468ed0c12f2a8af1f228d6e97d7a2530d8b98d5",
+    "gradle/libs.versions.toml": "7c91ea2494ffa7aa4c399bfc2a859776f0ca147063988bcf73ae3708eb0e84e6",
+    "lib/src/main/java/org/asamk/signal/manager/api/MessageEnvelope.java": "11614b56130bd43e146a64db701f8ae54796e35dcf3397dc4ac5cd682bc3b7f0",
+    "lib/src/main/java/org/asamk/signal/manager/helper/AttachmentHelper.java": "8659cce67c82eb16c798882986e4d5e129ba5b39fb80704c2ce2e1a426a88ab9",
+    "lib/src/main/java/org/asamk/signal/manager/helper/IncomingMessageHandler.java": "73db0c2feb2de845fca7719656643dfda0f18ff13977a38733212f1676abd007",
+    "lib/src/main/java/org/asamk/signal/manager/helper/ReceiveHelper.java": "291fc7f7dd02b419ca130c5c13a8a05ae50084d4afe9c51ade1b9f10ba3d2c7b",
+    "lib/src/main/java/org/asamk/signal/manager/helper/SyncHelper.java": "031c258158dfdb01d00a0480b687cf4f6a1138ce8e972ba42cd837750b35842e",
+    "man/signal-cli-jsonrpc.5.adoc": "4f019164b87d6a4d742dda10ceb5348970581460eba36b31a88f958386e13191",
+    "man/signal-cli.1.adoc": "a8be728b9014112076f7aee35d9914777fd09b75996e8156ad93978cd68e448c",
+    "src/main/java/org/asamk/signal/commands/FinishLinkCommand.java": "15765c26df3446ba75e8e96b76728dc73e330f3edc28cb7efa590a299f17f2b1",
+    "src/main/java/org/asamk/signal/commands/GetAttachmentCommand.java": "4dae145463a3fa8600ba010482da1ad2303a6f1344e4f715cdfb2816db61f065",
+    "src/main/java/org/asamk/signal/commands/GetUserStatusCommand.java": "69e31d9ae81a4dcc371b509b7a0980fe0f8f5792a7ee50509a50583fd7432804",
+    "src/main/java/org/asamk/signal/commands/JoinGroupCommand.java": "6c3a861505345400a6e706f3fab199c607610aaa1ee678f5fd8b89e735dc5b15",
+    "src/main/java/org/asamk/signal/commands/JsonRpcDispatcherCommand.java": "75371a323bc82155a8150804c380a5903ce2b0f4bcd1cd369f79abca24d9c7d5",
+    "src/main/java/org/asamk/signal/commands/JsonRpcNamespace.java": "118371510b7afc1cd64147216ae8da0eee38e0df7d87b2fd0fa2062362c19194",
+    "src/main/java/org/asamk/signal/commands/ListAccountsCommand.java": "22f98a27c39b6eeac3c2a95b0dc0419b0fd8d98cd06a625219744cd036a2f95c",
+    "src/main/java/org/asamk/signal/commands/ListContactsCommand.java": "55d74d033b82d296d9655bb5a831c8e02f270e66675cd6cf68c513a99882544c",
+    "src/main/java/org/asamk/signal/commands/ListGroupsCommand.java": "edb7b51250b8084f636ef90d725ca428ca16d50b3e892ab5f488a2099e1ae7c2",
+    "src/main/java/org/asamk/signal/commands/QuitGroupCommand.java": "e14477bb48e0a99a5e4b0c98f0b92485c4d742777a6e8de04d1e34a57daf5e79",
+    "src/main/java/org/asamk/signal/commands/RemoteDeleteCommand.java": "e710f89f6d92dea3689250f6724861a2f7da64260dcf6498a0945d6c3b367d6b",
+    "src/main/java/org/asamk/signal/commands/SendCommand.java": "c3e81e7a4176fa639318de6c42c36aa97db8a6c4a669e73d7f30e3dd2a94fd4d",
+    "src/main/java/org/asamk/signal/commands/SendReactionCommand.java": "29168cf69ce3a148082f58c420f5fef050866218c63cabe89a16ceed8e40e9db",
+    "src/main/java/org/asamk/signal/commands/SendReceiptCommand.java": "5e4dbf933065194e30cdd72e837dd7749c787d614fe5e62a367843b84c307a6a",
+    "src/main/java/org/asamk/signal/commands/SendSyncRequestCommand.java": "14e0a4aeb139b4bd34e71921c07ae969aa54aa0298bbcb6e36eb12ba8578844c",
+    "src/main/java/org/asamk/signal/commands/SendTypingCommand.java": "49b66ef7c0b6bcbe197919c35f938b2310212801c73958a14563f72816baa170",
+    "src/main/java/org/asamk/signal/commands/StartLinkCommand.java": "55bc4a1ac911ef89ff0915185d9541a0b6c231093c1fd44a85bd8e6c262df37b",
+    "src/main/java/org/asamk/signal/commands/UpdateContactCommand.java": "bca5b5c7e7fef217979fdcf08d2ac8b15c98b051767611423336a118991c59ae",
+    "src/main/java/org/asamk/signal/commands/UpdateGroupCommand.java": "71ad4a933f088900f4b6940b3c0600a42a6650d647e9f825992140d250c3ad64",
+    "src/main/java/org/asamk/signal/json/JsonAttachment.java": "8372c9c9e7c09e598a590906e87a73b0a6d00a9a4faab5ae658c84eb012de507",
+    "src/main/java/org/asamk/signal/json/JsonDataMessage.java": "b8bd0a467ab5f5c46f1b17bf6c811bd22d428ce9b4154739aadb146973e9647e",
+    "src/main/java/org/asamk/signal/json/JsonEditMessage.java": "5ba26357f1684a5b3965a8eb2c554da795a7ec42af5a056079204d64d96f357d",
+    "src/main/java/org/asamk/signal/json/JsonGroupInfo.java": "9296c8773c4e4bf77fa5babf2286cc00aff0ec69daa8ab41fc75abfa62cd5072",
+    "src/main/java/org/asamk/signal/json/JsonMessageEnvelope.java": "9c6260bfd21b77052eabc0fdf6ebdf12778183bd8827c26f3c2ae7d7e65b1610",
+    "src/main/java/org/asamk/signal/json/JsonReaction.java": "1837c1da73c7337e9993bfa1a29e3acd53db4c4e2cc9492019f0aefad66dd33b",
+    "src/main/java/org/asamk/signal/json/JsonReceiptMessage.java": "63d453cb74acf25b4d32956949185024b166a48af74e9eb3cfa477d39ab65dfd",
+    "src/main/java/org/asamk/signal/json/JsonReceiveMessageHandler.java": "1ba882d78709ede77d74aecfa1ea8d3d112821ddde3bcfe54a9d90d6c6c7f1b1",
+    "src/main/java/org/asamk/signal/json/JsonSendMessageResult.java": "336fbcdaf06771caa8f30471b643d5d7a419883fc3a8b25c3c38472e18e4666b",
+    "src/main/java/org/asamk/signal/json/JsonSyncDataMessage.java": "c94ba89cd35ebfb2ddb0d09a032ee58d80663d3d07d8bc8584faa85dbc7dc6b4",
+    "src/main/java/org/asamk/signal/json/JsonSyncMessage.java": "aab2543fa7bbc1198d651c1f8ed7b8862990b5d76c7b511a0054f8315485bb3b",
+    "src/main/java/org/asamk/signal/json/JsonSyncReadMessage.java": "e441e60373664cd9e8398b74f45ab9c0bed26fd20c0bb59a5d734d92849b05e1",
+    "src/main/java/org/asamk/signal/jsonrpc/JsonRpcReader.java": "681e0b1eee1e6e38ba52b209b14ecf4766e264f5af649c71b637a56018556c0c",
+    "src/main/java/org/asamk/signal/jsonrpc/SignalJsonRpcCommandHandler.java": "7c7bd29866f402933670343c79ecbcb3374df4f4f2cc070ca3d953ecd1be0fea",
+    "src/main/java/org/asamk/signal/jsonrpc/SignalJsonRpcDispatcherHandler.java": "c5dcc4d018ff7e83922636d76536ef81e90d6ca2d05a2e3883551581ab789ddf",
+    "lib/src/main/java/org/asamk/signal/manager/internal/ManagerImpl.java": "26bb692c34fb65ed1a6e945138ea545f26676d3e1ff32cf2c987807519948d20",
+    "lib/src/main/java/org/asamk/signal/manager/internal/PathConfig.java": "a05395882c8e7da789b8e950303ae55214c7dd742179cd2de84bed19a0bd6cb5",
+    "lib/src/main/java/org/asamk/signal/manager/storage/AttachmentStore.java": "08f111691ee151dc9fd7d8437b5b6bbe2e31d0137c3e9fa05939d47471217408",
+    "lib/src/main/java/org/asamk/signal/manager/storage/messageCache/MessageCache.java": "a82fc2dfcd8053b3fad806b51e595a56f26049e7bc78176a3290c23bd236fee0",
+    "src/main/java/org/asamk/signal/util/SendMessageResultUtils.java": "c4edad52dc0f011572a9bd3706be785b3d0523782547643b7e12426e998c619e"
+  }
+}

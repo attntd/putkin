@@ -1,0 +1,8 @@
+patching file /tmp/pk-media-build-jg22w21m/IncomingMessageHandler.java
+patching file /tmp/pk-media-build-jg22w21m/AttachmentHelper.java
+patching file /tmp/pk-media-build-jg22w21m/AttachmentStore.java
+patching file /tmp/pk-media-build-jg22w21m/JsonSyncDataMessage.java
+patching file /tmp/pk-media-build-jg22w21m/SendHelper.java
+patching file /tmp/pk-media-build-jg22w21m/MessageSendLogStore.java
+PASS: size boundaries and real cache quota
+{"policy": "putkin-retention-2", "librarySha256": "1e927a9a1ad272c9bf0e784350d488999226c3b664b9d583efe4254684d92ced", "applicationSha256": "5a7bbec8ce2b3f94a67a7e872f65dba0e7f2ef7af96600871ff238a2e28ce9b7"}

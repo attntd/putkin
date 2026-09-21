@@ -1,0 +1,37 @@
+{
+  "upstream": "signal-cli 0.14.8 JVM",
+  "policy": "putkin-media-1",
+  "scope": "upstream source audit; offline patched classes; synthetic media; no phone",
+  "sources": [
+    {
+      "url": "https://raw.githubusercontent.com/AsamK/signal-cli/v0.14.8/lib/src/main/java/org/asamk/signal/manager/helper/IncomingMessageHandler.java",
+      "sha256": "73db0c2feb2de845fca7719656643dfda0f18ff13977a38733212f1676abd007"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AsamK/signal-cli/v0.14.8/lib/src/main/java/org/asamk/signal/manager/helper/AttachmentHelper.java",
+      "sha256": "8659cce67c82eb16c798882986e4d5e129ba5b39fb80704c2ce2e1a426a88ab9"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AsamK/signal-cli/v0.14.8/lib/src/main/java/org/asamk/signal/manager/storage/AttachmentStore.java",
+      "sha256": "08f111691ee151dc9fd7d8437b5b6bbe2e31d0137c3e9fa05939d47471217408"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AsamK/signal-cli/v0.14.8/src/main/java/org/asamk/signal/json/JsonAttachment.java",
+      "sha256": "8372c9c9e7c09e598a590906e87a73b0a6d00a9a4faab5ae658c84eb012de507"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AsamK/signal-cli/v0.14.8/src/main/java/org/asamk/signal/json/JsonDataMessage.java",
+      "sha256": "b8bd0a467ab5f5c46f1b17bf6c811bd22d428ce9b4154739aadb146973e9647e"
+    }
+  ],
+  "runtime": {
+    "policy": "putkin-media-1",
+    "librarySha256": "8f942b9a6f758d4dc9a0c58f786354c2f75e0721d5b60416384323b33e4c8ed0"
+  },
+  "qt": "6.11.2",
+  "qtApi": [
+    "https://doc.qt.io/qt-6/qml-qtmultimedia-mediaplayer.html",
+    "https://doc.qt.io/qt-6/qml-qtquick-dialogs-filedialog.html",
+    "https://doc.qt.io/qt-6/qml-qtquick-drag.html"
+  ]
+}

@@ -21,35 +21,51 @@ def main():
                                    env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                                    text=True, start_new_session=True)
         try:
-            output, _ = process.communicate(timeout=180)
+            output, _ = process.communicate(timeout=600)
         except subprocess.TimeoutExpired as error:
             if error.output:
                 print(error.output.decode() if isinstance(error.output, bytes) else error.output)
-            print(f"FAIL: testy QML przekroczyły 180 s: {error}", file=sys.stderr)
+            print(f"FAIL: testy QML przekroczyły 600 s: {error}", file=sys.stderr)
             return 1
         finally:
             stop_process_group(process)
     print(output, end="", flush=True)
     if gate.returncode != 0 or process.returncode != 0 or qml_errors(output):
         return 1
-    launcher = subprocess.run([sys.executable, str(ROOT / "scripts/test-launcher-integration")])
-    native = subprocess.run([sys.executable, str(ROOT / "scripts/test-bar-integration")])
-    panels = subprocess.run([sys.executable, str(ROOT / "scripts/test-panels-integration")])
-    settings = subprocess.run([sys.executable, str(ROOT / "scripts/test-settings-integration")])
-    audio = subprocess.run([sys.executable, str(ROOT / "scripts/test-audio-integration")])
-    brightness = subprocess.run([sys.executable, str(ROOT / "scripts/test-brightness-integration")])
-    status = subprocess.run([sys.executable, str(ROOT / "scripts/test-status-integration")])
-    network = subprocess.run([sys.executable, str(ROOT / "scripts/test-network-integration")])
-    bluetooth = subprocess.run([sys.executable, str(ROOT / "scripts/test-bluetooth-integration")])
-    notifications = subprocess.run([sys.executable, str(ROOT / "scripts/test-notifications-integration")])
-    session = subprocess.run([sys.executable, str(ROOT / "scripts/test-session-integration")])
-    desktop = subprocess.run([sys.executable, str(ROOT / "scripts/test-desktop-integration")])
-    caffeinate = subprocess.run([sys.executable, str(ROOT / "scripts/test-caffeinate-integration")])
-    validation = subprocess.run([sys.executable, str(ROOT / "scripts/test-validation-integration")])
+    def integration(name):
+        result = subprocess.run([sys.executable, str(ROOT / "scripts" / name)])
+        print(f"{'PASS' if result.returncode == 0 else 'FAIL'}: runner {name}, exit {result.returncode}", flush=True)
+        return result
+
+    launcher = integration("test-launcher-integration")
+    native = integration("test-bar-integration")
+    panels = integration("test-panels-integration")
+    settings = integration("test-settings-integration")
+    audio = integration("test-audio-integration")
+    brightness = integration("test-brightness-integration")
+    status = integration("test-status-integration")
+    network = integration("test-network-integration")
+    bluetooth = integration("test-bluetooth-integration")
+    notifications = integration("test-notifications-integration")
+    session = integration("test-session-integration")
+    desktop = integration("test-desktop-integration")
+    caffeinate = integration("test-caffeinate-integration")
+    signal_integration = integration("test-signal-integration")
+    signal_messages = integration("test-signal-messages")
+    signal_notifications = integration("test-signal-notifications")
+    signal_receipts = integration("test-signal-receipts")
+    signal_groups = integration("test-signal-groups")
+    signal_retention = integration("test-signal-retention")
+    signal_interactions = integration("test-signal-interactions")
+    signal_media = integration("test-signal-media")
+    signal_pairing = integration("test-signal-pairing")
+    validation = integration("test-validation-integration")
     return int(gate.returncode != 0 or process.returncode != 0 or bool(qml_errors(output))
                or launcher.returncode != 0 or native.returncode != 0 or panels.returncode != 0 or settings.returncode != 0 or audio.returncode != 0
                or brightness.returncode != 0 or status.returncode != 0 or network.returncode != 0 or bluetooth.returncode != 0
-               or notifications.returncode != 0 or session.returncode != 0 or desktop.returncode != 0 or caffeinate.returncode != 0 or validation.returncode != 0)
+               or notifications.returncode != 0 or session.returncode != 0 or desktop.returncode != 0 or caffeinate.returncode != 0
+               or signal_integration.returncode != 0 or signal_pairing.returncode != 0 or signal_messages.returncode != 0 or signal_media.returncode != 0
+               or signal_groups.returncode != 0 or signal_retention.returncode != 0 or signal_interactions.returncode != 0 or signal_notifications.returncode != 0 or signal_receipts.returncode != 0 or validation.returncode != 0)
 
 
 if __name__ == "__main__":

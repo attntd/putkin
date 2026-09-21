@@ -1,0 +1,10 @@
+{
+  "passed": false,
+  "scope": "production QML windows/SQLite/bridge; synthetic CLI; offscreen/private XDG/D-Bus; no phone/compositor",
+  "checks": [
+    "closed window and notification center never read; phone read sync updates shared unread and expires the exact toast"
+  ],
+  "failure": "Receipt condition timed out: {'state': 'ready', 'pid': 467246, 'generation': '7e1ad41be267489995339e18784c67f1', 'accountId': '2823f2cf-f127-4890-b770-5405e1f90813', 'loaded': True, 'interactive': True, 'selected': {'serviceId': 'signal', 'accountId': '2823f2cf-f127-4890-b770-5405e1f90813', 'conversationId': 'ca4ca14e-6a45-48b9-82eb-5e69f314c18e'}, 'unread': 25, 'entries': 0, 'history': [{'historyKey': 1, 'appName': 'Signal', 'summary': '+12025550101', 'body': 'Syntetyczna wiadomość 29', 'critical': False, 'iconName': 'chat_bubble', 'imageSource': '', 'actions': [], 'receivedAt': 1789943006467, 'unread': False, 'messageReference': {'serviceId': 'signal', 'accountId': '2823f2cf-f127-4890-b770-5405e1f90813', 'conversationId': 'ca4ca14e-6a45-48b9-82eb-5e69f314c18e', 'messageId': '4e397d9c-7372-4d01-be7f-34bcae6acbe9'}, 'messageTimestamp': 1790000100029}], 'pending': False, 'reading': True, 'active': True, 'minimized': False, 'locked': False, 'visibleUnread': [], 'count': 30, 'statuses': ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''], 'lastError': '', 'captured': False}",
+  "qmlErrors": [],
+  "remainingOwnedProcesses": []
+}

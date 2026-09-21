@@ -1,5 +1,346 @@
 # Status implementacji
 
+## Signal — scalenie do main — 2026-09-21
+
+Integracja S00–S12 i poprawki interfejsu zapisane w commicie `83a191a`
+i scalone do `main`, z zachowaniem wcześniejszej historii shella.
+13 konfliktów rozstrzygnięto wersjami połączonymi i przetestowanymi przed
+wdrożeniem. Wszystkie 357 plików runtime są identyczne z aktywnym wydaniem
+`20260921-110638-03f24e35e2b4`. Kontrola po scaleniu: 272 QML, 0 błędów;
+obowiązują wcześniejsze 32 testy Qt i natywny Wayland PASS dla tego kodu.
+AGENTS.md i istniejące prompty włączono do Git zgodnie z zasadami repo.
+[Dowód scalenia](evidence/signal/S12/merge-main.json).
+Źródła main: `/home/attntd/projects/putkin`; gałąź `signal` zachowana.
+Rozszerzone próby z telefonem pozostają otwarte zgodnie z macierzą S12.
+
+
+## Signal S12 — pakiet i aktywacja — 2026-09-21
+
+**Wdrożone: `20260921-110638-03f24e35e2b4`. Podstawowy odbiór live PASS.**
+
+Kolejne dopracowanie: kropki bez ramki w pierwszej linii treści, reakcje
+bez ramki obok godziny/statusu. Obraz w rozmowie jest klikalną miniaturą;
+nazwa, rozmiar i Zapisz/Otwórz/Zamknij są dopiero w podglądzie.
+MessageHistory, AttachmentCard i MediaPreview oraz testy zaktualizowane.
+272 QML, 32 celowane testy Qt i natywny Wayland PASS. Wdrożenie kod 0;
+Signal `ready/linked`, Caffeinate zachowane. [Dowody](evidence/signal/S12/ui-refinement/README.md).
+
+Po uwagach użytkownika: tylko ramka Hyprlanda, Szczegóły w prawym
+górnym rogu wraz z ustawieniem znikania, menu ⋯ u góry dymka,
+reakcje w wierszu godziny, własne dymki w akcencie. Composer ma 36 px
+i rośnie z tekstem. Zmieniono sześć widoków wiadomości i testowe fixture.
+272 QML, 44 celowane testy Qt i prywatny Wayland PASS; zrzuty obejrzane.
+Aktywacja kod 0, Signal `ready/linked`, brak błędów i ponownego skanu.
+[Dowody układu](evidence/signal/S12/ui-layout/README.md).
+
+Pakiet zawiera przypięte CLI/JRE; instalator kontroluje schemat i wersje,
+blokuje niezgodny downgrade i nie cofa danych. Prywatny rollback PASS.
+Zachowano nowsze zmiany main (uwierzytelnianie, launcher, powiadomienia).
+Pełna regresja: 218 Python, 787 Qt i 23 integracje PASS; dodatkowe testy
+wydania 11 PASS. Końcowa bramka 272 QML bez błędów.
+
+Aktywacja, otwarcie/zamknięcie wiadomości, kontrolowany stop/start i brak
+bridge po stopie odebrane na pulpicie. Caffeinate `presentation`, ustawienia
+i pięć buildów zachowane. Powrót: `20260921-104858-36c9df96d894`.
+W ustawieniach wyświetlono prawdziwy QR; nie zapisano go w dowodach.
+Użytkownik potwierdził skan i wysyłkę (`sent`); potem wystąpił `invalid_event`.
+Poprawiono akcje pisania na właściwe dla CLI `STARTED`/`STOPPED`; rzeczywisty
+serializator JVM i 71 testów PASS. Aktualizacja wróciła do `ready/linked`
+bez skanu. Tekst w Notatce działa w obie strony, z potwierdzoną widocznością
+na obu urządzeniach. Użytkownik potwierdził reakcje i załączniki z drugą osobą.
+Użytkownik potwierdził też edycję na obu urządzeniach oraz Otwórz właściwą
+rozmowę i odpowiedź bez okna z powiadomienia. Podstawowy odbiór zaliczony.
+Potwierdził również zmiany statusu odczytu, usuwanie wiadomości i rozmowy
+grupowe. Otwarte pozostają warianty prywatności/read sync, wszystkie tryby
+usuwania, znikanie, szczegółowa administracja grup oraz próby sprzętowe.
+Wdrożenie poprzedzało commit i scalenie opisane powyżej. Signal Desktop bez zmian.
+
+[Pełny status](signal/STATUS.md), [obsługa i rollback](signal/OPERATIONS.md),
+[macierz live](signal/ACCEPTANCE.md), [dowody](evidence/signal/S12/README.md).
+
+## Signal S11 — odporność, odbiór i wydajność — 2026-09-21
+
+**S11 ukończony lokalnie; następny S12.** Gotowa [macierz odbioru](signal/ACCEPTANCE.md)
+z dowodami domeny, QML, prywatnego Waylanda i rzeczywistego CLI/JVM bez konta.
+Połączony E2E obejmuje oba kierunki sync na atrapach, media, quick reply,
+interakcje, grupę, raporty, usunięcie/wygaśnięcie i restart bez replay.
+
+Poprawiono hotplug w NotificationService i reset modelu w MessageHistory.
+Naprawiono oczekiwanie Audio na fade, kolejność fokusu w teście receipts
+oraz oczekiwanie paneli na odroczone zniszczenie widoku Qt.
+Nowe runnery acceptance/Wayland, fault injection i pomiary; rzeczywisty IME
+w teście wejścia Qt. Publiczny IPC v1, SQLite v7 i pin putkin-retention-2
+bez zmian; test.metrics działa tylko z jawną atrapą.
+
+**Końcowo PASS:** 259 QML bez błędów, 202 Python, 667 Qt i 23 integracje,
+w tym wszystkie 9 Signala. Dwa wcześniejsze przebiegi ujawniły wyścigi fixture
+receipts i paneli; po poprawkach cały zestaw przeszedł z kodem 0. Natywny Wayland,
+Qt/IME, lokalne API, polityka mediów/retencji i lifecycle JVM: PASS.
+10 000 wiadomości: mediana strony 10,04 ms, p95 13,11 ms; 60 s idle:
+QML 0,05 s CPU, bridge 0,00 s. 20/20 okien zwolnionych, 8 delegatów,
+wzrost median RSS +2352 KiB. Prawdziwy JVM osobno: 155,23 MiB RSS bez wzrostu.
+[Polecenia, logi, próbki i zrzuty](evidence/signal/S11/README.md).
+
+Telefon, wskazany rozmówca/grupa, fizyczny suspend/IME/portal/audio i pomiar
+konta live pozostają S12. ACK/COMMIT, unknown, brak dowolnego replay oraz
+granice retencji są jawne w macierzy. S12 ma najpierw przygotować pakiet
+z oboma przypiętymi jarami i rollback bez cofania danych, potem aktywację
+i próby live. Bez aktywacji pulpitu i commita w S11.
+
+## Signal S10 — grupy, kontakty i akceptacja — 2026-09-21
+
+**S10 ukończony lokalnie; następny S11.** Nowa rozmowa ma kontakty/profile,
+katalog grup i zaproszeń, tworzenie z avatarem oraz dołączanie przez link.
+Szczegóły grupy obejmują role, członków, uprawnienia i opuszczenie.
+ACI/groupId zachowują historię po zmianie profilu. Trwałe operacje i readback
+obsługują unknown/partial bez automatycznego tworzenia drugiej grupy.
+Utrata członkostwa blokuje composer i stare quick reply. Akceptacja próśb
+poprzedza read/typing/reply; blokada jest oddzielona od lokalnego mute/hidden.
+
+Nowe signal_directory/groups.py, SQLite v7, widoki NewConversation oraz
+ConversationDetails, rozszerzony adapter/historia/powiadomienia i testy.
+CLI nadal 0.14.8 JVM + putkin-retention-2, IPC v1. Poprawiono zakończenie
+sendera po anulowaniu transportu oraz oczekiwanie na render po reloadzie S04.
+
+Backend **197 PASS**, QML **258 plików bez błędów**, celowany Qt **80 PASS**.
+Pełny Qt: **666 PASS, 1 FAIL** w Audio; osobne Audio **22 PASS** (wliczone w 80).
+Natywny S10 i osiem poprzednich runnerów końcowo PASS, bez błędów QML
+ani osieroconych procesów. [Wyniki i zrzuty](evidence/signal/S10/README.md),
+[przekazanie prac](signal/STATUS.md).
+
+Wyłącznie syntetyczne konta, prywatne XDG/D-Bus i Qt offscreen. Odczyt
+akceptacji/blokady CLI nie dowodzi odbioru przez telefon; API nie ujawnia
+rewizji grupy ani trybu akceptacji linku. Próby live pozostają w S12.
+Bez aktywacji i commita. Następny S11: macierz odbioru, odporność i wydajność;
+sprawdzić też niestabilny test Audio w pełnym zestawie.
+
+## Signal S09 — usuwanie i wiadomości znikające — 2026-09-21
+
+**S09 ukończony lokalnie; następny S10.** Lokalne usunięcie i remoteDelete,
+ustawienie czasu rozmowy, trwałe odliczanie od wysłania/odczytu/read sync.
+Usunięcie obejmuje wersje, cytaty, media i powiadomienia; spóźnione zdarzenia
+nie odtwarzają treści. Jedno timerfd, cleanup przed historią na starcie,
+WAL/GC z odzyskiwaniem i przerywanie dekodera ostatniej kopii.
+
+Nowe signal_retention.py, schema v6, testy i runner; zmiany magazynu,
+outboxu, transportu, mediów, adaptera i widoków/powiadomień. IPC delete /
+expiration / redacted; CLI 0.14.8 + putkin-retention-2 eksportuje start i
+faktyczny timer wysyłki, poprawia Notatkę oraz czyści/wyłącza resend log.
+
+**PASS:** `scripts/check` — 254 QML; pełny backend — 128 testów;
+pełny QtTest — 659 wyników bez FAIL/SKIP; retencja/media — 30 testów,
+instalator — 15 testów. Natywne runnery S09/S07 bez błędów QML i osieroconych
+procesów; rzeczywiste poprawione klasy JVM i próba pustego konta/RPC: PASS.
+[Pełne wyniki i polecenia](evidence/signal/S09/README.md).
+
+Bez wdrożenia/telefonu. View-once niedostępny, delete-for-me lokalne;
+wyłączony shell sprząta przy starcie, brak obietnicy secure erase SSD.
+Wyłączenie resend log ogranicza naprawę błędów odszyfrowania u rozmówcy.
+Następny krok: S10 na SQLite v6 i nowym pinie, bez aktywacji pulpitu.
+
+## Signal S08 — reakcje, edycje, cytaty i pisanie — 2026-09-21
+
+**S08 ukończony lokalnie; następny S09.** Reakcje z osobami/liczbą i
+cofnięciem własnej, edycje w osobnym edytorze,
+cytaty z nawigacją lub jawnym brakiem oryginału, wzmianki grup UTF-16
+oraz ulotny wskaźnik pisania. Zwykły szkic zachowuje tekst, pliki i cytat.
+
+Nowe signal_content/interactions/mutations/typing.py, schema v5 oraz
+MessageText.js; zmiany reducera, outboxu/receipts, adaptera, kompozytora,
+historii, quick reply, ustawień i powiadomień. IPC message.edit/react,
+typing.set i metadane message.send; CLI send.editTimestamp, sendReaction,
+quote/mention/textStyle i sendTyping. Ten sam pin 0.14.8 + putkin-media-1.
+
+**PASS:** `scripts/check` — 252 QML; pełny backend — 111 testów;
+pełny QtTest — 650 wyników bez FAIL/SKIP; celowane interakcje — 19 testów.
+Prywatne runnery natywne S08/S06/S07 przeszły bez błędów QML i osieroconych
+procesów. Komendy i logi: [dowody S08](evidence/signal/S08/README.md).
+
+Bez wdrożenia i konta live. Pisanie ma **osobny lokalny przełącznik,
+domyślnie wyłączony**; CLI nie eksportuje ustawienia telefonu. Limity
+edycji opierają się na znanej historii, testy syntetyczne nie dowodzą
+odbioru przez drugie urządzenie. Telefon/kompozytor pozostają S11/S12.
+Następny **S09**: najpierw brakujący expirationStartTimestamp, następnie
+usuwanie i retencja obejmująca wersje, cytaty, media i mutacje inflight.
+[Status i ograniczenia](signal/STATUS.md#s08--reakcje-edycje-odpowiedzi-i-pisanie--2026-09-21).
+
+## Signal S07 — media i załączniki — 2026-09-21
+
+**S07 ukończony lokalnie; następny S08.** Kompozycja przyjmuje wiele plików,
+drop i obraz ze schowka. Historia ma miniatury, podgląd obrazu, Qt audio/wideo
+oraz jawny zapis/otwarcie. Wspólne akcenty, klawiatura i fokus zachowane.
+
+Nowe signal_media.py/schema v4, AttachmentCard/MediaPreview, IPC
+attachment.stage/paste/remove/save/open; zmiany outboxu, adaptera,
+kompozytora i powiadomień. Trwały magazyn, limity i cleanup po referencjach.
+CLI 0.14.8 wymaga zbudowanej polityki putkin-media-1: view-once/expiring
+pomijają pobranie, pozostałe media mają ograniczenia rozmiaru i cache.
+
+**PASS:** check 250 QML, backend 92 testy, pełna regresja QML 642 wyniki
+i 6 końcowych wyników mediów; realne zdarzenia drop/callback FileDialog,
+prywatny runner Qt/SQLite z atrapą CLI, rzeczywiste klasy poprawionego JVM,
+regresja S05/S06, idle 60 s bez CPU/RPC i 15 testów instalatora.
+
+Bez wdrożenia i konta live. Telefon, portal, rzeczywisty schowek Waylanda
+i fizyczne audio pozostają S11/S12; audio nie oznacza nagrywania voice notes.
+Odbiorca pliku dostaje nazwę UUID.ext; nazwa źródłowa pozostaje lokalna.
+Następny: **S08 — reakcje, edycje, odpowiedzi i wskaźnik pisania**.
+[Status, komendy, ograniczenia i dowody](signal/STATUS.md#s07--media-i-załączniki--2026-09-21).
+
+## Signal S06 — statusy i odczyt między urządzeniami — 2026-09-20
+
+**S06 ukończony lokalnie; następny S07.** Wiersze pokazują dostarczenie,
+read/viewed oraz częściowe liczby odbiorców grupy. Własny odczyt zmniejsza
+trwały unread paska/listy i wygasza dokładny toast. Potwierdzenie wymaga
+aktywnego, widocznego, odblokowanego okna i konkretnego zakresu wiadomości;
+centrum/reply nie wywołują read.
+
+Nowe signal_receipts.py/schema v3, messages.read/message.read oraz
+sendReceipt z batchami po autorze. Zmiany Store/Outbox/Account/bridge,
+SignalMessagingAdapter, okna/historii i koordynatora powiadomień.
+Runner `scripts/test-signal-receipts` i nowe testy reducerów/viewportu,
+rozszerzone testy kart i kasowania historii. IPC pozostaje v1.
+
+**PASS:** `scripts/check` (245 QML), pełny backend (77 testów) i końcowe
+18 testów celowanych; pełny QtTest **636 PASS, 0 FAIL/SKIP**. Natywne
+Qt/SQLite/bridge z atrapą, regresje S04/S05/D-Bus, reload/cleanup i 60 s
+idle bez RPC/ticków CPU; instalator 15 testów w prywatnych katalogach.
+
+Bez aktywacji pulpitu i konta live. CLI respektuje prywatność, lecz nie
+zwraca osobnego ACK self-sync; unknown nie dowodzi odczytu telefonu.
+Sent sync grupy 0.14.8 pomija listę odbiorców (total=null).
+Macierz telefonu z włączonymi/wyłączonymi receipts oraz fizyczny kompozytor
+pozostają S11/S12. Następny: **S07 — media i załączniki**, bez wdrożenia.
+[Dokładny status, komendy, ograniczenia i dowody](signal/STATUS.md#s06--raporty-i-odczyt-między-urządzeniami--2026-09-20).
+
+## Signal S05 — powiadomienia i quick reply — 2026-09-20
+
+**S05 ukończony lokalnie; następny S06.**
+
+Własne karty Signala otwierają właściwą rozmowę i pozwalają odpowiedzieć
+wewnątrz toasta/centrum, także po timeout i przy zamkniętym oknie.
+Jeden toast na rozmowę, pasywne nadejście, DND, lokalne wyciszenie i lock.
+Szkic reply jest osobny od edytora okna; SQLite v2 wiąże go atomowo
+z istniejącym outboxem. Failed zachowuje treść, unknown nie powtarza send.
+Nie ma drugiego serwera ani globalnego inline reply dla obcych klientów.
+
+Zmiany: LocalNotification/NotificationService/Entry, karty/centrum/fokus,
+nowe SignalNotifications, SignalReplySession, NotificationReply,
+signal_replies.py i migracja v2, połączenia shella oraz testy/runner S05.
+**PASS:** 243 QML w check, 62 testy backendu + celowany test kasowania,
+10 wyników UI S05, 15 testów instalatora, natywny S05/SQLite z atrapą,
+regresja protokołu D-Bus i okna S04. Końcowa pełna regresja QML:
+**628 PASS, 0 FAIL/SKIP**.
+
+Nie aktywowano pulpitu i nie podłączono konta. Fizyczny kompozytor,
+IME i telefon pozostają S11/S12. Następny: **S06 — receipts/read sync**;
+odczyt centrum nie oznacza odczytu rozmowy.
+[Dokładny status, pliki i dowody](signal/STATUS.md#s05--powiadomienia-i-quick-reply--2026-09-20).
+
+## Signal S04 — wspólne okno wiadomości — 2026-09-20
+
+**S04 ukończony; następny S05 — powiadomienia i quick reply.**
+Jedno leniwe natywne okno ma wyszukiwanie rozmów, paginowaną historię,
+trwałe szkice, wysyłanie tekstu i nową rozmowę bez próbnego send.
+Na małym ekranie lista i szczegóły są osobno. Wspólny UI jest oddzielony
+od SignalMessagingAdapter; routing obejmuje usługę, konto i rozmowę.
+Wejścia: pasek, `:messages`, katalog działań oraz IPC. Bez BlueFerry,
+wtyczek i nowego globalnego skrótu.
+
+**PASS:** 238 QML w scripts/check, 56 testów backendu Signala,
+616 wyników pełnej regresji QML, 15 końcowych wyników nowego UI/kontrolera,
+15 testów instalatora oraz natywne testy wiadomości, parowania i lifecycle.
+Testy używają atrap, prywatnych XDG/D-Bus i offscreen. Fizyczny fokus,
+rzeczywisty silnik IME i telefon wymagają późniejszego odbioru;
+licznik odczytu pozostaje do S06. Bez aktywacji zmian na pulpicie.
+
+[Pliki, API, dowody i następny krok](signal/STATUS.md#s04--okno-wiadomości-tekst-i-nowa-rozmowa--2026-09-20).
+
+## Signal S03 — parowanie i ustawienia — 2026-09-20
+
+**S03 ukończony; następny S04 — okno rozmów, tekst i nowa rozmowa.**
+Istniejące ustawienia mają sekcję Signal: nazwa urządzenia, parowanie QR,
+anulowanie i wygaśnięcie, kontrola konta oraz lokalny stop/resume odbioru.
+Usunięcie lokalnej historii ma osobne potwierdzenie. QR pozostaje w pamięci;
+powtórny start nie tworzy drugiej próby, a utrata odpowiedzi finishLink
+prowadzi do sprawdzenia zapisanego konta. Awaria bridge podczas parowania
+czyści kod i pozwala ponownie uruchomić usługę z ustawień.
+
+- **PASS:** 225 QML, 52 testy Python Signala, 601 wyników pełnej regresji
+  QML, 11 ponowionych wyników ustawień S03 i 15 testów instalatora.
+- **PASS:** natywne SettingsWindow/SignalBackend z atrapą, QR dekodowany
+  niezależnym ZXing, cancel/timeout/restart/SIGKILL i oba akcenty.
+- **PASS:** 60 s idle z 0 ticków CPU pomocników, trwałość historii/outboxu
+  po reloadzie i brak pozostałych procesów.
+- Testy są syntetyczne. Bez telefonu, rzeczywistego konta i aktywacji
+  pulpitu. Brak eventu auth w CLI oznacza kontrolę powiązania przy
+  odświeżeniu, operacji lub restarcie, bez okresowego pollingu.
+
+[Pliki, API, dowody i następny krok](signal/STATUS.md#s03--parowanie-konta-i-ustawienia--2026-09-20).
+
+## Signal S02 — historia, synchronizacja i outbox — 2026-09-20
+
+**S02 ukończony; następny S03 — parowanie i ustawienia.** Historia SQLite
+obejmuje wiadomości przychodzące, wysłane z telefonu i lokalny tekst.
+Działa deduplikacja po tożsamości protokołu, stronicowanie, trwałe szkice
+z kontrolą wersji i jedna kolejka wysyłania dla przyszłego okna/quick reply.
+Commit poprzedza zmiany QML; unknown po awarii/timeout nie powoduje
+automatycznego ponowienia. Późny wynik RPC rozstrzyga tę samą operację.
+
+- **PASS:** 220 QML, 42 testy Signala, 15 testów instalatora.
+- **PASS:** natywne QML/SQLite z atrapą, trwałość po soft/hard reload,
+  błędy dysku/migracji, crash przed/po COMMIT, częściowe wyniki i timeout.
+- **PASS:** 60 s idle, 0 ticków CPU obu pomocników i 0 osieroconych PID.
+- Nie ma jeszcze okna rozmów ani parowania. Znikające/view-once pozostają
+  bez treści, media jako metadane; pełna retencja jest bramką S09.
+  Bez konta, wysyłki do rzeczywistych kontaktów i aktywacji pulpitu.
+
+[Pliki, API, dowody i następny krok](signal/STATUS.md#s02--historia-synchronizacja-i-kolejka-wysyłania--2026-09-20).
+
+## Signal S01 — proces usługi i transport — 2026-09-20
+
+**Ukończony S01; następny S02.** SignalService/Backend i pomocnik Python
+są podłączone raz do korzenia shella. Usługa ma wyłączność magazynu,
+asynchroniczny transport, generacje, ograniczone ponawianie i cleanup
+bridge/CLI po EOF/TERM/KILL, również poza UWSM i przy reloadzie.
+Zamknięcie okna nie zatrzymuje usługi. Odbiór produkcyjny pozostaje
+zablokowany do gotowości trwałej historii z S02.
+
+- **PASS:** 220 QML bez błędów, 19 testów Signala, 15 instalatora,
+  3 diagnostyki runtime oraz natywna integracja QML z atrapą.
+- **PASS:** 60 s idle, 0 ticków CPU helpera i atrapy, bez nowych
+  procesów/RPC; cleanup bez osieroconych procesów.
+- **PASS:** realny signal-cli 0.14.8/JVM w bwrap bez sieci/konta;
+  dziedziczenie blokady i śmierć właściciela podczas pracy/startu.
+- Bez aktywacji, parowania i wysyłania wiadomości; bez commita.
+
+[Pełny status i przekazanie](signal/STATUS.md),
+[kontrakty](signal/CONTRACTS.md), [odtworzenie testów](signal/TESTING.md).
+
+## Signal S00 — audyt i kontrakty — 2026-09-20
+
+**Ukończony pierwszy etap roadmapy Signala.** Zweryfikowano punkty
+integracji istniejącego shella i API przypiętego signal-cli **0.14.8**.
+Wybrano dystrybucję JVM (prywatny Temurin 25.0.4.1+1) i JSON-RPC po stdio
+z ręczną subskrypcją po gotowości bazy. Powstały kontrakty usługi/danych/UI,
+mapa API i luk, plan odbioru oraz wykonywalny fake z syntetycznymi eventami.
+
+- Kontrola całego QML: **PASS**, 217 plików, 0 błędów; transport: **PASS**,
+  5 testów. Probe rzeczywistego CLI w bwrap bez sieci/konta: **PASS**,
+  16 kontroli, w tym 18 odpowiedzi JSON-RPC i poprawny EOF wariantu JVM.
+- Zachowano negatywny wynik wariantu native: odpowiedzi działały,
+  ale EOF powodował exit=99/GraalVM. Nie jest wybraną bazą implementacji.
+- S09 wymaga uzupełnienia brakującego `expirationStartTimestamp` w JSON
+  sent sync. View-once pozostaje niedostępne, „usuń u mnie” lokalne.
+  Nie uznano mocków ani audytu kodu za synchronizację z telefonem.
+- Produkcyjne źródła shella i aktywne wydanie bez zmian. Bez parowania,
+  wysyłania wiadomości, pakietów systemowych i aktywacji. Narzędzia są
+  w ignorowanych artefaktach tego checkoutu. Następny etap: **S01**.
+
+[Szczegółowy status i dowody](signal/STATUS.md),
+[kontrakty](signal/CONTRACTS.md), [API](signal/API.md),
+[testowanie i odtworzenie narzędzi](signal/TESTING.md).
+
 ## Wspólny launcher, powiadomienia i Q — 2026-09-21
 
 **Scalone do `main` i wdrożone: `20260921-080356-f26716f87551`.**

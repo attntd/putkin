@@ -1,0 +1,48 @@
+{
+  "completedUtc": "2026-09-21T09:03:30.515806+00:00",
+  "fullTest": {
+    "exitCode": 0,
+    "pythonPassed": 218,
+    "qmlPassed": 787,
+    "qmlFailed": 0,
+    "qmlSkipped": 0,
+    "runners": [
+      "test-launcher-integration",
+      "test-bar-integration",
+      "test-panels-integration",
+      "test-settings-integration",
+      "test-audio-integration",
+      "test-brightness-integration",
+      "test-status-integration",
+      "test-network-integration",
+      "test-bluetooth-integration",
+      "test-notifications-integration",
+      "test-session-integration",
+      "test-desktop-integration",
+      "test-caffeinate-integration",
+      "test-signal-integration",
+      "test-signal-messages",
+      "test-signal-notifications",
+      "test-signal-receipts",
+      "test-signal-groups",
+      "test-signal-retention",
+      "test-signal-interactions",
+      "test-signal-media",
+      "test-signal-pairing",
+      "test-validation-integration"
+    ]
+  },
+  "additionalReleaseTests": {
+    "passed": 11,
+    "log": "release-tests.log"
+  },
+  "check": {
+    "qmlFiles": 272,
+    "errors": 0,
+    "log": "check-final.log"
+  },
+  "wayland": "wayland/report.json",
+  "installedRuntime": "installed-runtime-final.json",
+  "privateRollback": "staging-rollback.json",
+  "scope": "local tests, no phone acceptance"
+}

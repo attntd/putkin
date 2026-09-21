@@ -1,0 +1,28 @@
+{
+  "checkedAt": "2026-09-21T10:50:21.897844+00:00",
+  "build": "20260921-104858-36c9df96d894",
+  "previous": "20260921-091350-39f9ddda75b4",
+  "signal": {
+    "state": "ready",
+    "accountState": "linked",
+    "schemaVersion": 7,
+    "cliVersion": "0.14.8",
+    "errorCode": "",
+    "linkError": "",
+    "eventErrorLocation": "",
+    "qrVisible": false,
+    "processId": 596377
+  },
+  "caffeinateMode": "presentation",
+  "sourcesMatch": true,
+  "sha256": {
+    "modules/messages/AttachmentCard.qml": "ee970946465d6e4625a18f40d8ce01803d7be6866cbbaf9cbe82c3581c3fa278",
+    "modules/messages/ConversationDetails.qml": "b7641ddf02af5a892b01e7a38e1d17ca1ee2eeb61c7a946eb612933a69413892",
+    "modules/messages/MediaPreview.qml": "7aafd0357d51ca257847380c6fbb6d0435475620ecea804c7b4315116f016f99",
+    "modules/messages/MessageComposer.qml": "1feba45ce809bb95681e440d5167aba498fe8ad25c215ad14ba03a9e1f245929",
+    "modules/messages/MessageHistory.qml": "fe407c76179e99d8f23c4fde22c7ebf2d2cbb30d987fa981aca4d854be9f3b7a",
+    "modules/messages/MessagesView.qml": "98a367fccbd1639689a8204ef196910beb8ab5bb8a88f4ceb1675b17631dffd7",
+    "modules/messages/MessagesWindow.qml": "8f419c508f8c5c310a8ca5c6eeabdb74d4bafbee1f7d2c22776b150bf340a89b",
+    "modules/messages/NewConversation.qml": "d7ca01875387195dfabc6b77a971402efffec6d4c51f72e78faf13cc3dfa81f3"
+  }
+}

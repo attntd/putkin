@@ -1,0 +1,121 @@
+........F...........F......F.........................F.......FF..........F......E..........................E...
+======================================================================
+ERROR: test_migration_v1_preserves_history_and_rolls_back_on_failure (test_signal_notifications.NotificationTests.test_migration_v1_preserves_history_and_rolls_back_on_failure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/attntd/projects/signal/tests/test_signal_notifications.py", line 147, in test_migration_v1_preserves_history_and_rolls_back_on_failure
+    self.store = Store(self.lease)
+                 ~~~~~^^^^^^^^^^^^
+  File "/home/attntd/projects/signal/services/signal_store.py", line 113, in __init__
+    with self.transaction():
+         ~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/home/attntd/projects/signal/services/signal_store.py", line 169, in transaction
+    raise Failure("storage_error") from None
+signal_transport.Failure: storage_error
+
+======================================================================
+ERROR: test_schema_v2_migrates_pending_reads_receipts_and_outbox_recipients (test_signal_receipts.ReceiptTests.test_schema_v2_migrates_pending_reads_receipts_and_outbox_recipients)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/attntd/projects/signal/tests/test_signal_receipts.py", line 257, in test_schema_v2_migrates_pending_reads_receipts_and_outbox_recipients
+    self.store = Store(self.lease, self.committed, lambda: self.now)
+                 ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/signal/services/signal_store.py", line 113, in __init__
+    with self.transaction():
+         ~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/home/attntd/projects/signal/services/signal_store.py", line 169, in transaction
+    raise Failure("storage_error") from None
+signal_transport.Failure: storage_error
+
+======================================================================
+FAIL: test_retention_preflight_blocks_send_and_never_persists_cli_secrets (test_signal_history.BridgeHistoryTests.test_retention_preflight_blocks_send_and_never_persists_cli_secrets)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/attntd/projects/signal/tests/test_signal_history.py", line 536, in test_retention_preflight_blocks_send_and_never_persists_cli_secrets
+    status = self.operation(client, op["operationId"], "failed")
+  File "/home/attntd/projects/signal/tests/test_signal_history.py", line 447, in operation
+    self.fail(f"Operation did not reach {state}: {value}")
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Operation did not reach failed: {'operationId': '5bc6f7b9-4773-48db-b2d0-39d732481509', 'conversationId': '9f08d824-5aea-4b96-ab3e-d51392bb6b89', 'messageId': 'a8ecdff1-0796-4955-a479-44cd43272324', 'state': 'sent', 'errorCode': '', 'safeRetry': False, 'attempt': 1, 'recipients': [{'recipient': 'aci:bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb', 'result_type': 'SUCCESS', 'retry_after_seconds': None}]}
+
+======================================================================
+FAIL: test_phone_incoming_local_reply_and_restart_preserve_history_draft_and_outbox (test_signal_history.HistoryTests.test_phone_incoming_local_reply_and_restart_preserve_history_draft_and_outbox)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/attntd/projects/signal/tests/test_signal_history.py", line 114, in test_phone_incoming_local_reply_and_restart_preserve_history_draft_and_outbox
+    self.assertEqual(self.store.db.execute("PRAGMA user_version").fetchone()[0], 6)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 6 != 5
+
+======================================================================
+FAIL: test_unsupported_retention_media_and_unknown_events_do_not_archive_payloads (test_signal_history.HistoryTests.test_unsupported_retention_media_and_unknown_events_do_not_archive_payloads)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/attntd/projects/signal/tests/test_signal_history.py", line 260, in test_unsupported_retention_media_and_unknown_events_do_not_archive_payloads
+    self.assertNotIn(secret, " ".join(self.store.db.iterdump()))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'SHOULD_NEVER_REACH_SQLITE' unexpectedly found in 'BEGIN TRANSACTION; CREATE TABLE accounts (\n    account_id TEXT PRIMARY KEY,\n    service_id TEXT NOT NULL UNIQUE,\n    cli_address TEXT NOT NULL\n); INSERT INTO "accounts" VALUES(\'e6a49f38-6720-4ae8-9665-1f2105bbd71b\',\'aci:aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\',\'+12025550100\'); CREATE TABLE attachment_refs (\n    message_id TEXT NOT NULL REFERENCES messages ON DELETE CASCADE,\n    attachment_id TEXT NOT NULL REFERENCES attachments ON DELETE CASCADE,\n    PRIMARY KEY(message_id, attachment_id)\n); CREATE TABLE attachments (\n    attachment_id TEXT PRIMARY KEY,\n    account_id TEXT NOT NULL REFERENCES accounts,\n    cli_id TEXT NOT NULL,\n    content_type TEXT NOT NULL,\n    size_bytes INTEGER NOT NULL,\n    UNIQUE(account_id, cli_id)\n); CREATE TABLE conversation_notifications (\n    conversation_id TEXT PRIMARY KEY REFERENCES conversations,\n    muted INTEGER NOT NULL CHECK(muted IN (0,1))\n); CREATE TABLE conversations (\n    conversation_id TEXT PRIMARY KEY,\n    account_id TEXT NOT NULL REFERENCES accounts,\n    kind TEXT NOT NULL CHECK(kind IN (\'direct\', \'group\', \'note\')),\n    peer_id TEXT REFERENCES recipients,\n    target TEXT NOT NULL,\n    title TEXT NOT NULL DEFAULT \'\',\n    activity_ms INTEGER NOT NULL DEFAULT 0,\n    expiration_seconds INTEGER NOT NULL DEFAULT 0,\n    expiration_version INTEGER NOT NULL DEFAULT 0,\n    UNIQUE(account_id, kind, target)\n); INSERT INTO "conversations" VALUES(\'d9d5e2a3-e5e3-4de9-abba-f81e97e63d62\',\'e6a49f38-6720-4ae8-9665-1f2105bbd71b\',\'direct\',\'3f2be470-55ea-4042-8914-5361fbc6e99d\',\'aci:bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb\',\'\',1790000001100,60,1790000001000); CREATE TABLE draft_attachments (\n    conversation_id TEXT NOT NULL REFERENCES conversations,\n    attachment_id TEXT NOT NULL UNIQUE REFERENCES attachments ON DELETE CASCADE,\n    created_ms INTEGER NOT NULL,\n    PRIMARY KEY(conversation_id, attachment_id)\n); CREATE TABLE drafts (\n    conversation_id TEXT PRIMARY KEY REFERENCES conversations,\n    body TEXT NOT NULL,\n    revision INTEGER NOT NULL\n, composition TEXT NOT NULL DEFAULT \'{}\'); CREATE TABLE interaction_outbox (\n    operation_id TEXT PRIMARY KEY,\n    account_id TEXT NOT NULL REFERENCES accounts,\n    conversation_id TEXT NOT NULL REFERENCES conversations,\n    message_id TEXT NOT NULL REFERENCES messages,\n    kind TEXT NOT NULL CHECK(kind IN (\'edit\',\'reaction\',\'delete\')),\n    payload TEXT NOT NULL,\n    state TEXT NOT NULL CHECK(state IN (\'queued\',\'sending\',\'sent\',\'failed\',\'unknown\',\'cancelled\')),\n    created_ms INTEGER NOT NULL,\n    error_code TEXT NOT NULL DEFAULT \'\',\n    safe_retry INTEGER NOT NULL DEFAULT 0,\n    attempt INTEGER NOT NULL DEFAULT 0,\n    sent_ms INTEGER,\n    expires_at_ms INTEGER NOT NULL\n); CREATE TABLE media_cli_gc (cli_id TEXT PRIMARY KEY); CREATE TABLE media_files (\n    attachment_id TEXT PRIMARY KEY REFERENCES attachments ON DELETE CASCADE,\n    filename TEXT NOT NULL,\n    state TEXT NOT NULL DEFAULT \'pending\',\n    error_code TEXT NOT NULL DEFAULT \'\',\n    extension TEXT NOT NULL DEFAULT \'\',\n    thumbnail INTEGER NOT NULL DEFAULT 0,\n    preview INTEGER NOT NULL DEFAULT 0,\n    voice_note INTEGER NOT NULL DEFAULT 0\n); CREATE TABLE message_metadata (\n    message_id TEXT PRIMARY KEY REFERENCES messages ON DELETE CASCADE,\n    payload TEXT NOT NULL\n); INSERT INTO "message_metadata" VALUES(\'ad7cd0c2-d72f-46f3-8fbb-a4010e839366\',\'{"mentions":[],"styles":[]}\'); INSERT INTO "message_metadata" VALUES(\'bc8e5b18-4208-48d3-9fd0-0ba56b9e3c49\',\'{}\'); CREATE TABLE message_reactions (\n    conversation_id TEXT NOT NULL REFERENCES conversations,\n    author TEXT NOT NULL,\n    target_ms INTEGER NOT NULL,\n    actor TEXT NOT NULL,\n    event_ms INTEGER NOT NULL,\n    emoji TEXT NOT NULL,\n    removed INTEGER NOT NULL,\n    message_id TEXT REFERENCES messages ON DELETE CASCADE,\n    expires_at_ms INTEGER,\n    PRIMARY KEY(conversation_id,author,target_ms,actor)\n); CREATE TABLE message_recipients (\n    message_id TEXT NOT NULL REFERENCES messages ON DELETE CASCADE,\n    recipient TEXT NOT NULL,\n    PRIMARY KEY(message_id, recipient)\n); CREATE TABLE message_versions (\n    conversation_id TEXT NOT NULL REFERENCES conversations,\n    author TEXT NOT NULL,\n    version_ms INTEGER NOT NULL,\n    target_ms INTEGER,\n    message_id TEXT REFERENCES messages ON DELETE CASCADE,\n    body TEXT,\n    metadata TEXT NOT NULL DEFAULT \'{}\',\n    hidden INTEGER NOT NULL DEFAULT 0,\n    expires_at_ms INTEGER,\n    PRIMARY KEY(conversation_id, author, version_ms)\n); INSERT INTO "message_versions" VALUES(\'d9d5e2a3-e5e3-4de9-abba-f81e97e63d62\',\'aci:bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb\',1790000001000,NULL,\'ad7cd0c2-d72f-46f3-8fbb-a4010e839366\',\'SHOULD_NEVER_REACH_SQLITE\',\'{"mentions":[],"styles":[]}\',0,NULL); INSERT INTO "message_versions" VALUES(\'d9d5e2a3-e5e3-4de9-abba-f81e97e63d62\',\'aci:bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb\',1790000001100,NULL,\'bc8e5b18-4208-48d3-9fd0-0ba56b9e3c49\',NULL,\'{}\',1,NULL); CREATE TABLE messages (\n    message_id TEXT PRIMARY KEY,\n    conversation_id TEXT NOT NULL REFERENCES conversations,\n    author TEXT NOT NULL,\n    sent_ms INTEGER,\n    sort_ms INTEGER NOT NULL,\n    source_device INTEGER,\n    server_received_ms INTEGER,\n    direction TEXT NOT NULL CHECK(direction IN (\'incoming\', \'outgoing\')),\n    origin TEXT NOT NULL CHECK(origin IN (\'remote\', \'phone\', \'local\')),\n    kind TEXT NOT NULL,\n    body TEXT,\n    fingerprint TEXT,\n    status TEXT NOT NULL,\n    conflict INTEGER NOT NULL DEFAULT 0,\n    expires_at_ms INTEGER,\n    edited_ms INTEGER, read_at_ms INTEGER, expiration_seconds INTEGER NOT NULL DEFAULT 0, expiration_start_ms INTEGER, hidden_local INTEGER NOT NULL DEFAULT 0,\n    UNIQUE(conversation_id, author, sent_ms)\n); INSERT INTO "messages" VALUES(\'ad7cd0c2-d72f-46f3-8fbb-a4010e839366\',\'d9d5e2a3-e5e3-4de9-abba-f81e97e63d62\',\'aci:bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb\',1790000001000,1790000001000,1,1790000001010,\'incoming\',\'remote\',\'text\',\'SHOULD_NEVER_REACH_SQLITE\',\'b6d49376077c3ef77e1d13b716daa166671c3ce766043a6603561e5dea0b6ae5\',\'received\',0,NULL,NULL,NULL,60,NULL,0); INSERT INTO "messages" VALUES(\'bc8e5b18-4208-48d3-9fd0-0ba56b9e3c49\',\'d9d5e2a3-e5e3-4de9-abba-f81e97e63d62\',\'aci:bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb\',1790000001100,1790000001100,1,1790000001110,\'incoming\',\'remote\',\'view_once_unsupported\',NULL,NULL,\'received\',0,NULL,NULL,NULL,0,NULL,0); CREATE TABLE outbox (\n    operation_id TEXT PRIMARY KEY,\n    account_id TEXT NOT NULL REFERENCES accounts,\n    conversation_id TEXT NOT NULL REFERENCES conversations,\n    message_id TEXT NOT NULL UNIQUE REFERENCES messages,\n    state TEXT NOT NULL CHECK(state IN (\'queued\',\'sending\',\'sent\',\'failed\',\'unknown\',\'cancelled\')),\n    created_ms INTEGER NOT NULL,\n    error_code TEXT NOT NULL DEFAULT \'\',\n    safe_retry INTEGER NOT NULL DEFAULT 0,\n    attempt INTEGER NOT NULL DEFAULT 0\n); CREATE TABLE outbox_attempts (\n    operation_id TEXT NOT NULL REFERENCES outbox,\n    attempt INTEGER NOT NULL,\n    state TEXT NOT NULL,\n    sent_ms INTEGER,\n    started_ms INTEGER NOT NULL,\n    PRIMARY KEY(operation_id, attempt)\n); CREATE TABLE outbox_results (\n    operation_id TEXT NOT NULL,\n    attempt INTEGER NOT NULL,\n    recipient TEXT NOT NULL,\n    result_type TEXT NOT NULL,\n    retry_after_seconds INTEGER,\n    PRIMARY KEY(operation_id, attempt, recipient),\n    FOREIGN KEY(operation_id, attempt) REFERENCES outbox_attempts\n); CREATE TABLE pending_events (\n    event_key TEXT PRIMARY KEY,\n    account_id TEXT NOT NULL REFERENCES accounts,\n    conversation_id TEXT REFERENCES conversations,\n    kind TEXT NOT NULL,\n    author TEXT NOT NULL,\n    target_ms INTEGER NOT NULL,\n    event_ms INTEGER NOT NULL,\n    expires_at_ms INTEGER NOT NULL\n); CREATE TABLE read_markers (\n    account_id TEXT NOT NULL REFERENCES accounts,\n    author TEXT NOT NULL,\n    target_ms INTEGER NOT NULL,\n    read_ms INTEGER NOT NULL,\n    expires_at_ms INTEGER,\n    PRIMARY KEY(account_id, author, target_ms)\n); CREATE TABLE read_queue (\n    account_id TEXT NOT NULL REFERENCES accounts,\n    author TEXT NOT NULL,\n    target_ms INTEGER NOT NULL,\n    state TEXT NOT NULL CHECK(state IN (\'queued\',\'sending\',\'submitted\',\'unknown\',\'failed\')),\n    PRIMARY KEY(account_id, author, target_ms)\n); CREATE TABLE receipt_reports (\n    account_id TEXT NOT NULL REFERENCES accounts,\n    recipient TEXT NOT NULL,\n    target_ms INTEGER NOT NULL,\n    kind TEXT NOT NULL CHECK(kind IN (\'delivery\',\'read\',\'viewed\')),\n    event_ms INTEGER NOT NULL,\n    expires_at_ms INTEGER,\n    PRIMARY KEY(account_id, recipient, target_ms, kind)\n); CREATE TABLE recipient_aliases (\n    recipient_id TEXT NOT NULL REFERENCES recipients ON DELETE CASCADE,\n    alias TEXT NOT NULL,\n    PRIMARY KEY(recipient_id, alias)\n); INSERT INTO "recipient_aliases" VALUES(\'3f2be470-55ea-4042-8914-5361fbc6e99d\',\'+12025550101\'); CREATE TABLE recipients (\n    recipient_id TEXT PRIMARY KEY,\n    account_id TEXT NOT NULL REFERENCES accounts,\n    service_id TEXT NOT NULL,\n    resolved INTEGER NOT NULL,\n    UNIQUE(account_id, service_id)\n); INSERT INTO "recipients" VALUES(\'3f2be470-55ea-4042-8914-5361fbc6e99d\',\'e6a49f38-6720-4ae8-9665-1f2105bbd71b\',\'aci:bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb\',1); CREATE TABLE reply_drafts (\n    conversation_id TEXT PRIMARY KEY REFERENCES conversations,\n    body TEXT NOT NULL,\n    revision INTEGER NOT NULL,\n    operation_id TEXT REFERENCES outbox\n); CREATE TABLE store_metadata (key TEXT PRIMARY KEY, value TEXT NOT NULL); INSERT INTO "store_metadata" VALUES(\'active_account\',\'e6a49f38-6720-4ae8-9665-1f2105bbd71b\'); CREATE TABLE tombstones (\n    conversation_id TEXT NOT NULL REFERENCES conversations,\n    author TEXT NOT NULL,\n    sent_ms INTEGER NOT NULL,\n    reason TEXT NOT NULL,\n    PRIMARY KEY(conversation_id, author, sent_ms)\n); CREATE TABLE version_recipients (\n    message_id TEXT NOT NULL REFERENCES messages ON DELETE CASCADE,\n    version_ms INTEGER NOT NULL,\n    recipient TEXT NOT NULL,\n    PRIMARY KEY(message_id,version_ms,recipient)\n); CREATE INDEX conversations_page ON conversations(account_id, activity_ms DESC, conversation_id DESC); CREATE INDEX messages_page ON messages(conversation_id, sort_ms DESC, message_id DESC); CREATE INDEX messages_expiry ON messages(expires_at_ms) WHERE expires_at_ms IS NOT NULL; CREATE INDEX pending_target ON pending_events(conversation_id, author, target_ms); CREATE INDEX pending_expiry ON pending_events(expires_at_ms); CREATE INDEX outbox_queue ON outbox(account_id, state, created_ms, operation_id); CREATE INDEX messages_unread ON messages(conversation_id, read_at_ms) WHERE direction=\'incoming\'; CREATE INDEX messages_receipt_target ON messages(author, sent_ms, direction); CREATE INDEX receipt_expiry ON receipt_reports(expires_at_ms); CREATE INDEX read_marker_expiry ON read_markers(expires_at_ms); CREATE TRIGGER attachment_cli_gc AFTER DELETE ON attachments\nWHEN OLD.cli_id NOT LIKE \'local:%\'\nBEGIN\n    INSERT OR IGNORE INTO media_cli_gc VALUES(OLD.cli_id);\nEND; CREATE INDEX versions_message ON message_versions(message_id, version_ms); CREATE INDEX versions_pending ON message_versions(conversation_id, author, target_ms) WHERE message_id IS NULL; CREATE INDEX versions_expiry ON message_versions(expires_at_ms); CREATE INDEX reactions_message ON message_reactions(message_id,actor,event_ms); CREATE INDEX reactions_expiry ON message_reactions(expires_at_ms); CREATE INDEX interactions_queue ON interaction_outbox(account_id,state,created_ms); CREATE INDEX interactions_message ON interaction_outbox(message_id,created_ms); COMMIT;'
+
+======================================================================
+FAIL: test_production_requires_media_policy_and_durable_store_before_subscribe (test_signal_lifecycle.LifecycleTests.test_production_requires_media_policy_and_durable_store_before_subscribe)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/attntd/projects/signal/tests/test_signal_lifecycle.py", line 261, in test_production_requires_media_policy_and_durable_store_before_subscribe
+    state = client.state("failed")
+  File "/home/attntd/projects/signal/tests/test_signal_lifecycle.py", line 77, in state
+    return self.read(lambda v: v.get("data", {}).get("serviceState") == state, seconds)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/signal/tests/test_signal_lifecycle.py", line 74, in read
+    raise AssertionError("No expected bridge result")
+AssertionError: No expected bridge result
+
+======================================================================
+FAIL: test_cancel_preparation_and_foreign_account_leave_no_files (test_signal_media.MediaBridgeTests.test_cancel_preparation_and_foreign_account_leave_no_files)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/attntd/projects/signal/tests/test_signal_media.py", line 310, in test_cancel_preparation_and_foreign_account_leave_no_files
+    self.assertEqual(client.reply("stage")["error"]["code"], "cancelled")
+                     ~~~~~~~~~~~~^^^^^^^^^
+  File "/home/attntd/projects/signal/tests/test_signal_lifecycle.py", line 86, in reply
+    return self.read(lambda v: v.get("type") == "response" and v.get("id") == request_id, seconds)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/signal/tests/test_signal_lifecycle.py", line 74, in read
+    raise AssertionError("No expected bridge result")
+AssertionError: No expected bridge result
+
+======================================================================
+FAIL: test_real_bridge_stages_sends_receives_and_restarts_media (test_signal_media.MediaBridgeTests.test_real_bridge_stages_sends_receives_and_restarts_media)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/attntd/projects/signal/tests/test_signal_media.py", line 282, in test_real_bridge_stages_sends_receives_and_restarts_media
+    items = self.request(client, "attachment.stage", {**scope, "paths": [p.as_uri() for p in paths]})["attachments"]
+            ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/signal/tests/test_signal_history.py", line 436, in request
+    return reply["result"]
+            ~~~~^^^^^^^^^^
+  File "/home/attntd/projects/signal/tests/test_signal_lifecycle.py", line 86, in reply
+    return self.read(lambda v: v.get("type") == "response" and v.get("id") == request_id, seconds)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/signal/tests/test_signal_lifecycle.py", line 74, in read
+    raise AssertionError("No expected bridge result")
+AssertionError: No expected bridge result
+
+======================================================================
+FAIL: test_view_once_and_expiring_create_no_managed_copies (test_signal_media.MediaTests.test_view_once_and_expiring_create_no_managed_copies)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/attntd/projects/signal/tests/test_signal_media.py", line 194, in test_view_once_and_expiring_create_no_managed_copies
+    self.assertFalse(self.store.media.pending(self.account))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [<sqlite3.Row object at 0x7f394ff86bf0>] is not false
+
+----------------------------------------------------------------------
+Ran 111 tests in 212.261s
+
+FAILED (failures=7, errors=2)

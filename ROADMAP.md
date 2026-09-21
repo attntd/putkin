@@ -22,8 +22,41 @@ Przygotowano [osobną roadmapę Signala](docs/signal/ROADMAP.md) i 13
 samowystarczalnych promptów S00–S12 do kolejnych sesji Codex Max.
 Zakres: komunikator przez signal-cli, synchronizacja od sparowania,
 Mocha ze wspólnymi akcentami, życie usługi związane z shellem oraz
-powiadomienia z otwarciem rozmowy i quick reply. Implementacja tych
-etapów jeszcze nie rozpoczęta. [Status](docs/signal/STATUS.md).
+powiadomienia z otwarciem rozmowy i quick reply. **S00 — audyt i kontrakty
+ukończony 2026-09-20**: wybrano signal-cli 0.14.8 JVM i transport stdio,
+sprawdzono rzeczywiste API bez konta oraz syntetyczny transport testowy.
+**S01 ukończony:** adapter QML, nadzorowany bridge/CLI, wyłączność,
+ograniczony transport i testy cleanup/reloadu. **S02 ukończony:** SQLite,
+historia incoming/sent sync, deduplikacja, szkice i trwały wspólny outbox.
+Odbiór czeka na otwarcie bazy i potwierdzoną tożsamość. **S03 ukończony:**
+sekcja Signal w ustawieniach, QR tylko w pamięci, anulowanie/wygaśnięcie,
+kontrola powiązania, lokalny stop/resume i oddzielne kasowanie historii.
+**S04 ukończony:** natywne okno wiadomości, tekst, szkice i nowa rozmowa;
+wspólny UI oddzielony od Signala, routing przez usługę/konto/rozmowę.
+**S05 ukończony lokalnie:** powiadomienia z routingiem i quick reply,
+trwały osobny szkic, DND/wyciszenie/blokada i odzyskanie unknown.
+**S06 ukończony lokalnie:** receipts per odbiorca, własne read sync,
+odczyt widocznego aktywnego okna, wspólny unread/toasty i SQLite v3.
+**S07 ukończony lokalnie:** pliki w kompozycji, kontrolowany magazyn,
+miniatury/podgląd i Qt audio/wideo, SQLite v4 oraz przypięta poprawka CLI
+ograniczająca pobieranie. **S08 ukończony lokalnie:** reakcje, edycje
+z mapą wersji, cytaty, wzmianki UTF-16 i pisanie, SQLite v5.
+Pisanie ma lokalny przełącznik, domyślnie wyłączony. **S09 ukończony lokalnie:**
+usuwanie lokalne/remoteDelete, trwałe terminy znikania i czyszczenie kopii.
+SQLite v6, CLI putkin-retention-2. **S10 ukończony lokalnie:** kontakty,
+profile, tworzenie i administracja grup, zaproszenia, rekoncyliacja unknown,
+akceptacja próśb, block i lokalne mute/hidden. SQLite v7; ten sam pin CLI.
+**S11 ukończony lokalnie:** macierz odbioru, fault injection, prywatny
+Wayland, 10 000 wiadomości, 60 s pomiarów i 20 cykli okna; pełna regresja PASS.
+**S12 wdrożony:** `20260921-091350-39f9ddda75b4`, przypięte CLI/JRE,
+zgodność migracji i rollback bez cofania danych, pełna regresja i lifecycle
+pulpitu PASS. Zachowano nowsze funkcje main. Telefon sparowany; poprawka parsera
+pisania wdrożona. Tekst w obie strony, reakcje i załączniki potwierdzone;
+edycja i oba działania powiadomienia również działają. Potwierdzone są też
+status odczytu, usuwanie i rozmowy grupowe. Podstawowy odbiór live PASS;
+rozszerzona macierz pozostaje otwarta.
+S09 uzupełnił eksport czasu startu w sent sync i faktycznego timera wysyłki.
+[Status i dowody](docs/signal/STATUS.md).
 
 ## Wybrana korekta — stabilny fade, 2026-09-20
 

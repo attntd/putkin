@@ -155,7 +155,17 @@ UI.FadeScope {
     Component { id: networkPage; NetworkView { network: root.host.network } }
     Component { id: bluetoothPage; BluetoothView { bluetooth: root.host.bluetooth; onHandoffRequested: root.host.coordinator.close(false) } }
     Component { id: notificationsPage; NotificationCenter { service: root.host.notifications } }
-    Component { id: settingsPage; SettingsView { settings: root.host.coordinator.settings; maximumHeight: Math.max(1, root.height - Metrics.space12 * 2) } }
+    Component {
+        id: settingsPage
+        SettingsView {
+            property int settingsRequest: root.host.coordinator.settingsRequest || 0
+            onSettingsRequestChanged: section = root.host.coordinator.settingsSection || "appearance"
+            settings: root.host.coordinator.settings
+            signalService: root.host.signalService
+            section: root.host.coordinator.settingsSection || "appearance"
+            maximumHeight: Math.max(1, root.height - Metrics.space12 * 2)
+        }
+    }
     Component { id: trayPage; TrayView { host: root.host } }
     Connections {
         target: pageLoader.item

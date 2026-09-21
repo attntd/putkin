@@ -1,0 +1,175 @@
+#!/usr/bin/env python3
+"""S06 real QML windows/SQLite/bridge with synthetic CLI and private XDG/D-Bus."""
+import argparse
+from contextlib import closing
+import ctypes
+import json
+from pathlib import Path
+import sqlite3
+import subprocess
+import sys
+import tempfile
+import time
+
+from _common import ROOT, ipc_json, ipc_reply, isolated_environment, qml_errors, runtime_log, stop_process_group, tool
+sys.path.insert(0, str(ROOT / "tests"))
+from test_signal_history import event
+from test_signal_receipts import read_sync, receipt
+from test_signal_lifecycle import gone
+
+
+def eventually(read, predicate, seconds=15):
+    deadline = time.monotonic() + seconds
+    value = None
+    while time.monotonic() < deadline:
+        value = read()
+        if predicate(value):
+            return value
+        time.sleep(.04)
+    # Keep diagnostics useful without dumping synthetic message bodies/drafts.
+    safe = {key: value.get(key) for key in ("state", "loaded", "active", "reading", "unread", "count", "pending", "viewport")} if isinstance(value, dict) else type(value).__name__
+    raise AssertionError("Receipt condition timed out: " + str(safe))
+
+
+def run(output):
+    output.parent.mkdir(parents=True, exist_ok=True)
+    report = {"passed": False, "scope": "production QML windows/SQLite/bridge; synthetic CLI; offscreen/private XDG/D-Bus; no phone/compositor", "checks": []}
+    ctypes.CDLL(None).prctl(36, 1, 0, 0, 0)
+    with tempfile.TemporaryDirectory(prefix="pk-s06-") as tmp:
+        base = Path(tmp)
+        env = isolated_environment(tmp)
+        env["QS_NO_RELOAD_POPUP"] = "1"
+        address = "unix:path=" + str(base / "bus")
+        env["DBUS_SESSION_BUS_ADDRESS"] = address
+        fixture, record = base / "fixture.json", base / "processes.jsonl"
+        fixture.write_text(json.dumps({"format": 1, "synthetic": True, "record": str(record), "receiveEvents": [], "readReceipts": False}))
+        config = Path(env["XDG_CONFIG_HOME"]) / "putkin"
+        config.mkdir(mode=0o700)
+        (config / "signal.json").write_text(json.dumps({"v": 1, "enabled": True, "deviceName": "Putkin"}))
+        (config / "signal.json").chmod(0o600)
+        env["PUTKIN_SIGNAL_TEST_SCENARIO"] = str(fixture)
+        entrypoint = str(ROOT / "signal-receipts-test.qml")
+        processes, logs, helpers = [], [], set()
+        def start(cmd, name):
+            log = (base / (name + ".log")).open("w+")
+            logs.append((name, log))
+            process = subprocess.Popen(cmd, env=env, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+            processes.append(process)
+            return process
+        def ipc(method, *args):
+            result = subprocess.run([tool("quickshell"), "ipc", "--path", entrypoint, "call", "probe", method, *map(str, args)],
+                env=env, capture_output=True, text=True, timeout=5)
+            return ipc_reply(result, shell, logs, starting=method == "snapshot")
+        def snapshot():
+            value = ipc_json(ipc("snapshot"))
+            if value.get("pid"): helpers.add(value["pid"])
+            return value
+        def records(kind):
+            return [v for v in map(json.loads, record.read_text().splitlines()) if v["kind"] == kind] if record.exists() else []
+        def query(sql):
+            with closing(sqlite3.connect(Path(env["XDG_DATA_HOME"]) / "putkin/signal/history.sqlite3")) as db:
+                return db.execute(sql).fetchall()
+        def receive(wire):
+            ipc("receive", json.dumps(wire))
+        def assert_no_receipts(count):
+            time.sleep(.6)
+            assert len(records("receipt")) == count, records("receipt")
+        def cover_messages():
+            # An asynchronously created/restored QWindow activates when mapped.
+            # Cover it after that event, before the 250 ms visibility debounce.
+            # Requesting cover focus before mapping lets the later map steal it.
+            eventually(snapshot, lambda v: v.get("loaded") and v.get("active"))
+            ipc("coverMessages")
+            return eventually(snapshot, lambda v: not v.get("active"))
+        try:
+            start([tool("dbus-daemon"), "--session", "--nofork", "--address=" + address], "bus")
+            eventually(lambda: (base / "bus").exists(), bool)
+            shell = start([tool("quickshell"), "--no-color", "--path", entrypoint], "shell")
+            ready = eventually(snapshot, lambda v: v.get("state") == "ready")
+            stamps = list(range(1790000100000, 1790000100030))
+            for i, stamp in enumerate(stamps): receive(event(timestamp=stamp, body="Syntetyczna wiadomość " + str(i)))
+            eventually(snapshot, lambda v: v.get("unread") == 30 and not v.get("pending"))
+            assert_no_receipts(0)
+            ipc("center", "true"); assert_no_receipts(0); assert snapshot()["unread"] == 30
+            ipc("center", "false")
+            receive(read_sync([stamps[-1]]))
+            eventually(snapshot, lambda v: v.get("unread") == 29 and v.get("entries") == 0)
+            assert_no_receipts(0)
+            report["checks"].append("closed window and notification center never read; phone read sync updates shared unread and expires the exact toast")
+            assert ipc("select", 0) == "true"
+            # Deactivate before the visibility debounce; selection alone is inert.
+            cover_messages()
+            selected = eventually(snapshot, lambda v: v.get("loaded") and v.get("count") == 30 and not v.get("active") and not v.get("pending")
+                and (v.get("viewport") or {}).get("opacity") == 1 and not v["viewport"]["restoring"])
+            # Model readiness precedes the deferred forceLayout/settleEnd pass.
+            # Measure the actual viewport only once its render has settled.
+            time.sleep(.3)
+            selected = snapshot()
+            assert not selected["active"]
+            assert_no_receipts(0)
+            visible = selected["visibleUnread"]
+            report["focusReadProbe"] = {"visibleBefore": len(visible), "viewport": selected["viewport"]}
+            assert 0 < len(visible) < 29
+            ipc("activate")
+            eventually(snapshot, lambda v: v.get("reading") and v.get("unread") == 29 - len(visible))
+            eventually(lambda: records("receipt"), lambda v: len(v) == 1)
+            assert len(records("receipt")[0]["params"]["targetTimestamp"]) == len(visible)
+            assert_no_receipts(1)
+            assert query("SELECT DISTINCT state FROM read_queue") == [("submitted",)]
+            report["checks"].append("actual Qt window focus gates reads; visible IDs produce one grouped sendReceipt; empty privacy-off CLI result accepted without changing settings")
+            ipc("minimize", "true")
+            eventually(snapshot, lambda v: v.get("minimized") and not v.get("reading"))
+            receive(event(timestamp=1790000200000, body="Podczas minimalizacji")); assert_no_receipts(1)
+            ipc("minimize", "false"); cover_messages()
+            receive(event(timestamp=1790000200001, body="Za innym oknem")); assert_no_receipts(1)
+            ipc("locked", "true")
+            eventually(snapshot, lambda v: not v.get("loaded"))
+            receive(event(timestamp=1790000200002, body="Przy blokadzie")); assert_no_receipts(1)
+            report["checks"].append("minimized, unfocused and locked states receive into SQLite without producing reads")
+            ipc("locked", "false"); ipc("select", 0); cover_messages()
+            eventually(snapshot, lambda v: v.get("count") == 33 and not v.get("active"))
+            ipc("scroll", 5); time.sleep(.15); ipc("activate")
+            eventually(lambda: records("receipt"), lambda v: len(v) == 2)
+            receive(event(timestamp=1790000200003, body="Poza widocznym zakresem")); assert_no_receipts(2)
+            report["checks"].append("scrolling reads only the visible range; a new message outside it stays unread")
+            ipc("draft", "Status syntetyczny"); assert ipc("send") == "true"
+            eventually(snapshot, lambda v: "Wysłano" in v.get("statuses", []))
+            for kind, label in (("delivery", "Dostarczono"), ("read", "Przeczytano"), ("viewed", "Wyświetlono")):
+                receive(receipt(kind, [1790000002000]))
+                eventually(snapshot, lambda v: label in v.get("statuses", []))
+            receive(receipt("delivery", [1790000002000])); assert "Wyświetlono" in snapshot()["statuses"]
+            ipc("scroll", 0); time.sleep(.4)
+            assert ipc("capture", str(output.with_suffix(".png"))) == "true"
+            eventually(snapshot, lambda v: v.get("captured"))
+            report["checks"].append("native rows show sent/delivered/read/viewed monotonically with Material icon and accessible label")
+            ipc("close"); eventually(snapshot, lambda v: not v.get("loaded"))
+            before = snapshot(); receipt_count = len(records("receipt"))
+            ipc("reload")
+            after = eventually(snapshot, lambda v: v.get("state") == "ready" and v.get("generation") != before["generation"] and not v.get("pending"))
+            assert after["unread"] == before["unread"]
+            assert not after["loaded"] and gone(ready["pid"])
+            assert_no_receipts(receipt_count)
+            assert query("SELECT COUNT(*) FROM messages WHERE read_at_ms IS NOT NULL")[0][0] > 0
+            report["checks"].append("hard reload preserves unread/read markers and does not repeat submitted read RPCs")
+            ipc("quit"); shell.wait(timeout=8)
+            report["passed"] = True
+        except (OSError, AssertionError, subprocess.SubprocessError) as error:
+            report["failure"] = str(error)
+        finally:
+            for process in reversed(processes): stop_process_group(process)
+            remaining = [pid for pid in helpers | {v["pid"] for v in records("start")} if not gone(pid)]
+            combined = runtime_log(logs)
+            output.with_suffix(".log").write_text(combined)
+            report["qmlErrors"] = qml_errors(combined, allow_offscreen_masks=True)
+            report["remainingOwnedProcesses"] = remaining
+            if remaining or report["qmlErrors"]: report["passed"] = False
+            for _, log in logs: log.close()
+    output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
+    print(json.dumps(report, ensure_ascii=False, indent=2))
+    return int(not report["passed"])
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, default=ROOT / "artifacts/signal-s06/receipts.json")
+    raise SystemExit(run(parser.parse_args().output.resolve()))

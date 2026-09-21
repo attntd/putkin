@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "knownEnvelopes": 14,
+  "sendResults": 2,
+  "source": "signal-cli-0.14.8-json-schemas.tar.gz",
+  "nullHandling": "Explicit Java nullable fields accepted; this is not unmodified JSON Schema validation.",
+  "nullableFields": [
+    "reaction.dataMessage.message",
+    "remote-delete.dataMessage.message",
+    "attachment.dataMessage.message",
+    "attachment.dataMessage.attachments[0].caption",
+    "view-once.dataMessage.message",
+    "view-once.dataMessage.attachments[0].caption",
+    "sent-delete-sync.syncMessage.sentMessage.message"
+  ],
+  "documentLinks": "PASS"
+}

@@ -1,0 +1,144 @@
+#!/usr/bin/env python3
+"""S04 native messaging window against synthetic CLI, isolated XDG/D-Bus."""
+import argparse
+import ctypes
+import json
+import os
+from pathlib import Path
+import subprocess
+import tempfile
+import time
+import sys
+
+from _common import ROOT, ipc_json, ipc_reply, isolated_environment, qml_errors, runtime_log, stop_process_group, tool
+sys.path.insert(0, str(ROOT / "tests"))
+from test_signal_history import event
+from test_signal_lifecycle import gone
+
+
+def eventually(read, predicate, seconds=15):
+    end = time.monotonic() + seconds
+    value = None
+    while time.monotonic() < end:
+        value = read()
+        if predicate(value):
+            return value
+        time.sleep(.04)
+    raise AssertionError("Messaging condition timed out: " + str(value))
+
+
+def run(output):
+    output.parent.mkdir(parents=True, exist_ok=True)
+    report = {"passed": False, "scope": "production QML + SQLite + synthetic CLI; offscreen/private XDG/D-Bus; no phone", "checks": []}
+    ctypes.CDLL(None).prctl(36, 1, 0, 0, 0)
+    with tempfile.TemporaryDirectory(prefix="pk-s04-") as tmp:
+        base = Path(tmp)
+        env = isolated_environment(tmp)
+        env["QS_NO_RELOAD_POPUP"] = "1"
+        address = "unix:path=" + str(base / "bus")
+        env["DBUS_SESSION_BUS_ADDRESS"] = address
+        fixture, record = base / "fixture.json", base / "processes.jsonl"
+        fixture.write_text(json.dumps({"format": 1, "synthetic": True, "record": str(record), "receiveEvents": [],
+            "contacts": [
+                {"number": "+12025550100", "uuid": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", "name": "Notatka", "messageExpirationTime": 0},
+                {"number": "+12025550101", "uuid": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb", "name": "Alicja", "messageExpirationTime": 0}]}))
+        config = Path(env["XDG_CONFIG_HOME"]) / "putkin"
+        config.mkdir(mode=0o700)
+        (config / "signal.json").write_text(json.dumps({"v": 1, "enabled": True, "deviceName": "Putkin"}))
+        (config / "signal.json").chmod(0o600)
+        env["PUTKIN_SIGNAL_TEST_SCENARIO"] = str(fixture)
+        entrypoint = str(ROOT / "signal-messages-test.qml")
+        processes, logs, helpers = [], [], set()
+        def start(cmd, name):
+            log = (base / (name + ".log")).open("w+")
+            logs.append((name, log))
+            process = subprocess.Popen(cmd, env=env, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+            processes.append(process)
+            return process
+        def ipc(method, *args, target="probe"):
+            result = subprocess.run([tool("quickshell"), "ipc", "--path", entrypoint, "call", target, method, *map(str, args)],
+                env=env, capture_output=True, text=True, timeout=5)
+            return ipc_reply(result, shell, logs, starting=method == "snapshot")
+        def snapshot():
+            value = ipc_json(ipc("snapshot"))
+            if value.get("pid"):
+                helpers.add(value["pid"])
+            return value
+        def records(kind):
+            return [v for v in map(json.loads, record.read_text().splitlines()) if v["kind"] == kind] if record.exists() else []
+        def capture(suffix):
+            time.sleep(.4)
+            assert ipc("capture", str(output.with_name(output.stem + suffix + ".png"))) == "true"
+            eventually(snapshot, lambda v: v.get("captured"))
+        try:
+            start([tool("dbus-daemon"), "--session", "--nofork", "--address=" + address], "bus")
+            eventually(lambda: (base / "bus").exists(), bool)
+            shell = start([tool("quickshell"), "--no-color", "--path", entrypoint], "shell")
+            ready = eventually(snapshot, lambda v: v.get("state") == "ready")
+            assert not ready["loaded"]
+            assert ipc("open", target="messages") == "true"
+            eventually(snapshot, lambda v: v.get("loaded"))
+            assert ipc("create", "alice.42") == "true"
+            selected = eventually(snapshot, lambda v: v.get("selected") and v.get("draftReady") and not v.get("loading"))
+            assert selected["count"] == 0 and not records("send")
+            route = selected["selected"]
+            report["checks"].append("lazy native window; username resolved without send; empty conversation before first send")
+            ipc("draft", "Pierwsza wiadomość 🐈")
+            assert ipc("send") == "true"
+            eventually(snapshot, lambda v: v.get("statuses") == ["Wysłano"] and v.get("draft") == "")
+            assert len(records("send")) == 1
+            report["checks"].append("composer to durable outbox to fake send; no delivered/read claim")
+            ipc("draft", "Szkic po ponownym otwarciu — hjkl")
+            eventually(snapshot, lambda v: not v.get("pending"))
+            ipc("close")
+            eventually(snapshot, lambda v: not v.get("loaded"))
+            for i in range(65):
+                ipc("receive", json.dumps(event(timestamp=1790000100000 + i * 1000, body="Zażółć 🐈 日本語\n" + "Historia od połączenia. " * (15 if i % 7 == 0 else 1))))
+            assert snapshot()["pid"] == ready["pid"] and len(records("subscribe")) == 1
+            assert ipc("openConversation", route["serviceId"], "wrong-account", route["conversationId"], target="messages") == "false"
+            assert not snapshot()["loaded"]
+            assert ipc("openConversation", route["serviceId"], route["accountId"], route["conversationId"], target="messages") == "true"
+            eventually(snapshot, lambda v: v.get("loaded") and v.get("count") == 50 and not v.get("loading"))
+            windows = snapshot()["windows"]
+            assert ipc("select", 0) == "true"
+            eventually(snapshot, lambda v: v.get("draftReady") and not v.get("loading"))
+            assert snapshot()["windows"] == windows
+            ipc("more")
+            eventually(snapshot, lambda v: v.get("count") == 66)
+            capture("-wide")
+            ipc("resize", 320, 300)
+            eventually(snapshot, lambda v: v.get("width") == 320 and v.get("height") == 300)
+            capture("-small")
+            report["checks"].append("closed window receives 65 messages; same process/subscription; scoped IPC and direct routing reuse window; 50+16 history pages")
+            ipc("reload")
+            restarted = eventually(snapshot, lambda v: v.get("state") == "ready" and v.get("generation") != ready["generation"])
+            assert restarted["accountId"] == route["accountId"]
+            ipc("openConversation", route["serviceId"], route["accountId"], route["conversationId"], target="messages")
+            eventually(snapshot, lambda v: v.get("draftReady") and not v.get("loading") and not v.get("pending") and v.get("draft") == "Szkic po ponownym otwarciu — hjkl")
+            capture("-reload")  # Require the reconstructed window to finish rendering.
+            assert len(records("send")) == 1
+            assert gone(ready["pid"])
+            report["checks"].append("hard reload restores committed draft/account/history; old bridge reaped; no repeated send")
+            ipc("quit")
+            shell.wait(timeout=8)
+            report["passed"] = True
+        except (OSError, AssertionError, subprocess.SubprocessError) as error:
+            report["failure"] = str(error)
+        finally:
+            for process in reversed(processes): stop_process_group(process)
+            remaining = [pid for pid in helpers | {v["pid"] for v in records("start")} if not gone(pid)]
+            combined = runtime_log(logs)
+            output.with_suffix(".log").write_text(combined)
+            report["qmlErrors"] = qml_errors(combined, allow_offscreen_masks=True)
+            report["remainingOwnedProcesses"] = remaining
+            if remaining or report["qmlErrors"]: report["passed"] = False
+            for _, log in logs: log.close()
+    output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
+    print(json.dumps(report, ensure_ascii=False, indent=2))
+    return int(not report["passed"])
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, default=ROOT / "artifacts/signal-s04/messages.json")
+    raise SystemExit(run(parser.parse_args().output.resolve()))

@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "scope": "synthetic CLI + production settings/bridge, private XDG/D-Bus, offscreen; no phone",
+  "checks": [
+    "real SettingsWindow renders an in-memory QR; capture refused while pairing",
+    "closing settings cancels attempt, clears QR and reaps CLI",
+    "bridge SIGKILL during QR clears the attempt; settings can restart the service",
+    "new attempt succeeds; exactly one receiver after durable identity, QR removed",
+    "window closure keeps linked receiver; hard reload restores identity without pairing",
+    "settings disable receiver; review screenshot contains no QR or URI"
+  ],
+  "qmlErrors": [],
+  "cleanup": {
+    "remainingOwnedProcesses": []
+  }
+}

@@ -18,7 +18,7 @@ Variants {
         function sync(): void {
             if (!modelData) { release.stop(); loader.activeAsync = false; noticesShown = false; return; }
             const notices = root.service.visibleOn(modelData.name);
-            const show = notices.length > 0 && (!panelOpen || root.panels.activeId !== "notifications" && notices.some(entry => entry.notification && entry.notification.internal === true));
+            const show = notices.length > 0 && (!panelOpen || root.panels.activeId !== "notifications" && notices.some(entry => entry.notification && entry.notification.internal === true && !entry.messageReference));
             noticesShown = show;
             if (show) { release.stop(); loader.activeAsync = true; }
             else release.restart();

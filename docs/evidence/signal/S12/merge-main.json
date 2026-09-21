@@ -1,0 +1,35 @@
+{
+  "checkedAt": "2026-09-21T11:16:17.582737+00:00",
+  "signalCommit": "83a191a78844016794b341c29e8c11908be79824",
+  "previousMain": "311edb8a62b9c3ba0160af365607174158b3d1da",
+  "runtimeBuild": "20260921-110638-03f24e35e2b4",
+  "runtimeFilesEqual": 357,
+  "conflictResolutionsReused": [
+    "core/ActionController.qml",
+    "core/Actions.js",
+    "docs/notifications.md",
+    "docs/status.md",
+    "modules/notifications/NotificationCard.qml",
+    "modules/notifications/NotificationCenter.qml",
+    "modules/notifications/NotificationStack.qml",
+    "modules/quicksettings/PanelSurface.qml",
+    "scripts/_install.py",
+    "scripts/test-wayland",
+    "services/NotificationEntry.qml",
+    "services/NotificationService.qml",
+    "shell.qml"
+  ],
+  "mainOnlyEvidenceFilesRetained": 118,
+  "qmlCheck": {
+    "files": 272,
+    "errors": 0,
+    "log": "merge-main-check.log"
+  },
+  "existingBehaviorEvidence": {
+    "targetedQtPassed": 32,
+    "waylandPassed": true,
+    "location": "ui-refinement/README.md",
+    "reasonNotRepeated": "All 357 runtime files are byte-identical to the tested, activated build."
+  },
+  "instructionsAndPrompts": "Existing AGENTS.md and 27 prompts tracked without content changes."
+}

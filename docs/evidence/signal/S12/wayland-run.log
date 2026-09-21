@@ -1,0 +1,9 @@
+dbus-daemon[3]: [session uid=1000 pid=3 pidfd=5] Connection :1.2 (uid=1000 pid=57 comm="/usr/bin/python3 -B /home/attntd/projects/signal/s") became a monitor.
+PASS: native passive toast, actual quick-reply keyboard/Unicode/Shift+Enter/Escape, focus return, two accents preview/cancel/save preserve draft
+PASS: real large/small native window and scale 1.5 render correctly; hjkl remains text
+PASS: second monitor routing, mixed scales and hotplug preserve draft; lock closes conversation and redacts new notification
+dbus-daemon[3]: [session uid=1000 pid=3 pidfd=5] Monitoring connection :1.2 closed.
+dbus-daemon[3]: [session uid=1000 pid=3 pidfd=5] Connection :1.7 (uid=1000 pid=289 comm="/usr/bin/python3 -B /home/attntd/projects/signal/s") became a monitor.
+PASS: native reload preserves committed accents/history/draft with one new receiver
+dbus-daemon[3]: [session uid=1000 pid=3 pidfd=5] Monitoring connection :1.7 closed.
+PASS: Signal native acceptance on private Wayland

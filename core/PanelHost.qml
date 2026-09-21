@@ -16,6 +16,7 @@ QtObject {
     property var bluetooth: null
     property var notifications: null
     property var sessionService: null
+    property var signalService: null
     property var notificationController: null
     property Component trayMenuComponent: null
     property real anchorRight: 0

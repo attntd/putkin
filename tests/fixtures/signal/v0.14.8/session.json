@@ -1,0 +1,636 @@
+{
+  "format": 1,
+  "synthetic": true,
+  "signalCliVersion": "0.14.8",
+  "sourceCommit": "22b028bbb9cee8f6aa22af71c6b3e9d09028a16a",
+  "note": "Fikcyjne dane; nie są zapisem sesji z telefonem. Ostatni event jest celowo nieznany, nie jest API signal-cli.",
+  "events": [
+    {
+      "name": "incoming",
+      "wire": {
+        "jsonrpc": "2.0",
+        "method": "receive",
+        "params": {
+          "subscription": 0,
+          "result": {
+            "envelope": {
+              "source": "+12025550101",
+              "sourceNumber": "+12025550101",
+              "sourceUuid": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+              "sourceName": "Osoba testowa",
+              "sourceDevice": 1,
+              "timestamp": 1790000000000,
+              "serverReceivedTimestamp": 1790000000010,
+              "serverDeliveredTimestamp": 1790000000020,
+              "dataMessage": {
+                "timestamp": 1790000000000,
+                "message": "Zażółć gęślą jaźń 👋\ndruga linia",
+                "expiresInSeconds": 0,
+                "isExpirationUpdate": false,
+                "viewOnce": false,
+                "isEndSession": false,
+                "isProfileKeyUpdate": false,
+                "hasProfileKey": false
+              }
+            },
+            "account": "+12025550100"
+          }
+        }
+      }
+    },
+    {
+      "name": "sent-sync",
+      "wire": {
+        "jsonrpc": "2.0",
+        "method": "receive",
+        "params": {
+          "subscription": 0,
+          "result": {
+            "envelope": {
+              "source": "+12025550100",
+              "sourceNumber": "+12025550100",
+              "sourceUuid": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "sourceName": "Własne testowe konto",
+              "sourceDevice": 1,
+              "timestamp": 1790000000100,
+              "serverReceivedTimestamp": 1790000000110,
+              "serverDeliveredTimestamp": 1790000000120,
+              "syncMessage": {
+                "sentMessage": {
+                  "destination": "+12025550101",
+                  "destinationNumber": "+12025550101",
+                  "destinationUuid": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+                  "timestamp": 1790000000100,
+                  "message": "Tekst z telefonu",
+                  "expiresInSeconds": 0,
+                  "isExpirationUpdate": false,
+                  "viewOnce": false,
+                  "isEndSession": false,
+                  "isProfileKeyUpdate": false,
+                  "hasProfileKey": false
+                }
+              }
+            },
+            "account": "+12025550100"
+          }
+        }
+      }
+    },
+    {
+      "name": "edit",
+      "wire": {
+        "jsonrpc": "2.0",
+        "method": "receive",
+        "params": {
+          "subscription": 0,
+          "result": {
+            "envelope": {
+              "source": "+12025550101",
+              "sourceNumber": "+12025550101",
+              "sourceUuid": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+              "sourceName": "Osoba testowa",
+              "sourceDevice": 1,
+              "timestamp": 1790000000200,
+              "serverReceivedTimestamp": 1790000000210,
+              "serverDeliveredTimestamp": 1790000000220,
+              "editMessage": {
+                "targetSentTimestamp": 1790000000000,
+                "dataMessage": {
+                  "timestamp": 1790000000200,
+                  "message": "Poprawiony tekst",
+                  "expiresInSeconds": 0,
+                  "isExpirationUpdate": false,
+                  "viewOnce": false,
+                  "isEndSession": false,
+                  "isProfileKeyUpdate": false,
+                  "hasProfileKey": false
+                }
+              }
+            },
+            "account": "+12025550100"
+          }
+        }
+      }
+    },
+    {
+      "name": "reaction",
+      "wire": {
+        "jsonrpc": "2.0",
+        "method": "receive",
+        "params": {
+          "subscription": 0,
+          "result": {
+            "envelope": {
+              "source": "+12025550101",
+              "sourceNumber": "+12025550101",
+              "sourceUuid": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+              "sourceName": "Osoba testowa",
+              "sourceDevice": 1,
+              "timestamp": 1790000000300,
+              "serverReceivedTimestamp": 1790000000310,
+              "serverDeliveredTimestamp": 1790000000320,
+              "dataMessage": {
+                "timestamp": 1790000000300,
+                "message": null,
+                "expiresInSeconds": 0,
+                "isExpirationUpdate": false,
+                "viewOnce": false,
+                "isEndSession": false,
+                "isProfileKeyUpdate": false,
+                "hasProfileKey": false,
+                "reaction": {
+                  "emoji": "👍",
+                  "targetAuthor": "+12025550100",
+                  "targetAuthorNumber": "+12025550100",
+                  "targetAuthorUuid": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "targetSentTimestamp": 1790000000100,
+                  "isRemove": false
+                }
+              }
+            },
+            "account": "+12025550100"
+          }
+        }
+      }
+    },
+    {
+      "name": "remote-delete",
+      "wire": {
+        "jsonrpc": "2.0",
+        "method": "receive",
+        "params": {
+          "subscription": 0,
+          "result": {
+            "envelope": {
+              "source": "+12025550101",
+              "sourceNumber": "+12025550101",
+              "sourceUuid": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+              "sourceName": "Osoba testowa",
+              "sourceDevice": 1,
+              "timestamp": 1790000000400,
+              "serverReceivedTimestamp": 1790000000410,
+              "serverDeliveredTimestamp": 1790000000420,
+              "dataMessage": {
+                "timestamp": 1790000000400,
+                "message": null,
+                "expiresInSeconds": 0,
+                "isExpirationUpdate": false,
+                "viewOnce": false,
+                "isEndSession": false,
+                "isProfileKeyUpdate": false,
+                "hasProfileKey": false,
+                "remoteDelete": {
+                  "timestamp": 1790000000000
+                }
+              }
+            },
+            "account": "+12025550100"
+          }
+        }
+      }
+    },
+    {
+      "name": "delivery-receipt",
+      "wire": {
+        "jsonrpc": "2.0",
+        "method": "receive",
+        "params": {
+          "subscription": 0,
+          "result": {
+            "envelope": {
+              "source": "+12025550101",
+              "sourceNumber": "+12025550101",
+              "sourceUuid": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+              "sourceName": "Osoba testowa",
+              "sourceDevice": 1,
+              "timestamp": 1790000000500,
+              "serverReceivedTimestamp": 1790000000510,
+              "serverDeliveredTimestamp": 1790000000520,
+              "receiptMessage": {
+                "when": 1790000000500,
+                "isDelivery": true,
+                "isRead": false,
+                "isViewed": false,
+                "timestamps": [
+                  1790000000100
+                ]
+              }
+            },
+            "account": "+12025550100"
+          }
+        }
+      }
+    },
+    {
+      "name": "read-receipt",
+      "wire": {
+        "jsonrpc": "2.0",
+        "method": "receive",
+        "params": {
+          "subscription": 0,
+          "result": {
+            "envelope": {
+              "source": "+12025550101",
+              "sourceNumber": "+12025550101",
+              "sourceUuid": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+              "sourceName": "Osoba testowa",
+              "sourceDevice": 1,
+              "timestamp": 1790000000600,
+              "serverReceivedTimestamp": 1790000000610,
+              "serverDeliveredTimestamp": 1790000000620,
+              "receiptMessage": {
+                "when": 1790000000600,
+                "isDelivery": false,
+                "isRead": true,
+                "isViewed": false,
+                "timestamps": [
+                  1790000000100
+                ]
+              }
+            },
+            "account": "+12025550100"
+          }
+        }
+      }
+    },
+    {
+      "name": "read-sync",
+      "wire": {
+        "jsonrpc": "2.0",
+        "method": "receive",
+        "params": {
+          "subscription": 0,
+          "result": {
+            "envelope": {
+              "source": "+12025550100",
+              "sourceNumber": "+12025550100",
+              "sourceUuid": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "sourceName": "Własne testowe konto",
+              "sourceDevice": 1,
+              "timestamp": 1790000000700,
+              "serverReceivedTimestamp": 1790000000710,
+              "serverDeliveredTimestamp": 1790000000720,
+              "syncMessage": {
+                "readMessages": [
+                  {
+                    "sender": "+12025550101",
+                    "senderNumber": "+12025550101",
+                    "senderUuid": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+                    "timestamp": 1790000000000
+                  }
+                ]
+              }
+            },
+            "account": "+12025550100"
+          }
+        }
+      }
+    },
+    {
+      "name": "group",
+      "wire": {
+        "jsonrpc": "2.0",
+        "method": "receive",
+        "params": {
+          "subscription": 0,
+          "result": {
+            "envelope": {
+              "source": "+12025550101",
+              "sourceNumber": "+12025550101",
+              "sourceUuid": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+              "sourceName": "Osoba testowa",
+              "sourceDevice": 1,
+              "timestamp": 1790000000800,
+              "serverReceivedTimestamp": 1790000000810,
+              "serverDeliveredTimestamp": 1790000000820,
+              "dataMessage": {
+                "timestamp": 1790000000800,
+                "message": "Tekst w grupie",
+                "expiresInSeconds": 0,
+                "isExpirationUpdate": false,
+                "viewOnce": false,
+                "isEndSession": false,
+                "isProfileKeyUpdate": false,
+                "hasProfileKey": false,
+                "groupInfo": {
+                  "groupId": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+                  "groupName": "Grupa testowa",
+                  "revision": 1,
+                  "type": "DELIVER"
+                }
+              }
+            },
+            "account": "+12025550100"
+          }
+        }
+      }
+    },
+    {
+      "name": "attachment",
+      "wire": {
+        "jsonrpc": "2.0",
+        "method": "receive",
+        "params": {
+          "subscription": 0,
+          "result": {
+            "envelope": {
+              "source": "+12025550101",
+              "sourceNumber": "+12025550101",
+              "sourceUuid": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+              "sourceName": "Osoba testowa",
+              "sourceDevice": 1,
+              "timestamp": 1790000000900,
+              "serverReceivedTimestamp": 1790000000910,
+              "serverDeliveredTimestamp": 1790000000920,
+              "dataMessage": {
+                "timestamp": 1790000000900,
+                "message": null,
+                "expiresInSeconds": 0,
+                "isExpirationUpdate": false,
+                "viewOnce": false,
+                "isEndSession": false,
+                "isProfileKeyUpdate": false,
+                "hasProfileKey": false,
+                "attachments": [
+                  {
+                    "contentType": "image/png",
+                    "filename": "synthetic.png",
+                    "id": "synthetic-attachment.png",
+                    "size": 68,
+                    "width": 1,
+                    "height": 1,
+                    "caption": null,
+                    "uploadTimestamp": 1790000000000,
+                    "isVoiceNote": false
+                  }
+                ]
+              }
+            },
+            "account": "+12025550100"
+          }
+        }
+      }
+    },
+    {
+      "name": "expiring",
+      "wire": {
+        "jsonrpc": "2.0",
+        "method": "receive",
+        "params": {
+          "subscription": 0,
+          "result": {
+            "envelope": {
+              "source": "+12025550101",
+              "sourceNumber": "+12025550101",
+              "sourceUuid": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+              "sourceName": "Osoba testowa",
+              "sourceDevice": 1,
+              "timestamp": 1790000001000,
+              "serverReceivedTimestamp": 1790000001010,
+              "serverDeliveredTimestamp": 1790000001020,
+              "dataMessage": {
+                "timestamp": 1790000001000,
+                "message": "Tekst znikający",
+                "expiresInSeconds": 60,
+                "isExpirationUpdate": false,
+                "viewOnce": false,
+                "isEndSession": false,
+                "isProfileKeyUpdate": false,
+                "hasProfileKey": false
+              }
+            },
+            "account": "+12025550100"
+          }
+        }
+      }
+    },
+    {
+      "name": "view-once",
+      "wire": {
+        "jsonrpc": "2.0",
+        "method": "receive",
+        "params": {
+          "subscription": 0,
+          "result": {
+            "envelope": {
+              "source": "+12025550101",
+              "sourceNumber": "+12025550101",
+              "sourceUuid": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+              "sourceName": "Osoba testowa",
+              "sourceDevice": 1,
+              "timestamp": 1790000001100,
+              "serverReceivedTimestamp": 1790000001110,
+              "serverDeliveredTimestamp": 1790000001120,
+              "dataMessage": {
+                "timestamp": 1790000001100,
+                "message": null,
+                "expiresInSeconds": 0,
+                "isExpirationUpdate": false,
+                "viewOnce": true,
+                "isEndSession": false,
+                "isProfileKeyUpdate": false,
+                "hasProfileKey": false,
+                "attachments": [
+                  {
+                    "contentType": "image/png",
+                    "filename": "synthetic.png",
+                    "id": "synthetic-attachment.png",
+                    "size": 68,
+                    "width": 1,
+                    "height": 1,
+                    "caption": null,
+                    "uploadTimestamp": 1790000000000,
+                    "isVoiceNote": false
+                  }
+                ]
+              }
+            },
+            "account": "+12025550100"
+          }
+        }
+      }
+    },
+    {
+      "name": "sent-edit-sync",
+      "wire": {
+        "jsonrpc": "2.0",
+        "method": "receive",
+        "params": {
+          "subscription": 0,
+          "result": {
+            "envelope": {
+              "source": "+12025550100",
+              "sourceNumber": "+12025550100",
+              "sourceUuid": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "sourceName": "Własne testowe konto",
+              "sourceDevice": 1,
+              "timestamp": 1790000001200,
+              "serverReceivedTimestamp": 1790000001210,
+              "serverDeliveredTimestamp": 1790000001220,
+              "syncMessage": {
+                "sentMessage": {
+                  "destination": "+12025550101",
+                  "destinationNumber": "+12025550101",
+                  "destinationUuid": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+                  "editMessage": {
+                    "targetSentTimestamp": 1790000000100,
+                    "dataMessage": {
+                      "timestamp": 1790000001200,
+                      "message": "Edycja z telefonu",
+                      "expiresInSeconds": 0,
+                      "isExpirationUpdate": false,
+                      "viewOnce": false,
+                      "isEndSession": false,
+                      "isProfileKeyUpdate": false,
+                      "hasProfileKey": false
+                    }
+                  }
+                }
+              }
+            },
+            "account": "+12025550100"
+          }
+        }
+      }
+    },
+    {
+      "name": "sent-delete-sync",
+      "wire": {
+        "jsonrpc": "2.0",
+        "method": "receive",
+        "params": {
+          "subscription": 0,
+          "result": {
+            "envelope": {
+              "source": "+12025550100",
+              "sourceNumber": "+12025550100",
+              "sourceUuid": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "sourceName": "Własne testowe konto",
+              "sourceDevice": 1,
+              "timestamp": 1790000001300,
+              "serverReceivedTimestamp": 1790000001310,
+              "serverDeliveredTimestamp": 1790000001320,
+              "syncMessage": {
+                "sentMessage": {
+                  "destination": "+12025550101",
+                  "destinationNumber": "+12025550101",
+                  "destinationUuid": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+                  "timestamp": 1790000001300,
+                  "message": null,
+                  "expiresInSeconds": 0,
+                  "isExpirationUpdate": false,
+                  "viewOnce": false,
+                  "isEndSession": false,
+                  "isProfileKeyUpdate": false,
+                  "hasProfileKey": false,
+                  "remoteDelete": {
+                    "timestamp": 1790000000100
+                  }
+                }
+              }
+            },
+            "account": "+12025550100"
+          }
+        }
+      }
+    },
+    {
+      "name": "unknown-future-event",
+      "wire": {
+        "jsonrpc": "2.0",
+        "method": "putkinSyntheticFutureEvent",
+        "params": {
+          "synthetic": true
+        }
+      }
+    }
+  ],
+  "exchanges": [
+    {
+      "method": "listAccounts",
+      "result": [
+        {
+          "number": "+12025550100"
+        }
+      ]
+    },
+    {
+      "method": "subscribeReceive",
+      "params": {
+        "account": "+12025550100"
+      },
+      "result": 0,
+      "beforeResponseEvents": [
+        "incoming"
+      ],
+      "afterResponseEvents": [
+        "sent-sync",
+        "edit",
+        "reaction",
+        "remote-delete",
+        "delivery-receipt",
+        "read-receipt",
+        "read-sync",
+        "group",
+        "attachment",
+        "expiring",
+        "view-once",
+        "sent-edit-sync",
+        "sent-delete-sync",
+        "unknown-future-event"
+      ]
+    },
+    {
+      "method": "send",
+      "params": {
+        "account": "+12025550100",
+        "recipient": [
+          "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"
+        ],
+        "message": "Odpowiedź z Putkina"
+      },
+      "result": {
+        "timestamp": 1790000002000,
+        "results": [
+          {
+            "recipientAddress": {
+              "uuid": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+              "number": "+12025550101"
+            },
+            "type": "SUCCESS"
+          }
+        ]
+      }
+    },
+    {
+      "method": "send",
+      "params": {
+        "account": "+12025550100",
+        "recipient": [
+          "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"
+        ],
+        "message": "Próba po limicie"
+      },
+      "result": {
+        "timestamp": 1790000002100,
+        "results": [
+          {
+            "recipientAddress": {
+              "uuid": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+              "number": "+12025550101"
+            },
+            "type": "RATE_LIMIT_FAILURE",
+            "retryAfterSeconds": 30
+          }
+        ]
+      }
+    },
+    {
+      "method": "unsubscribeReceive",
+      "params": {
+        "subscription": 0
+      },
+      "result": {}
+    }
+  ]
+}

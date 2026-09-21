@@ -1,0 +1,169 @@
+{
+  "scope": "offline, empty account; no linking or messaging",
+  "version": "0.14.8",
+  "binarySha256": "15c1345af57ad8e36a6331eff4517f4a48247efcf87dd5148b389ceb0654d70e",
+  "checks": [
+    {
+      "name": "version",
+      "arguments": [
+        "--version"
+      ],
+      "exitCode": 0,
+      "stdout": "signal-cli 0.14.8\n",
+      "stderr": ""
+    },
+    {
+      "name": "help:jsonRpc",
+      "arguments": [
+        "jsonRpc",
+        "--help"
+      ],
+      "exitCode": 0,
+      "stdout": "usage: signal-cli [-h] [-v] [--log-file LOG_FILE] [--scrub-log]\n\nnamed arguments:\n  -h, --help             show this help message and exit\n  -v, --verbose\n  --log-file LOG_FILE\n  --scrub-log\nusage: signal-cli jsonRpc [-h] [--ignore-attachments] [--ignore-stories]\n                  [--ignore-avatars] [--ignore-stickers]\n                  [--send-read-receipts]\n                  [--receive-mode {on-start,on-connection,manual}]\n\nnamed arguments:\n  -h, --help             show this help message and exit\n  --ignore-attachments   Don’t download attachments of received messages.\n  --ignore-stories       Don’t receive story messages from the server.\n  --ignore-avatars       Don't download avatars of received messages.\n  --ignore-stickers      Don't download sticker packs of received messages.\n  --send-read-receipts   Send read receipts for  all incoming data messages\n                         (in addition to the default delivery receipts)\n  --receive-mode {on-start,on-connection,manual}\n                         Specify when to start receiving messages.\n",
+      "stderr": ""
+    },
+    {
+      "name": "help:link",
+      "arguments": [
+        "link",
+        "--help"
+      ],
+      "exitCode": 0,
+      "stdout": "usage: signal-cli [-h] [-v] [--log-file LOG_FILE] [--scrub-log]\n\nnamed arguments:\n  -h, --help             show this help message and exit\n  -v, --verbose\n  --log-file LOG_FILE\n  --scrub-log\nusage: signal-cli link [-h] [-n NAME]\n\nnamed arguments:\n  -h, --help             show this help message and exit\n  -n NAME, --name NAME   Specify a name to describe this new device.\n",
+      "stderr": ""
+    },
+    {
+      "name": "help:send",
+      "arguments": [
+        "send",
+        "--help"
+      ],
+      "exitCode": 0,
+      "stdout": "usage: signal-cli [-h] [-v] [--log-file LOG_FILE] [--scrub-log]\n\nnamed arguments:\n  -h, --help             show this help message and exit\n  -v, --verbose\n  --log-file LOG_FILE\n  --scrub-log\nusage: signal-cli send [-h] [-g [GROUP_ID [GROUP_ID ...]]]\n                  [-u [USERNAME [USERNAME ...]]] [--note-to-self]\n                  [--notify-self] [-a [ATTACHMENT [ATTACHMENT ...]]]\n                  [--view-once] [-e] [--mention [MENTION [MENTION ...]]]\n                  [--text-style [TEXT_STYLE [TEXT_STYLE ...]]]\n                  [--quote-timestamp QUOTE_TIMESTAMP]\n                  [--quote-author QUOTE_AUTHOR]\n                  [--quote-message QUOTE_MESSAGE]\n                  [--quote-mention [QUOTE_MENTION [QUOTE_MENTION ...]]]\n                  [--quote-attachment [QUOTE_ATTACHMENT [QUOTE_ATTACHMENT ...]]]\n                  [--quote-text-style [QUOTE_TEXT_STYLE [QUOTE_TEXT_STYLE ...]]]\n                  [--sticker STICKER] [--preview-url PREVIEW_URL]\n                  [--preview-title PREVIEW_TITLE]\n                  [--preview-description PREVIEW_DESCRIPTION]\n                  [--preview-image PREVIEW_IMAGE]\n                  [--story-timestamp STORY_TIMESTAMP]\n                  [--story-author STORY_AUTHOR]\n                  [--edit-timestamp EDIT_TIMESTAMP] [--no-urgent]\n                  [--voice-note] [-m MESSAGE | --message-from-stdin]\n                  [recipient [recipient ...]]\n\npositional arguments:\n  recipient              Specify the recipients' phone number.\n\nnamed arguments:\n  -h, --help             show this help message and exit\n  -g [GROUP_ID [GROUP_ID ...]], --group-id [GROUP_ID [GROUP_ID ...]], --group [GROUP_ID [GROUP_ID ...]]\n                         Specify the recipient group ID.\n  -u [USERNAME [USERNAME ...]], --username [USERNAME [USERNAME ...]]\n                         Specify the recipient username or username link.\n  --note-to-self         Send the message to self.\n  --notify-self          If  self  is  part  of  recipients/groups  send  a\n                         normal message, not a sync message.\n  -m MESSAGE, --message MESSAGE\n                         Specify the message to be sent.\n  --message-from-stdin   Read the message from standard input.\n  -a [ATTACHMENT [ATTACHMENT ...]], --attachment [ATTACHMENT [ATTACHMENT ...]]\n                         Add an attachment. Can be either  a file path or a\n                         data  URI.  Data  URI   encoded  attachments  must\n                         follow the RFC 2397. Additionally  a file name can\n                         be       added,       e.g.       data:<MIME-TYPE>;\n                         filename=<FILENAME>;base64,<BASE64 ENCODED DATA>.\n  --view-once            Send the message as a view once message\n  -e, --end-session, --endsession\n                         Clear session state and send end session message.\n  --mention [MENTION [MENTION ...]]\n                         Mention  another  group   member  (syntax:  start:\n                         length:recipientNumber). Unit of  start and length\n                         is UTF-16 code units, NOT Unicode code points.\n  --text-style [TEXT_STYLE [TEXT_STYLE ...]]\n                         Style parts of  the  message  text (syntax: start:\n                         length:STYLE). Unit of start  and length is UTF-16\n                         code units, NOT Unicode code points.\n  --quote-timestamp QUOTE_TIMESTAMP\n                         Specify the timestamp of  a  previous message with\n                         the recipient or group to  add  a quote to the new\n                         message.\n  --quote-author QUOTE_AUTHOR\n                         Specify the number of  the  author of the original\n                         message.\n  --quote-message QUOTE_MESSAGE\n                         Specify the message of the original message.\n  --quote-mention [QUOTE_MENTION [QUOTE_MENTION ...]]\n                         Quote  with  mention   of   another  group  member\n                         (syntax: start:length:recipientNumber)\n  --quote-attachment [QUOTE_ATTACHMENT [QUOTE_ATTACHMENT ...]]\n                         Specify the attachments  of  the  original message\n                         (syntax: contentType[:filename[:previewFile]]), e.\n                         g.     'audio/aac'     or     'image/png:test.png:\n                         /tmp/preview.jpg'.\n  --quote-text-style [QUOTE_TEXT_STYLE [QUOTE_TEXT_STYLE ...]]\n                         Quote  with  style  parts   of  the  message  text\n                         (syntax: start:length:STYLE)\n  --sticker STICKER      Send a sticker (syntax: stickerPackId:stickerId)\n  --preview-url PREVIEW_URL\n                         Specify the url  for  the  link  preview (the same\n                         url must also appear in the message body).\n  --preview-title PREVIEW_TITLE\n                         Specify   the   title   for   the   link   preview\n                         (mandatory).\n  --preview-description PREVIEW_DESCRIPTION\n                         Specify  the  description  for  the  link  preview\n                         (optional).\n  --preview-image PREVIEW_IMAGE\n                         Specify  the  image  file  for  the  link  preview\n                         (optional).\n  --story-timestamp STORY_TIMESTAMP\n                         Specify the timestamp of a story to reply to.\n  --story-author STORY_AUTHOR\n                         Specify the number of the author of the story.\n  --edit-timestamp EDIT_TIMESTAMP\n                         Specify the timestamp of  a  previous message with\n                         the recipient or group to send an edited message.\n  --no-urgent            Send the message without  the  urgent  flag, so no\n                         push notification is triggered  for the recipient.\n                         The message will still  be  delivered in real-time\n                         if the recipient's app is active.\n  --voice-note           Mark  audio  attachments  as  voice  notes.  Voice\n                         notes are displayed inline in Signal clients.\n",
+      "stderr": ""
+    },
+    {
+      "name": "help:sendReceipt",
+      "arguments": [
+        "sendReceipt",
+        "--help"
+      ],
+      "exitCode": 0,
+      "stdout": "usage: signal-cli [-h] [-v] [--log-file LOG_FILE] [--scrub-log]\n\nnamed arguments:\n  -h, --help             show this help message and exit\n  -v, --verbose\n  --log-file LOG_FILE\n  --scrub-log\nusage: signal-cli sendReceipt [-h]\n                  -t TARGET_TIMESTAMP [TARGET_TIMESTAMP ...]\n                  [--type {read,viewed}] recipient\n\npositional arguments:\n  recipient              Specify the sender's phone number.\n\nnamed arguments:\n  -h, --help             show this help message and exit\n  -t TARGET_TIMESTAMP [TARGET_TIMESTAMP ...], --target-timestamp TARGET_TIMESTAMP [TARGET_TIMESTAMP ...]\n                         Specify the timestamp of the  messages for which a\n                         receipt should be sent.\n  --type {read,viewed}   Specify  the  receipt   type   (default   is  read\n                         receipt).\n",
+      "stderr": ""
+    },
+    {
+      "name": "help:sendReaction",
+      "arguments": [
+        "sendReaction",
+        "--help"
+      ],
+      "exitCode": 0,
+      "stdout": "usage: signal-cli [-h] [-v] [--log-file LOG_FILE] [--scrub-log]\n\nnamed arguments:\n  -h, --help             show this help message and exit\n  -v, --verbose\n  --log-file LOG_FILE\n  --scrub-log\nusage: signal-cli sendReaction [-h] [-g [GROUP_ID [GROUP_ID ...]]]\n                  [-u [USERNAME [USERNAME ...]]] [--note-to-self]\n                  [--notify-self] -e EMOJI -a TARGET_AUTHOR\n                  -t TARGET_TIMESTAMP [-r] [--story]\n                  [recipient [recipient ...]]\n\npositional arguments:\n  recipient              Specify the recipients' phone number.\n\nnamed arguments:\n  -h, --help             show this help message and exit\n  -g [GROUP_ID [GROUP_ID ...]], --group-id [GROUP_ID [GROUP_ID ...]], --group [GROUP_ID [GROUP_ID ...]]\n                         Specify the recipient group ID.\n  -u [USERNAME [USERNAME ...]], --username [USERNAME [USERNAME ...]]\n                         Specify the recipient username or username link.\n  --note-to-self         Send the reaction to self.\n  --notify-self          If  self  is  part  of  recipients/groups  send  a\n                         normal message, not a sync message.\n  -e EMOJI, --emoji EMOJI\n                         Specify the  emoji,  should  be  a  single unicode\n                         grapheme cluster.\n  -a TARGET_AUTHOR, --target-author TARGET_AUTHOR\n                         Specify the number of  the  author  of the message\n                         to which to react.\n  -t TARGET_TIMESTAMP, --target-timestamp TARGET_TIMESTAMP\n                         Specify the timestamp of  the  message to which to\n                         react.\n  -r, --remove           Remove a reaction.\n  --story                React to a story instead of a normal message\n",
+      "stderr": ""
+    },
+    {
+      "name": "help:remoteDelete",
+      "arguments": [
+        "remoteDelete",
+        "--help"
+      ],
+      "exitCode": 0,
+      "stdout": "usage: signal-cli [-h] [-v] [--log-file LOG_FILE] [--scrub-log]\n\nnamed arguments:\n  -h, --help             show this help message and exit\n  -v, --verbose\n  --log-file LOG_FILE\n  --scrub-log\nusage: signal-cli remoteDelete [-h] -t TARGET_TIMESTAMP\n                  [-g [GROUP_ID [GROUP_ID ...]]]\n                  [-u [USERNAME [USERNAME ...]]] [--note-to-self]\n                  [recipient [recipient ...]]\n\npositional arguments:\n  recipient              Specify the recipients' phone number.\n\nnamed arguments:\n  -h, --help             show this help message and exit\n  -t TARGET_TIMESTAMP, --target-timestamp TARGET_TIMESTAMP\n                         Specify the timestamp of the message to delete.\n  -g [GROUP_ID [GROUP_ID ...]], --group-id [GROUP_ID [GROUP_ID ...]], --group [GROUP_ID [GROUP_ID ...]]\n                         Specify the recipient group ID.\n  -u [USERNAME [USERNAME ...]], --username [USERNAME [USERNAME ...]]\n                         Specify the recipient username or username link.\n  --note-to-self\n",
+      "stderr": ""
+    },
+    {
+      "name": "help:sendTyping",
+      "arguments": [
+        "sendTyping",
+        "--help"
+      ],
+      "exitCode": 0,
+      "stdout": "usage: signal-cli [-h] [-v] [--log-file LOG_FILE] [--scrub-log]\n\nnamed arguments:\n  -h, --help             show this help message and exit\n  -v, --verbose\n  --log-file LOG_FILE\n  --scrub-log\nusage: signal-cli sendTyping [-h] [-g [GROUP_ID [GROUP_ID ...]]] [-s]\n                  [recipient [recipient ...]]\n\npositional arguments:\n  recipient              Specify the recipients' phone number.\n\nnamed arguments:\n  -h, --help             show this help message and exit\n  -g [GROUP_ID [GROUP_ID ...]], --group-id [GROUP_ID [GROUP_ID ...]], --group [GROUP_ID [GROUP_ID ...]]\n                         Specify the recipient group ID.\n  -s, --stop             Send a typing STOP message.\n",
+      "stderr": ""
+    },
+    {
+      "name": "help:getAttachment",
+      "arguments": [
+        "getAttachment",
+        "--help"
+      ],
+      "exitCode": 0,
+      "stdout": "usage: signal-cli [-h] [-v] [--log-file LOG_FILE] [--scrub-log]\n\nnamed arguments:\n  -h, --help             show this help message and exit\n  -v, --verbose\n  --log-file LOG_FILE\n  --scrub-log\nusage: signal-cli getAttachment [-h] --id ID (--recipient RECIPIENT |\n                  -g GROUP_ID)\n\nnamed arguments:\n  -h, --help             show this help message and exit\n  --id ID                The ID of the attachment file.\n  --recipient RECIPIENT  Sender of the attachment\n  -g GROUP_ID, --group-id GROUP_ID\n                         Group in which the attachment was received\n",
+      "stderr": ""
+    },
+    {
+      "name": "help:listContacts",
+      "arguments": [
+        "listContacts",
+        "--help"
+      ],
+      "exitCode": 0,
+      "stdout": "usage: signal-cli [-h] [-v] [--log-file LOG_FILE] [--scrub-log]\n\nnamed arguments:\n  -h, --help             show this help message and exit\n  -v, --verbose\n  --log-file LOG_FILE\n  --scrub-log\nusage: signal-cli listContacts [-h] [-a] [--blocked {true,false}]\n                  [--name NAME] [--detailed] [--internal]\n                  [recipient [recipient ...]]\n\npositional arguments:\n  recipient              Specify one ore more phone numbers to show.\n\nnamed arguments:\n  -h, --help             show this help message and exit\n  -a, --all-recipients   Include all known recipients, not only contacts.\n  --blocked {true,false}\n                         Specify if  only  blocked  or  unblocked  contacts\n                         should be shown (default: all contacts)\n  --name NAME            Find contacts with  the  given  contact or profile\n                         name.\n  --detailed             List  the   contacts   with   more   details.   If\n                         output=json, then this is always set\n  --internal             Include internal information  that's  normally not\n                         user visible\n",
+      "stderr": ""
+    },
+    {
+      "name": "help:listGroups",
+      "arguments": [
+        "listGroups",
+        "--help"
+      ],
+      "exitCode": 0,
+      "stdout": "usage: signal-cli [-h] [-v] [--log-file LOG_FILE] [--scrub-log]\n\nnamed arguments:\n  -h, --help             show this help message and exit\n  -v, --verbose\n  --log-file LOG_FILE\n  --scrub-log\nusage: signal-cli listGroups [-h] [-d] [-g [GROUP_ID [GROUP_ID ...]]]\n\nnamed arguments:\n  -h, --help             show this help message and exit\n  -d, --detailed         List the members and  group  invite  links of each\n                         group. If output=json, then this is always set\n  -g [GROUP_ID [GROUP_ID ...]], --group-id [GROUP_ID [GROUP_ID ...]]\n                         Specify one or more group IDs to show.\n",
+      "stderr": ""
+    },
+    {
+      "name": "help:updateGroup",
+      "arguments": [
+        "updateGroup",
+        "--help"
+      ],
+      "exitCode": 0,
+      "stdout": "usage: signal-cli [-h] [-v] [--log-file LOG_FILE] [--scrub-log]\n\nnamed arguments:\n  -h, --help             show this help message and exit\n  -v, --verbose\n  --log-file LOG_FILE\n  --scrub-log\nusage: signal-cli updateGroup [-h] [-g GROUP_ID] [-n NAME] [-d DESCRIPTION]\n                  [-a AVATAR] [-m [MEMBER [MEMBER ...]]]\n                  [-r [REMOVE_MEMBER [REMOVE_MEMBER ...]]]\n                  [--admin [ADMIN [ADMIN ...]]]\n                  [--remove-admin [REMOVE_ADMIN [REMOVE_ADMIN ...]]]\n                  [--ban [BAN [BAN ...]]] [--unban [UNBAN [UNBAN ...]]]\n                  [--reset-link]\n                  [--link {enabled,enabled-with-approval,disabled}]\n                  [--set-permission-add-member {every-member,only-admins}]\n                  [--set-permission-edit-details {every-member,only-admins}]\n                  [--set-permission-send-messages {every-member,only-admins}]\n                  [-e EXPIRATION] [--member-label-emoji MEMBER_LABEL_EMOJI]\n                  [--member-label MEMBER_LABEL]\n\nnamed arguments:\n  -h, --help             show this help message and exit\n  -g GROUP_ID, --group-id GROUP_ID, --group GROUP_ID\n                         Specify the group ID.\n  -n NAME, --name NAME   Specify the new group name.\n  -d DESCRIPTION, --description DESCRIPTION\n                         Specify the new group description.\n  -a AVATAR, --avatar AVATAR\n                         Specify a new group avatar image file\n  -m [MEMBER [MEMBER ...]], --member [MEMBER [MEMBER ...]]\n                         Specify one or more members to add to the group\n  -r [REMOVE_MEMBER [REMOVE_MEMBER ...]], --remove-member [REMOVE_MEMBER [REMOVE_MEMBER ...]]\n                         Specify one or  more  members  to  remove from the\n                         group\n  --admin [ADMIN [ADMIN ...]]\n                         Specify one or more members to make a group admin\n  --remove-admin [REMOVE_ADMIN [REMOVE_ADMIN ...]]\n                         Specify one or more members  to remove group admin\n                         privileges\n  --ban [BAN [BAN ...]]  Specify one or more  members  to  ban from joining\n                         the group\n  --unban [UNBAN [UNBAN ...]]\n                         Specify one or  more  members  to  remove from the\n                         ban list\n  --reset-link           Reset group link and create new link password\n  --link {enabled,enabled-with-approval,disabled}\n                         Set  group  link  state,  with  or  without  admin\n                         approval\n  --set-permission-add-member {every-member,only-admins}\n                         Set permission to add new group members\n  --set-permission-edit-details {every-member,only-admins}\n                         Set permission to edit group details\n  --set-permission-send-messages {every-member,only-admins}\n                         Set permission to send messages\n  -e EXPIRATION, --expiration EXPIRATION\n                         Set expiration time of messages (seconds)\n  --member-label-emoji MEMBER_LABEL_EMOJI\n                         Specify the emoji for the member label.\n  --member-label MEMBER_LABEL\n                         Specify the string for the member label.\n",
+      "stderr": ""
+    },
+    {
+      "name": "help:updateContact",
+      "arguments": [
+        "updateContact",
+        "--help"
+      ],
+      "exitCode": 0,
+      "stdout": "usage: signal-cli [-h] [-v] [--log-file LOG_FILE] [--scrub-log]\n\nnamed arguments:\n  -h, --help             show this help message and exit\n  -v, --verbose\n  --log-file LOG_FILE\n  --scrub-log\nusage: signal-cli updateContact [-h] [-n NAME] [--given-name GIVEN_NAME]\n                  [--family-name FAMILY_NAME]\n                  [--nick-given-name NICK_GIVEN_NAME]\n                  [--nick-family-name NICK_FAMILY_NAME] [--note NOTE]\n                  [-e EXPIRATION] recipient\n\npositional arguments:\n  recipient              Contact number\n\nnamed arguments:\n  -h, --help             show this help message and exit\n  -n NAME, --name NAME   New contact name\n  --given-name GIVEN_NAME\n                         New system given name\n  --family-name FAMILY_NAME\n                         New system family name\n  --nick-given-name NICK_GIVEN_NAME\n                         New nick given name\n  --nick-family-name NICK_FAMILY_NAME\n                         New nick family name\n  --note NOTE            New note\n  -e EXPIRATION, --expiration EXPIRATION\n                         Set expiration time of messages (seconds)\n",
+      "stderr": ""
+    },
+    {
+      "name": "help:joinGroup",
+      "arguments": [
+        "joinGroup",
+        "--help"
+      ],
+      "exitCode": 0,
+      "stdout": "usage: signal-cli [-h] [-v] [--log-file LOG_FILE] [--scrub-log]\n\nnamed arguments:\n  -h, --help             show this help message and exit\n  -v, --verbose\n  --log-file LOG_FILE\n  --scrub-log\nusage: signal-cli joinGroup [-h] --uri URI\n\nnamed arguments:\n  -h, --help             show this help message and exit\n  --uri URI              Specify the uri with the group invitation link.\n",
+      "stderr": ""
+    },
+    {
+      "name": "help:quitGroup",
+      "arguments": [
+        "quitGroup",
+        "--help"
+      ],
+      "exitCode": 0,
+      "stdout": "usage: signal-cli [-h] [-v] [--log-file LOG_FILE] [--scrub-log]\n\nnamed arguments:\n  -h, --help             show this help message and exit\n  -v, --verbose\n  --log-file LOG_FILE\n  --scrub-log\nusage: signal-cli quitGroup [-h] -g GROUP_ID [--delete]\n                  [--admin [ADMIN [ADMIN ...]]]\n\nnamed arguments:\n  -h, --help             show this help message and exit\n  -g GROUP_ID, --group-id GROUP_ID, --group GROUP_ID\n                         Specify the recipient group ID.\n  --delete               Delete local group data  completely after quitting\n                         group.\n  --admin [ADMIN [ADMIN ...]]\n                         Specify one  or  more  members  to  make  a  group\n                         admin,  required  if  you're  currently  the  only\n                         admin.\n",
+      "stderr": ""
+    },
+    {
+      "name": "jsonrpc-empty-store",
+      "arguments": [
+        "jsonRpc",
+        "--receive-mode",
+        "manual"
+      ],
+      "exitCode": 0,
+      "stdout": "{\"jsonrpc\":\"2.0\",\"error\":{\"code\":-32601,\"message\":\"Method not implemented\",\"data\":null},\"id\":\"unknown\"}\n{\"jsonrpc\":\"2.0\",\"error\":{\"code\":-32602,\"message\":\"Method requires valid account parameter\",\"data\":null},\"id\":\"send\"}\n{\"jsonrpc\":\"2.0\",\"error\":{\"code\":-32602,\"message\":\"Method requires valid account parameter\",\"data\":null},\"id\":\"sendReceipt\"}\n{\"jsonrpc\":\"2.0\",\"error\":{\"code\":-32602,\"message\":\"Method requires valid account parameter\",\"data\":null},\"id\":\"no-account\"}\n{\"jsonrpc\":\"2.0\",\"error\":{\"code\":-32602,\"message\":\"Method requires valid account parameter\",\"data\":null},\"id\":\"sendTyping\"}\n{\"jsonrpc\":\"2.0\",\"error\":{\"code\":-32602,\"message\":\"Method requires valid account parameter\",\"data\":null},\"id\":\"getAttachment\"}\n{\"jsonrpc\":\"2.0\",\"error\":{\"code\":-32602,\"message\":\"Method requires valid account parameter\",\"data\":null},\"id\":\"listContacts\"}\n{\"jsonrpc\":\"2.0\",\"error\":{\"code\":-32602,\"message\":\"Method requires valid account parameter\",\"data\":null},\"id\":\"updateGroup\"}\n{\"jsonrpc\":\"2.0\",\"error\":{\"code\":-32602,\"message\":\"Method requires valid account parameter\",\"data\":null},\"id\":\"updateContact\"}\n{\"jsonrpc\":\"2.0\",\"error\":{\"code\":-32602,\"message\":\"Method requires valid account parameter\",\"data\":null},\"id\":\"joinGroup\"}\n{\"jsonrpc\":\"2.0\",\"error\":{\"code\":-32602,\"message\":\"Method requires valid account parameter\",\"data\":null},\"id\":\"sendReaction\"}\n{\"jsonrpc\":\"2.0\",\"error\":{\"code\":-32602,\"message\":\"Method requires valid account parameter\",\"data\":null},\"id\":\"remoteDelete\"}\n{\"jsonrpc\":\"2.0\",\"error\":{\"code\":-32602,\"message\":\"Method requires valid account parameter\",\"data\":null},\"id\":\"quitGroup\"}\n{\"jsonrpc\":\"2.0\",\"error\":{\"code\":-32602,\"message\":\"Method requires valid account parameter\",\"data\":null},\"id\":\"sendSyncRequest\"}\n{\"jsonrpc\":\"2.0\",\"error\":{\"code\":-32602,\"message\":\"Method requires valid account parameter\",\"data\":null},\"id\":\"getUserStatus\"}\n{\"jsonrpc\":\"2.0\",\"result\":0,\"id\":\"subscribe\"}\n{\"jsonrpc\":\"2.0\",\"result\":[],\"id\":\"accounts\"}\n{\"jsonrpc\":\"2.0\",\"error\":{\"code\":-1,\"message\":\"Missing deviceLinkUri.\",\"data\":null},\"id\":\"invalid-link\"}\n",
+      "stderr": ""
+    }
+  ],
+  "passed": true,
+  "javaRelease": "IMPLEMENTOR=\"Eclipse Adoptium\"\nIMPLEMENTOR_VERSION=\"Temurin-25.0.4.1+1\"\nJAVA_RUNTIME_VERSION=\"25.0.4.1+1-LTS\"\nJAVA_VERSION=\"25.0.4.1\"\nJAVA_VERSION_DATE=\"2026-08-18\"\nLIBC=\"gnu\"\nMODULES=\"java.base java.compiler java.datatransfer java.xml java.prefs java.desktop java.instrument java.logging java.management java.security.sasl java.naming java.rmi java.management.rmi java.net.http java.scripting java.security.jgss java.transaction.xa java.sql java.sql.rowset java.xml.crypto java.se java.smartcardio jdk.accessibility jdk.internal.jvmstat jdk.attach jdk.charsets jdk.internal.opt jdk.zipfs jdk.compiler jdk.crypto.cryptoki jdk.crypto.ec jdk.dynalink jdk.internal.ed jdk.editpad jdk.internal.vm.ci jdk.graal.compiler jdk.graal.compiler.management jdk.hotspot.agent jdk.httpserver jdk.incubator.vector jdk.internal.le jdk.internal.md jdk.jartool jdk.javadoc jdk.jcmd jdk.management jdk.management.agent jdk.jconsole jdk.jdeps jdk.jdwp.agent jdk.jdi jdk.jfr jdk.jlink jdk.jpackage jdk.jshell jdk.jsobject jdk.jstatd jdk.localedata jdk.management.jfr jdk.naming.dns jdk.naming.rmi jdk.net jdk.nio.mapmode jdk.sctp jdk.security.auth jdk.security.jgss jdk.unsupported jdk.unsupported.desktop jdk.xml.dom\"\nOS_ARCH=\"x86_64\"\nOS_NAME=\"Linux\"\nSOURCE=\".:git:520406d87195\"\nBUILD_SOURCE=\"git:e6ba7dec3d07654074559310376a3ae89da5f4ac\"\nBUILD_SOURCE_REPO=\"https://github.com/adoptium/temurin-build.git\"\nSOURCE_REPO=\"https://github.com/adoptium/jdk25u.git\"\nFULL_VERSION=\"25.0.4.1+1-LTS\"\nSEMANTIC_VERSION=\"25.0.4.1+1\"\nBUILD_INFO=\"OS: Linux Version: 6.8.0-1064-azure\"\nJVM_VARIANT=\"Hotspot\"\nJVM_VERSION=\"25.0.4.1+1-LTS\"\nIMAGE_TYPE=\"JRE\"\n"
+}

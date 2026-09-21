@@ -1,0 +1,197 @@
+#!/usr/bin/env python3
+"""S05 native notifications and quick reply against synthetic CLI, isolated XDG/D-Bus."""
+import argparse
+import ctypes
+import json
+import os
+import sqlite3
+from pathlib import Path
+import subprocess
+import tempfile
+import time
+import sys
+
+from _common import ROOT, ipc_json, ipc_reply, isolated_environment, qml_errors, runtime_log, stop_process_group, tool
+sys.path.insert(0, str(ROOT / "tests"))
+from test_signal_history import event
+from test_signal_lifecycle import gone
+
+
+def eventually(read, predicate, seconds=15):
+    end = time.monotonic() + seconds
+    value = None
+    while time.monotonic() < end:
+        value = read()
+        if predicate(value):
+            return value
+        time.sleep(.04)
+    raise AssertionError("Messaging condition timed out: " + str(value))
+
+
+def run(output):
+    output.parent.mkdir(parents=True, exist_ok=True)
+    report = {"passed": False, "scope": "production QML + SQLite + synthetic CLI; offscreen/private XDG/D-Bus; no phone", "checks": []}
+    ctypes.CDLL(None).prctl(36, 1, 0, 0, 0)
+    with tempfile.TemporaryDirectory(prefix="pk-s05-") as tmp:
+        base = Path(tmp)
+        env = isolated_environment(tmp)
+        env["QS_NO_RELOAD_POPUP"] = "1"
+        address = "unix:path=" + str(base / "bus")
+        env["DBUS_SESSION_BUS_ADDRESS"] = address
+        fixture, record = base / "fixture.json", base / "processes.jsonl"
+        fixture.write_text(json.dumps({"format": 1, "synthetic": True, "record": str(record), "receiveEvents": [],
+            "contacts": [
+                {"number": "+12025550100", "uuid": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", "name": "Notatka", "messageExpirationTime": 0},
+                {"number": "+12025550101", "uuid": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb", "name": "Alicja", "messageExpirationTime": 0}]}))
+        config = Path(env["XDG_CONFIG_HOME"]) / "putkin"
+        config.mkdir(mode=0o700)
+        (config / "signal.json").write_text(json.dumps({"v": 1, "enabled": True, "deviceName": "Putkin"}))
+        (config / "signal.json").chmod(0o600)
+        env["PUTKIN_SIGNAL_TEST_SCENARIO"] = str(fixture)
+        entrypoint = str(ROOT / "signal-notifications-test.qml")
+        processes, logs, helpers = [], [], set()
+        def start(cmd, name):
+            log = (base / (name + ".log")).open("w+")
+            logs.append((name, log))
+            process = subprocess.Popen(cmd, env=env, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+            processes.append(process)
+            return process
+        def ipc(method, *args, target="probe"):
+            result = subprocess.run([tool("quickshell"), "ipc", "--path", entrypoint, "call", target, method, *map(str, args)],
+                env=env, capture_output=True, text=True, timeout=5)
+            return ipc_reply(result, shell, logs, starting=method == "snapshot")
+        def snapshot():
+            value = ipc_json(ipc("snapshot"))
+            if value.get("pid"):
+                helpers.add(value["pid"])
+            return value
+        def records(kind):
+            return [v for v in map(json.loads, record.read_text().splitlines()) if v["kind"] == kind] if record.exists() else []
+        def capture(suffix):
+            time.sleep(.4)
+            assert ipc("capture", str(output.with_name(output.stem + suffix + ".png"))) == "true"
+            eventually(snapshot, lambda v: v.get("captured"))
+        try:
+            start([tool("dbus-daemon"), "--session", "--nofork", "--address=" + address], "bus")
+            eventually(lambda: (base / "bus").exists(), bool)
+            shell = start([tool("quickshell"), "--no-color", "--path", entrypoint], "shell")
+            ready = eventually(snapshot, lambda v: v.get("state") == "ready" and v.get("notificationsReady"))
+            assert not ready["loaded"]
+            capabilities = subprocess.run([tool("busctl"), "--user", "call", "org.freedesktop.Notifications", "/org/freedesktop/Notifications",
+                "org.freedesktop.Notifications", "GetCapabilities"], env=env, capture_output=True, text=True, check=True).stdout
+            assert "inline-reply" not in capabilities
+            report["capabilities"] = capabilities.strip()
+            wire = event(body="Powiadomienie syntetyczne — hjkl 🐈")
+            ipc("receive", json.dumps(wire))
+            state = eventually(snapshot, lambda v: v.get("entries") == 1 and not v.get("pending"))
+            ref = state["history"][0]["messageReference"]
+            assert ref["serviceId"] == "signal" and ref["accountId"] == ready["accountId"]
+            ipc("receive", json.dumps(wire))
+            ipc("receive", json.dumps(event("sent-sync")))
+            time.sleep(.3)
+            assert len(snapshot()["history"]) == 1
+            assert ipc("invoke", 0, "open") == "true"
+            eventually(snapshot, lambda v: v.get("selected") and v["selected"]["conversationId"] == ref["conversationId"])
+            ipc("closeMessages")
+            eventually(snapshot, lambda v: not v.get("loaded"))
+            assert ipc("invoke", 0, "reply") == "true"
+            eventually(snapshot, lambda v: v.get("reply") and v["reply"]["ready"])
+            ipc("draft", "Odpowiedź w powiadomieniu 🐈")
+            assert ipc("send") == "true"
+            assert ipc("send") == "false"
+            sent = eventually(snapshot, lambda v: v.get("reply") and v["reply"]["state"] == "sent" and v["reply"]["text"] == "")
+            assert not sent["loaded"] and len(records("send")) == 1
+            dbpath = Path(env["XDG_DATA_HOME"]) / "putkin/signal/history.sqlite3"
+            def query(sql):
+                db = sqlite3.connect(dbpath)
+                try: return db.execute(sql).fetchall()
+                finally: db.close()
+            assert query("SELECT count(*) FROM outbox")[0][0] == 1
+            assert query("SELECT count(*) FROM reply_drafts WHERE body='' AND operation_id IS NOT NULL")[0][0] == 1
+            report["checks"].append("one private NotificationServer; no global inline reply; committed incoming only; duplicate/phone sync silent; real S04 routing; closed window reply uses one existing outbox")
+            ipc("expire")
+            assert snapshot()["entries"] == 0
+            assert ipc("invoke", 0, "reply") == "true"
+            eventually(snapshot, lambda v: v["reply"]["ready"] and not v["reply"]["pending"])
+            ipc("draft", "Trwały osobny szkic — Zażółć 🐈")
+            eventually(snapshot, lambda v: v["reply"]["text"] == "Trwały osobny szkic — Zażółć 🐈" and not v["reply"]["pending"] and not v["reply"]["dirty"])
+            ipc("receive", json.dumps(event(timestamp=1790000100000, body="Nowsza wiadomość podczas pisania")))
+            replaced = eventually(snapshot, lambda v: v["history"][0]["messageReference"]["messageId"] != ref["messageId"] and not v["pending"])
+            assert replaced["reply"]["text"] == "Trwały osobny szkic — Zażółć 🐈"
+            assert len(replaced["history"]) == 1
+            capture("-reply")
+            ipc("locked", "true")
+            assert snapshot()["entries"] == 0
+            assert all(v["body"] == "Nowa wiadomość" for v in snapshot()["history"])
+            assert ipc("invoke", 0, "open") == "false" and ipc("send") == "false"
+            ipc("receive", json.dumps(event(timestamp=1790000200000, body="Odbiór podczas blokady")))
+            time.sleep(.4)
+            assert all(v["body"] == "Nowa wiadomość" for v in snapshot()["history"])
+            ipc("locked", "false")
+            eventually(snapshot, lambda v: not v["pending"] and v["history"][0]["body"] == "Odbiór podczas blokady")
+            assert snapshot()["entries"] == 0
+            ipc("dnd", "true")
+            ipc("receive", json.dumps(event(timestamp=1790000300000, body="W DND")))
+            eventually(snapshot, lambda v: v["history"][0]["body"] == "W DND")
+            assert snapshot()["entries"] == 0
+            ipc("dnd", "false")
+            report["checks"].append("archived descriptor replies; replacement preserves draft/recipient; locked receive redacts cards and disables actions; unlock and DND do not replay toasts")
+            ipc("reload")
+            restarted = eventually(snapshot, lambda v: v.get("state") == "ready" and v.get("notificationsReady") and v.get("generation") != ready["generation"])
+            assert restarted["history"] == [] and len(records("send")) == 1
+            ipc("receive", json.dumps(event(timestamp=1790000400000, body="Po przeładowaniu")))
+            eventually(snapshot, lambda v: len(v.get("history", [])) == 1 and not v.get("pending"))
+            assert ipc("invoke", 0, "reply") == "true"
+            restored = eventually(snapshot, lambda v: v.get("reply") and v["reply"]["ready"])
+            assert restored["reply"]["text"] == "Trwały osobny szkic — Zażółć 🐈"
+            assert len(records("send")) == 1 and gone(ready["pid"])
+            # Restart the synthetic peer in an ambiguous send scenario, keeping
+            # the actual database. No extra intent is created after unknown.
+            scenario = json.loads(fixture.read_text()); scenario["sendError"] = True
+            fixture.write_text(json.dumps(scenario))
+            generation = restored["generation"]
+            ipc("reload")
+            eventually(snapshot, lambda v: v.get("state") == "ready" and v.get("notificationsReady") and v.get("generation") != generation)
+            ipc("receive", json.dumps(event(timestamp=1790000500000, body="Nieznany wynik")))
+            eventually(snapshot, lambda v: len(v.get("history", [])) == 1 and not v.get("pending"))
+            assert ipc("invoke", 0, "reply") == "true"
+            eventually(snapshot, lambda v: v.get("reply") and v["reply"]["ready"])
+            assert ipc("send") == "true"
+            unknown = eventually(snapshot, lambda v: v.get("reply") and v["reply"]["state"] == "unknown" and not v["reply"]["pending"])
+            operation = unknown["reply"]["operationId"]
+            assert unknown["reply"]["text"] == "Trwały osobny szkic — Zażółć 🐈"
+            assert ipc("send") == "false" and len(records("send")) == 2
+            capture("-unknown")
+            ipc("reload")
+            eventually(snapshot, lambda v: v.get("state") == "ready" and v.get("notificationsReady") and v.get("generation") != unknown["generation"])
+            ipc("receive", json.dumps(event(timestamp=1790000600000, body="Po nieznanym wyniku")))
+            eventually(snapshot, lambda v: len(v.get("history", [])) == 1 and not v.get("pending"))
+            assert ipc("invoke", 0, "reply") == "true"
+            recovered = eventually(snapshot, lambda v: v.get("reply") and v["reply"]["ready"] and v["reply"]["state"] == "unknown")
+            assert recovered["reply"]["operationId"] == operation and len(records("send")) == 2
+            assert query("SELECT count(*) FROM outbox")[0][0] == 2
+            assert query("SELECT count(*) FROM pending_events WHERE kind LIKE '%read%' OR kind LIKE '%receipt%'")[0][0] == 0
+            report["checks"].append("hard reload restores separate draft; ambiguous RPC preserves text/UUID across another full reload; no duplicate send or receipts; archive resets per session")
+            ipc("quit")
+            shell.wait(timeout=8)
+            report["passed"] = True
+        except (OSError, AssertionError, subprocess.SubprocessError) as error:
+            report["failure"] = str(error)
+        finally:
+            for process in reversed(processes): stop_process_group(process)
+            remaining = [pid for pid in helpers | {v["pid"] for v in records("start")} if not gone(pid)]
+            combined = runtime_log(logs)
+            output.with_suffix(".log").write_text(combined)
+            report["qmlErrors"] = qml_errors(combined, allow_offscreen_masks=True)
+            report["remainingOwnedProcesses"] = remaining
+            if remaining or report["qmlErrors"]: report["passed"] = False
+            for _, log in logs: log.close()
+    output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
+    print(json.dumps(report, ensure_ascii=False, indent=2))
+    return int(not report["passed"])
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, default=ROOT / "artifacts/signal-s05/notifications.json")
+    raise SystemExit(run(parser.parse_args().output.resolve()))

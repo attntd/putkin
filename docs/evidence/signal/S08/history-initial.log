@@ -1,0 +1,46 @@
+test_crash_after_dispatch_keeps_unknown_without_resending_on_reconnect (test_signal_history.BridgeHistoryTests.test_crash_after_dispatch_keeps_unknown_without_resending_on_reconnect) ... ok
+test_deadline_cleanup_runs_without_polling_or_another_ui_request (test_signal_history.BridgeHistoryTests.test_deadline_cleanup_runs_without_polling_or_another_ui_request) ... ok
+test_end_to_end_receive_send_sync_pages_drafts_commit_and_restart (test_signal_history.BridgeHistoryTests.test_end_to_end_receive_send_sync_pages_drafts_commit_and_restart) ... ok
+test_retention_preflight_blocks_send_and_never_persists_cli_secrets (test_signal_history.BridgeHistoryTests.test_retention_preflight_blocks_send_and_never_persists_cli_secrets) ... ok
+test_storage_failure_stops_receive_before_next_event_and_requires_retry (test_signal_history.BridgeHistoryTests.test_storage_failure_stops_receive_before_next_event_and_requires_retry) ... ok
+test_timeout_late_reply_reconciles_and_releases_queue_without_resend (test_signal_history.BridgeHistoryTests.test_timeout_late_reply_reconciles_and_releases_queue_without_resend) ... ok
+test_delete_and_edit_before_target_never_restore_content_and_pending_is_bounded (test_signal_history.HistoryTests.test_delete_and_edit_before_target_never_restore_content_and_pending_is_bounded) ... FAIL
+test_duplicates_protocol_keys_do_not_merge_equal_text_authors_groups_accounts (test_signal_history.HistoryTests.test_duplicates_protocol_keys_do_not_merge_equal_text_authors_groups_accounts) ... ok
+test_expired_outbox_cleanup_and_tombstone_after_restart (test_signal_history.HistoryTests.test_expired_outbox_cleanup_and_tombstone_after_restart) ... ok
+test_full_disk_and_readonly_transaction_never_publish_uncommitted_message (test_signal_history.HistoryTests.test_full_disk_and_readonly_transaction_never_publish_uncommitted_message) ... ok
+test_missing_timestamp_wrong_recipient_and_rpc_error_are_unknown (test_signal_history.HistoryTests.test_missing_timestamp_wrong_recipient_and_rpc_error_are_unknown) ... ok
+test_number_only_recipient_stays_unresolved_and_account_rebinding_is_by_aci (test_signal_history.HistoryTests.test_number_only_recipient_stays_unresolved_and_account_rebinding_is_by_aci) ... ok
+test_pagination_ties_scopes_large_frames_and_safe_integer_timestamps (test_signal_history.HistoryTests.test_pagination_ties_scopes_large_frames_and_safe_integer_timestamps) ... ok
+test_payload_conflict_and_source_device_are_not_silent_overwrites (test_signal_history.HistoryTests.test_payload_conflict_and_source_device_are_not_silent_overwrites) ... ok
+test_per_recipient_partial_network_failure_and_safe_retry (test_signal_history.HistoryTests.test_per_recipient_partial_network_failure_and_safe_retry) ... ok
+test_phone_incoming_local_reply_and_restart_preserve_history_draft_and_outbox (test_signal_history.HistoryTests.test_phone_incoming_local_reply_and_restart_preserve_history_draft_and_outbox) ... FAIL
+test_process_death_before_after_commit_and_after_sending_marker (test_signal_history.HistoryTests.test_process_death_before_after_commit_and_after_sending_marker) ... ok
+test_queue_idempotence_draft_compare_and_swap_and_cancel (test_signal_history.HistoryTests.test_queue_idempotence_draft_compare_and_swap_and_cancel) ... ok
+test_redaction_clears_wal_and_checkpoint_failure_blocks_publication (test_signal_history.HistoryTests.test_redaction_clears_wal_and_checkpoint_failure_blocks_publication) ... ok
+test_schema_rollback_newer_version_corrupt_db_and_unsafe_companions (test_signal_history.HistoryTests.test_schema_rollback_newer_version_corrupt_db_and_unsafe_companions) ... ok
+test_sync_before_and_after_rpc_preserve_local_key (test_signal_history.HistoryTests.test_sync_before_and_after_rpc_preserve_local_key) ... ok
+test_unknown_no_timestamp_never_guesses_by_text_and_retry_is_explicitly_rejected (test_signal_history.HistoryTests.test_unknown_no_timestamp_never_guesses_by_text_and_retry_is_explicitly_rejected) ... ok
+test_unsupported_retention_media_and_unknown_events_do_not_archive_payloads (test_signal_history.HistoryTests.test_unsupported_retention_media_and_unknown_events_do_not_archive_payloads) ... ok
+
+======================================================================
+FAIL: test_delete_and_edit_before_target_never_restore_content_and_pending_is_bounded (test_signal_history.HistoryTests.test_delete_and_edit_before_target_never_restore_content_and_pending_is_bounded)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/attntd/projects/signal/tests/test_signal_history.py", line 248, in test_delete_and_edit_before_target_never_restore_content_and_pending_is_bounded
+    self.assertGreater(self.store.db.execute("SELECT COUNT(*) FROM pending_events").fetchone()[0], 0)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 not greater than 0
+
+======================================================================
+FAIL: test_phone_incoming_local_reply_and_restart_preserve_history_draft_and_outbox (test_signal_history.HistoryTests.test_phone_incoming_local_reply_and_restart_preserve_history_draft_and_outbox)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/attntd/projects/signal/tests/test_signal_history.py", line 114, in test_phone_incoming_local_reply_and_restart_preserve_history_draft_and_outbox
+    self.assertEqual(self.store.db.execute("PRAGMA user_version").fetchone()[0], 4)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 5 != 4
+
+----------------------------------------------------------------------
+Ran 23 tests in 69.705s
+
+FAILED (failures=2)

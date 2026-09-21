@@ -42,7 +42,7 @@ def eventually(read, predicate, description, seconds=8):
     raise AssertionError(f"{description}: {last}")
 
 
-def inside(base, smoke, idle, native_session=False, screenshot=False, launcher_preview=False, authentication=False):
+def inside(base, smoke, idle, native_session=False, screenshot=False, launcher_preview=False, signal_acceptance=False, authentication=False):
     started = time.monotonic()
     assert os.environ.get("PUTKIN_WAYLAND_TEST_DIR") == str(base)
     assert Path('/proc/1/comm').read_text().strip() == 'bwrap', 'requires private PID namespace'
@@ -72,7 +72,7 @@ debug {
  enable_stdout_logs = true
 }
 ''')
-    if native_session or screenshot or launcher_preview or authentication:
+    if native_session or screenshot or launcher_preview or signal_acceptance or authentication:
         config = base / 'hyprland.lua'
         config.write_text('''hl.monitor({output = "", mode = "1920x1080@60", position = "auto", scale = 1})
 hl.config({animations = {enabled = false}, input = {resolve_binds_by_sym = true}, misc = {disable_hyprland_logo = true, disable_splash_rendering = true}, xwayland = {enabled = false}})
@@ -123,7 +123,7 @@ hl.config({animations = {enabled = false}, input = {resolve_binds_by_sym = true}
             hypr('output', 'create', 'headless')
             first = eventually(lambda: hypr('monitors', data=True), lambda ms: any(m['name'].startswith('HEADLESS-') for m in ms), 'headless output')
             first = next(m['name'] for m in first if m['name'].startswith('HEADLESS-'))
-            if native_session or screenshot or launcher_preview or authentication:
+            if native_session or screenshot or launcher_preview or signal_acceptance or authentication:
                 hypr('eval', 'hl.monitor({output = ' + json.dumps(first) + ', mode = "1920x1080@60", position = "2000x0", scale = 1})')
                 hypr('dispatch', 'hl.dsp.focus({monitor = ' + json.dumps(first) + '})')
             else:
@@ -139,6 +139,13 @@ hl.config({animations = {enabled = false}, input = {resolve_binds_by_sym = true}
                                             env=env, text=True, capture_output=True, timeout=5)
                     return ipc_reply(result, process, log, starting=starting)
                 return process, log, ipc
+            if signal_acceptance:
+                sys.path.insert(0, str(ROOT/'tests'))
+                from signal_wayland import run
+                report['signal'] = run(env, base, output, first, hypr, launch)
+                report['result'] = 'PASS'
+                passed('Signal native acceptance on private Wayland')
+                return report
             if authentication:
                 sys.path.insert(0, str(ROOT/'tests'))
                 from authentication_wayland import run
@@ -529,12 +536,13 @@ def main():
     parser.add_argument('--native-session', action='store_true', help='test the native lock and idle with isolated fixture PAM')
     parser.add_argument('--screenshot', action='store_true', help='test screenshots in the private compositor and clipboard')
     parser.add_argument('--launcher-preview', action='store_true', help='test the launcher preview on native windows with clipboard fixtures')
+    parser.add_argument('--signal', action='store_true', help='Signal S11 native UI with synthetic account and messages')
     parser.add_argument('--output', type=Path, default=ROOT/'artifacts/wayland')
     parser.add_argument('--inside', type=Path, help=argparse.SUPPRESS)
     args = parser.parse_args()
     resource.setrlimit(resource.RLIMIT_CORE, (0,0))
     if args.inside:
-        inside(args.inside, args.smoke, args.idle, args.native_session, args.screenshot, args.launcher_preview, args.authentication)
+        inside(args.inside, args.smoke, args.idle, args.native_session, args.screenshot, args.launcher_preview, args.signal, args.authentication)
         return 0
     if not args.nested:
         parser.error('--nested explicitly permits the current parent Wayland socket and render node')
@@ -568,6 +576,7 @@ def main():
         if args.native_session: command.append('--native-session')
         if args.screenshot: command.append('--screenshot')
         if args.launcher_preview: command.append('--launcher-preview')
+        if args.signal: command.append('--signal')
         if args.smoke: command.append('--smoke')
         if args.idle: command.append('--idle')
         (output/'command.json').write_text(json.dumps(command, indent=2)+'\n')

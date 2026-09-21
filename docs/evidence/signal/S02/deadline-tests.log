@@ -1,0 +1,6 @@
+test_deadline_cleanup_runs_without_polling_or_another_ui_request (test_signal_history.BridgeHistoryTests.test_deadline_cleanup_runs_without_polling_or_another_ui_request) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 1.666s
+
+OK

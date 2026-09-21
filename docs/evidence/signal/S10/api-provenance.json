@@ -1,0 +1,99 @@
+{
+  "upstreamVersion": "0.14.8",
+  "upstreamCommit": "22b028bbb9cee8f6aa22af71c6b3e9d09028a16a",
+  "runtime": "putkin-retention-2",
+  "auditDate": "2026-09-21",
+  "scope": "Source audit only; no account or phone validation",
+  "files": [
+    {
+      "file": "src/main/java/org/asamk/signal/commands/BlockCommand.java",
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/src/main/java/org/asamk/signal/commands/BlockCommand.java",
+      "sha256": "b9669ce0856c4092b1735b11a182739a1949ff1485006d2ed6c97f278c854870"
+    },
+    {
+      "file": "src/main/java/org/asamk/signal/commands/GetAvatarCommand.java",
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/src/main/java/org/asamk/signal/commands/GetAvatarCommand.java",
+      "sha256": "173dd83b2a921da22eaa1df2bd50e2de9d4765a7df2ae5b3ba9359c8e2e85fa8"
+    },
+    {
+      "file": "src/main/java/org/asamk/signal/commands/GetUserStatusCommand.java",
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/src/main/java/org/asamk/signal/commands/GetUserStatusCommand.java",
+      "sha256": "69e31d9ae81a4dcc371b509b7a0980fe0f8f5792a7ee50509a50583fd7432804"
+    },
+    {
+      "file": "lib/src/main/java/org/asamk/signal/manager/api/Group.java",
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/lib/src/main/java/org/asamk/signal/manager/api/Group.java",
+      "sha256": "c373f16bdcf0d0d44181b1564bcddd4590b3ba423bedfc0ae5108d2b09cf41b3"
+    },
+    {
+      "file": "lib/src/main/java/org/asamk/signal/manager/helper/GroupHelper.java",
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/lib/src/main/java/org/asamk/signal/manager/helper/GroupHelper.java",
+      "sha256": "10149c53de4378825626510446452ad88c7c99299ac1501d91388aeb16f9e41e"
+    },
+    {
+      "file": "src/main/java/org/asamk/signal/commands/JoinGroupCommand.java",
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/src/main/java/org/asamk/signal/commands/JoinGroupCommand.java",
+      "sha256": "6c3a861505345400a6e706f3fab199c607610aaa1ee678f5fd8b89e735dc5b15"
+    },
+    {
+      "file": "src/main/java/org/asamk/signal/json/JsonContact.java",
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/src/main/java/org/asamk/signal/json/JsonContact.java",
+      "sha256": "1b757f5416320e16385b1195446aa2879cc3f60ebc9f2c1dfec5c5087fb8442a"
+    },
+    {
+      "file": "src/main/java/org/asamk/signal/json/JsonSyncMessage.java",
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/src/main/java/org/asamk/signal/json/JsonSyncMessage.java",
+      "sha256": "aab2543fa7bbc1198d651c1f8ed7b8862990b5d76c7b511a0054f8315485bb3b"
+    },
+    {
+      "file": "src/main/java/org/asamk/signal/commands/ListContactsCommand.java",
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/src/main/java/org/asamk/signal/commands/ListContactsCommand.java",
+      "sha256": "55d74d033b82d296d9655bb5a831c8e02f270e66675cd6cf68c513a99882544c"
+    },
+    {
+      "file": "src/main/java/org/asamk/signal/commands/ListGroupsCommand.java",
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/src/main/java/org/asamk/signal/commands/ListGroupsCommand.java",
+      "sha256": "edb7b51250b8084f636ef90d725ca428ca16d50b3e892ab5f488a2099e1ae7c2"
+    },
+    {
+      "file": "lib/src/main/java/org/asamk/signal/manager/storage/recipients/MergeRecipientHelper.java",
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/lib/src/main/java/org/asamk/signal/manager/storage/recipients/MergeRecipientHelper.java",
+      "sha256": "b998c82a86136655b4c58f4894ea13a3a2a1845364c45a678616d99279469328"
+    },
+    {
+      "file": "src/main/java/org/asamk/signal/commands/QuitGroupCommand.java",
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/src/main/java/org/asamk/signal/commands/QuitGroupCommand.java",
+      "sha256": "e14477bb48e0a99a5e4b0c98f0b92485c4d742777a6e8de04d1e34a57daf5e79"
+    },
+    {
+      "file": "lib/src/main/java/org/asamk/signal/manager/helper/RecipientHelper.java",
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/lib/src/main/java/org/asamk/signal/manager/helper/RecipientHelper.java",
+      "sha256": "e834f361feb9bd19ddf02cd53a7d139f07596653efedb30bef250fec3719bc70"
+    },
+    {
+      "file": "src/main/java/org/asamk/signal/commands/SendMessageRequestResponseCommand.java",
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/src/main/java/org/asamk/signal/commands/SendMessageRequestResponseCommand.java",
+      "sha256": "79ce166c03a3c8fae5bec19aa94c72b22d5fd91e65b9c75ebec9ccf4a2da3ae1"
+    },
+    {
+      "file": "lib/src/main/java/org/asamk/signal/manager/helper/SyncHelper.java",
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/lib/src/main/java/org/asamk/signal/manager/helper/SyncHelper.java",
+      "sha256": "031c258158dfdb01d00a0480b687cf4f6a1138ce8e972ba42cd837750b35842e"
+    },
+    {
+      "file": "src/main/java/org/asamk/signal/commands/UnblockCommand.java",
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/src/main/java/org/asamk/signal/commands/UnblockCommand.java",
+      "sha256": "936ff5af2baf5ebb1f010179b321ee1d4d66a006627896c4661c69bb64fd2545"
+    },
+    {
+      "file": "src/main/java/org/asamk/signal/commands/UpdateGroupCommand.java",
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/src/main/java/org/asamk/signal/commands/UpdateGroupCommand.java",
+      "sha256": "71ad4a933f088900f4b6940b3c0600a42a6650d647e9f825992140d250c3ad64"
+    },
+    {
+      "file": "man/signal-cli.1.adoc",
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/man/signal-cli.1.adoc",
+      "sha256": "a8be728b9014112076f7aee35d9914777fd09b75996e8156ad93978cd68e448c"
+    }
+  ]
+}

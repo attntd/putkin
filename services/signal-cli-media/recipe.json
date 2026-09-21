@@ -1,0 +1,15 @@
+{
+  "version": "0.14.8",
+  "policy": "putkin-retention-2",
+  "sources": {
+    "IncomingMessageHandler.java": "73db0c2feb2de845fca7719656643dfda0f18ff13977a38733212f1676abd007",
+    "AttachmentHelper.java": "8659cce67c82eb16c798882986e4d5e129ba5b39fb80704c2ce2e1a426a88ab9",
+    "AttachmentStore.java": "08f111691ee151dc9fd7d8437b5b6bbe2e31d0137c3e9fa05939d47471217408",
+    "JsonSyncDataMessage.java": "c94ba89cd35ebfb2ddb0d09a032ee58d80663d3d07d8bc8584faa85dbc7dc6b4",
+    "SendHelper.java": "2410c6762c0d81ea02eb54bfd4b49827462f873a685bf723047e88627625df7a",
+    "MessageSendLogStore.java": "6dcc586d3110cf3b830d3240087e33954551d6958cfd4b74fdaf10c4985327c5",
+    "SendMessageResultUtils.java": "c4edad52dc0f011572a9bd3706be785b3d0523782547643b7e12426e998c619e"
+  },
+  "originalLibrary": "df83014a28575ccfd70015b69d39e4c0f9237ed824a3aac431c8d75cc3424f0f",
+  "originalApplication": "5a6f736499daa8e2ae5f18957d61b6c9b1462f2acbd63983e7a0c70e8474f058"
+}

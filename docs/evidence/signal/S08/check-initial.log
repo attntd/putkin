@@ -1,0 +1,5 @@
+FAIL [imports/types, exit=255] /home/attntd/projects/signal/modules/messages/MessageHistory.qml
+Warning: /home/attntd/projects/signal/modules/messages/MessageHistory.qml:241:81: Member "foreground" not found on type "QQuickItem" [missing-property]
+                    contentItem: UI.Glyph { symbol: "more_horiz"; color: parent.foreground }
+                                                                                ^^^^^^^^^^
+FAIL: 250 plików QML, 1 z błędami.

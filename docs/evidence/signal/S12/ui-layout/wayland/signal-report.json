@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "checks": [
+    "native passive toast, actual quick-reply keyboard/Unicode/Shift+Enter/Escape, focus return, two accents preview/cancel/save preserve draft",
+    "real large/small native window and scale 1.5 render correctly; hjkl remains text",
+    "second monitor routing, mixed scales and hotplug preserve draft; lock closes conversation and redacts new notification",
+    "native reload preserves committed accents/history/draft with one new receiver"
+  ],
+  "captures": [
+    "reply-preview.png",
+    "reply-saved.png",
+    "messages-empty-composer.png",
+    "messages-large.png",
+    "messages-multiline.png",
+    "conversation-details.png",
+    "messages-small.png",
+    "messages-scale-1.5.png",
+    "messages-second-output.png",
+    "locked-redacted.png",
+    "messages-after-reload.png"
+  ],
+  "livePhone": false,
+  "ime": "Unicode via wtype; preedit contract tested in Qt separately; physical IME engine remains S12"
+}

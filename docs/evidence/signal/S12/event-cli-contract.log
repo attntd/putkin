@@ -1,0 +1,9 @@
+PASS: size boundaries and real cache quota
+PASS: actual receive method skips view-once for incoming and sent sync, with both ignore settings; ordinary/expiring media reach downloader; hostile filename cannot choose extension
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.sqlite.SQLiteJDBCLoader in an unnamed module (file:/cli/lib/sqlite-jdbc-3.53.4.0.jar)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+PASS: real sent-sync JSON exports exact expiration start; disabled resend log removes legacy bodies and rejects new ones
+PASS: pinned CLI serializes typing as STARTED/STOPPED

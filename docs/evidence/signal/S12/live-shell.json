@@ -1,0 +1,16 @@
+{
+  "result": "PASS",
+  "scope": "live installed shell, unpaired account; no phone acceptance",
+  "build": "20260921-090336-8f92f3b0b020",
+  "shellPidBefore": 580883,
+  "shellPidAfter": 581324,
+  "bridgePidBefore": 580939,
+  "bridgePidAfter": 581355,
+  "serviceCgroup": "/user.slice/user-1000.slice/user@1000.service/session.slice/session-graphical.slice/putkin.service",
+  "messagesOpenClosePreservesBridge": true,
+  "stopLeavesNoBridge": true,
+  "restartPreservesUnpairedState": true,
+  "caffeinateMode": "presentation",
+  "preferencesPreserved": true,
+  "singleShell": true
+}

@@ -57,6 +57,9 @@ Item {
             tryCompare(preview.panelHost, "loaded", true);
             tryVerify(() => control("audioVolume") && control("audioVolume").activeFocus);
             verify(waitForPolish(scene));
+            // Focus is assigned before FadeScope has presented its first frame.
+            // A pointer click on an opacity-zero subtree is not delivered.
+            tryCompare(preview.panelHost.window, "opacity", 1);
         }
         function test_no_startup_or_reconnect_osd() {
             compare(feedback.count, 0);

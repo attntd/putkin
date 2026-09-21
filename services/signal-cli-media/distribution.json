@@ -1,0 +1,16 @@
+{
+  "format": 1,
+  "platform": "linux-x86_64",
+  "cliVersion": "0.14.8",
+  "javaVersion": "25.0.4.1+1",
+  "policy": "putkin-retention-2",
+  "cliArchive": {
+    "url": "https://github.com/AsamK/signal-cli/releases/download/v0.14.8/signal-cli-0.14.8.tar.gz",
+    "sha256": "ccd408e831eff7e41ebaaf309704840bb00d78a7869f35ad700dbae5b5a5bb65"
+  },
+  "jreArchive": {
+    "url": "https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.4.1%2B1/OpenJDK25U-jre_x64_linux_hotspot_25.0.4.1_1.tar.gz",
+    "sha256": "1731a34baadec5479258ea0202e4d5d865d2efeee60cb0c7d7eb056fe96ca219"
+  },
+  "treeSha256": "bcfcebef74761e3c69690d0be6836303c7d7edbd1675395361da765f266f116f"
+}

@@ -1,0 +1,15 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::SignalSettings::initTestCase()
+PASS   : qmltestrunner::SignalSettings::test_disable_and_confirm_local_history()
+PASS   : qmltestrunner::SignalSettings::test_live_both_accents_save_cancel()
+PASS   : qmltestrunner::SignalSettings::test_navigation_typing_and_cancel()
+PASS   : qmltestrunner::SignalSettings::test_qr_private_routing_expiry_and_destroy()
+PASS   : qmltestrunner::SignalSettings::test_state_labels(missing)
+PASS   : qmltestrunner::SignalSettings::test_state_labels(unlinked)
+PASS   : qmltestrunner::SignalSettings::test_state_labels(linked)
+PASS   : qmltestrunner::SignalSettings::test_state_labels(offline)
+PASS   : qmltestrunner::SignalSettings::test_state_labels(revoked)
+PASS   : qmltestrunner::SignalSettings::cleanupTestCase()
+Totals: 11 passed, 0 failed, 0 skipped, 0 blacklisted, 1660ms
+********* Finished testing of qmltestrunner *********

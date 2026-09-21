@@ -342,6 +342,14 @@
     "volume_up": {
       "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/volume_up/default/24px.svg",
       "sha256": "53e1499625a35bba9a86ae6650845357e937709b1f872d7bae1d513c4ef0dc5f"
+    },
+    "add": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/add/default/24px.svg",
+      "sha256": "e9532de2b9be01ce951e899e98ee673bb97acd574f0db118feb72fe074a1c376"
+    },
+    "send": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/send/default/24px.svg",
+      "sha256": "34e2232851b874c646ed77f1e90b85c9649e25605c636efdc351673579487675"
     }
   }
 }

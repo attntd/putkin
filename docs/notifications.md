@@ -1,5 +1,32 @@
 # Powiadomienia i DND — etap 09
 
+## Odczyt Signal — S06, 2026-09-20
+
+Własny odczyt wiadomości (aktywne okno lub read sync telefonu) wygasza
+toast dokładnego messageId i oznacza jego wpis centrum jako przeczytany,
+zachowując treść oraz routing. Starszy read nie zamyka nowszej karty.
+Nieaktualna odpowiedź IPC nie odtwarza przeczytanego toasta. Wspólny
+unread komunikatora pochodzi z SQLite; otwarcie centrum nadal zmienia
+wyłącznie sesyjny stan NotificationService. Quick reply i zamknięcie
+karty nie wysyłają read. [Kontrakt i granice API](signal/CONTRACTS.md#raporty-i-odczyt--s06).
+
+## Wewnętrzne wiadomości Signal — S05, 2026-09-20
+
+Karty własnej integracji mają Otwórz/Odpowiedz oraz dzwonek wyciszenia
+rozmowy. Reply rozwija pole w toastcie lub centrum i używa tego samego
+outboxu co okno wiadomości. Zwykłe nadejście pozostaje pasywne;
+klawiatura włącza się po Odpowiedz. Rozwinięta karta może mieć do 420 px,
+wciąż ograniczona wysokością ekranu i przewijaniem. Szkic jest osobny
+od pełnego edytora, trwały, powiązany z rozmową i UUID wysyłki.
+
+Własne karty zachowują bezpieczny deskryptor routingu także po timeout;
+żywa usługa sprawdza akcje. Jeden wpis/toast na rozmowę, zwykła pilność,
+DND, lokalne wyciszenie, ograniczenie catch-up i ukrywanie treści przy lock.
+Brak odczytów wiadomości przez akcje centrum. Zewnętrzne archiwalne karty
+nadal nie wykonują akcji; inlineReplySupported pozostaje false.
+Te zasady zastępują wcześniejszy zakaz reply **dla własnych kart Signala**.
+[Kontrakt S05](signal/CONTRACTS.md#powiadomienia--s05), [dowody](signal/STATUS.md).
+
 ## Karty, rozwijanie i przewijanie — 2026-09-20
 
 Zaznaczenie i kliknięcie obejmują całą kartę, w tym ramkę, odstępy, tekst

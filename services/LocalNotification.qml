@@ -11,6 +11,9 @@ QtObject {
     property string image: ""
     property var actions: []
     property var hints: ({})
+    // Only internal constructors set this descriptor. Native D-Bus hints never do.
+    property var messageReference: null
+    property real messageTimestamp: 0
     property bool resident: false
     signal transientChanged()
     property int urgency: 2

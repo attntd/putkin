@@ -1,0 +1,21 @@
+#!/usr/bin/env python3
+"""Exercise the actual pinned media patch with no account/network/home."""
+import argparse
+from pathlib import Path
+import subprocess
+from _common import ROOT, tool
+
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument("--distribution", type=Path, required=True)
+parser.add_argument("--jdk", type=Path, required=True)
+args = parser.parse_args()
+results = []
+for name in ("SignalMediaPolicyTest", "SignalRetentionPolicyTest", "SignalEventContractTest"):
+    results.append(subprocess.run([tool("bwrap"), "--unshare-all", "--die-with-parent", "--new-session",
+    "--ro-bind", "/usr", "/usr", "--symlink", "usr/lib", "/lib", "--symlink", "usr/lib", "/lib64",
+    "--proc", "/proc", "--dev", "/dev", "--tmpfs", "/tmp",
+    "--ro-bind", str(args.distribution.resolve()), "/cli", "--ro-bind", str(args.jdk.resolve()), "/java",
+    "--ro-bind", str(ROOT / ("tests/" + name + ".java")), "/Test.java",
+    "--setenv", "HOME", "/tmp", "--chdir", "/tmp",
+    "/java/bin/java", "--class-path", "/cli/lib/*", "/Test.java"]).returncode)
+raise SystemExit(int(any(results)))

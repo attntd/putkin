@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "scope": "real signal-cli 0.14.8 JVM, empty account, network/PID/mount isolation",
+  "checks": [
+    {
+      "phase": "ready",
+      "signal": "SIGTERM",
+      "samePidExecAndLock": true,
+      "cleanup": true
+    },
+    {
+      "phase": "ready",
+      "signal": "SIGKILL",
+      "samePidExecAndLock": true,
+      "cleanup": true
+    },
+    {
+      "phase": "spawned",
+      "signal": "SIGKILL",
+      "samePidExecAndLock": false,
+      "cleanup": true
+    },
+    {
+      "phase": "jvm-exec-gate",
+      "signal": "SIGKILL",
+      "samePidExecAndLock": false,
+      "cleanup": true
+    }
+  ],
+  "remainingCliProcesses": []
+}

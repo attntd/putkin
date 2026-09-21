@@ -12,9 +12,12 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--scale", default="1", choices=["1", "1.25", "1.5", "2"])
     parser.add_argument("--all-qml", action="store_true")
+    parser.add_argument("--timeout", type=int, help="Limit sekund dla większych zestawów QML")
     parser.add_argument("--file", default="tst_material_icons.qml")
     parser.add_argument("--log", type=Path, default=ROOT / "docs/evidence/material-icons-qt.log")
     args = parser.parse_args()
+    if args.timeout is not None and args.timeout <= 0:
+        parser.error("--timeout musi być dodatni")
     with tempfile.TemporaryDirectory(prefix="pk-icons-") as directory:
         env = isolated_environment(directory)
         env.update(HOME=directory, QT_SCALE_FACTOR=args.scale)
@@ -26,7 +29,7 @@ def main():
                 "-input", str(source), "-import", str(ROOT)], env=env,
                 stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
             try:
-                process.wait(timeout=240 if args.all_qml else 100)
+                process.wait(timeout=args.timeout if args.timeout is not None else (240 if args.all_qml else 100))
             except subprocess.TimeoutExpired:
                 timed_out = True
             finally:

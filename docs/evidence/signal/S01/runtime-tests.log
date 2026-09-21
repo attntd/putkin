@@ -1,0 +1,8 @@
+test_clis_report_missing_qml_import (test_runtime.RuntimeDiagnostics.test_clis_report_missing_qml_import) ... ok
+test_log_reader_preserves_child_offset (test_runtime.RuntimeDiagnostics.test_log_reader_preserves_child_offset) ... ok
+test_only_absent_startup_reply_is_retryable (test_runtime.RuntimeDiagnostics.test_only_absent_startup_reply_is_retryable) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 8.421s
+
+OK

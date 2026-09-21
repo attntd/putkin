@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "scope": "production QML windows/SQLite/bridge; synthetic CLI; offscreen/private XDG/D-Bus; no phone/compositor",
+  "checks": [
+    "local deletion clears native history and notification center; no remoteDelete; replay/edit cannot restore content",
+    "native everyone action uses durable shared queue and exact remoteDelete RPC",
+    "unread incoming content waits for native visible-read; one deadline removes content and notification without polling requests",
+    "shell-off deadline is applied before startup history; no resend and no surviving owned processes"
+  ],
+  "qmlErrors": [],
+  "remainingOwnedProcesses": []
+}

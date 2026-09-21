@@ -1,0 +1,73 @@
+#!/usr/bin/env python3
+"""Package verified upstream archives plus the pinned Putkin jars. No downloads."""
+import argparse
+import json
+import os
+from pathlib import Path
+import shutil
+import sys
+import tarfile
+import tempfile
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "services"))
+from signal_release import digest, tree, verify_runtime
+
+
+def extract(archive, checksum, destination):
+    if digest(archive) != checksum:
+        raise ValueError("Nieprawidłowy SHA-256 archiwum: " + str(archive))
+    with tarfile.open(archive) as source:
+        source.extractall(destination, filter="data")
+    roots = list(destination.iterdir())
+    if len(roots) != 1 or not roots[0].is_dir():
+        raise ValueError("Nieprawidłowy katalog archiwum.")
+    return roots[0]
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--cli-archive", type=Path, required=True)
+    parser.add_argument("--jre-archive", type=Path, required=True)
+    parser.add_argument("--patched-cli", type=Path, required=True)
+    parser.add_argument("--output", type=Path, default=ROOT / "artifacts/signal-runtime")
+    args = parser.parse_args()
+    pin = json.loads((ROOT / "services/signal-cli-media/distribution.json").read_text())
+    policy = json.loads((ROOT / "services/signal-cli-media/runtime.json").read_text())
+    if args.output.exists():
+        print(json.dumps(verify_runtime(args.output)))
+        return
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix=".signal-package-", dir=args.output.parent) as directory:
+        stage = Path(directory)
+        original = extract(args.cli_archive, pin["cliArchive"]["sha256"], stage / "original")
+        jre = extract(args.jre_archive, pin["jreArchive"]["sha256"], stage / "java")
+        expected = tree(original)
+        for name, key in (("libsignal-cli", "librarySha256"), ("signal-cli", "applicationSha256")):
+            relative = f"lib/{name}-0.14.8.jar"
+            expected[relative][0] = policy[key]
+        actual = tree(args.patched_cli)
+        actual.pop("putkin-media-policy.json", None)
+        if actual != expected:
+            raise ValueError("CLI różni się od przypiętej dystrybucji i dwóch poprawionych jarów.")
+        output = stage / "bundle"
+        for relative in expected:
+            path = output / "cli" / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(args.patched_cli / relative, path)
+        # JRE legal files contain internal symlinks; resolve only within the
+        # checksum-verified archive, then ship ordinary immutable files.
+        for path in jre.rglob("*"):
+            if path.is_symlink() and not path.resolve().is_relative_to(jre.resolve()):
+                raise ValueError("Zewnętrzne dowiązanie w JRE.")
+        shutil.copytree(jre, output / "jre")
+        metadata = verify_runtime(output)
+        os.replace(output, args.output)
+        print(json.dumps({"bundle": str(args.output), **metadata}, indent=2))
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except (OSError, ValueError, tarfile.TarError) as error:
+        sys.exit("package-signal-runtime: " + str(error))

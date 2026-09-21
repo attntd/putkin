@@ -1,0 +1,156 @@
+#!/usr/bin/env python3
+"""S08 interactions QML windows/SQLite/bridge with synthetic CLI and private XDG/D-Bus."""
+import argparse
+from contextlib import closing
+import ctypes
+import json
+from pathlib import Path
+import sqlite3
+import subprocess
+import sys
+import tempfile
+import time
+import traceback
+
+from _common import ROOT, ipc_json, ipc_reply, isolated_environment, qml_errors, runtime_log, stop_process_group, tool
+sys.path.insert(0, str(ROOT / "tests"))
+from test_signal_history import event, send_result
+from test_signal_interactions import edit, reaction, typing
+from test_signal_lifecycle import gone
+
+
+def eventually(read, predicate, seconds=15):
+    deadline = time.monotonic() + seconds
+    value = None
+    while time.monotonic() < deadline:
+        value = read()
+        if predicate(value):
+            return value
+        time.sleep(.04)
+    raise AssertionError("Receipt condition timed out: " + str(value))
+
+
+def run(output):
+    output.parent.mkdir(parents=True, exist_ok=True)
+    report = {"passed": False, "scope": "production QML windows/SQLite/bridge; synthetic CLI; offscreen/private XDG/D-Bus; no phone/compositor", "checks": []}
+    ctypes.CDLL(None).prctl(36, 1, 0, 0, 0)
+    with tempfile.TemporaryDirectory(prefix="pk-s08-") as tmp:
+        base = Path(tmp)
+        env = isolated_environment(tmp)
+        env["QS_NO_RELOAD_POPUP"] = "1"
+        address = "unix:path=" + str(base / "bus")
+        env["DBUS_SESSION_BUS_ADDRESS"] = address
+        fixture, record = base / "fixture.json", base / "processes.jsonl"
+        stamp = int(time.time() * 1000) - 10000
+        fixture.write_text(json.dumps({"format": 1, "synthetic": True, "record": str(record), "receiveEvents": [], "readReceipts": False,
+            "interactionTimestamp": stamp + 5000, "sendResult": send_result(stamp + 6000),
+            "contacts": [{"number": "+12025550100", "uuid": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", "messageExpirationTime": 0},
+                         {"number": "+12025550101", "uuid": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb", "name": "Alicja", "messageExpirationTime": 0}]}))
+        config = Path(env["XDG_CONFIG_HOME"]) / "putkin"
+        config.mkdir(mode=0o700)
+        (config / "signal.json").write_text(json.dumps({"v": 1, "enabled": True, "deviceName": "Putkin", "typingIndicators": True}))
+        (config / "signal.json").chmod(0o600)
+        env["PUTKIN_SIGNAL_TEST_SCENARIO"] = str(fixture)
+        entrypoint = str(ROOT / "signal-interactions-test.qml")
+        processes, logs, helpers = [], [], set()
+        def start(cmd, name):
+            log = (base / (name + ".log")).open("w+")
+            logs.append((name, log))
+            process = subprocess.Popen(cmd, env=env, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+            processes.append(process)
+            return process
+        def ipc(method, *args):
+            result = subprocess.run([tool("quickshell"), "ipc", "--path", entrypoint, "call", "probe", method, *map(str, args)],
+                env=env, capture_output=True, text=True, timeout=5)
+            return ipc_reply(result, shell, logs, starting=method == "snapshot")
+        def snapshot():
+            value = ipc_json(ipc("snapshot"))
+            if value.get("pid"): helpers.add(value["pid"])
+            return value
+        def records(kind):
+            return [v for v in map(json.loads, record.read_text().splitlines()) if v["kind"] == kind] if record.exists() else []
+        def query(sql):
+            with closing(sqlite3.connect(Path(env["XDG_DATA_HOME"]) / "putkin/signal/history.sqlite3")) as db:
+                return db.execute(sql).fetchall()
+        def receive(wire):
+            ipc("receive", json.dumps(wire))
+        def assert_no_receipts(count):
+            time.sleep(.6)
+            assert len(records("receipt")) == count, records("receipt")
+        try:
+            start([tool("dbus-daemon"), "--session", "--nofork", "--address=" + address], "bus")
+            eventually(lambda: (base / "bus").exists(), bool)
+            shell = start([tool("quickshell"), "--no-color", "--path", entrypoint], "shell")
+            ready = eventually(snapshot, lambda v: v.get("state") == "ready")
+            receive(event(timestamp=stamp, body="Pierwszy tekst"))
+            eventually(snapshot, lambda v: v.get("entries") == 1 and not v.get("pending"))
+            receive(edit(stamp, stamp + 1000, "Poprawiony tekst z telefonu"))
+            notice = eventually(snapshot, lambda v: any("Poprawiony tekst" in row.get("body", "") for row in v.get("history", [])))
+            assert len(notice["history"]) == 1
+            receive(reaction(stamp, stamp + 2000, "❤️"))
+            eventually(snapshot, lambda v: any("❤️ 1" in row.get("body", "") for row in v.get("history", [])))
+            report["checks"].append("edit and reaction update the existing notification while the messages window is absent; no second card/toast")
+            receive(event("sent-sync", timestamp=stamp + 3000, body="Wiadomość wysłana z telefonu"))
+            assert ipc("select", 0) == "true"
+            selected = eventually(snapshot, lambda v: v.get("draftReady") and v.get("loaded") and v.get("count") == 2 and not v.get("pending"))
+            outgoing = next(r for r in selected["rows"] if r["outgoing"])
+            incoming = next(r for r in selected["rows"] if not r["outgoing"])
+            ipc("draft", "Zachowany zwykły szkic")
+            eventually(snapshot, lambda v: not v.get("pending"))
+            assert ipc("edit", outgoing["messageId"]) == "true"
+            ipc("compose", "Edycja z Putkina 🐈")
+            assert ipc("capture", str(output.with_name("editor.png"))) == "true"
+            eventually(snapshot, lambda v: v.get("captured"))
+            assert ipc("submit") == "true"
+            value = eventually(snapshot, lambda v: any(r["text"] == "Edycja z Putkina 🐈" and r["edited"] for r in v.get("rows", [])) and not v.get("pending"))
+            assert value["draftText"] == "Zachowany zwykły szkic"
+            assert records("edit")[0]["params"]["editTimestamp"] == stamp + 3000
+            assert len(value["rows"]) == 2
+            assert ipc("react", incoming["messageId"], "👩‍💻", "false") == "true"
+            eventually(snapshot, lambda v: any("👩‍💻" in r["reactionsJson"] for r in v.get("rows", [])) and not v.get("pending"))
+            ipc("actions", incoming["messageId"])
+            assert ipc("capture", str(output.with_name("reactions.png"))) == "true"
+            eventually(snapshot, lambda v: v.get("captured"))
+            ipc("actions", "")
+            ipc("quote", incoming["messageId"])
+            ipc("compose", "Odpowiedź z cytatem")
+            assert ipc("submit") == "true"
+            eventually(snapshot, lambda v: v.get("count") == 3 and "Wysłano" in v.get("statuses", []) and not v.get("pending"))
+            assert query("SELECT COUNT(*) FROM messages")[0][0] == 3
+            report["checks"].append("actual native composer sends editTimestamp/sendReaction and quote fields through shared bridge; canonical row and ordinary draft preserved")
+            receive(typing(stamp + 7000))
+            eventually(snapshot, lambda v: v.get("typing") == ["Alicja"])
+            eventually(snapshot, lambda v: v.get("typing") == [], seconds=18)
+            assert query("SELECT COUNT(*) FROM messages")[0][0] == 3
+            report["checks"].append("incoming typing disappears after the real 15-second deadline without a stop event, history row or unread increment")
+            old_pid = snapshot()["pid"]
+            ipc("reload")
+            eventually(snapshot, lambda v: v.get("state") == "ready" and v.get("pid") != old_pid)
+            eventually(lambda: gone(old_pid), bool)
+            assert ipc("select", 0) == "true"
+            final = eventually(snapshot, lambda v: v.get("count") == 3 and not v.get("pending"))
+            assert any(r["edited"] and r["text"] == "Edycja z Putkina 🐈" for r in final["rows"])
+            assert len(records("edit")) == 1 and len(records("reaction")) == 1 and len(records("send")) == 1
+            report["checks"].append("hard reload restores versions/reactions/quote from SQLite, reaps old bridge and never repeats operations")
+            ipc("quit"); shell.wait(timeout=8)
+            report["passed"] = True
+        except (OSError, AssertionError, subprocess.SubprocessError) as error:
+            report["failure"] = traceback.format_exc()
+        finally:
+            for process in reversed(processes): stop_process_group(process)
+            remaining = [pid for pid in helpers | {v["pid"] for v in records("start")} if not gone(pid)]
+            combined = runtime_log(logs)
+            output.with_suffix(".log").write_text(combined)
+            report["qmlErrors"] = qml_errors(combined, allow_offscreen_masks=True)
+            report["remainingOwnedProcesses"] = remaining
+            if remaining or report["qmlErrors"]: report["passed"] = False
+            for _, log in logs: log.close()
+    output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
+    print(json.dumps(report, ensure_ascii=False, indent=2))
+    return int(not report["passed"])
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, default=ROOT / "artifacts/signal-s08/interactions.json")
+    raise SystemExit(run(parser.parse_args().output.resolve()))

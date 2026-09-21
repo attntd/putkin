@@ -13,12 +13,18 @@ QtObject {
     required property var audio
     required property var brightness
     required property var sessionService
+    property var messages: null
     property var screenshot: null
     property var powerProfiles: null
     property string lastError: ""
     function invoke(id: string, window: var, monitor: string): bool {
         if (!Actions.find(id)) { lastError = qsTr("Nieznane działanie."); return false; }
         lastError = "";
+        if (id === "messages") {
+            if (!messages || messages.blocked) return false;
+            Qt.callLater(() => messages.open(monitor));
+            return true;
+        }
         const profile = ({powersaver: "power-saver", balanced: "balanced", performance: "performance"})[id];
         if (profile) {
             if (!powerProfiles || !powerProfiles.supports(profile)) {

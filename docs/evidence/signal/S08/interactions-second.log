@@ -1,0 +1,26 @@
+test_actual_queue_routes_edit_and_reaction_methods_and_survives_restart (test_signal_interactions.InteractionBridgeTests.test_actual_queue_routes_edit_and_reaction_methods_and_survives_restart) ... ok
+test_edit_chain_reverse_delivery_duplicates_authorship_and_restart (test_signal_interactions.InteractionTests.test_edit_chain_reverse_delivery_duplicates_authorship_and_restart) ... ok
+test_edits_keep_expiry_and_delete_version_clears_all_content (test_signal_interactions.InteractionTests.test_edits_keep_expiry_and_delete_version_clears_all_content) ... ok
+test_error_known_failure_retry_unknown_no_repeat_and_operation_dedup (test_signal_interactions.InteractionTests.test_error_known_failure_retry_unknown_no_repeat_and_operation_dedup) ... ok
+test_limits_author_permissions_and_stale_editor (test_signal_interactions.InteractionTests.test_limits_author_permissions_and_stale_editor) ... ok
+test_pending_edits_expire_and_typing_does_not_create_history (test_signal_interactions.InteractionTests.test_pending_edits_expire_and_typing_does_not_create_history) ... ok
+test_phone_edits_reactions_do_not_toast_and_old_receipt_not_latest_read (test_signal_interactions.InteractionTests.test_phone_edits_reactions_do_not_toast_and_old_receipt_not_latest_read) ... ok
+test_phone_sync_before_result_settles_exact_version_once (test_signal_interactions.InteractionTests.test_phone_sync_before_result_settles_exact_version_once) ... ok
+test_queue_applies_only_confirmed_result_preserves_draft_and_original_id (test_signal_interactions.InteractionTests.test_queue_applies_only_confirmed_result_preserves_draft_and_original_id) ... ok
+test_quote_missing_original_resolves_without_fabricating_history (test_signal_interactions.InteractionTests.test_quote_missing_original_resolves_without_fabricating_history) ... ok
+test_reactions_actor_key_change_remove_zwj_before_target_and_alias (test_signal_interactions.InteractionTests.test_reactions_actor_key_change_remove_zwj_before_target_and_alias) ... FAIL
+test_utf16_emoji_mentions_and_whitelisted_styles (test_signal_interactions.InteractionTests.test_utf16_emoji_mentions_and_whitelisted_styles) ... ok
+
+======================================================================
+FAIL: test_reactions_actor_key_change_remove_zwj_before_target_and_alias (test_signal_interactions.InteractionTests.test_reactions_actor_key_change_remove_zwj_before_target_and_alias)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/attntd/projects/signal/tests/test_signal_interactions.py", line 104, in test_reactions_actor_key_change_remove_zwj_before_target_and_alias
+    self.assertEqual(message['reactions'][0]['count'], 2)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 2
+
+----------------------------------------------------------------------
+Ran 12 tests in 1.024s
+
+FAILED (failures=1)

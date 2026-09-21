@@ -1,0 +1,15 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::SignalInteractions::initTestCase()
+FAIL!  : qmltestrunner::SignalInteractions::test_edit_cancel_and_error_keep_normal_draft_and_keyboard_semantics() Received a warning that resulted in a failure:
+QQmlVMEMetaObject: Internal error - attempted to evaluate a function in an invalid context
+FAIL!  : qmltestrunner::SignalInteractions::test_edit_cancel_and_error_keep_normal_draft_and_keyboard_semantics() Received a warning that resulted in a failure:
+file:///home/attntd/projects/signal/modules/messages/MessageHistory.qml:79: Error: Qt.callLater: first argument not a function or signal (exception occurred during delayed function evaluation)
+   Loc: [file:///home/attntd/projects/signal/modules/messages/MessageHistory.qml(79)]
+FAIL!  : qmltestrunner::SignalInteractions::test_react_replace_remove_quote_and_unicode_mention() Uncaught exception: Cannot read property 'emoji' of undefined
+   Loc: [/home/attntd/projects/signal/tests/qml/tst_signal_interactions.qml(64)]
+PASS   : qmltestrunner::SignalInteractions::test_safe_styles_and_live_accents()
+PASS   : qmltestrunner::SignalInteractions::test_typing_only_focused_editor_rate_limited_and_stops_on_blur_lock_send()
+PASS   : qmltestrunner::SignalInteractions::cleanupTestCase()
+Totals: 4 passed, 2 failed, 0 skipped, 0 blacklisted, 2440ms
+********* Finished testing of qmltestrunner *********

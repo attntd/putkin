@@ -18,6 +18,7 @@ PanelWindow {
     required property var audio
     property var bluetooth: null
     property var notifications: null
+    property var messages: null
     required property var network
     required property date date
     readonly property bool navigating: screen !== null && controller.screenName === screen.name
@@ -38,6 +39,7 @@ PanelWindow {
         network: root.network
         bluetooth: root.bluetooth
         notifications: root.notifications
+        messages: root.messages
         activeModule: root.panels.screenName === screenName ? root.panels.activeId : ""
         battery: root.battery
         tray: root.tray
@@ -48,6 +50,7 @@ PanelWindow {
         windowedTooltips: true
         batteryPanelActive: root.panels.screenName === screenName && root.panels.activeId === "battery"
         audioPanelActive: root.panels.screenName === screenName && root.panels.activeId === "audio"
+        onMessagesRequested: { if (root.messages) root.messages.open(root.screen ? root.screen.name : ""); }
         onModuleRequested: (surface, invoker) => root.panels.toggle(surface, root.screen, invoker)
         onAudioRequested: invoker => root.panels.toggle("audio", root.screen, invoker)
         onBatteryRequested: invoker => root.panels.toggle("battery", root.screen, invoker)

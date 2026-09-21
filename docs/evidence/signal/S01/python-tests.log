@@ -1,0 +1,24 @@
+test_byte_fragmentation_preserves_multibyte_utf8 (test_signal_contract.SignalContractTest.test_byte_fragmentation_preserves_multibyte_utf8) ... ok
+test_malformed_truncated_and_oversized_input_fail (test_signal_contract.SignalContractTest.test_malformed_truncated_and_oversized_input_fail) ... ok
+test_manual_receive_waits_for_subscription_request (test_signal_contract.SignalContractTest.test_manual_receive_waits_for_subscription_request) ... ok
+test_stdio_round_trip_and_eof (test_signal_contract.SignalContractTest.test_stdio_round_trip_and_eof) ... ok
+test_wrong_recipient_cannot_get_scripted_send_success (test_signal_contract.SignalContractTest.test_wrong_recipient_cannot_get_scripted_send_success) ... ok
+test_backoff_stops_after_five_retries_and_explicit_retry_recovers (test_signal_lifecycle.LifecycleTests.test_backoff_stops_after_five_retries_and_explicit_retry_recovers) ... ok
+test_eof_term_kill_helper_and_owned_shell (test_signal_lifecycle.LifecycleTests.test_eof_term_kill_helper_and_owned_shell) ... ok
+test_forced_cleanup_holds_lock_until_cli_dies (test_signal_lifecycle.LifecycleTests.test_forced_cleanup_holds_lock_until_cli_dies) ... ok
+test_invalid_version_accounts_and_ipc_frames_are_finite (test_signal_lifecycle.LifecycleTests.test_invalid_version_accounts_and_ipc_frames_are_finite) ... ok
+test_ipc_burst_limit_and_invalid_version (test_signal_lifecycle.LifecycleTests.test_ipc_burst_limit_and_invalid_version) ... ok
+test_private_paths_and_lock_symlinks_rejected (test_signal_lifecycle.LifecycleTests.test_private_paths_and_lock_symlinks_rejected) ... ok
+test_production_gate_never_subscribes_even_to_configured_linked_account (test_signal_lifecycle.LifecycleTests.test_production_gate_never_subscribes_even_to_configured_linked_account) ... ok
+test_reconnect_generation_error_redaction_and_explicit_cancel (test_signal_lifecycle.LifecycleTests.test_reconnect_generation_error_redaction_and_explicit_cancel) ... ok
+test_two_starts_stale_lock_inode_and_reload (test_signal_lifecycle.LifecycleTests.test_two_starts_stale_lock_inode_and_reload) ... ok
+test_unconfigured_idle_disabled_and_missing_binary (test_signal_lifecycle.LifecycleTests.test_unconfigured_idle_disabled_and_missing_binary) ... ok
+test_corrupt_large_truncated_utf8_and_version (test_signal_lifecycle.TransportTests.test_corrupt_large_truncated_utf8_and_version) ... ok
+test_limits_and_stop_inflight_never_succeed (test_signal_lifecycle.TransportTests.test_limits_and_stop_inflight_never_succeed) ... ok
+test_out_of_order_timeout_late_reply_and_cancellation (test_signal_lifecycle.TransportTests.test_out_of_order_timeout_late_reply_and_cancellation) ... ok
+test_partial_utf8_coalesced_frames_and_event_before_reply (test_signal_lifecycle.TransportTests.test_partial_utf8_coalesced_frames_and_event_before_reply) ... ok
+
+----------------------------------------------------------------------
+Ran 19 tests in 63.735s
+
+OK

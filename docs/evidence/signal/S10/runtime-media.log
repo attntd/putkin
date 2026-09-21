@@ -1,0 +1,19 @@
+bus:
+dbus-daemon[487126]: [session uid=1000 pid=487126 pidfd=4] Connection :1.1 (uid=1000 pid=487142 comm="/usr/bin/python3 -B /home/attntd/projects/signal/s") became a monitor.
+dbus-daemon[487126]: [session uid=1000 pid=487126 pidfd=4] Monitoring connection :1.1 closed.
+dbus-daemon[487126]: [session uid=1000 pid=487126 pidfd=4] Connection :1.7 (uid=1000 pid=487464 comm="/usr/bin/python3 -B /home/attntd/projects/signal/s") became a monitor.
+dbus-daemon[487126]: [session uid=1000 pid=487126 pidfd=4] Monitoring connection :1.7 closed.
+
+shell:
+  INFO: Launching config: "/home/attntd/projects/signal/signal-media-test.qml"
+  INFO: Shell ID: "8559a5eb4dd283eda5bef7ea6c7382bd" Path ID "8559a5eb4dd283eda5bef7ea6c7382bd"
+  INFO: Saving logs to "/tmp/pk-s07-540681rr/runtime/quickshell/by-id/bvfadtdplt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  INFO qt.multimedia.ffmpeg: Using Qt multimedia with FFmpeg version n9.0.1 GPL version 3 or later
+  INFO: Reloading configuration...
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks

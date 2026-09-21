@@ -15,3 +15,7 @@ OsdHost 1.0 OsdHost.qml
 NotificationFocus 1.0 NotificationFocus.qml
 SessionController 1.0 SessionController.qml
 ErrorNotifications 1.0 ErrorNotifications.qml
+MessageHub 1.0 MessageHub.qml
+MessagesController 1.0 MessagesController.qml
+SignalNotifications 1.0 SignalNotifications.qml
+MessagesFocus 1.0 MessagesFocus.qml

@@ -1,0 +1,188 @@
+#!/usr/bin/env python3
+"""Production Signal QML + helper with an explicit fake, private XDG/D-Bus."""
+import argparse
+import ctypes
+import json
+import os
+from pathlib import Path
+import signal
+import subprocess
+import sys
+import tempfile
+import time
+import uuid
+
+from _common import ROOT, ipc_json, ipc_reply, isolated_environment, qml_errors, runtime_log, stop_process_group, tool
+
+
+def eventually(read, predicate, seconds=12):
+    deadline = time.monotonic() + seconds
+    last = None
+    while time.monotonic() < deadline:
+        last = read()
+        if predicate(last):
+            return last
+        time.sleep(.03)
+    raise AssertionError(f"Signal condition timed out: {last}")
+
+
+def reaped(pid):
+    try:
+        os.waitpid(pid, os.WNOHANG)
+    except ChildProcessError:
+        pass
+    return not Path(f"/proc/{pid}").exists()
+
+
+def run(output, idle):
+    report = {"passed": False, "scope": "synthetic Signal, offscreen QML, private XDG and D-Bus; no UWSM/account/network", "checks": []}
+    output.parent.mkdir(parents=True, exist_ok=True)
+    ctypes.CDLL(None).prctl(36, 1, 0, 0, 0)
+    with tempfile.TemporaryDirectory(prefix="pk-signal-qml-") as tmp:
+        base = Path(tmp)
+        env = isolated_environment(tmp)
+        env["QS_NO_RELOAD_POPUP"] = "1"
+        address = "unix:path=" + str(base / "bus")
+        env["DBUS_SESSION_BUS_ADDRESS"] = address
+        fixture = base / "fixture.json"
+        record = base / "processes.jsonl"
+        fixture.write_text(json.dumps({"format": 1, "synthetic": True, "record": str(record)}))
+        env["PUTKIN_SIGNAL_TEST_SCENARIO"] = str(fixture)
+        processes, logs, helpers = [], [], set()
+        entrypoint = str(ROOT / "signal-test.qml")
+
+        def start(command, name):
+            log = (base / (name + ".log")).open("w+")
+            logs.append((name, log))
+            process = subprocess.Popen(command, env=env, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+            processes.append(process)
+            return process
+
+        def ipc(method, *args):
+            result = subprocess.run([tool("quickshell"), "ipc", "--path", entrypoint, "call", "probe", method, *map(str, args)],
+                                    env=env, capture_output=True, text=True, timeout=4)
+            return ipc_reply(result, shell, logs, starting=method == "snapshot")
+
+        def snapshot():
+            value = ipc_json(ipc("snapshot"))
+            if value.get("pid"):
+                helpers.add(value["pid"])
+            return value
+
+        def ready():
+            return eventually(snapshot, lambda v: v.get("state") == "ready")
+
+        def domain(method, *args):
+            request_id = ipc(method, *args)
+            value = eventually(snapshot, lambda v: any(r["id"] == request_id for r in v.get("replies", [])))
+            reply = next(r for r in value["replies"] if r["id"] == request_id)
+            assert reply["error"] is None, reply
+            return reply["result"]
+
+        def records():
+            return [json.loads(line) for line in record.read_text().splitlines()] if record.exists() else []
+
+        def ticks(pid):
+            fields = Path(f"/proc/{pid}/stat").read_text().split(")", 1)[1].split()
+            return int(fields[11]) + int(fields[12])
+
+        try:
+            start([tool("dbus-daemon"), "--session", "--nofork", "--address=" + address], "bus")
+            eventually(lambda: (base / "bus").exists(), bool)
+            shell = start([tool("quickshell"), "--no-color", "--path", entrypoint], "shell")
+            state = ready()
+            assert state["received"] == 1, state
+            request_id = ipc("echo", "Zażółć 🐈 hjkl")
+            result = eventually(snapshot, lambda v: any(r["id"] == request_id for r in v.get("replies", [])))
+            assert result["replies"][-1]["result"] == {"text": "Zażółć 🐈 hjkl"}
+            assert result["replies"][-1]["error"] is None
+            report["checks"].append("production QML/backend receive event before subscription reply; UTF-8 RPC correlated")
+            assert state["schemaVersion"] == 7
+            cid = domain("conversations")["items"][0]["conversationId"]
+            operation_id = str(uuid.uuid4())
+            accepted = domain("sendText", cid, "Odpowiedź z Putkina", operation_id)
+            eventually(lambda: domain("operation", operation_id), lambda v: v["state"] == "sent")
+            domain("setDraft", cid, "szkic hjkl 🐈", "0")
+            messages = domain("messages", cid)["items"]
+            assert len(messages) == 2 and messages[0]["messageId"] == accepted["messageId"]
+            report["checks"].append("SignalService pages, one durable outbox operation, confirmed send and versioned Unicode draft")
+            ipc("window", "true")
+            ipc("window", "false")
+            assert ready()["pid"] == state["pid"]
+            assert len([v for v in records() if v["kind"] == "subscribe"]) == 1
+            report["checks"].append("creating/destroying FloatingWindow preserves helper, receiver and subscription")
+
+            for hard in ("false", "false", "true"):
+                before = ready()
+                ipc("reload", hard)
+                after = eventually(snapshot, lambda v: v.get("state") == "ready" and v.get("generation") != before["generation"])
+                assert after["pid"] != before["pid"]
+                eventually(lambda: reaped(before["pid"]), bool)
+                running = [r for r in records() if r["kind"] == "start" and not reaped(r["pid"])]
+                assert len(running) == 1, running
+                assert after["received"] == 1
+                assert domain("draft", cid)["text"] == "szkic hjkl 🐈"
+                assert domain("messages", cid)["items"] == messages
+                assert domain("operation", operation_id)["state"] == "sent"
+            report["checks"].append("two soft reloads and a hard reload: one receiver, old helper/CLI reaped, one subscription per generation")
+            report["checks"].append("history IDs, draft and known outbox result survive every reload; repeated receive is deduplicated")
+
+            state = ready()
+            child_pid = [r["pid"] for r in records() if r["kind"] == "start"][-1]
+            before_records = records()
+            before_ticks = {pid: ticks(pid) for pid in (state["pid"], child_pid)}
+            seconds = 60 if idle else 2
+            time.sleep(seconds)
+            delta = {str(pid): ticks(pid) - before for pid, before in before_ticks.items()}
+            assert records() == before_records
+            assert sum(delta.values()) <= max(4, seconds // 5), delta
+            report["idle"] = {"seconds": seconds, "cpuTicks": delta, "newProcessesOrRequests": 0}
+            report["checks"].append("idle: no subprocess starts, RPC polling or active timers")
+
+            os.kill(state["pid"], signal.SIGKILL)
+            eventually(snapshot, lambda v: v.get("state") == "failed")
+            eventually(lambda: reaped(child_pid), bool)
+            assert ipc("retry") == "true"
+            ready()
+            report["checks"].append("bridge SIGKILL kills CLI; QML reports failure and explicit retry recovers")
+
+            for mode in ("quit", "term", "kill"):
+                state = ready()
+                child_pid = [r["pid"] for r in records() if r["kind"] == "start"][-1]
+                if mode == "quit":
+                    ipc("quit")
+                else:
+                    os.kill(shell.pid, signal.SIGTERM if mode == "term" else signal.SIGKILL)
+                shell.wait(timeout=7)
+                eventually(lambda: reaped(state["pid"]) and reaped(child_pid), bool)
+                if mode != "kill":
+                    shell = start([tool("quickshell"), "--no-color", "--path", entrypoint], "shell-" + mode)
+            report["checks"].append("actual Quickshell normal quit, SIGTERM and SIGKILL outside UWSM leave no helper or CLI")
+            report["passed"] = True
+        except (OSError, AssertionError, subprocess.SubprocessError) as error:
+            report["failure"] = str(error)
+        finally:
+            for process in reversed(processes):
+                stop_process_group(process)
+            remaining = [pid for pid in helpers if not reaped(pid)]
+            remaining += [r["pid"] for r in records() if r["kind"] == "start" and not reaped(r["pid"])]
+            report["cleanup"] = {"remainingOwnedProcesses": remaining}
+            combined = runtime_log(logs)
+            output.with_suffix(".log").write_text(combined)
+            warnings = qml_errors(combined, allow_offscreen_masks=True)
+            if remaining or warnings or "SYNTHETIC_PRIVATE_STDERR" in combined:
+                report["passed"] = False
+                report["runtimeErrors"] = warnings
+            for _, log in logs:
+                log.close()
+    output.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n")
+    print(json.dumps(report, ensure_ascii=False, indent=2))
+    return 0 if report["passed"] else 1
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, default=ROOT / "artifacts/signal-integration.json")
+    parser.add_argument("--idle", action="store_true")
+    args = parser.parse_args()
+    raise SystemExit(run(args.output, args.idle))

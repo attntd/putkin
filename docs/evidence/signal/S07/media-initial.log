@@ -1,0 +1,45 @@
+test_cancel_preparation_and_foreign_account_leave_no_files (test_signal_media.MediaBridgeTests.test_cancel_preparation_and_foreign_account_leave_no_files) ... FAIL
+test_real_bridge_stages_sends_receives_and_restarts_media (test_signal_media.MediaBridgeTests.test_real_bridge_stages_sends_receives_and_restarts_media) ... FAIL
+test_corrupt_decoder_is_explicit_and_no_thumbnail (test_signal_media.MediaTests.test_corrupt_decoder_is_explicit_and_no_thumbnail) ... ok
+test_draft_remove_quota_disk_full_and_startup_orphans (test_signal_media.MediaTests.test_draft_remove_quota_disk_full_and_startup_orphans) ... ok
+test_incoming_phone_sync_shared_refs_and_retention_hook (test_signal_media.MediaTests.test_incoming_phone_sync_shared_refs_and_retention_hook) ... ok
+test_multiple_media_draft_send_and_restart_survive_original_removal (test_signal_media.MediaTests.test_multiple_media_draft_send_and_restart_survive_original_removal) ... ok
+test_reject_zero_large_mime_executable_and_paths (test_signal_media.MediaTests.test_reject_zero_large_mime_executable_and_paths) ... ok
+test_save_explicit_no_overwrite_no_symlink_and_failure_cleanup (test_signal_media.MediaTests.test_save_explicit_no_overwrite_no_symlink_and_failure_cleanup) ... ok
+test_unknown_upload_failure_retry_cancel_and_loss (test_signal_media.MediaTests.test_unknown_upload_failure_retry_cancel_and_loss) ... ok
+test_view_once_and_expiring_create_no_managed_copies (test_signal_media.MediaTests.test_view_once_and_expiring_create_no_managed_copies) ... ok
+
+======================================================================
+FAIL: test_cancel_preparation_and_foreign_account_leave_no_files (test_signal_media.MediaBridgeTests.test_cancel_preparation_and_foreign_account_leave_no_files)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/attntd/projects/signal/tests/test_signal_media.py", line 246, in test_cancel_preparation_and_foreign_account_leave_no_files
+    self.assertEqual(client.reply("stage")["error"]["code"], "cancelled")
+                     ~~~~~~~~~~~~^^^^^^^^^
+  File "/home/attntd/projects/signal/tests/test_signal_lifecycle.py", line 86, in reply
+    return self.read(lambda v: v.get("type") == "response" and v.get("id") == request_id, seconds)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/signal/tests/test_signal_lifecycle.py", line 74, in read
+    raise AssertionError("No expected bridge result")
+AssertionError: No expected bridge result
+
+======================================================================
+FAIL: test_real_bridge_stages_sends_receives_and_restarts_media (test_signal_media.MediaBridgeTests.test_real_bridge_stages_sends_receives_and_restarts_media)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/attntd/projects/signal/tests/test_signal_media.py", line 218, in test_real_bridge_stages_sends_receives_and_restarts_media
+    items = self.request(client, "attachment.stage", {**scope, "paths": [p.as_uri() for p in paths]})["attachments"]
+            ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/signal/tests/test_signal_history.py", line 436, in request
+    reply = client.reply(rid)
+  File "/home/attntd/projects/signal/tests/test_signal_lifecycle.py", line 86, in reply
+    return self.read(lambda v: v.get("type") == "response" and v.get("id") == request_id, seconds)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/signal/tests/test_signal_lifecycle.py", line 74, in read
+    raise AssertionError("No expected bridge result")
+AssertionError: No expected bridge result
+
+----------------------------------------------------------------------
+Ran 10 tests in 34.462s
+
+FAILED (failures=2)

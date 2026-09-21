@@ -53,3 +53,9 @@ ScreenshotService 1.0 ScreenshotService.qml
 ScreenshotBackend 1.0 ScreenshotBackend.qml
 AudioChannelService 1.0 AudioChannelService.qml
 PipewireChannel 1.0 PipewireChannel.qml
+SignalBackend 1.0 SignalBackend.qml
+SignalIpc 1.0 SignalIpc.qml
+SignalService 1.0 SignalService.qml
+SignalMessagingAdapter 1.0 SignalMessagingAdapter.qml
+SignalReplySession 1.0 SignalReplySession.qml
+MessagesIpc 1.0 MessagesIpc.qml

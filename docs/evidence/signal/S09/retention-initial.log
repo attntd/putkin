@@ -1,0 +1,19 @@
+test_clock_step_cancellation_rechecks_database (test_signal_retention.DeadlineTests.test_clock_step_cancellation_rechecks_database) ... ok
+test_real_timerfd_nearest_deadline_and_cancel (test_signal_retention.DeadlineTests.test_real_timerfd_nearest_deadline_and_cancel) ... ok
+test_conversation_changes_edits_duplicates_do_not_extend_existing_deadline (test_signal_retention.RetentionTests.test_conversation_changes_edits_duplicates_do_not_extend_existing_deadline) ... ok
+test_delete_before_target_closes_reverse_edit_graph_and_replay (test_signal_retention.RetentionTests.test_delete_before_target_closes_reverse_edit_graph_and_replay) ... ok
+test_incoming_timer_starts_on_read_and_earliest_phone_sync_wins (test_signal_retention.RetentionTests.test_incoming_timer_starts_on_read_and_earliest_phone_sync_wins) ... ok
+test_inflight_edit_result_and_late_send_sync_cannot_restore_deleted_text (test_signal_retention.RetentionTests.test_inflight_edit_result_and_late_send_sync_cannot_restore_deleted_text) ... ok
+test_local_delete_never_enqueues_remote_and_prevents_send_retry (test_signal_retention.RetentionTests.test_local_delete_never_enqueues_remote_and_prevents_send_retry) ... ok
+test_outgoing_local_and_note_start_after_send_not_enqueue (test_signal_retention.RetentionTests.test_outgoing_local_and_note_start_after_send_not_enqueue) ... ok
+test_quotes_versions_composition_and_mutations_are_scrubbed (test_signal_retention.RetentionTests.test_quotes_versions_composition_and_mutations_are_scrubbed) ... ok
+test_read_before_message_and_phone_sent_expire_before_publication (test_signal_retention.RetentionTests.test_read_before_message_and_phone_sent_expire_before_publication) ... ok
+test_remote_delete_is_durable_validated_and_uses_actual_rpc (test_signal_retention.RetentionTests.test_remote_delete_is_durable_validated_and_uses_actual_rpc) ... ok
+test_remote_delete_limit_incoming_denial_partial_and_restart_unknown (test_signal_retention.RetentionTests.test_remote_delete_limit_incoming_denial_partial_and_restart_unknown) ... ok
+test_restart_suspend_clock_steps_and_cleanup_failure_recover (test_signal_retention.RetentionTests.test_restart_suspend_clock_steps_and_cleanup_failure_recover) ... ok
+test_wrong_author_conversation_and_account_do_not_delete_other_message (test_signal_retention.RetentionTests.test_wrong_author_conversation_and_account_do_not_delete_other_message) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.384s
+
+OK

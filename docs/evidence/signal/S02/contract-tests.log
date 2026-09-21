@@ -1,0 +1,10 @@
+test_byte_fragmentation_preserves_multibyte_utf8 (test_signal_contract.SignalContractTest.test_byte_fragmentation_preserves_multibyte_utf8) ... ok
+test_malformed_truncated_and_oversized_input_fail (test_signal_contract.SignalContractTest.test_malformed_truncated_and_oversized_input_fail) ... ok
+test_manual_receive_waits_for_subscription_request (test_signal_contract.SignalContractTest.test_manual_receive_waits_for_subscription_request) ... ok
+test_stdio_round_trip_and_eof (test_signal_contract.SignalContractTest.test_stdio_round_trip_and_eof) ... ok
+test_wrong_recipient_cannot_get_scripted_send_success (test_signal_contract.SignalContractTest.test_wrong_recipient_cannot_get_scripted_send_success) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.225s
+
+OK

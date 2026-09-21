@@ -9,6 +9,8 @@ QtObject {
     // A single assignment publishes a complete request to the host.
     property var session: null
     property string lastError: ""
+    property string settingsSection: "appearance"
+    property int settingsRequest: 0
     signal presented(string surface)
     readonly property string activeId: session ? session.id : ""
     readonly property string screenName: session ? session.screen.name : ""

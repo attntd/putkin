@@ -1,0 +1,7 @@
+{
+  "format": 1,
+  "schemaMin": 0,
+  "schemaMax": 7,
+  "cliStore": "signal-cli-0.14.8",
+  "retention": 2
+}

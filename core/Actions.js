@@ -5,6 +5,7 @@ var catalog = [
     {id: "launcher", title: "Launcher", group: "Shell", shortcut: "SUPER + SPACE"},
     {id: "clipboard", title: "Schowek", group: "Shell", shortcut: "SUPER + V"},
     {id: "commands", title: "Launcher komend", group: "Shell", shortcut: "SUPER + semicolon"},
+    {id: "messages", title: "Wiadomości", group: "Shell", command: ":messages"},
     {id: "settings", title: "Ustawienia", group: "Shell", command: ":settings"},
     {id: "quickSettings", title: "Szybkie ustawienia", group: "Shell", shortcut: "SUPER + SHIFT + Q"},
     {id: "audio", title: "Panel dźwięku", group: "Shell"},
@@ -100,10 +101,13 @@ function parse(text) {
         return {error: "Nieobsługiwana wersja lub opcje ustawień klawiatury."};
     // Upgrade complete catalogs from before the session commands, with or
     // without screenshot. Never fill arbitrary holes in a damaged catalog.
+    // Migrate complete pre-messaging catalogs through the existing steps.
+    const hasMessages = Array.isArray(value.bindings) && value.bindings.some(row => row && row.action === "messages");
+    const legacyCatalog = hasMessages ? catalog : catalog.filter(action => action.id !== "messages");
     const profiles = ["powersaver", "balanced", "performance"];
-    const previousCatalog = catalog.filter(action => profiles.indexOf(action.id) < 0);
+    const previousCatalog = legacyCatalog.filter(action => profiles.indexOf(action.id) < 0);
     const sessionCatalog = Array.isArray(value.bindings) && value.bindings.some(row => row && profiles.indexOf(row.action) >= 0)
-        ? catalog : previousCatalog;
+        ? legacyCatalog : previousCatalog;
     const added = ["shutdown", "poweroff", "sleep", "hibernate", "reboot"];
     if (Array.isArray(value.bindings) && !value.bindings.some(row => row && added.indexOf(row.action) >= 0)) {
         const legacy = sessionCatalog.filter(action => added.indexOf(action.id) < 0
@@ -133,6 +137,10 @@ function parse(text) {
         const usedCommands = value.bindings.map(row => typeof row.command === "string" ? row.command.toLowerCase() : "");
         value.bindings = value.bindings.concat(defaults().filter(row => profiles.indexOf(row.action) >= 0).map(row =>
             usedCommands.indexOf(row.command) < 0 ? row : Object.assign({}, row, {command: ""})));
+    }
+    if (!hasMessages && completeCatalog(value.bindings, legacyCatalog)) {
+        const used = value.bindings.some(row => typeof row.command === "string" && row.command.toLowerCase() === ":messages");
+        value.bindings = value.bindings.concat([{action: "messages", shortcut: "", command: used ? "" : ":messages"}]);
     }
     const error = problem(value.bindings);
     return error ? {error: error} : {value: normalize(value.bindings)};

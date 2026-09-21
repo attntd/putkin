@@ -1,0 +1,11 @@
+test_stalled_reader_has_four_megabyte_bound_and_requests_shutdown (test_signal_reliability.OutputPressureTests.test_stalled_reader_has_four_megabyte_bound_and_requests_shutdown) ... Executing <Task finished name='Task-2' coro=<OutputPressureTests.test_stalled_reader_has_four_megabyte_bound_and_requests_shutdown() done, defined at /home/attntd/projects/signal/tests/test_signal_reliability.py:107> result=None created at /usr/lib/python3.14/asyncio/runners.py:110> took 0.406 seconds
+ok
+test_burst_out_of_order_duplicate_receive_commits_once_and_keeps_one_subscription (test_signal_reliability.ReliabilityTests.test_burst_out_of_order_duplicate_receive_commits_once_and_keeps_one_subscription) ... ok
+test_identity_failure_is_failed_without_trust_or_automatic_resend (test_signal_reliability.ReliabilityTests.test_identity_failure_is_failed_without_trust_or_automatic_resend) ... ok
+test_revoked_account_after_cli_death_preserves_history_and_disables_send (test_signal_reliability.ReliabilityTests.test_revoked_account_after_cli_death_preserves_history_and_disables_send) ... ok
+test_rpc_private_error_never_enters_logs_status_or_database (test_signal_reliability.ReliabilityTests.test_rpc_private_error_never_enters_logs_status_or_database) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 6.172s
+
+OK
