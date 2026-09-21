@@ -4,6 +4,7 @@ QtObject {
     readonly property bool internal: true
     property bool tracked: false
     property string appName: "Putkin"
+    property string desktopEntry: ""
     property string summary: ""
     property string body: ""
     property string appIcon: ""

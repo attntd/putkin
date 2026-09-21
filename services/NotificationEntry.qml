@@ -17,11 +17,12 @@ QtObject {
     property var actionLabels: null
     property var closedSnapshot: null
     function snapshot(): var {
-        return {appName: appName, summary: summary, body: body, critical: critical,
+        return {appName: appName, applicationId: applicationId, summary: summary, body: body, critical: critical,
             iconName: iconName, imageSource: imageSource, actions: actions, receivedAt: receivedAt, unread: unread};
     }
     readonly property bool critical: notification !== null && notification.urgency === 2
     readonly property string appName: limit(notification ? notification.appName : "", 128) || qsTr("Aplikacja")
+    readonly property string applicationId: notification && service.applicationService ? service.applicationService.identify(notification) : ""
     readonly property string summary: limit(notification ? notification.summary : "", 512) || qsTr("Powiadomienie")
     readonly property string body: limit(notification ? notification.body : "", 4096)
     readonly property string iconName: Icons.application(notification ? notification.appIcon : "", appName, "", [])
@@ -62,6 +63,7 @@ QtObject {
         target: root.notification
         function onClosed(_reason: int): void { root.service.remove(root); }
         function onAppNameChanged(): void { root.updated(); }
+        function onDesktopEntryChanged(): void { root.updated(); }
         function onSummaryChanged(): void { root.updated(); }
         function onBodyChanged(): void { root.updated(); }
         function onExpireTimeoutChanged(): void { root.updated(); }

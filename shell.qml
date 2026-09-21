@@ -74,7 +74,8 @@ ShellRoot {
     BluetoothBackend { id: bluetoothBackend }
     BluetoothService { id: bluetoothService; backend: bluetoothBackend }
     NotificationBackend { id: notificationBackend }
-    NotificationService { id: notifications; backend: notificationBackend; screens: Quickshell.screens; monitorService: hyprland }
+    NotificationApplicationService { id: notificationApplications; workspaceService: hyprland; applications: DesktopEntries.applications.values }
+    NotificationService { id: notifications; backend: notificationBackend; screens: Quickshell.screens; monitorService: hyprland; applicationService: notificationApplications }
     ErrorNotifications {
         notifications: notifications
         sources: [
@@ -132,7 +133,7 @@ ShellRoot {
         coordinator: panels; launcher: launcherService; hyprland: hyprland; windowActions: windowActions
         barFocus: barFocus; notificationFocus: notificationFocus; notifications: notifications
         audio: audioService; brightness: brightnessService; sessionService: sessionService
-        screenshot: screenshotService
+        screenshot: screenshotService; powerProfiles: powerProfiles
     }
     ActionIpc { controller: actions }
     PanelHost {

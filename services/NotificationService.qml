@@ -7,6 +7,7 @@ QtObject {
     required property var backend
     required property var screens
     required property var monitorService
+    property var applicationService: null
     property bool dnd: false
     property string keyboardMonitor: ""
     property int defaultTimeout: 6000
@@ -56,6 +57,13 @@ QtObject {
         history = history.filter(value => value.historyKey !== key);
     }
     function clearHistory(): void { history.slice().forEach(entry => dismissHistory(entry.historyKey)); }
+    function invokeHistory(key: int, identifier: string): bool {
+        if (!invoke(historyEntry(key), identifier)) return false;
+        // Native actions may synchronously replace the live entry with its
+        // archive. Consume by history key so either representation is removed.
+        dismissHistory(key);
+        return true;
+    }
     function markAllRead(): void {
         entries.forEach(entry => { entry.unread = false; });
         history = history.map(entry => Object.assign({}, entry, {unread: false}));
@@ -134,6 +142,11 @@ QtObject {
     }
     function clear(): void { entries.slice().forEach(entry => expire(entry)); history = []; }
     function invoke(entry: var, identifier: string): bool {
+        if (entry && !identifier && applicationService && (entries.indexOf(entry) >= 0 || history.indexOf(entry) >= 0)) {
+            if (!applicationService.activate(entry.applicationId || "")) return false;
+            markRead(entry);
+            return true;
+        }
         if (!entry || !entry.notification || entries.indexOf(entry) < 0) return false;
         const action = entry.notification.actions.find(value => value.identifier === identifier && value.identifier !== "inline-reply");
         if (!action) return false;

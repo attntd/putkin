@@ -1,0 +1,12 @@
+{
+  "launcher_qml": "65 PASS",
+  "shell_qml_unique_checks": 691,
+  "shell_qml_suites": 25,
+  "shell_qml_note": "Initial run exceeded 240 seconds; remaining tests completed separately, no assertion failures.",
+  "notification_integration_passed": true,
+  "visual_previews": [
+    "1366x768 applications",
+    "320x480 file path"
+  ],
+  "scope": "Launcher prefixes, session and battery commands, archive application activation, notification navigation and icons, Q outside text inputs, inline descriptions."
+}

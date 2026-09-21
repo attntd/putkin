@@ -135,6 +135,10 @@
       "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/content_paste/default/24px.svg",
       "sha256": "5d716f9d4a627ac350507322aead0fb1dec36e02c444bddea1ef67042889b897"
     },
+    "delete": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/delete/default/24px.svg",
+      "sha256": "ec75e756af4e37a926a2f64ef8f59eac85276a658fc8a7aef0cc12c5e871e971"
+    },
     "description": {
       "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/description/default/24px.svg",
       "sha256": "65e2c1ac1ca2d0a894c8d8d89e530cb5df940d7ff0effbeb8c5f4b234a477670"

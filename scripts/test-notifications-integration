@@ -59,6 +59,13 @@ def run(output, idle):
         env.update(DBUS_SESSION_BUS_ADDRESS=address, DBUS_SYSTEM_BUS_ADDRESS=address,
                    PUTKIN_SCENARIO="closed", PUTKIN_PREVIEW_WIDTH="1920", PUTKIN_PREVIEW_HEIGHT="1080",
                    QS_NO_RELOAD_POPUP="1")
+        applications = Path(env["XDG_DATA_HOME"]) / "applications"
+        applications.mkdir()
+        launched = base / "signal-launched"
+        app = base / "signal-fixture.py"
+        app.write_text(f"from pathlib import Path\nPath({str(launched)!r}).touch()\n")
+        (applications / "signal.desktop").write_text("[Desktop Entry]\nType=Application\nName=Signal\n"
+            f"Exec={sys.executable} {app}\nStartupWMClass=signal\n")
         processes, logs = [], []
         seen_pids = set()
         closed, actions = [], []
@@ -169,6 +176,33 @@ def run(output, idle):
             assert any(row["summary"] == "Transient fixture" for row in state()["history"]), "transient retained in center"
             clear()
             report["checks"].append("real ActionInvoked; nonresident closes; resident survives; transient; changed/removed action labels using same ID")
+
+            for resident in (False, True):
+                notice = notify(api, resident=resident, action_list=["default", "Open"])
+                row = state()["history"][0]
+                assert ipc("probe", "invokeHistory", row["historyKey"], "missing") == "false"
+                assert any(item["historyKey"] == row["historyKey"] for item in state()["history"]), "failed action keeps history"
+                assert ipc("probe", "invokeHistory", row["historyKey"], "default") == "true"
+                eventually(lambda: (notice, "default") in actions and is_closed(notice, 2), bool, "center action closes live notification")
+                assert not state()["history"], "center action consumes resident and nonresident entries"
+            report["checks"].append("center actions consume live and resident history; failed actions preserve entries")
+
+            for hints in ({"desktop-entry": "signal"}, {}):
+                archived_signal = notify(api, app="Signal", timeout=80, action_list=["default", "Open conversation"], extra=hints)
+                eventually(lambda: is_closed(archived_signal, 1), bool, "Signal toast expiration")
+                row = state()["history"][0]
+                assert row["applicationId"] == "signal" and not row["actions"], row
+                assert ipc("probe", "invokeHistory", row["historyKey"], "") == "true"
+                assert not any(item["historyKey"] == row["historyKey"] for item in state()["history"]), "activated archive is consumed"
+                eventually(launched.exists, bool, "archived Signal launches installed desktop entry")
+                assert (archived_signal, "default") not in actions, "expired native actions must not be replayed"
+                launched.unlink()
+                clear()
+                generation = state()["generation"]
+                ipc("probe", "reload", "false")
+                eventually(state, lambda s: s.get("available") and s.get("generation") != generation, "server ready after reload")
+                api = client(bus)
+            report["checks"].append("archived Signal resolves desktop-entry or exact app name; native DesktopEntry launches private fixture; no expired ActionInvoked")
 
             # VoxType 1.0.1: the exact app name, integer transient hint, private
             # synchronous hint and replacement protocol; synthetic text only.

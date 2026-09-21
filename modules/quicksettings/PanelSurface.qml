@@ -70,7 +70,12 @@ UI.FadeScope {
             focus = false;
     }
     Keys.priority: Keys.AfterItem
-    Keys.onEscapePressed: { if (page) page.dismissOrCollapse(); }
+    Keys.onPressed: event => {
+        if (page && DismissKeys.matches(event, root)) {
+            page.dismissOrCollapse();
+            event.accepted = true;
+        }
+    }
     Window.onActiveChanged: {
         if (Window.active && enabled) Qt.callLater(() => {
             if (!root.enabled) return;

@@ -24,7 +24,7 @@ Controls.Control {
     }
     Keys.onPressed: event => {
         if (event.modifiers !== Qt.NoModifier && event.modifiers !== Qt.KeypadModifier) return;
-        if (event.key === Qt.Key_H || event.key === Qt.Key_Left || event.key === Qt.Key_Escape) launcherView.focusResults();
+        if (event.key === Qt.Key_H || event.key === Qt.Key_Left || DismissKeys.matches(event, root)) launcherView.focusResults();
         else if (event.key === Qt.Key_J || event.key === Qt.Key_Down) scroll(Metrics.launcherClipboardRowHeight);
         else if (event.key === Qt.Key_K || event.key === Qt.Key_Up) scroll(-Metrics.launcherClipboardRowHeight);
         else if (event.key === Qt.Key_PageDown) scroll(textView.height);

@@ -1,5 +1,6 @@
 singleton Theme 1.0 Theme.qml
 singleton Metrics 1.0 Metrics.qml
+singleton DismissKeys 1.0 DismissKeys.qml
 BarFocus 1.0 BarFocus.qml
 PanelCoordinator 1.0 PanelCoordinator.qml
 PanelHost 1.0 PanelHost.qml

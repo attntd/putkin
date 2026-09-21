@@ -8,6 +8,8 @@ Column {
     id: root
     required property var service
     readonly property alias cards: cards
+    property var navigationCards: []
+    readonly property Item headerControl: dnd.enabled ? dnd : clear
     property Item focusedControl: null
     property int lastFocusReason: Qt.TabFocusReason
     property bool entered: false
@@ -15,9 +17,15 @@ Column {
     signal requested(string surface)
     signal dismissed()
     signal ensureVisible(Item item)
-    function focusInitial(reason = Qt.TabFocusReason): void { (dnd.enabled ? dnd : clear).forceActiveFocus(reason); }
+    function focusInitial(reason = Qt.TabFocusReason): void { headerControl.forceActiveFocus(reason); }
     function dismissOrCollapse(): void { dismissed(); }
-    function cardAt(index: int): Item { return index >= 0 && index < cards.count ? cards.itemAt(index) : null; }
+    function cardAt(index: int): Item { return index >= 0 && index < navigationCards.length ? navigationCards[index] : null; }
+    function rebuildNavigation(): void {
+        // itemAt() does not notify bindings when a delegate finishes loading.
+        const items = [];
+        for (let index = 0; index < cards.count; ++index) items.push(cards.itemAt(index));
+        navigationCards = items;
+    }
     function reveal(item: Item): void { focusedControl = item; lastFocusReason = item.focusReason; entered = true; ensureVisible(item); }
     function recoverFocus(): void {
         if (entered && enabled && visible && (!focusedControl || !focusedControl.activeFocus || !focusedControl.enabled || !focusedControl.visible))
@@ -33,20 +41,36 @@ Column {
             if (previous < 0) rows.insert(index, {key: value.historyKey});
             else if (previous !== index) rows.move(previous, index, 1);
         });
+        rebuildNavigation();
+        // Place arriving cards before focus/press handlers can use their bounds.
+        forceLayout();
     }
-    UI.PanelText { width: parent.width; text: qsTr("Powiadomienia"); font.bold: true }
     Row {
         width: parent.width
+        height: Metrics.controlHeight
         spacing: Metrics.space8
+        UI.PanelText {
+            objectName: "notificationHeading"
+            width: Math.max(1, parent.width - dnd.width - clear.width - parent.spacing * 2)
+            height: parent.height
+            text: qsTr("Powiadomienia")
+            font.bold: true
+            verticalAlignment: Text.AlignVCenter
+            wrapMode: Text.NoWrap
+            elide: Text.ElideRight
+        }
         UI.NavigationButton {
             id: dnd
             objectName: "notificationDnd"
-            width: Math.max(Metrics.controlHeight, parent.width - clear.width - parent.spacing)
-            text: qsTr("Nie przeszkadzać")
+            width: Metrics.controlHeight
+            padding: 0
+            tooltip: ""
+            Accessible.name: checked ? qsTr("Wyłącz nie przeszkadzać") : qsTr("Włącz nie przeszkadzać")
+            contentItem: UI.Glyph { section: "notification"; symbol: dnd.checked ? "notifications_off" : "notifications"; color: dnd.foreground }
             checked: root.service.dnd
             enabled: root.service.available
             rightTarget: clear
-            downTarget: root.cardAt(0) ? root.cardAt(0).selectionControl : clear
+            downTarget: root.cardAt(0) ? root.cardAt(0).selectionControl : null
             KeyNavigation.tab: clear; KeyNavigation.backtab: root.cardAt(cards.count - 1) ? root.cardAt(cards.count - 1).selectionControl : clear
             onClicked: root.service.dnd = !root.service.dnd
             onEnsureVisible: item => root.reveal(item)
@@ -54,11 +78,14 @@ Column {
         UI.NavigationButton {
             id: clear
             objectName: "notificationClear"
-            width: 92
-            text: qsTr("Wyczyść")
+            width: Metrics.controlHeight
+            padding: 0
+            tooltip: ""
+            Accessible.name: qsTr("Wyczyść powiadomienia")
+            contentItem: UI.Glyph { section: "notification"; symbol: "delete"; color: clear.foreground }
             leftTarget: dnd
-            downTarget: root.cardAt(0) ? root.cardAt(0).selectionControl : dnd
-            KeyNavigation.tab: downTarget; KeyNavigation.backtab: dnd
+            downTarget: root.cardAt(0) ? root.cardAt(0).selectionControl : null
+            KeyNavigation.tab: downTarget || root.headerControl; KeyNavigation.backtab: dnd
             onClicked: { root.service.clearHistory(); root.focusInitial(focusReason); }
             onEnsureVisible: item => root.reveal(item)
         }
@@ -67,6 +94,8 @@ Column {
     Repeater {
         id: cards
         model: rows
+        onItemAdded: root.rebuildNavigation()
+        onItemRemoved: Qt.callLater(root.rebuildNavigation)
         NotificationCard {
             id: card
             required property int index
@@ -76,8 +105,8 @@ Column {
             height: implicitHeight
             scrollable: false
             navigating: true
-            previousControl: index > 0 && root.cardAt(index - 1) ? root.cardAt(index - 1).selectionControl : dnd.enabled ? dnd : clear
-            nextControl: root.cardAt(index + 1) ? root.cardAt(index + 1).selectionControl : dnd.enabled ? dnd : clear
+            previousControl: index > 0 && root.cardAt(index - 1) ? root.cardAt(index - 1).selectionControl : root.headerControl
+            nextControl: root.cardAt(index + 1) ? root.cardAt(index + 1).selectionControl : null
             onControlFocused: item => root.reveal(item)
             onDismissRequested: {
                 const reason = closeControl.focusReason;
@@ -85,9 +114,9 @@ Column {
                 root.focusInitial(reason);
             }
             onActionRequested: identifier => {
-                const value = entry;
+                const historyKey = key;
                 root.dismissed();
-                root.service.invoke(value, identifier);
+                root.service.invokeHistory(historyKey, identifier);
             }
         }
     }

@@ -19,10 +19,13 @@ var catalog = [
     {id: "micMute", title: "Wyciszenie mikrofonu", group: "Dźwięk"},
     {id: "brightnessUp", title: "Jaśniej", group: "Ekran"},
     {id: "brightnessDown", title: "Ciemniej", group: "Ekran"},
+    {id: "powersaver", title: "Tryb oszczędny", group: "Zasilanie", command: ":powersaver"},
+    {id: "balanced", title: "Tryb zrównoważony", group: "Zasilanie", command: ":balanced"},
+    {id: "performance", title: "Tryb wydajności", group: "Zasilanie", command: ":performance"},
     {id: "power", title: "Menu zasilania", group: "Sesja", shortcut: "SUPER + SHIFT + P"},
     {id: "lock", title: "Zablokuj ekran", group: "Sesja", command: ":lock"},
-    {id: "shutdown", title: "Wyłącz komputer (shutdown)", group: "Sesja", command: ":shutdown"},
-    {id: "poweroff", title: "Wyłącz komputer (poweroff)", group: "Sesja", command: ":poweroff"},
+    {id: "shutdown", title: "Wyłącz komputer", group: "Sesja", command: ":shutdown", aliasOf: "poweroff"},
+    {id: "poweroff", title: "Wyłącz komputer", group: "Sesja", command: ":poweroff"},
     {id: "sleep", title: "Uśpij", group: "Sesja", command: ":sleep"},
     {id: "hibernate", title: "Hibernuj", group: "Sesja", command: ":hibernate"},
     {id: "reboot", title: "Uruchom ponownie", group: "Sesja", command: ":reboot"},
@@ -86,6 +89,10 @@ function problem(rows) {
     return "";
 }
 function normalize(rows) { return rows.map(row => ({action: row.action, shortcut: shortcut(row.shortcut), command: row.command.toLowerCase()})); }
+function completeCatalog(rows, actions) {
+    return Array.isArray(rows) && rows.length === actions.length
+        && actions.every(action => rows.filter(row => row && row.action === action.id).length === 1);
+}
 function parse(text) {
     let value;
     try { value = JSON.parse(text); } catch (_) { return {error: "Niepoprawny JSON ustawień klawiatury."}; }
@@ -93,12 +100,15 @@ function parse(text) {
         return {error: "Nieobsługiwana wersja lub opcje ustawień klawiatury."};
     // Upgrade complete catalogs from before the session commands, with or
     // without screenshot. Never fill arbitrary holes in a damaged catalog.
+    const profiles = ["powersaver", "balanced", "performance"];
+    const previousCatalog = catalog.filter(action => profiles.indexOf(action.id) < 0);
+    const sessionCatalog = Array.isArray(value.bindings) && value.bindings.some(row => row && profiles.indexOf(row.action) >= 0)
+        ? catalog : previousCatalog;
     const added = ["shutdown", "poweroff", "sleep", "hibernate", "reboot"];
     if (Array.isArray(value.bindings) && !value.bindings.some(row => row && added.indexOf(row.action) >= 0)) {
-        const legacy = catalog.filter(action => added.indexOf(action.id) < 0
+        const legacy = sessionCatalog.filter(action => added.indexOf(action.id) < 0
             && (action.id !== "screenshot" || value.bindings.some(row => row && row.action === "screenshot")));
-        if (value.bindings.length === legacy.length && legacy.every(action =>
-                value.bindings.filter(row => row && row.action === action.id).length === 1)) {
+        if (completeCatalog(value.bindings, legacy)) {
             const usedCommands = value.bindings.map(row => typeof row.command === "string" ? row.command.toLowerCase() : "");
             const usedShortcuts = value.bindings.filter(row => row.action !== "commands").map(row => shortcut(row.shortcut));
             value.bindings = value.bindings.map(row => {
@@ -114,10 +124,15 @@ function parse(text) {
         }
     }
     // The oldest complete catalog also predates screenshot.
-    if (Array.isArray(value.bindings) && value.bindings.length === catalog.length - 1
-            && !value.bindings.some(row => row && row.action === "screenshot")) {
+    if (completeCatalog(value.bindings, sessionCatalog.filter(action => action.id !== "screenshot"))) {
         const action = find("screenshot");
         value.bindings = value.bindings.concat([{action: action.id, shortcut: action.shortcut, command: action.command}]);
+    }
+    // Add profile commands only to a complete previous catalog. Existing aliases win.
+    if (completeCatalog(value.bindings, previousCatalog)) {
+        const usedCommands = value.bindings.map(row => typeof row.command === "string" ? row.command.toLowerCase() : "");
+        value.bindings = value.bindings.concat(defaults().filter(row => profiles.indexOf(row.action) >= 0).map(row =>
+            usedCommands.indexOf(row.command) < 0 ? row : Object.assign({}, row, {command: ""})));
     }
     const error = problem(value.bindings);
     return error ? {error: error} : {value: normalize(value.bindings)};

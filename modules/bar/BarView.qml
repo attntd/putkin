@@ -49,6 +49,13 @@ Rectangle {
         : bluetoothButton.visible ? bluetoothButton : audioButton.visible ? audioButton : batteryButton.visible ? batteryButton : notificationsButton.visible ? notificationsButton : quickSettings
     implicitHeight: Metrics.barHeight
     color: Theme.background
+    Keys.priority: Keys.AfterItem
+    Keys.onPressed: event => {
+        if (DismissKeys.matches(event, root)) {
+            root.dismissed();
+            event.accepted = true;
+        }
+    }
 
     WorkspaceStrip {
         id: strip

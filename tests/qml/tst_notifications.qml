@@ -9,7 +9,14 @@ Item {
     id: scene
     width: 1366; height: 768
     MockNotificationBackend { id: backend }
-    NotificationService { id: notifications; backend: backend; screens: preview.coordinator.screens; monitorService: preview.backend }
+    NotificationService { id: notifications; backend: backend; screens: preview.coordinator.screens; monitorService: preview.backend; applicationService: applicationService }
+    NotificationApplicationService { id: applicationService; workspaceService: preview.workspaceService; applications: [signalApp.application] }
+    QtObject {
+        id: signalApp
+        readonly property var application: ({id: "signal", name: "Signal", startupClass: "signal", execute: () => signalApp.execute()})
+        property int launches: 0
+        function execute(): void { launches++; }
+    }
     QtObject {
         id: panelLoader
         property bool activeAsync: false
@@ -32,6 +39,9 @@ Item {
             backend.available = true; backend.errorText = "";
             notifications.dnd = false; notifications.defaultTimeout = 200;
             backend.closedEvents = []; backend.actionEvents = [];
+            applicationService.pendingApplication = null;
+            applicationService.applications = [signalApp.application]; signalApp.launches = 0;
+            preview.backend.reset();
             scene.width = 1366; scene.height = 768;
             preview.coordinator.screens = [preview.firstScreen, preview.secondScreen];
             preview.backend.focusedMonitorName = "TEST-1";
@@ -57,6 +67,103 @@ Item {
             verify(waitForPolish(scene));
             return preview.panelHost.window;
         }
+        function test_center_header_navigation_data() {
+            const cases = [];
+            for (const width of [320, 1366])
+                for (const arrival of ["empty", "before-open", "while-open"])
+                    cases.push({tag: width + "-" + arrival, width: width, arrival: arrival});
+            return cases;
+        }
+        function test_center_header_navigation(data) {
+            scene.width = data.width;
+            if (data.arrival === "before-open") { send(); send(); }
+            const surface = openCenter();
+            const page = surface.page;
+            const dnd = findChild(page, "notificationDnd");
+            const clear = findChild(page, "notificationClear");
+            const heading = findChild(page, "notificationHeading");
+            verify(dnd.activeFocus);
+            compare(dnd.text, ""); compare(clear.text, "");
+            compare(dnd.contentItem.renderedSymbol, "notifications");
+            compare(clear.contentItem.renderedSymbol, "delete");
+            compare(heading.y + heading.height / 2, dnd.y + dnd.height / 2);
+            compare(dnd.y + dnd.height / 2, clear.y + clear.height / 2);
+            verify(heading.x + heading.width <= dnd.x);
+            verify(dnd.x + dnd.width <= clear.x);
+            verify(clear.x + clear.width <= page.width);
+            keyClick(Qt.Key_K); verify(dnd.activeFocus);
+            keyClick(Qt.Key_L); verify(clear.activeFocus);
+            keyClick(Qt.Key_K); verify(clear.activeFocus);
+            keyClick(Qt.Key_H); verify(dnd.activeFocus);
+            if (data.arrival === "while-open") { send(); send(); }
+            if (data.arrival === "empty") {
+                keyClick(Qt.Key_J); verify(dnd.activeFocus);
+                keyClick(Qt.Key_L); keyClick(Qt.Key_J); verify(clear.activeFocus);
+                keyClick(Qt.Key_Down); verify(clear.activeFocus);
+                return;
+            }
+            const first = page.cardAt(0).selectionControl;
+            const second = page.cardAt(1).selectionControl;
+            keyClick(Qt.Key_J); verify(first.activeFocus);
+            keyClick(Qt.Key_J); verify(second.activeFocus);
+            keyClick(Qt.Key_J); verify(second.activeFocus);
+            keyClick(Qt.Key_K); verify(first.activeFocus);
+            keyClick(Qt.Key_K); verify(dnd.activeFocus);
+            keyClick(Qt.Key_L); keyClick(Qt.Key_J); verify(first.activeFocus);
+            keyClick(Qt.Key_Up); verify(dnd.activeFocus);
+            keyClick(Qt.Key_Right); verify(clear.activeFocus);
+            keyClick(Qt.Key_Down); verify(first.activeFocus);
+        }
+        function test_center_navigation_after_insert_replace_and_remove() {
+            const older = send();
+            const newer = send();
+            const surface = openCenter();
+            const page = surface.page;
+            const dnd = findChild(page, "notificationDnd");
+            keyClick(Qt.Key_J);
+            const selected = page.cardAt(0);
+            verify(selected.selectionControl.activeFocus);
+            send();
+            compare(page.cardAt(1), selected);
+            verify(selected.selectionControl.activeFocus);
+            keyClick(Qt.Key_K); verify(page.cardAt(0).selectionControl.activeFocus);
+            backend.send({replacesId: older, summary: "Zaktualizowane powiadomienie"});
+            compare(page.cardAt(0).entry.notificationId, older);
+            dnd.forceActiveFocus(Qt.TabFocusReason);
+            keyClick(Qt.Key_J); verify(page.cardAt(0).selectionControl.activeFocus);
+            notifications.dismissHistory(notifications.find(older).historyKey);
+            tryVerify(() => dnd.activeFocus);
+            keyClick(Qt.Key_J); verify(page.cardAt(0).selectionControl.activeFocus);
+            keyClick(Qt.Key_J); compare(page.cardAt(1).entry.notificationId, newer);
+            verify(page.cardAt(1).selectionControl.activeFocus);
+        }
+        function test_center_header_icon_actions() {
+            send();
+            const page = openCenter().page;
+            const dnd = findChild(page, "notificationDnd");
+            const clear = findChild(page, "notificationClear");
+            keyClick(Qt.Key_Return);
+            verify(notifications.dnd);
+            compare(dnd.contentItem.renderedSymbol, "notifications_off");
+            compare(notifications.history.length, 1);
+            keyClick(Qt.Key_J); verify(page.cardAt(0).selectionControl.activeFocus);
+            keyClick(Qt.Key_K); verify(dnd.activeFocus);
+            mouseClick(dnd);
+            verify(!notifications.dnd);
+            compare(dnd.contentItem.renderedSymbol, "notifications");
+            send();
+            verify(waitForPolish(scene));
+            mouseClick(clear);
+            compare(notifications.history.length, 0);
+            compare(notifications.entries.length, 0);
+            tryVerify(() => dnd.activeFocus);
+            keyClick(Qt.Key_J); verify(dnd.activeFocus);
+            send();
+            keyClick(Qt.Key_L); verify(clear.activeFocus);
+            keyClick(Qt.Key_Return);
+            compare(notifications.history.length, 0);
+            compare(notifications.entries.length, 0);
+        }
         function test_card_activation_data() {
             return [
                 {tag: "enter", target: "", key: Qt.Key_Return},
@@ -76,8 +183,93 @@ Item {
             else mouseClick(findChild(item, data.target), 15, 8);
             compare(backend.actionEvents.length, 1);
             compare(backend.actionEvents[0].action, "default");
-            verify(notifications.find(id) !== null);
+            compare(notifications.find(id), null);
+            compare(notifications.history.length, 0);
             compare(preview.coordinator.activeId, "");
+        }
+        function clickCard(item, target) {
+            if (target === "header") mouseClick(item, 70, 30);
+            else if (target === "left-edge") mouseClick(item, 1, 50);
+            else if (target === "bottom-edge") mouseClick(item, 20, item.height - 2);
+            else if (target === "content-padding") mouseClick(item.viewport, 1, 8);
+            else mouseClick(findChild(item, target), 15, 8);
+        }
+        function test_pointer_card_area_data() {
+            const cases = [];
+            for (const center of [false, true]) {
+                for (const target of ["header", "notificationSummary", "notificationBody", "left-edge", "bottom-edge", "content-padding", "notificationImage"])
+                    cases.push({tag: (center ? "center-" : "toast-") + target, center: center, target: target, longText: false});
+                for (const target of ["header", "notificationBody", "content-padding"])
+                    cases.push({tag: (center ? "center-long-" : "toast-long-") + target, center: center, target: target, longText: true});
+            }
+            return cases;
+        }
+        function test_pointer_card_area(data) {
+            const id = send({body: data.longText ? "Długi tekst. ".repeat(150) : "Cała wiadomość",
+                image: data.target === "notificationImage" ? Qt.resolvedUrl("../fixtures/notification-image.svg").toString() : "",
+                resident: true, actions: [["default", "Otwórz"]]});
+            waitCard();
+            const item = data.center ? openCenter().page.cardAt(0) : card();
+            verify(waitForPolish(scene));
+            compare(item.textClipped, data.longText);
+            clickCard(item, data.target);
+            if (data.longText) {
+                verify(item.expanded);
+                compare(backend.actionEvents, []);
+                verify(notifications.find(id) !== null);
+                compare(notifications.history.length, 1);
+                verify(waitForPolish(scene));
+                clickCard(item, data.target);
+            }
+            compare(backend.actionEvents, [{id: id, action: "default"}]);
+            compare(notifications.history.length, data.center ? 0 : 1);
+            if (!data.center) verify(desktop.activeFocus);
+        }
+        function test_archived_signal_focuses_existing_window() {
+            const id = send({appName: "Signal", actions: [["default", "Otwórz rozmowę"]]});
+            notifications.expire(notifications.find(id));
+            compare(notifications.history[0].applicationId, "signal");
+            compare(notifications.history[0].actions, []);
+            const signalWindow = {address: "0x789", workspace: {id: 12}, lastIpcObject: {class: "signal", initialClass: "signal"}};
+            preview.backend.windows = preview.backend.windows.concat([signalWindow]);
+            const item = openCenter().page.cardAt(0);
+            clickCard(item, "content-padding");
+            tryCompare(preview.backend, "activeWindow", signalWindow);
+            compare(preview.workspaceService.activeId("TEST-1"), 12);
+            compare(signalApp.launches, 0);
+            compare(backend.actionEvents, []);
+            compare(notifications.history.length, 0);
+            compare(preview.coordinator.activeId, "");
+        }
+        function test_archived_signal_launches_then_focuses_new_window() {
+            notifications.dnd = true;
+            send({appName: "Signal", desktopEntry: "signal.desktop"});
+            const item = openCenter().page.cardAt(0);
+            clickCard(item, "header");
+            tryCompare(signalApp, "launches", 1);
+            compare(notifications.history.length, 0);
+            const unrelated = {address: "0xabc", workspace: {id: 3}, lastIpcObject: {class: "unrelated", initialClass: "other"}};
+            preview.backend.windows = [unrelated];
+            wait(20); compare(preview.backend.requests, []);
+            const signalWindow = {address: "0x789", workspace: {id: 12}, lastIpcObject: {class: "Signal", initialClass: "signal"}};
+            preview.backend.windows = [unrelated, signalWindow];
+            tryCompare(preview.backend, "activeWindow", signalWindow);
+            compare(signalApp.launches, 1);
+            compare(applicationService.pendingApplication, null);
+        }
+        function test_live_signal_keeps_native_action_and_unknown_archive_does_nothing() {
+            const id = send({appName: "Signal", actions: [["default", "Otwórz rozmowę"]]});
+            waitCard(); clickCard(card(), "header");
+            compare(backend.actionEvents, [{id: id, action: "default"}]);
+            wait(20); compare(signalApp.launches, 0); compare(preview.backend.requests, []);
+            notifications.clear();
+            send({appName: "Unknown", desktopEntry: "signal;false", expireTimeout: 30});
+            tryCompare(notifications, "entries", []);
+            const item = openCenter().page.cardAt(0);
+            compare(item.entry.applicationId, "");
+            clickCard(item, "header");
+            compare(preview.coordinator.activeId, "notifications");
+            compare(signalApp.launches, 0);
         }
         function test_kitty_default_has_no_button_data() {
             return [
@@ -122,7 +314,10 @@ Item {
             verify(closed(id, 2));
         }
         function test_center_expand_navigation_and_escape_data() {
-            return [{tag: "desktop", width: 1366, height: 768}, {tag: "small", width: 320, height: 220}];
+            return [{tag: "desktop-escape", width: 1366, height: 768, key: Qt.Key_Escape},
+                {tag: "small-escape", width: 320, height: 220, key: Qt.Key_Escape},
+                {tag: "desktop-q", width: 1366, height: 768, key: Qt.Key_Q},
+                {tag: "small-q", width: 320, height: 220, key: Qt.Key_Q}];
         }
         function test_center_expand_navigation_and_escape(data) {
             scene.width = data.width; scene.height = data.height;
@@ -147,10 +342,10 @@ Item {
             const point = first.mapToItem(surface.viewport, 0, 0);
             verify(point.y >= 0 && point.y < 20, "Return reveals the top of the expanded card");
             first.closeControl.forceActiveFocus(Qt.TabFocusReason);
-            keyClick(Qt.Key_Escape); tryCompare(first, "expanded", false);
+            keyClick(data.key); tryCompare(first, "expanded", false);
             compare(preview.coordinator.activeId, "notifications"); verify(first.selectionControl.activeFocus);
             tryCompare(first, "height", collapsedHeight);
-            keyClick(Qt.Key_Escape); tryCompare(preview.panelHost, "loaded", false);
+            keyClick(data.key); tryCompare(preview.panelHost, "loaded", false);
         }
         function test_expand_pointer_and_no_keyboard_ring() {
             send({body: "Długi tekst ".repeat(200), resident: true, actions: [["default", "Otwórz"]]});
@@ -198,7 +393,10 @@ Item {
             }
             compare(backend.actionEvents.length, 0);
         }
-        function test_toast_expand_navigation_and_body_click() {
+        function test_toast_expand_navigation_and_body_click_data() {
+            return [{tag: "escape", key: Qt.Key_Escape}, {tag: "q", key: Qt.Key_Q}];
+        }
+        function test_toast_expand_navigation_and_body_click(data) {
             send({body: "Długi tekst ".repeat(200), resident: true, actions: [["default", "Otwórz"]]});
             send({summary: "Drugie"}); waitCard();
             const first = card(), second = card(1);
@@ -208,9 +406,11 @@ Item {
             tryVerify(() => first.viewport.contentHeight > first.viewport.height);
             keyClick(Qt.Key_J); verify(second.selectionControl.activeFocus);
             keyClick(Qt.Key_K); verify(first.selectionControl.activeFocus); verify(first.expanded);
-            keyClick(Qt.Key_Escape); verify(!first.expanded); compare(preview.notificationController.screenName, "TEST-1");
-            keyClick(Qt.Key_Escape); compare(preview.notificationController.screenName, "");
+            keyClick(data.key); verify(!first.expanded); compare(preview.notificationController.screenName, "TEST-1");
+            keyClick(data.key); compare(preview.notificationController.screenName, "");
             desktop.forceActiveFocus();
+            mouseClick(findChild(first, "notificationBody"), 15, 8);
+            compare(backend.actionEvents.length, 0); verify(first.expanded);
             mouseClick(findChild(first, "notificationBody"), 15, 8);
             compare(backend.actionEvents.length, 1); verify(desktop.activeFocus);
         }

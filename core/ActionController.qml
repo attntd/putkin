@@ -14,10 +14,21 @@ QtObject {
     required property var brightness
     required property var sessionService
     property var screenshot: null
+    property var powerProfiles: null
     property string lastError: ""
     function invoke(id: string, window: var, monitor: string): bool {
         if (!Actions.find(id)) { lastError = qsTr("Nieznane działanie."); return false; }
         lastError = "";
+        const profile = ({powersaver: "power-saver", balanced: "balanced", performance: "performance"})[id];
+        if (profile) {
+            if (!powerProfiles || !powerProfiles.supports(profile)) {
+                lastError = (powerProfiles && powerProfiles.availabilityText) || qsTr("Tryb pracy niedostępny");
+                return false;
+            }
+            if (powerProfiles.busy) { lastError = qsTr("Trwa zmiana trybu pracy."); return false; }
+            powerProfiles.setProfile(profile);
+            return true;
+        }
         if (id === "shutdown" || id === "poweroff" || id === "reboot") {
             const action = id === "shutdown" ? "poweroff" : id;
             const capability = sessionService.capability(action);

@@ -14,7 +14,7 @@ QtObject {
     function send(options: var): int {
         const previous = options.replacesId ? find(options.replacesId) : null;
         const value = previous || template.createObject(root, {notificationId: nextId++});
-        const properties = ["appName", "appIcon", "summary", "body", "image", "expireTimeout", "urgency", "resident", "hints"];
+        const properties = ["appName", "desktopEntry", "appIcon", "summary", "body", "image", "expireTimeout", "urgency", "resident", "hints"];
         properties.forEach(key => { if (options[key] !== undefined) value[key] = options[key]; });
         if (options.transient !== undefined) value.isTransient = options.transient;
         value.setActions(options.actions || []);

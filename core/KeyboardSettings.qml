@@ -63,8 +63,23 @@ QtObject {
         return true;
     }
     function command(text: string): var {
-        const row = persisted.find(item => item.command && item.command === text.trim().toLowerCase());
-        return row ? {kind: "configuredCommand", id: row.command, action: row.action, title: Actions.find(row.action).title, subtitle: row.command, icon: ""} : null;
+        return commandMatches(text).find(entry => entry.id === text.trim().toLowerCase()) || null;
+    }
+    function commandMatches(text: string): var {
+        const query = text.trim().toLowerCase();
+        if (!query.startsWith(":")) return [];
+        const seen = new Set();
+        return persisted.filter(row => row.command && row.command.startsWith(query))
+            .sort((a, b) => Number(b.command === query) - Number(a.command === query) || a.command.localeCompare(b.command))
+            .filter(row => {
+                // Keep both saved bindings, but show their shared action only once.
+                const action = Actions.find(row.action).aliasOf || row.action;
+                if (seen.has(action)) return false;
+                seen.add(action);
+                return true;
+            })
+            .map(row => ({kind: "configuredCommand", id: row.command, action: row.action,
+                title: Actions.find(row.action).title, subtitle: "", icon: ""}));
     }
     readonly property Connections fileChanges: Connections {
         target: root.storage

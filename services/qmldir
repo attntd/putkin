@@ -24,6 +24,7 @@ BluetoothBackend 1.0 BluetoothBackend.qml
 BluetoothService 1.0 BluetoothService.qml
 NotificationBackend 1.0 NotificationBackend.qml
 NotificationService 1.0 NotificationService.qml
+NotificationApplicationService 1.0 NotificationApplicationService.qml
 NotificationEntry 1.0 NotificationEntry.qml
 NotificationIpc 1.0 NotificationIpc.qml
 SessionBackend 1.0 SessionBackend.qml

@@ -11,6 +11,8 @@ Minimalistyczny shell w **Quickshell/QML dla Hyprlanda**, budowany według czter
 `Super+V` otwiera Schowek; `Super+;` (bez Shift) otwiera komendy.
 Domyślne komendy sesji: `shutdown`/`poweroff`, `sleep`, `hibernate`, `lock`,
 `reboot` i `settings` (w zwykłym launcherze poprzedzone `:`).
+`shutdown`/`poweroff` mają jeden wynik „Wyłącz komputer”. Komendy
+`powersaver`, `balanced` i `performance` wybierają profil zasilania z panelu baterii.
 Prefiksy `:a `, `:f `, `:c ` zmieniają się w filtr; puste pole pokazuje
 ostatnie użycia. Enter uruchamia/kopiuje, Escape przechodzi do nawigacji
 `j/k`, kolejny zamyka. [Obsługa i historia](docs/launcher.md).

@@ -11,14 +11,18 @@ zamienić prefiks w etykietę Aplikacje, Pliki lub Schowek. `: ` wybiera
 historię. Etykietę usuwa kliknięcie; Backspace w pustym polu odtwarza prefiks.
 Lista z filtrem nie ma dodatkowego nagłówka. Schowek pokazuje wyłącznie
 jedną linię treści w wierszu 36 px, bez ikony i podpisu „Schowek”. Ikony
-oraz dotychczasowa wysokość wierszy aplikacji pozostają.
+oraz dotychczasowa wysokość wierszy aplikacji pozostają. Opis aplikacji
+lub ścieżka pliku jest w tej samej linii co nazwa, wyrównany do prawej.
+Zajmuje najwyżej 45% szerokości zawartości wiersza; długi tekst jest skracany,
+z pozostawieniem miejsca na nazwę. Komendy nadal pokazują sam opis działania.
 
 Enter aktywuje wybraną pozycję. Strzałki wybierają wynik bez opuszczania
 pola. Escape/Tab z pola przechodzą do listy: `j/k` wybierają, `h` przechodzi
 do filtra/pola, `/` lub `i` wracają do wpisywania. `l` przechodzi do
 widocznego podglądu, a gdy go nie ma — do pola. Kolejny Escape
 zamyka panel; pusta lista zamyka się pierwszym Escape. Home/End w liście
-pozwalają dojść do pierwszej/ostatniej pozycji. Tekst zawsze zachowuje hjkl.
+pozwalają dojść do pierwszej/ostatniej pozycji. `q` zamyka panel z listy lub
+filtra; w polu wyszukiwania pozostaje zwykłą literą, podobnie jak hjkl.
 Wpis schowka jest kopiowany; użytkownik sam wkleja go do wybranej aplikacji.
 
 ## Podgląd schowka — 2026-09-20
@@ -27,7 +31,7 @@ Wybrany klawiaturą lub najechaniem wskaźnika wpis schowka ma podgląd po
 prawej stronie launchera, z tym samym górnym brzegiem. Ramka jest kwadratowa,
 domyślnie 320 × 320 px, z odstępem 8 px od listy. Obraz zachowuje proporcje;
 tekst jest dosłowny, zawija się i przewija. `l`/Tab wchodzi do podglądu,
-`j/k` przewija, `h`/Escape wraca do listy, Enter kopiuje wybrany wpis.
+`j/k` przewija, `h`/Escape/`q` wraca do listy, Enter kopiuje wybrany wpis.
 Samo wybranie pozycji niczego nie kopiuje ani nie zmienia historii.
 
 Główna lista zachowuje szerokość do 640 px. W razie potrzeby cała grupa
@@ -54,15 +58,21 @@ przed otwarciem panelu, bez przełączania widoku. `0` oznacza workspace 10,
 zgodnie z obecną konfiguracją skrótów. Nowy workspace może powstać, nawet
 gdy jego numeru nie ma jeszcze w pasku. Wielkość liter nie ma znaczenia.
 
-Niepełna lub niepoprawna komenda pozostawia pustą listę, bez tekstu
-pomocniczego. Sam `:` rozpoczyna tryb komend; `: ` nadal wybiera historię. Aktywny filtr
+Niepełna lub niepoprawna komenda workspace pozostawia pustą listę, bez tekstu
+pomocniczego. Sam `:` rozpoczyna tryb komend i pokazuje zapisane komendy;
+`: ` nadal wybiera historię. Aktywny filtr
 zachowuje dosłowne wyszukiwanie, np. `:c :w3` znajduje tekst w schowku.
 Komendy nie trafiają do historii aplikacji/plików ani pomocnika Python.
 W trybie z chipem „Komenda” dwukropek jest dodawany do zapytania wewnętrznie;
 w polu wystarcza `w3`, `mw3` lub skonfigurowana nazwa komendy. Usunięcie
-chipa przywraca zwykłe wyszukiwanie. Dokładnie dopasowane komendy z sekcji
-„Klawiatura” uruchamiają gotowe działania przez wspólny `ActionController`.
-Puste pole i niepełna komenda nie pokazują podpowiedzi ani listy sugestii.
+chipa przywraca zwykłe wyszukiwanie. Puste pole w tym trybie pokazuje zapisane
+komendy z sekcji „Klawiatura”. Lista zawęża się według początku nazwy bez
+rozróżniania wielkości liter, np. `:sl` lub `sl` w trybie „Komenda” pokazuje
+„Uśpij”. Dokładne dopasowanie jest pierwsze, pozostałe są alfabetyczne według
+nazwy komendy. Enter lub kliknięcie uruchamia wybraną podpowiedź przez wspólny
+`ActionController`, także przed wpisaniem całej nazwy. Wiersz komendy zawiera
+tylko opis działania, bez dodatkowego podpisu `:nazwa`. Prefiksy `:a`, `:f`
+i `:c` stają się filtrami dopiero po spacji.
 [Ustawienia skrótów i komend](keyboard.md).
 
 Domyślnie dostępne są `shutdown` i `poweroff` (wyłączenie), `sleep`
@@ -71,6 +81,13 @@ oraz `settings` (ustawienia). W zwykłym launcherze wpisz `:shutdown` itd.;
 w trybie „Komenda” samą nazwę. Restart i wyłączenie otwierają potwierdzenie
 wybranej operacji z fokusem na Anuluj. Uśpienie i hibernacja czekają na
 potwierdzoną przez kompozytor blokadę. Niedostępna operacja zgłasza błąd.
+`shutdown` i `poweroff` wskazują jedną pozycję „Wyłącz komputer”, także na
+pełnej liście komend. Obie nazwy i ich części nadal są dopasowywane.
+
+`powersaver`, `balanced` i `performance` ustawiają profil oszczędny,
+zrównoważony lub wydajności, korzystając ze wspólnej obsługi panelu baterii.
+Potwierdzony przez system profil jest od razu widoczny w tym panelu.
+Niedostępny profil lub trwająca zmiana zgłasza błąd.
 
 `LauncherService` otrzymuje ten sam `WorkspaceService` co pasek. PanelHost
 przekazuje monitor, a serwis zapamiętuje natywny obiekt okna przed pobraniem

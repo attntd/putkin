@@ -44,7 +44,12 @@ UI.FadeScope {
         if (navigating) Qt.callLater(focusInitial);
         else { focus = false; focusedControl = null; }
     }
-    Keys.onEscapePressed: controller.close()
+    Keys.onPressed: event => {
+        if (DismissKeys.matches(event, root)) {
+            controller.close();
+            event.accepted = true;
+        }
+    }
     ListModel { id: list }
     Column {
         id: column

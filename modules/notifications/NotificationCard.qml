@@ -12,7 +12,9 @@ UI.FadeScope {
     property bool navigating: false
     property bool scrollable: true
     property bool expanded: false
-    readonly property bool expandable: expanded || summary.truncated || body.truncated
+    readonly property bool textClipped: summary.truncated || body.truncated || (scrollable
+        && content.y + (body.visible ? body.y + body.height : summary.y + summary.height) > flick.height + 1)
+    readonly property bool expandable: expanded || textClipped
     readonly property string defaultAction: {
         const values = entry ? entry.actions : [];
         const action = values.find(value => value.identifier === "default") || values[0];
@@ -31,7 +33,10 @@ UI.FadeScope {
     signal actionRequested(string identifier)
     signal controlFocused(Item control)
     function actionAt(index: int): Item { return index >= 0 && index < actions.count ? actions.itemAt(index) : null; }
-    function activate(): void { if (defaultAction) actionRequested(defaultAction); }
+    function activate(): void {
+        if (!expanded && textClipped) { expanded = true; return; }
+        if (defaultAction || (entry && entry.applicationId)) actionRequested(defaultAction);
+    }
     function activateFromPointer(): void {
         selection.focusReason = Qt.MouseFocusReason;
         if (navigating) selection.forceActiveFocus(Qt.MouseFocusReason);
@@ -56,7 +61,7 @@ UI.FadeScope {
         if (event.key === Qt.Key_I && event.modifiers === Qt.NoModifier && root.expandable) {
             if (!event.isAutoRepeat) root.expanded = true;
             event.accepted = true;
-        } else if (event.key === Qt.Key_Escape && root.expanded) {
+        } else if (root.expanded && DismissKeys.matches(event, root)) {
             root.collapse();
             event.accepted = true;
         }
@@ -191,6 +196,17 @@ UI.FadeScope {
             boundsBehavior: Flickable.StopAtBounds
             contentWidth: width
             contentHeight: content.height + content.y * 2
+            TapHandler {
+                onTapped: eventPoint => {
+                    // Explicit action buttons own their clicks; the rest of the
+                    // viewport, including its padding and gaps, activates the card.
+                    for (let index = 0; index < actions.count; ++index) {
+                        const button = root.actionAt(index);
+                        if (button && button.visible && button.contains(button.mapFromItem(flick, eventPoint.position.x, eventPoint.position.y))) return;
+                    }
+                    root.activateFromPointer();
+                }
+            }
             Column {
                 id: content
                 x: Metrics.focusOffset + Metrics.focusWidth
@@ -200,7 +216,6 @@ UI.FadeScope {
                 Column {
                     width: parent.width
                     spacing: Metrics.space8
-                    TapHandler { onTapped: root.activateFromPointer() }
                     UI.PanelText {
                         id: summary
                         objectName: "notificationSummary"
