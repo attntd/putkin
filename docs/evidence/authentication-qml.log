@@ -1,0 +1,16 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::Authentication::initTestCase()
+PASS   : qmltestrunner::Authentication::test_confirmation_navigation_and_cancel()
+PASS   : qmltestrunner::Authentication::test_fingerprint_only_mismatch_and_device_error()
+PASS   : qmltestrunner::Authentication::test_fingerprint_success_and_password_not_green()
+PASS   : qmltestrunner::Authentication::test_hjkl_secret_cleared_single_submit()
+PASS   : qmltestrunner::Authentication::test_mismatch_then_immediate_password_preserves_red_feedback()
+PASS   : qmltestrunner::Authentication::test_password_retry_and_identity_clear()
+PASS   : qmltestrunner::Authentication::test_pointer_and_keyboard_focus()
+PASS   : qmltestrunner::Authentication::test_prompt_classification()
+PASS   : qmltestrunner::Authentication::test_queue_lock_and_disconnect()
+PASS   : qmltestrunner::Authentication::test_text_is_plain_and_small_window()
+PASS   : qmltestrunner::Authentication::cleanupTestCase()
+Totals: 12 passed, 0 failed, 0 skipped, 0 blacklisted, 10550ms
+********* Finished testing of qmltestrunner *********

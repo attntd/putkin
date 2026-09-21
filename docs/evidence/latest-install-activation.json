@@ -1,0 +1,182 @@
+{
+  "timestamp_utc": "2026-09-20T18:02:06.066008+00:00",
+  "result": "PASS",
+  "source_commit": "c503fb158ca8a34304977e6a00b98f55805fd37f",
+  "build": "20260920-180112-c20011bd9d2d",
+  "previous": "/home/attntd/.local/share/putkin/releases/20260920-172244-98dd3094da3d",
+  "instance": {
+    "config_path": "/home/attntd/.config/quickshell/shell.qml",
+    "id": "w6o74rcolt",
+    "launch_time": "2026-09-20T20:01:52",
+    "pid": 357944,
+    "shell_id": "770bba0d0f619c4ab3ab0453a539d542"
+  },
+  "unit": {
+    "ActiveState": "active",
+    "SubState": "running",
+    "MainPID": "357944",
+    "Slice": "session-graphical.slice"
+  },
+  "runtime_files": 274,
+  "changed_runtime_files": [
+    "components/FadeColumn.qml",
+    "components/FadeScope.qml",
+    "config/menu-keybinds.lua",
+    "core/ActionController.qml",
+    "core/Actions.js",
+    "core/PanelCoordinator.qml",
+    "modules/notifications/NotificationCard.qml",
+    "modules/power/PowerView.qml",
+    "modules/quicksettings/InteractivePanelWindow.qml",
+    "modules/quicksettings/PanelSurface.qml",
+    "services/SessionService.qml",
+    "services/session_backend.py"
+  ],
+  "checks": {
+    "runtime_matches_tested_source": true,
+    "single_instance_at_default_path": true,
+    "service_running": true,
+    "notification_owner_matches_instance": true,
+    "keyboard_ready_and_applied": true,
+    "commands_use_super_semicolon": true,
+    "lock_and_idle_ready": true,
+    "caffeinate_preserved": true,
+    "configuration_unchanged": true,
+    "workspace_model_matches_hyprland": true,
+    "qml_log_clean": true,
+    "hyprland_config_clean": true,
+    "previous_build_preserved": true,
+    "five_builds_retained": true
+  },
+  "session": {
+    "busy": false,
+    "phase": "",
+    "error": "",
+    "result": "",
+    "capabilities": {
+      "reboot": {
+        "available": true,
+        "reason": ""
+      },
+      "poweroff": {
+        "available": true,
+        "reason": ""
+      },
+      "suspend": {
+        "available": true,
+        "reason": ""
+      },
+      "hibernate": {
+        "available": true,
+        "reason": ""
+      },
+      "idleSuspend": {
+        "available": true,
+        "reason": ""
+      },
+      "logout": {
+        "available": true,
+        "reason": ""
+      },
+      "lock": {
+        "available": true,
+        "reason": ""
+      }
+    },
+    "lock": {
+      "locked": false,
+      "secure": false
+    },
+    "idle": {
+      "ready": true,
+      "inhibited": false,
+      "sleepInhibited": false,
+      "dimmed": false,
+      "displaysOff": false,
+      "error": ""
+    }
+  },
+  "actions": {
+    "ready": true,
+    "busy": false,
+    "applied": true,
+    "error": "",
+    "shortcuts": 8,
+    "commands": 8
+  },
+  "bar": {
+    "available": true,
+    "monitors": [
+      {
+        "name": "eDP-1",
+        "activeId": 1
+      }
+    ],
+    "focusedMonitor": "eDP-1",
+    "workspaces": [
+      {
+        "id": 1,
+        "visibleOn": "eDP-1"
+      },
+      {
+        "id": 2,
+        "visibleOn": ""
+      },
+      {
+        "id": 3,
+        "visibleOn": ""
+      },
+      {
+        "id": 4,
+        "visibleOn": ""
+      },
+      {
+        "id": 5,
+        "visibleOn": ""
+      }
+    ],
+    "busy": false,
+    "error": ""
+  },
+  "caffeinate": {
+    "active": false,
+    "mode": "off",
+    "busy": false,
+    "preventDisplaySleep": false,
+    "preventLock": false,
+    "preventSleep": false,
+    "error": ""
+  },
+  "command_bindings": [
+    {
+      "locked": false,
+      "mouse": false,
+      "release": false,
+      "repeat": false,
+      "longPress": false,
+      "non_consuming": false,
+      "auto_consuming": false,
+      "has_description": true,
+      "modmask": 64,
+      "submap": "",
+      "submap_universal": "false",
+      "key": "semicolon",
+      "keycode": 0,
+      "catch_all": false,
+      "description": "Putkin:commands",
+      "allow_input_capture": false,
+      "dispatcher": "__lua",
+      "arg": "72"
+    }
+  ],
+  "retained": [
+    "20260920-180112-c20011bd9d2d",
+    "20260920-172244-98dd3094da3d",
+    "20260920-170400-e2d7150ad167",
+    "20260920-155210-f60d99e92e0f",
+    "20260920-152319-06db5a42cb5e"
+  ],
+  "limitations": [
+    "No physical power, suspend, hibernate, lock or PAM test during installation."
+  ]
+}

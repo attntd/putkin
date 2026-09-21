@@ -1,0 +1,23 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::VisualContract::initTestCase()
+PASS   : qmltestrunner::VisualContract::test_active_modules_keep_light_icons(wifi)
+PASS   : qmltestrunner::VisualContract::test_active_modules_keep_light_icons(bluetooth)
+PASS   : qmltestrunner::VisualContract::test_active_modules_keep_light_icons(battery)
+PASS   : qmltestrunner::VisualContract::test_active_modules_keep_light_icons(audio)
+PASS   : qmltestrunner::VisualContract::test_active_modules_keep_light_icons(notifications)
+PASS   : qmltestrunner::VisualContract::test_active_modules_keep_light_icons(quickMenu)
+PASS   : qmltestrunner::VisualContract::test_bar_icons_keep_clock_color_across_states()
+PASS   : qmltestrunner::VisualContract::test_compact_layout_font_borders_and_no_hover_popup()
+PASS   : qmltestrunner::VisualContract::test_error_is_a_toast_with_panel_open_and_in_dnd()
+PASS   : qmltestrunner::VisualContract::test_fade_keeps_geometry_and_legacy_motion_cannot_disable_it()
+PASS   : qmltestrunner::VisualContract::test_network_wifi_family_and_radio_states()
+PASS   : qmltestrunner::VisualContract::test_one_detail_section_and_keyboard_entry()
+PASS   : qmltestrunner::VisualContract::test_osd_horizontal_and_fade_retains_last_monitor()
+PASS   : qmltestrunner::VisualContract::test_surface_fade_geometry(quickSettings)
+PASS   : qmltestrunner::VisualContract::test_surface_fade_geometry(network)
+PASS   : qmltestrunner::VisualContract::test_surface_fade_geometry(bluetooth)
+PASS   : qmltestrunner::VisualContract::test_surface_fade_geometry(battery)
+PASS   : qmltestrunner::VisualContract::cleanupTestCase()
+Totals: 19 passed, 0 failed, 0 skipped, 0 blacklisted, 9861ms
+********* Finished testing of qmltestrunner *********

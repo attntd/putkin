@@ -1,5 +1,21 @@
 # Roadmapa Putkin
 
+## Wybrany zakres — okna uwierzytelniania, 2026-09-20
+
+**Korekta wdrożona: `20260920-210039-bf2eb74b4b79`.**
+[Odbiór odliczania](docs/status.md#odliczanie-odcisku-w-polkit--2026-09-20).
+Pasek odliczania od lewej i glif po prawej, następnie
+pole hasła w tym samym miejscu z widocznym fokusem. Gotowość hasła nadal
+pochodzi z Polkit; bez zmiany systemowej polityki uwierzytelniania.
+
+**Wdrożone: `20260920-204030-237db1e11390`.**
+[Wyniki i granice testów](docs/status.md#natywne-okna-uwierzytelniania--2026-09-20).
+
+Polkit, SSH/sudo askpass i Pinentry mają wspólny widok Putkina,
+zatwierdzone teksty oraz istniejący fade. Odcisk ma wyłącznie glif;
+niedopasowanie jest czerwone, sukces zielony, tekst dotyczy błędu czytnika.
+[Kontrakt](docs/authentication.md). Bez zmiany systemowej polityki PAM.
+
 ## Planowana integracja Signala — 2026-09-20
 
 Przygotowano [osobną roadmapę Signala](docs/signal/ROADMAP.md) i 13

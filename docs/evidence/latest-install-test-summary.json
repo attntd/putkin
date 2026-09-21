@@ -1,0 +1,63 @@
+{
+  "result": "PASS across completed suites and separate remaining-suite runs",
+  "suite_count": 25,
+  "total_passed": 627,
+  "initial_full_run": {
+    "result": "TIMEOUT after 240 seconds during BatteryTray",
+    "completed_suites": [
+      "AccentGroups",
+      "Audio",
+      "Bar",
+      "BarAlignment",
+      "Bluetooth",
+      "Brightness",
+      "DesktopExtras",
+      "Fade",
+      "Foundation",
+      "Keyboard",
+      "Launcher",
+      "LockIdle",
+      "MaterialIcons",
+      "Network",
+      "Notifications",
+      "Panels",
+      "PointerFocus",
+      "QuickMenu",
+      "Screenshot",
+      "Session",
+      "Settings"
+    ],
+    "passed_in_completed_suites": 540,
+    "assertion_failures": 0
+  },
+  "remaining_suites": {
+    "status": {
+      "passed": 48,
+      "failed": 0,
+      "skipped": 0,
+      "log": "docs/evidence/latest-install-qml-status.log"
+    },
+    "validation": {
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "log": "docs/evidence/latest-install-qml-validation.log"
+    },
+    "visual_contract": {
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "log": "docs/evidence/latest-install-qml-visual_contract.log"
+    },
+    "window_appearance": {
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "log": "docs/evidence/latest-install-qml-window_appearance.log"
+    }
+  },
+  "installer_tests": 15,
+  "session_integration_checks": 13,
+  "qml_files_checked": 217,
+  "initial_sandbox_attempt": "Private D-Bus socket creation denied; installer and QML tests rerun outside sandbox with private XDG/D-Bus."
+}

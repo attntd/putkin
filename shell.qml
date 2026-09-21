@@ -13,6 +13,7 @@ import "modules/notifications"
 import "modules/wallpaper"
 import "modules/lock"
 import "modules/screenshot"
+import "modules/authentication"
 
 ShellRoot {
     PersistentProperties { id: lockState; reloadableId: "putkin-lock-state"; property bool locked: false }
@@ -48,6 +49,9 @@ ShellRoot {
     PamBackend { id: authentication; fingerprintAvailable: sessionBackend.fingerprintAvailable }
     LockHost { id: lockHost; service: lockService; state: lockState; wallpaper: wallpaperService.source }
     LockService { id: lockService; backend: lockHost; authentication: authentication; hold: sessionBackend.unlockHeld }
+    AuthenticationService { id: authorization; blocked: lockService.locked }
+    AuthenticationBackend { service: authorization }
+    AuthenticationHost { service: authorization; screens: Quickshell.screens; monitorService: hyprland; panels: panels; barFocus: barFocus }
     SessionBackend { id: sessionBackend; lockService: lockService }
     SessionService { id: sessionService; backend: sessionBackend }
     IdleService {

@@ -1,5 +1,150 @@
 # Status implementacji
 
+## Odliczanie odcisku w Polkit — 2026-09-20
+
+**Wdrożone: `20260920-210039-bf2eb74b4b79`.** Odbiór działającej wersji
+**PASS**: jedna instancja Putkina, Polkit zarejestrowany, timeout odczytany
+jako **30000 ms**, wszystkie 287 plików runtime zgodne z testowanymi
+źródłami. Paczka: **144 QML PASS**. Ustawienia zachowane, log QML i
+konfiguracja Hyprlanda czyste. [Odbiór](evidence/authentication-countdown-activation.json),
+[instalacja](evidence/authentication-countdown-final-install.log),
+[log](evidence/authentication-countdown-live.log).
+
+Glif jest po prawej, a pasek w tej samej ramce wypełnia się od lewej.
+Timeout pochodzi z odczytu systemowego pliku Polkit: lokalnie 30 s.
+Rzeczywista prośba o hasło zamienia ten obszar w pole tekstowe z fokusem
+klawiatury; po timeout glif znika. Kliknięcie usuwa ramkę fokusu.
+Geometria pozostaje stała także w przerwie między komunikatami timeout
+i hasła. Wspólny gradient i fade są zachowane.
+
+- `scripts/check`: **226 QML PASS**, 0 błędów.
+- QML: **16 PASS**, bez ostrzeżeń; rosnący pasek, położenie glifu,
+  stabilna geometria, fokus i dosłowne hjkl, wcześniejsze żądanie hasła,
+  zatrzymanie odliczania, zmiana tożsamości oraz parsowanie timeout.
+- Natywny Wayland: **11 grup PASS**, w tym odczyt prywatnej konfiguracji
+  2 s, rozdzielone w czasie komunikaty timeout/hasła i natychmiastowe
+  wpisanie hasła przez wtype. Zakończono wszystkie procesy testowe.
+- Obejrzano zrzuty rosnącego paska i pola z ramką; mają ten sam obszar.
+  Pierwsza asercja geometrii czytała pozycjoner przed zakończeniem układu;
+  końcowy test czeka na klatkę i sprawdza także przerwę po timeout.
+
+Pasek szacuje czas od komunikatu gotowości; nie zastępuje zdarzeń PAM.
+Nieznany lub nieograniczony timeout nie uruchamia odliczania. Polityka
+PAM pozostaje niezmieniona; fizycznego skanera ani PAM hosta nie testowano.
+
+[Zestawienie](evidence/authentication-countdown-summary.json),
+[kontrola](evidence/authentication-countdown-check.log),
+[QML](evidence/authentication-countdown-qml.log),
+[Wayland](evidence/authentication-countdown-wayland/report.json),
+[pasek](evidence/authentication-countdown-wayland/authentication-countdown.png),
+[pole hasła](evidence/authentication-countdown-wayland/authentication-countdown-password.png).
+
+## Natywne okna uwierzytelniania — 2026-09-20
+
+**Wdrożone: `20260920-204030-237db1e11390`.** Jedna instancja Putkina,
+zarejestrowany natywny PolkitAgent, zewnętrzny agent wyłączony. SSH/sudo
+askpass i GPG Pinentry są podłączone; konfiguracja Fish/UWSM/GPG jest
+zgodna z chezmoi. Zachowano stare ścieżki askpass dla uruchomionych
+aplikacji, bez restartu agenta SSH. Ustawienia pozostały identyczne.
+Wszystkie **287 plików runtime** odpowiadają końcowym testowanym źródłom;
+log działającego shella i konfiguracja Hyprlanda bez błędów i ostrzeżeń.
+[Odbiór](evidence/authentication-final-activation.json),
+[instalacja](evidence/authentication-final-install.log),
+[log](evidence/authentication-final-live.log),
+[pełne przywracanie](install.md#okna-uwierzytelniania--2026-09-20).
+
+Zaimplementowano wspólny widok Polkit, SSH/sudo askpass i Pinentry. Teksty
+oraz minimalistyczny układ zatwierdził użytkownik. Fade pochodzi z tego
+samego FadeScope/FadePresentation co pozostałe powierzchnie. Odcisk ma
+neutralny/czerwony/zielony glif; niedopasowanie nie wyświetla tekstu,
+błąd czytnika ma komunikat. Zielony stan wynika z sukcesu AuthFlow;
+oddanie hasła/PIN-u przez askpass lub Pinentry nie udaje sukcesu.
+
+- `scripts/check`: **226 QML PASS**, 0 błędów.
+- QML: **639 PASS w 26 zakończonych zestawach**, w tym **12** nowego
+  uwierzytelniania. Runner całości osiągnął 240 s podczas Settings;
+  Settings i cztery pozostałe zestawy ukończono osobno, bez FAIL.
+- Assuan/Python: **6 PASS** — escaping UTF-8/%/nowych linii, porcje
+  odpowiedzi, reset błędu, timeout, anulowanie/odmowa i nieobsługiwane wymagania.
+- Instalator: **15 PASS**; nowy stały `scripts/ssh-askpass` jest częścią
+  manifestu wydania. Prywatna paczka: **144 QML PASS**.
+- Natywny Wayland: **10 grup PASS** — prawdziwe Socket/IPC, PolkitAgent,
+  AuthFlow i libpolkit z prywatną authority i atrapą helpera. Odrzucone
+  hasło, ponowienie/sukces, odcisk i błąd czytnika, czerwony glif zachowany
+  przy szybkim przejściu do hasła, kolorowe zrzuty,
+  SSH/PIN/dotyk, kolejka, blokada, skala 1,25, 320×240 logicznych,
+  długi kontekst, usunięcie monitora oraz oba reloady. Brak ostrzeżeń QML.
+- Prawdziwy prywatny GPG agent wywołał Pinentry Putkina; wpisane przez
+  wtype hasło klucza testowego pozwoliło podpisać plik i zweryfikować podpis.
+  Oddzielny GNUPGHOME został usunięty, a jego agent zakończony.
+
+Pierwsze próby wykryły niewidoczny wiersz po zmianie rodzaju żądania,
+obsługę drugiego Entera, kolejność rozłączenia gniazda i utratę obiektu
+monitora przed sygnałem zmiany listy ekranów. Poprawiono zachowanie;
+końcowy przebieg natywny oraz Qt są zielone. Sandbox blokował utworzenie
+prywatnego D-Bus; uruchomienie poza nim zachowało XDG, magistrale i atrapy.
+Nie wyciszano importów ani diagnostyki.
+
+**Granice:** bez fizycznego skanera, PIN-u prawdziwego YubiKeya ani
+uwierzytelniania PAM hosta. Rozpoznawanie komunikatów odcisku obejmuje
+fprintd 1.94.5 w PL/EN. Systemowy stos Polkit nadal wybiera najpierw odcisk,
+potem hasło; UI nie zmienia polityki. Nowe żądanie Polkit przy zajętym
+oknie jest odrzucane, żeby nie skanować w tle. Pinentry obsługuje używanie
+istniejących kluczy, potwierdzenia i komunikaty; tworzenie nowych haseł,
+powtarzanie i wymagania jakości są jawnie odrzucane.
+
+[Kontrakt](authentication.md), [zestawienie](evidence/authentication-test-summary.json),
+[QML](evidence/authentication-qml.log), [kontrola](evidence/authentication-check.log),
+[Python](evidence/authentication-python.log), [instalator](evidence/authentication-install-tests.log),
+[Wayland](evidence/authentication-wayland/report.json),
+[zielony glif](evidence/authentication-wayland/authentication-fingerprint-success.png),
+[czerwony glif](evidence/authentication-wayland/authentication-fingerprint-mismatch.png),
+[przejście do hasła](evidence/authentication-wayland/authentication-fingerprint-password.png),
+[błąd czytnika](evidence/authentication-wayland/authentication-reader-error.png).
+
+## Instalacja najnowszego main — 2026-09-20
+
+**Wdrożone: `20260920-180112-c20011bd9d2d`**, źródła `main` z commita
+`c503fb1`. Repozytorium nie ma skonfigurowanego zdalnego źródła; zainstalowano
+najnowszy lokalny kod. Aktualizacja obejmuje 12 plików runtime: komendy
+sesji i Super+;, stabilizację fade/zwijania paneli oraz usunięcie pustego
+przycisku domyślnej akcji powiadomienia Kitty.
+
+- `scripts/check`: **217 QML PASS**, 0 błędów; walidacja paczki:
+  **137 QML PASS**, 274 pliki zgodne ze sprawdzonymi źródłami.
+- Instalator: **15 testów PASS** na prywatnych plikach i D-Bus.
+- QML: **627 PASS w 25 zestawach**, bez błędów asercji. Pełny runner
+  osiągnął limit 240 s podczas BatteryTray, po ukończeniu 21 zestawów
+  (540 PASS). Pozostałe cztery zestawy uruchomiono osobno: BatteryTray
+  **48 PASS**, Validation **13 PASS**, VisualContract **19 PASS**,
+  WindowAppearance **7 PASS**, bez błędów i pominięć.
+- Integracja sesji: **13 scenariuszy PASS**, prywatne XDG i oba D-Bus,
+  atrapy logind/blokady, bez pozostałych procesów.
+- Pierwsze próby instalatora i QML w sandboxie blokowały tworzenie gniazd
+  prywatnego D-Bus (`Operation not permitted`). Ponowne przebiegi poza
+  sandboxem zachowały izolację testów. Nie wyciszano błędów importów.
+
+`scripts/install --activate` zakończył się powodzeniem. Odbiór aktywnej
+wersji: **PASS** — jedna instancja `putkin.service active/running`, poprawny
+właściciel powiadomień, skróty gotowe i zastosowane, jeden wpis komend
+`SUPER + semicolon`, model workspace zgodny z Hyprlandem, blokada i idle
+gotowe. Log QML oraz konfiguracja Hyprlanda bez błędów i ostrzeżeń.
+Ustawienia zachowane bajt w bajt, Caffeinate nadal `off`.
+
+`previous` wskazuje `20260920-172244-98dd3094da3d`; zachowano pięć buildów.
+Powrót z odblokowanej sesji: `scripts/install --restore --activate`.
+Podczas instalacji nie wykonywano fizycznego wyłączenia, restartu,
+uśpienia, hibernacji, blokady ani uwierzytelniania PAM. Nie powtarzano
+odbioru animacji na GPU; bieżące testy interfejsu działały offscreen.
+
+[Podsumowanie testów](evidence/latest-install-test-summary.json),
+[kontrola QML](evidence/latest-install-check.log),
+[testy instalatora](evidence/latest-install-tests.log),
+[integracja sesji](evidence/latest-install-session.json),
+[przebieg instalacji](evidence/latest-install-activation-run.log),
+[odbiór](evidence/latest-install-activation.json),
+[log działającego shella](evidence/latest-install-live.log).
+
 ## Domyślna akcja powiadomienia Kitty — 2026-09-20
 
 Lokalny kod Kitty (`kitty/notifications.py`) wysyła `default` z etykietą
@@ -22,8 +167,9 @@ przyciski oraz nawigację. Pusty wiersz akcji nie zajmuje miejsca.
   **37 PASS**, Quick Menu **35 PASS**, kontrola sześciu plików QML **PASS**.
   Logi: `/tmp/kitty-merge-notifications.log`, `/tmp/kitty-merge-quick_menu.log`.
 
-Poprawka w źródłach, bez instalacji w aktywnej sesji i bez nowego testu
-natywnego klienta Kitty. [Kontrakt powiadomień](notifications.md).
+Wdrożona później w instalacji najnowszego `main` opisanej powyżej.
+Nie wykonano nowego testu natywnego klienta Kitty.
+[Kontrakt powiadomień](notifications.md).
 
 ## Komendy sesji i Super+; — 2026-09-20
 
@@ -47,8 +193,9 @@ domyślny skrót, zachowując własne przypisania oraz zajęte nazwy/skróty.
   przeładowanie oraz brak duplikatów i błędów QML/konfiguracji.
   Raport: `/tmp/launcher-commands-keyboard/result.json`.
 
-Nie instalowano zmiany w aktywnej sesji ani nie wykonywano rzeczywistego
-wyłączenia, restartu, uśpienia, hibernacji lub uwierzytelniania PAM.
+Zmianę wdrożono później w instalacji najnowszego `main` opisanej powyżej.
+Nie wykonywano rzeczywistego wyłączenia, restartu, uśpienia, hibernacji
+lub uwierzytelniania PAM.
 [Kontrakt launchera](launcher.md), [ustawienia i migracja](keyboard.md).
 
 ## Odzyskiwanie aktywnego workspace — 2026-09-20

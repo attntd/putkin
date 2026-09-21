@@ -1,5 +1,20 @@
 # Wygląd i zakres Putkin
 
+## Okna uwierzytelniania — 2026-09-20
+
+Zatwierdzone teksty i minimalistyczny układ opisuje
+[kontrakt uwierzytelniania](authentication.md). Jedna powierzchnia Mocha
+ze wspólnym gradientem oraz FadeScope, bez tooltipów. Przy odcisku sam
+glif: neutralny, czerwony lub zielony; tekst tylko dla błędu czytnika,
+bez komunikatu o niedopasowaniu odcisku.
+
+Korekta użytkownika: glif jest po prawej we wspólnej ramce przyszłego pola
+hasła, a od lewej wypełnia się pasek odliczania. Pole zachowuje dokładnie
+ten sam obszar; po timeout znika glif i pojawia się ramka fokusu oraz
+kursor do pisania. Wypełnienie używa wspólnego gradientu panelu, bez
+tekstu czasu. Ruch wypełnienia jest wskaźnikiem upływu czasu; otwarcie
+i zamknięcie pozostają przy wspólnym fade. [Semantyka](authentication.md).
+
 ## Stabilny fade — 2026-09-20
 
 Na polecenie użytkownika usuwamy opcję „Ogranicz ruch”. Jedynym przejściem

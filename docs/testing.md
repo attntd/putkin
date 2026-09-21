@@ -1,5 +1,37 @@
 # Testowanie Putkin
 
+## Okna uwierzytelniania — 2026-09-20
+
+`python3 -m unittest discover -s tests -p test_authentication.py -v`
+sprawdza Assuan: UTF-8, escaping, porcje danych, błędy i timeout,
+potwierdzenie/odmowę/anulowanie, reset oraz jawne odrzucenie nieobsługiwanych
+wymagań tworzenia hasła. Nie uruchamia agentów użytkownika.
+
+`python3 scripts/test-icons --file tst_authentication.qml` testuje wejście
+Qt, hjkl/Enter/Escape, fokus myszy/klawiatury, czyszczenie sekretów,
+zmianę tożsamości, kolejkę i blokadę. Rozróżnia niedopasowanie, błąd
+czytnika oraz sukces odcisku i hasła. Używa atrap i prywatnych XDG/D-Bus.
+Odliczanie ma test wypełnienia, glifu po prawej, niezmiennej geometrii,
+ramki klawiatury po przejściu do hasła i jej usunięcia myszą. Sprawdza
+wcześniejsze żądanie hasła, brak fałszywego przejścia po samym zegarze,
+zatrzymanie przy anulowaniu, ponowienie i odczyt konfiguracji timeout.
+
+`python3 scripts/test-wayland --nested --authentication --output artifacts/authentication-wayland`
+sprawdza produkcyjny widok, Socket/IPC i natywny PolkitAgent/AuthFlow przez
+prawdziwe libpolkit. W prywatnych przestrzeniach PID/montowań/sieci działa
+atrapa authority, zastąpiony protokół helpera Polkit oraz fixture identyfikacji
+sesji systemd. `/etc/pam.d` i `/usr/lib/pam.d` są zamaskowane. Żaden test
+nie używa PAM ani czytnika hosta. Prawdziwy GPG agent dostaje osobny GNUPGHOME,
+nowo utworzony klucz testowy i Pinentry Putkina; podpis jest weryfikowany,
+a agent kończony. Klucze użytkownika nie są odczytywane.
+
+Odbiór obejmuje anulowanie i SIGTERM, kolory odcisku z utrwaleniem zielonej
+klatki przed wspólnym fade, obie odmiany reloadu, ponowną rejestrację,
+zwolnienie gniazd i brak błędów QML. Zrzuty dotyczą prywatnego wyjścia.
+Prywatna konfiguracja określa timeout 2 s, a atrapa helpera po tym czasie
+wysyła rzeczywisty protokół timeout → żądanie hasła. Wtype potwierdza
+możliwość natychmiastowego wpisania hasła bez kliknięcia pola.
+
 ## Odzyskiwanie aktywnego workspace — 2026-09-20
 
 `scripts/test-bar-integration` wykonuje cztery scenariusze: Hyprlang i Lua,

@@ -1,5 +1,27 @@
 # Architektura Putkin
 
+## Okna uwierzytelniania — 2026-09-20
+
+AuthenticationService szereguje żądania askpass/Pinentry i zwalnia je po
+wspólnym fade. AuthenticationBackend rejestruje natywny PolkitAgent oraz
+IPC przekazujące wyłącznie ścieżkę prywatnego gniazda. AuthenticationSocket
+obsługuje jeden klient, a PolkitRequest przekłada bieżący AuthFlow na model
+widoku. AuthenticationHost tworzy jedną leniwą powierzchnię na monitorze
+aktywnym przy otwarciu; blokada i utrata monitora anulują żądania.
+
+Polkit rozpoczyna PAM od razu, dlatego nowe żądanie Polkit przy zajętym UI
+jest odrzucane, zamiast skanować w tle innego okna. Nie uruchamiamy
+dodatkowego PAM ani równoległego fprintd. Read-only API AuthFlow 0.3.1
+udostępnia opis operacji, ale nie szczegóły nazwy aplikacji; kontekst nie
+jest odgadywany. Pomocniki askpass.py/pinentry.py są krótkimi klientami,
+bez dodatkowego demona. [Kontrakt](authentication.md).
+
+Backend odczytuje timeout z systemowego pliku Polkit przez FileView,
+bez zapisu i wywołań poleceń. Przekazuje jego wartość do PolkitRequest
+przy rozpoczęciu rozmowy; NumberAnimation wylicza wyłącznie postęp
+prezentacji. Natywny AuthFlow pozostaje źródłem gotowości pola hasła
+i wyniku uwierzytelniania. Widok zachowuje stałą geometrię wiersza.
+
 ## Stała instalacja i uruchamianie
 
 `scripts/install` / `_install.py` zarządzają kompletnymi katalogami runtime,

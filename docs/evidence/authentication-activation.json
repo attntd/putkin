@@ -1,0 +1,25 @@
+{
+  "current": "20260920-203455-2287216abeef",
+  "previous": "20260920-194523-432aac686c6c",
+  "authentication": {
+    "registered": true,
+    "count": 0,
+    "blocked": false
+  },
+  "instances": [
+    {
+      "config_path": "/home/attntd/.config/quickshell/shell.qml",
+      "id": "nz69lwjolt",
+      "launch_time": "2026-09-20T22:36:21",
+      "pid": 428963,
+      "shell_id": "770bba0d0f619c4ab3ab0453a539d542"
+    }
+  ],
+  "settings_unchanged": true,
+  "polkit_external": "inactive",
+  "backup": "/home/attntd/.local/state/putkin/authentication-20260920-223538",
+  "removed": [
+    "20260920-182007-52664e70ede2"
+  ],
+  "result": "PASS"
+}

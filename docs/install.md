@@ -1,5 +1,51 @@
 # Lokalne przełączenie na Putkin
 
+## Okna uwierzytelniania — 2026-09-20
+
+Putkin przejął agenta Polkit oraz wejścia SSH/sudo askpass i GPG Pinentry.
+Aktywne wydanie: **`20260920-210039-bf2eb74b4b79`**, 287 plików runtime
+zgodnych z testowanymi źródłami. Dodaje pasek odliczania, glif po prawej
+i przejście do pola hasła z fokusem. [Odbiór](evidence/authentication-countdown-activation.json),
+[testy korekty](status.md#odliczanie-odcisku-w-polkit--2026-09-20).
+Stan końcowego wydania i testów: [status](status.md#natywne-okna-uwierzytelniania--2026-09-20).
+W Fish, UWSM i środowisku usług SSH_ASKPASS/SUDO_ASKPASS wskazują
+`~/.config/quickshell/services/askpass.py`; GPG agent ma `pinentry-program`
+do `services/pinentry.py`. Odpowiadające pliki chezmoi są zgodne.
+
+Zachowano obsługę obu starszych ścieżek askpass: `scripts/ssh-askpass`
+w bieżącym wydaniu oraz przekierowanie w `quickshell.previous`. Dzięki
+nim aplikacje już uruchomione z dawnym środowiskiem używają nowego UI.
+Agent SSH nie był restartowany. `hyprpolkitagent.service` jest wyłączony;
+jedynym zarejestrowanym agentem jest natywny PolkitAgent Putkina.
+
+Pełny powrót wymaga przywrócenia wydania **i** konfiguracji klientów/Polkit.
+Prywatna kopia i gotowe przywracanie:
+
+```sh
+python3 /home/attntd/.local/state/putkin/authentication-20260920-223538/restore.py --restore /home/attntd/.local/state/putkin/authentication-20260920-223538
+```
+
+Kopia zawiera wcześniejsze pliki oraz stan usługi i zmiennych środowiska.
+Samo `scripts/install --restore --activate` przełącza kod, ale nie cofa
+konfiguracji SSH/GPG ani nie włącza zewnętrznego agenta.
+[Kontrakt i ograniczenia](authentication.md).
+
+## Wcześniejsza instalacja main — 2026-09-20
+
+Wdrożone wtedy wydanie: **`20260920-180112-c20011bd9d2d`**, commit **`c503fb1`**.
+Zawiera komendy sesji i skrót `Super+;`, poprawki fade/zwijania paneli
+oraz usunięcie pustego przycisku domyślnej akcji powiadomienia Kitty.
+
+Instalacja przez `scripts/install --activate` i odbiór **PASS**: jedna
+instancja usługi, 274 pliki zgodne z najnowszym lokalnym `main`, poprawny
+właściciel powiadomień, skróty, workspace, gotowość blokady i idle.
+Ustawienia zachowane, Caffeinate `off`, log QML i konfiguracja Hyprlanda
+czyste. [Odbiór](evidence/latest-install-activation.json),
+[testy i ograniczenia](status.md#instalacja-najnowszego-main--2026-09-20).
+
+`previous` wskazuje `20260920-172244-98dd3094da3d`; zachowano pięć buildów.
+Powrót z odblokowanej sesji: `scripts/install --restore --activate`.
+
 ## Oznaczenie i przełączanie workspace’ów — 2026-09-20
 
 Aktywne wydanie: **`20260920-172244-98dd3094da3d`**, poprawka `53b3e70`
