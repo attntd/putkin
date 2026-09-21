@@ -9,7 +9,7 @@ return function(bind, shell_path)
     local menus = {
         {"SUPER + SPACE", "launcher"},
         {"SUPER + V", "clipboard"},
-        {"SUPER + SHIFT + semicolon", "commands"},
+        {"SUPER + semicolon", "commands"},
         {"SUPER + B", "bar"},
         {"SUPER + SHIFT + Q", "quickSettings"},
         {"SUPER + SHIFT + P", "power"},

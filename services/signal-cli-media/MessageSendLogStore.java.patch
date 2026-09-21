@@ -1,0 +1,24 @@
+--- MessageSendLogStore.java
++++ MessageSendLogStore.java
+@@ -38,6 +38,21 @@
+     public MessageSendLogStore(final Database database, final boolean disableMessageSendLog) {
+         this.database = database;
+         this.sendLogDisabled = disableMessageSendLog;
++        if (disableMessageSendLog) {
++            // Putkin owns content retention; legacy resend bodies cannot survive.
++            try (var connection = database.getConnection(); var statement = connection.createStatement()) {
++                statement.execute("PRAGMA secure_delete=ON");
++                statement.executeUpdate("DELETE FROM message_send_log");
++                statement.executeUpdate("DELETE FROM message_send_log_content");
++                try (var checkpoint = statement.executeQuery("PRAGMA wal_checkpoint(TRUNCATE)")) {
++                    if (checkpoint.next() && checkpoint.getInt(1) != 0) {
++                        throw new SQLException("retention checkpoint busy");
++                    }
++                }
++            } catch (SQLException error) {
++                throw new IllegalStateException("retention cleanup failed", error);
++            }
++        }
+         this.cleanupThread = Thread.ofPlatform().name("msl-cleanup").daemon().start(() -> {
+             try {
+                 final var interval = Duration.ofHours(1).toMillis();

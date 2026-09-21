@@ -1,5 +1,20 @@
 # Wygląd i zakres Putkin
 
+## Okna uwierzytelniania — 2026-09-20
+
+Zatwierdzone teksty i minimalistyczny układ opisuje
+[kontrakt uwierzytelniania](authentication.md). Jedna powierzchnia Mocha
+ze wspólnym gradientem oraz FadeScope, bez tooltipów. Przy odcisku sam
+glif: neutralny, czerwony lub zielony; tekst tylko dla błędu czytnika,
+bez komunikatu o niedopasowaniu odcisku.
+
+Korekta użytkownika: glif jest po prawej we wspólnej ramce przyszłego pola
+hasła, a od lewej wypełnia się pasek odliczania. Pole zachowuje dokładnie
+ten sam obszar; po timeout znika glif i pojawia się ramka fokusu oraz
+kursor do pisania. Wypełnienie używa wspólnego gradientu panelu, bez
+tekstu czasu. Ruch wypełnienia jest wskaźnikiem upływu czasu; otwarcie
+i zamknięcie pozostają przy wspólnym fade. [Semantyka](authentication.md).
+
 ## Stabilny fade — 2026-09-20
 
 Na polecenie użytkownika usuwamy opcję „Ogranicz ruch”. Jedynym przejściem
@@ -94,6 +109,28 @@ Tether ma własne jednobarwne uzupełnienie na tej samej siatce.
 Nieznane aplikacje używają `apps`.
 Zastępuje to wcześniejszy kontrakt Papirus-Dark i odcieni szarości.
 
+## Okno wiadomości — 2026-09-21
+
+Okno, szczegóły rozmowy i podgląd załącznika nie rysują własnej zewnętrznej
+ramki. Jedyną ramką okna zarządza Hyprland, zgodnie z aktywnością okna.
+Nazwa rozmowy i przycisk „Szczegóły” zajmują jeden wiersz, przycisk po prawej.
+Ustawienie znikania wiadomości znajduje się w Szczegółach.
+
+Menu ⋯ jest w prawym górnym rogu dymka, wyrównane do pierwszego wiersza
+treści. Kropki i reakcje nie mają tła ani ramki; używają kontrastowego
+koloru tekstu dymka, z obrysem tylko przy fokusie klawiatury. Reakcje są
+po lewej, a godzina i stan wiadomości po prawej we wspólnym dolnym wierszu.
+Własne wiadomości
+mają wypełnienie bieżącym akcentem oraz kontrastowy tekst, także przy
+załącznikach. Pole wpisywania zaczyna od 36 px, jak przyciski załącznika
+i wysyłania; rośnie wraz z tekstem do 144 px, potem przewija zawartość.
+
+W rozmowie załącznik pokazuje klikalną miniaturę, a bez miniatury prosty
+symbol pliku/filmu/dźwięku. Nie pokazuje nazwy, rozmiaru ani osobnych
+przycisków Podgląd/Zapisz/Otwórz. Kliknięcie lub Enter otwiera podgląd,
+w którym są nazwa, rozmiar oraz Zapisz, Otwórz i Zamknij. Escape wraca
+do miniatury. Brak dekodera nie odbiera dostępu do zapisu/otwarcia pliku.
+
 ## Ramki okien Hyprlanda — 2026-09-20
 
 Okna mają kwadratowe narożniki i ramkę 2 px, zgodnie z tokenami Shella.
@@ -142,6 +179,11 @@ Centrum przechowuje do 100 ostatnich powiadomień w pamięci sesji, także
 wygasłych, wyciszonych przez DND i oznaczonych `transient` (także VoxType).
 Po zamknięciu protokołu zachowuje tylko tekst i bezpieczną ikonę, bez
 akcji i obrazów zależnych od życia natywnego obiektu. Restart czyści historię.
+Karty wybierane przez `j/k` mają własny fokus; `Enter` i kliknięcie treści
+wykonują akcję powiadomienia. `i` oraz strzałka w nagłówku rozwijają skrócony
+tekst, `Escape` zwija go przed zamknięciem panelu. Nawigacja między kartami
+zachowuje rozwinięcie. Centrum przewija całą listę wraz z pełnym tekstem.
+Przycisk × ma grubszy symbol, bez domyślnej ramki i tła.
 
 Data decyzji: 2026-09-17. Kontrakt uwzględnia korekty użytkownika po obejrzeniu działającego shella, w tym wielkość ikon oraz oznaczenie zajętych workspace’ów. Minimalizm, zgodność z referencjami i przejścia wyłącznie przez opacity są wymaganiami, nie opcjami.
 
@@ -259,7 +301,7 @@ Wynik komendy jest widoczny w liście i wymaga Enter; samo wpisywanie nie
 zmienia pulpitu. Filtry :a/:f/:c nadal traktują zawartość jako wyszukiwanie.
 
 Korekta 2026-09-17: `Super+V` otwiera launcher z filtrem schowka,
-`Super+:` otwiera pustą treść komendy z usuwalnym chipem „Komenda”.
+`Super+;` (bez Shift) otwiera pustą treść komendy z usuwalnym chipem „Komenda”.
 Nagłówek historii nazywa się „Ostatnie”. W trybie komend dwukropek jest
 reprezentowany przez chip; wpisanie `:w3` w zwykłym launcherze działa nadal.
 Niepełne komendy, w tym `:w`, nie pokazują tekstu pomocniczego.

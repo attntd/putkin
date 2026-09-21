@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "scope": "production QML windows/SQLite/bridge; synthetic CLI; offscreen/private XDG/D-Bus; no phone/compositor",
+  "checks": [
+    "native window opens the confirmed created group and renders actual roles, permissions and profile avatar",
+    "closed-window group quick reply targets groupId, never the last author's ACI",
+    "phone membership refresh disables open composer and old notification reply; local mute preserves received history"
+  ],
+  "qmlErrors": [],
+  "remainingOwnedProcesses": []
+}

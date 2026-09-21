@@ -1,0 +1,26 @@
+bus:
+
+shell:
+  INFO: Launching config: "/home/attntd/projects/signal/signal-test.qml"
+  INFO: Shell ID: "f78faf85e9133e9fe013ea52dc060df9" Path ID "f78faf85e9133e9fe013ea52dc060df9"
+  INFO: Saving logs to "/tmp/pk-signal-qml-byz3ldsd/runtime/quickshell/by-id/fugaoudplt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO: Reloading configuration...
+  INFO: Configuration Loaded
+  INFO: Reloading configuration...
+  INFO: Configuration Loaded
+  INFO: Reloading configuration...
+  INFO: Configuration Loaded
+
+shell-quit:
+  INFO: Launching config: "/home/attntd/projects/signal/signal-test.qml"
+  INFO: Shell ID: "f78faf85e9133e9fe013ea52dc060df9" Path ID "f78faf85e9133e9fe013ea52dc060df9"
+  INFO: Saving logs to "/tmp/pk-signal-qml-byz3ldsd/runtime/quickshell/by-id/33haxudplt/log.qslog"
+  INFO: Configuration Loaded
+
+shell-term:
+  INFO: Launching config: "/home/attntd/projects/signal/signal-test.qml"
+  INFO: Shell ID: "f78faf85e9133e9fe013ea52dc060df9" Path ID "f78faf85e9133e9fe013ea52dc060df9"
+  INFO: Saving logs to "/tmp/pk-signal-qml-byz3ldsd/runtime/quickshell/by-id/y4hayudplt/log.qslog"
+  INFO: Configuration Loaded

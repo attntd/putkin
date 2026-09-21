@@ -1,0 +1,39 @@
+{
+  "stage": "S01",
+  "date": "2026-09-20",
+  "passed": true,
+  "qmlFiles": 220,
+  "signalTests": 19,
+  "installTests": 15,
+  "runtimeDiagnosticTests": 3,
+  "jvmChecks": 4,
+  "liveAccountTested": false,
+  "activated": false,
+  "nextStage": "S02",
+  "signalDocumentLinks": "PASS",
+  "sourceSha256": {
+    "shell.qml": "bf4c43b2ab12a2bde37c15c8b33a96e69747218a906964d38e73381bd11a6e1e",
+    "services/qmldir": "035192af1b2b170dd9e7e6556d117e3db97e5255a57db2cf143fbc30dbd67404",
+    "services/SignalBackend.qml": "f595a4dfa7d3550d7d5da12c1ba470354364b8b4e576d0090117689d67b1c932",
+    "services/SignalService.qml": "1ea94a5b7c0fe313fa63c594527e619eb224cc10b84c82a7e23573e64635d05d",
+    "services/signal_backend.py": "f614acb83d75238157ea139e58f6d63eb41d1a01f444f296c7702156afe1db6a",
+    "services/signal_transport.py": "764a60c7054c0225ac60292c0b1abf980229955cb6ea6338d10acd9e13da7b3c",
+    "services/signal_process.py": "ee1d5a9a53aa330cab94d9420abece1dfe749bb70019a7404664eff6360a1821",
+    "signal-test.qml": "11c8c3f5bf5d96705590e84db42ae807ea4be7162d60da55ab45414bb6f1ada4",
+    "tests/test_signal_lifecycle.py": "216c6bffc220348ecbad1e0c232b04c535b35a5ce775c6d43576c8bfa1e125c5",
+    "tests/signal_cli_fake.py": "4e211cf2113d306c8b39e4380cdc111a544a08fc7022f0a4bdfcbeafe775dfda",
+    "tests/signal_jvm_owner.py": "4e72d59349f787c896360b9f0ab9b3ad4a54e0e01b1d2fdea66ab94307f3e431",
+    "scripts/test": "2754efb6c84080233e840d8d1cc5089d652bc0477ef2b64d561d791fe5c1d581",
+    "scripts/test-signal-integration": "99c8591c4369ca6ac702f65eab532c7963e56d4c3739cbfeddca1c517ab9717d",
+    "scripts/test-signal-process": "0ffbac205749bd5fda3b51f0333a161150c3c993aeda890179017b4c74e36800"
+  },
+  "evidence": [
+    "check.log",
+    "python-tests.log",
+    "qml-integration.json",
+    "qml-integration.log",
+    "jvm-process.json",
+    "install-tests.log",
+    "runtime-tests.log"
+  ]
+}

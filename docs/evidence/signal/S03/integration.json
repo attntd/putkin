@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "scope": "synthetic Signal, offscreen QML, private XDG and D-Bus; no UWSM/account/network",
+  "checks": [
+    "production QML/backend receive event before subscription reply; UTF-8 RPC correlated",
+    "SignalService pages, one durable outbox operation, confirmed send and versioned Unicode draft",
+    "creating/destroying FloatingWindow preserves helper, receiver and subscription",
+    "two soft reloads and a hard reload: one receiver, old helper/CLI reaped, one subscription per generation",
+    "history IDs, draft and known outbox result survive every reload; repeated receive is deduplicated",
+    "idle: no subprocess starts, RPC polling or active timers",
+    "bridge SIGKILL kills CLI; QML reports failure and explicit retry recovers",
+    "actual Quickshell normal quit, SIGTERM and SIGKILL outside UWSM leave no helper or CLI"
+  ],
+  "idle": {
+    "seconds": 60,
+    "cpuTicks": {
+      "377229": 0,
+      "377243": 0
+    },
+    "newProcessesOrRequests": 0
+  },
+  "cleanup": {
+    "remainingOwnedProcesses": []
+  }
+}

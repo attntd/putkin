@@ -209,7 +209,8 @@ Item {
             keyClick(Qt.Key_J);
             keyClick(Qt.Key_K);
             keyClick(Qt.Key_L);
-            compare(field.text, "hjkl");
+            keyClick(Qt.Key_Q);
+            compare(field.text, "hjklq");
             verify(field.activeFocus);
             if (data.action === "escape") {
                 keyClick(Qt.Key_Escape);

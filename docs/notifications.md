@@ -1,10 +1,74 @@
 # Powiadomienia i DND — etap 09
 
+## Odczyt Signal — S06, 2026-09-20
+
+Własny odczyt wiadomości (aktywne okno lub read sync telefonu) wygasza
+toast dokładnego messageId i oznacza jego wpis centrum jako przeczytany,
+zachowując treść oraz routing. Starszy read nie zamyka nowszej karty.
+Nieaktualna odpowiedź IPC nie odtwarza przeczytanego toasta. Wspólny
+unread komunikatora pochodzi z SQLite; otwarcie centrum nadal zmienia
+wyłącznie sesyjny stan NotificationService. Quick reply i zamknięcie
+karty nie wysyłają read. [Kontrakt i granice API](signal/CONTRACTS.md#raporty-i-odczyt--s06).
+
+## Wewnętrzne wiadomości Signal — S05, 2026-09-20
+
+Karty własnej integracji mają Otwórz/Odpowiedz oraz dzwonek wyciszenia
+rozmowy. Reply rozwija pole w toastcie lub centrum i używa tego samego
+outboxu co okno wiadomości. Zwykłe nadejście pozostaje pasywne;
+klawiatura włącza się po Odpowiedz. Rozwinięta karta może mieć do 420 px,
+wciąż ograniczona wysokością ekranu i przewijaniem. Szkic jest osobny
+od pełnego edytora, trwały, powiązany z rozmową i UUID wysyłki.
+
+Własne karty zachowują bezpieczny deskryptor routingu także po timeout;
+żywa usługa sprawdza akcje. Jeden wpis/toast na rozmowę, zwykła pilność,
+DND, lokalne wyciszenie, ograniczenie catch-up i ukrywanie treści przy lock.
+Brak odczytów wiadomości przez akcje centrum. Zewnętrzne archiwalne karty
+nadal nie wykonują akcji; inlineReplySupported pozostaje false.
+Te zasady zastępują wcześniejszy zakaz reply **dla własnych kart Signala**.
+[Kontrakt S05](signal/CONTRACTS.md#powiadomienia--s05), [dowody](signal/STATUS.md).
+
+## Karty, rozwijanie i przewijanie — 2026-09-20
+
+Zaznaczenie i kliknięcie obejmują całą kartę, w tym ramkę, odstępy, tekst
+i obraz. Gdy treść jest ucięta, pierwsze kliknięcie lub `Enter` rozwija kartę;
+kolejne wywołuje akcję. Przy całej widocznej treści wystarcza jedno kliknięcie.
+Żywa karta wywołuje akcję `default`, a przy jej braku pierwszą dostępną akcję.
+Karta archiwalna otwiera rozpoznaną aplikację (opis poniżej).
+W centrum wykonanie akcji lub przyjęcie żądania otwarcia aplikacji usuwa
+wpis z historii i zamyka jego żywe powiadomienie, także `resident`.
+Samo rozwinięcie tekstu ani nieudane wywołanie nie usuwa wpisu.
+Karta bez akcji i rozpoznanej aplikacji pozostaje dostępna do czytania i usuwania;
+jej aktywacja nie zamyka panelu. Akcja `default` nie tworzy osobnego
+przycisku, także gdy klient Kitty przekazuje etykietę zawierającą samą spację.
+Pozostałe akcje zachowują własne przyciski, działające od razu i bez
+dodatkowego wywołania akcji karty. Bez nich karta nie rezerwuje
+wiersza akcji. Zasada dotyczy toastów i centrum powiadomień.
+Przycisk × ma grubszy symbol i domyślnie przezroczyste tło bez ramki;
+fokus jest widoczny wyłącznie podczas obsługi klawiaturą.
+
+Gdy tytuł lub treść są skrócone, w nagłówku pojawia się strzałka rozwijania.
+`i` pokazuje wszystkie linie w granicach istniejącego limitu znaków;
+`Escape` lub `q` najpierw zwija wybraną kartę, a kolejne naciśnięcie zamyka panel.
+`j/k` i strzałki góra/dół przechodzą między kartami niezależnie od rozwinięcia.
+Powrót odsłania początek karty i zachowuje jej rozwinięcie. `l` oraz `Tab`
+udostępniają przyciski rozwijania, zamknięcia i poszczególnych akcji.
+
+W centrum karty mają wysokość zawartości i korzystają ze wspólnego
+przewijania panelu, także kółkiem nad tekstem. Toasty zachowują ograniczoną
+wysokość i przewijają długą treść wewnętrznie. Rozwinięcie nie uruchamia
+akcji powiadomienia, a kliknięcie biernego toasta nie przejmuje klawiatury.
+
 ## Centrum i historia sesji — 2026-09-19
 
 Dzwonek w pasku oraz dotychczasowy skrót otwierają centrum, także gdy lista
-jest pusta. DND ma zsynchronizowane kontrolki w centrum i kafelek w Quick Menu.
-Oddzielny przycisk „Powiadomienia” z Quick Menu usunięto 2026-09-20. Obok jest przycisk „Wyczyść”; każda karta ma
+jest pusta. W jednej linii z nagłówkiem znajdują się ikony dzwonka (DND)
+i kosza (wyczyszczenie historii). Włączenie DND przekreśla dzwonek;
+stan jest zsynchronizowany z kafelkiem w Quick Menu. `h/l` i strzałki lewo/prawo
+przechodzą między ikonami. `j` / dół z każdej ikony wybiera pierwszą kartę,
+a `j/k` / dół/góra poruszają się pionowo po liście. `k` / góra z pierwszej
+karty wraca do nagłówka. Pusta lista nie przekierowuje ruchu pionowego
+na sąsiednią ikonę, a na końcach listy nawigacja się zatrzymuje.
+Oddzielny przycisk „Powiadomienia” z Quick Menu usunięto 2026-09-20. Każda karta ma
 zamknięcie, a żywe powiadomienie zachowuje dostępne akcje protokołu.
 Centrum jest pojedynczym panelem `notifications` istniejącego PanelHost,
 z klawiaturą h/j/k/l, Enter, Tab, Escape i ramką wyłącznie dla klawiatury.
@@ -14,8 +78,10 @@ Zachowuje zwykłe powiadomienia po timeout, zamknięciu toasta i wyciszeniu
 przez DND; nie odtwarza ich później jako toastów. `transient` również pozostają
 w historii (korekta 2026-09-20, zgodnie z poleceniem użytkownika). Zastąpienie żywego ID aktualizuje ten sam wpis. Każdy rekord
 ma niezależny klucz, ograniczony tekst i bezpieczną ikonę; nie przechowuje
-obiektów akcji ani obrazów natywnego providera. Po zamknięciu protokołu
-archiwalna karta nie wykonuje akcji. Clear/× w centrum usuwa wpis i zamyka
+obiektów akcji ani obrazów natywnego providera. Zachowuje identyfikator
+rozpoznanej aplikacji. Po zamknięciu protokołu archiwalna karta nie odtwarza
+wygasłej akcji (np. otwarcia konkretnej rozmowy), ale może pokazać aplikację.
+Clear/× w centrum usuwa wpis i zamyka
 jego żywy obiekt, jeśli nadal istnieje. Restart/reload czyści całą historię.
 
 Limity 3 widocznych i 12 oczekujących toastów nadal dotyczą żywych
@@ -23,6 +89,15 @@ obiektów protokołu. Historia jest osobnym, ograniczonym zbiorem kopii.
 Nie ogłaszamy protokołowego persistence i nie zapisujemy treści na dysku.
 Otwarte centrum zastępuje widok toastów na swoim monitorze; inne ekrany
 zachowują ich normalne zachowanie. Błędy Putkina omijają DND.
+
+`NotificationApplicationService` rozpoznaje `desktop-entry` lub jednoznaczną,
+dokładną nazwę z katalogu zainstalowanych aplikacji. Kliknięcie archiwalnego
+wpisu, np. Signala, ustawia fokus na istniejącym oknie i jego workspace.
+Jeśli okna nie ma, wykonuje zainstalowany `DesktopEntry` i czeka najwyżej 5 s
+na pasujące okno, reagując na zmiany modelu zamiast odpytywania w pętli.
+Dopasowanie używa ID i `StartupWMClass`, bez tytułu okna. Nieznana aplikacja
+nie jest uruchamiana. Żywe akcje klienta pozostają obsługiwane przez protokół.
+API: [DesktopEntry](https://quickshell.org/docs/v0.3.1/types/Quickshell/DesktopEntry/).
 
 
 Aktualizacja wyglądu 2026-09-16: obowiązuje [skorygowany kontrakt UI](design.md).
@@ -61,9 +136,10 @@ systemowych ani wykonywania treści nadawcy.
 | Soft/hard reload | `keepOnReload=false`: stare obiekty wygasają, widoki i obserwator są zwalniane. DND wraca do **wyłączonego**; treści nie są odtwarzane. |
 
 Klient może rozłączyć i ponownie nawiązać połączenie D-Bus. Zachowane ID
-pozostaje użyteczne do zastąpienia lub zamknięcia. Putkin wywołuje tylko
-akcję istniejącą w natywnym obiekcie; nie uruchamia aplikacji na podstawie
-nazwy, body, desktop-entry lub URI.
+pozostaje użyteczne do zastąpienia lub zamknięcia. Putkin wywołuje wyłącznie
+akcje istniejące w żywym natywnym obiekcie. Archiwalne wpisy używają osobno
+rozpoznanego identyfikatora z lokalnego katalogu aplikacji; treść i URI
+powiadomienia nie są wykonywane.
 
 ## Limity i wygląd
 
@@ -84,7 +160,8 @@ pozostaje widoczny podczas przewijania. Czas pochodzi z nadejścia/aktualizacji;
 nie uruchamia zegara sekundowego.
 
 UI ogranicza aplikację do 128 znaków, tytuł do 512 i trzech linii, treść do
-4096 i sześciu linii; tekst kończy się wielokropkiem. Teksty nadawcy, także
+4096 i sześciu linii w widoku zwiniętym; tekst kończy się wielokropkiem.
+Rozwinięcie usuwa ograniczenie liczby linii. Teksty nadawcy, także
 etykiety akcji i tooltipy, są `PlainText`. Nie ma HTML, klikanych linków,
 inline replies, dźwięku ani ikon akcji. Najwyżej osiem pierwszych akcji;
 identyfikator do 256 znaków i etykieta do 128. `inline-reply` jest pomijane.
@@ -120,7 +197,7 @@ liter w polach innych widoków. Wewnętrzny NotificationFocus.enter nadal
 obsługuje bezpośrednią nawigację toastów i jej testy. Usunięcie wybranej
 karty lub akcji przywraca poprawny fokus z zachowaniem mysz/klawiatura.
 
-Escape, kliknięcie poza grabem, otwarcie panelu, wejście na pasek lub utrata
+Escape przy zwiniętej karcie, kliknięcie poza grabem, otwarcie panelu, wejście na pasek lub utrata
 monitorowanych toastów zwalnia klawiaturę. Przed wywołaniem akcji kontroler
 kończy nawigację, pozwalając klientowi skupić własne okno. Gdy panel zasłania
 prawy górny róg tego samego monitora, okno toastów jest zwolnione; czas nadal

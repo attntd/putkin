@@ -247,6 +247,61 @@ Item {
                 keyClick(Qt.Key_Return); compare(caffeinate.mode, "background");
             }
         }
+        function test_collapse_keeps_top_row_stationary_data() {
+            return [
+                {tag: "audio", toggle: "audioOutputs"},
+                {tag: "brightness", toggle: "brightnessDetails"},
+                {tag: "caffeinate", toggle: "caffeinateToggle", button: Qt.RightButton},
+                {tag: "caffeinate-select", toggle: "caffeinateToggle", button: Qt.RightButton, selectMode: true},
+                {tag: "nightLight", toggle: "nightLightToggle", initiallyOpen: true}
+            ];
+        }
+        function test_collapse_keeps_top_row_stationary(data) {
+            open();
+            const panel = preview.panelHost.window;
+            tryCompare(panel, "opacity", 1);
+            const row = control("audioRow");
+            const top = row.mapToItem(panel, 0, 0).y;
+            if (!data.initiallyOpen) mouseClick(control(data.toggle), undefined, undefined, data.button || Qt.LeftButton);
+            wait(Metrics.panelFade + 100);
+            compare(row.mapToItem(panel, 0, 0).y, top);
+            if (data.selectMode) mouseClick(control("caffeinateMode-background"));
+            else mouseClick(control(data.toggle), undefined, undefined, data.button || Qt.LeftButton);
+            const samples = [];
+            for (let i = 0; i < 60; ++i) {
+                wait(8);
+                samples.push({top: row.mapToItem(panel, 0, 0).y,
+                    footer: control("settingsButton").mapToItem(panel, 0, 0).y,
+                    height: panel.height, contentY: panel.viewport.contentY,
+                    contentHeight: panel.viewport.contentHeight, viewportHeight: panel.viewport.height});
+            }
+            verify(samples.every(sample => Math.abs(sample.top - top) < 0.01), JSON.stringify(samples));
+            const finalFooter = samples[samples.length - 1].footer;
+            verify(samples.every(sample => sample.footer >= finalFooter), JSON.stringify(samples));
+        }
+        function test_caffeinate_collapse_keeps_scroll_in_bounds_data() {
+            return [220, 480, 768].map(height => ({tag: String(height), height: height}));
+        }
+        function test_caffeinate_collapse_keeps_scroll_in_bounds(data) {
+            scene.height = data.height;
+            open();
+            const panel = preview.panelHost.window;
+            tryCompare(panel, "opacity", 1);
+            control("caffeinateToggle").forceActiveFocus(Qt.TabFocusReason);
+            keyClick(Qt.Key_I);
+            keyClick(Qt.Key_J);
+            keyClick(Qt.Key_J);
+            verify(control("caffeinateMode-background").activeFocus);
+            wait(Metrics.panelFade + 100);
+            keyClick(Qt.Key_Return);
+            const samples = [];
+            for (let i = 0; i < 60; ++i) {
+                wait(8);
+                samples.push({contentY: panel.viewport.contentY,
+                    limit: Math.max(0, panel.viewport.contentHeight - panel.viewport.height)});
+            }
+            verify(samples.every(sample => sample.contentY >= 0 && sample.contentY <= sample.limit), JSON.stringify(samples));
+        }
         function test_distinct_audio_names_follow_device_not_default() {
             const nodes = ["Speaker", "Headphones", "HDMI1", "HDMI2", "HDMI3"].map(kind => createTemporaryObject(nodeComponent, scene, {
                 name: "alsa_output.pci-0000_00_1f.3-platform-sof_sdw.HiFi__" + kind + "__sink",
@@ -362,7 +417,8 @@ Item {
             compare(notices.history.length, 3);
             open("notifications");
             compare(preview.panelHost.window.page.cards.count, 3);
-            keyClick(Qt.Key_J); verify(preview.panelHost.window.page.cardAt(0).closeControl.activeFocus);
+            keyClick(Qt.Key_J); verify(preview.panelHost.window.page.cardAt(0).selectionControl.activeFocus);
+            keyClick(Qt.Key_L); verify(preview.panelHost.window.page.cardAt(0).closeControl.activeFocus);
             keyClick(Qt.Key_Return); compare(notices.history.length, 2);
             control("notificationClear").forceActiveFocus(Qt.TabFocusReason); keyClick(Qt.Key_Return);
             compare(notices.history.length, 0); compare(preview.panelHost.window.page.cards.count, 0);

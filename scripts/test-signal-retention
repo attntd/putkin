@@ -1,0 +1,159 @@
+#!/usr/bin/env python3
+"""S09 retention QML windows/SQLite/bridge with synthetic CLI and private XDG/D-Bus."""
+import argparse
+from contextlib import closing
+import ctypes
+import json
+from pathlib import Path
+import sqlite3
+import subprocess
+import sys
+import tempfile
+import time
+import traceback
+
+from _common import ROOT, ipc_json, ipc_reply, isolated_environment, qml_errors, runtime_log, stop_process_group, tool
+sys.path.insert(0, str(ROOT / "tests"))
+from test_signal_history import event, send_result
+from test_signal_interactions import edit, reaction, typing
+from test_signal_retention import disappearing, deletion
+from test_signal_lifecycle import gone
+
+
+def eventually(read, predicate, seconds=15):
+    deadline = time.monotonic() + seconds
+    value = None
+    while time.monotonic() < deadline:
+        value = read()
+        if predicate(value):
+            return value
+        time.sleep(.04)
+    raise AssertionError("Receipt condition timed out: " + str(value))
+
+
+def run(output):
+    output.parent.mkdir(parents=True, exist_ok=True)
+    report = {"passed": False, "scope": "production QML windows/SQLite/bridge; synthetic CLI; offscreen/private XDG/D-Bus; no phone/compositor", "checks": []}
+    ctypes.CDLL(None).prctl(36, 1, 0, 0, 0)
+    with tempfile.TemporaryDirectory(prefix="pk-s09-") as tmp:
+        base = Path(tmp)
+        env = isolated_environment(tmp)
+        env["QS_NO_RELOAD_POPUP"] = "1"
+        address = "unix:path=" + str(base / "bus")
+        env["DBUS_SESSION_BUS_ADDRESS"] = address
+        fixture, record = base / "fixture.json", base / "processes.jsonl"
+        stamp = int(time.time() * 1000) - 10000
+        fixture.write_text(json.dumps({"format": 1, "synthetic": True, "record": str(record), "receiveEvents": [], "readReceipts": False,
+            "interactionTimestamp": stamp + 5000, "sendResult": send_result(stamp + 6000),
+            "contacts": [{"number": "+12025550100", "uuid": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", "messageExpirationTime": 0},
+                         {"number": "+12025550101", "uuid": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb", "name": "Alicja", "messageExpirationTime": 0}]}))
+        config = Path(env["XDG_CONFIG_HOME"]) / "putkin"
+        config.mkdir(mode=0o700)
+        (config / "signal.json").write_text(json.dumps({"v": 1, "enabled": True, "deviceName": "Putkin", "typingIndicators": True}))
+        (config / "signal.json").chmod(0o600)
+        env["PUTKIN_SIGNAL_TEST_SCENARIO"] = str(fixture)
+        entrypoint = str(ROOT / "signal-retention-test.qml")
+        processes, logs, helpers = [], [], set()
+        def start(cmd, name):
+            log = (base / (name + ".log")).open("w+")
+            logs.append((name, log))
+            process = subprocess.Popen(cmd, env=env, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+            processes.append(process)
+            return process
+        def ipc(method, *args):
+            result = subprocess.run([tool("quickshell"), "ipc", "--path", entrypoint, "call", "probe", method, *map(str, args)],
+                env=env, capture_output=True, text=True, timeout=5)
+            return ipc_reply(result, shell, logs, starting=method == "snapshot")
+        def snapshot():
+            value = ipc_json(ipc("snapshot"))
+            if value.get("pid"): helpers.add(value["pid"])
+            return value
+        def records(kind):
+            return [v for v in map(json.loads, record.read_text().splitlines()) if v["kind"] == kind] if record.exists() else []
+        def query(sql):
+            with closing(sqlite3.connect(Path(env["XDG_DATA_HOME"]) / "putkin/signal/history.sqlite3")) as db:
+                return db.execute(sql).fetchall()
+        def receive(wire):
+            ipc("receive", json.dumps(wire))
+        def assert_no_receipts(count):
+            time.sleep(.6)
+            assert len(records("receipt")) == count, records("receipt")
+        try:
+            start([tool("dbus-daemon"), "--session", "--nofork", "--address=" + address], "bus")
+            eventually(lambda: (base / "bus").exists(), bool)
+            shell = start([tool("quickshell"), "--no-color", "--path", entrypoint], "shell")
+            ready = eventually(snapshot, lambda v: v.get("state") == "ready")
+            receive(event(timestamp=stamp, body="Lokalne usunięcie S09"))
+            eventually(snapshot, lambda v: len(v.get("history", [])) == 1)
+            assert ipc("select", 0) == "true"
+            value = eventually(snapshot, lambda v: v.get("draftReady") and v.get("count") == 1 and not v.get("pending"))
+            mid = value["rows"][0]["messageId"]
+            ipc("actions", mid)
+            assert ipc("capture", str(output.with_name("delete-actions.png"))) == "true"
+            eventually(snapshot, lambda v: v.get("captured"))
+            assert ipc("remove", mid, "local") == "true"
+            eventually(snapshot, lambda v: v.get("count") == 0 and len(v.get("history", [])) == 0 and not v.get("pending"))
+            assert not records("delete")
+            receive(event(timestamp=stamp, body="Lokalne usunięcie S09"))
+            receive(edit(stamp, stamp + 1000, "Spóźniona treść S09"))
+            eventually(snapshot, lambda v: not v.get("pending"))
+            assert query("SELECT COUNT(*) FROM messages WHERE body IS NOT NULL")[0][0] == 0
+            report["checks"].append("local deletion clears native history and notification center; no remoteDelete; replay/edit cannot restore content")
+            receive(event("sent-sync", timestamp=stamp + 2000, body="Własna wiadomość S09"))
+            value = eventually(snapshot, lambda v: v.get("count") == 1 and not v.get("pending"))
+            own = value["rows"][0]
+            assert own["canDeleteRemote"]
+            assert ipc("remove", own["messageId"], "everyone") == "true"
+            eventually(snapshot, lambda v: v.get("count") == 0 and len(records("delete")) == 1 and not v.get("pending"))
+            assert records("delete")[0]["params"]["targetTimestamp"] == stamp + 2000
+            report["checks"].append("native everyone action uses durable shared queue and exact remoteDelete RPC")
+            ipc("expiration", 30)
+            eventually(snapshot, lambda v: v.get("selectedConversation", {}).get("expirationSeconds") == 30 and not v.get("pending"))
+            assert records("expiration")[0]["params"]["expiration"] == 30
+            ipc("expiration", 0)
+            eventually(snapshot, lambda v: v.get("selectedConversation", {}).get("expirationSeconds") == 0 and not v.get("pending"))
+            ipc("close")
+            eventually(snapshot, lambda v: not v.get("loaded"))
+            clock = int(time.time() * 1000)
+            receive(disappearing(stamp=clock, seconds=2, body="Wygasająca treść S09"))
+            eventually(snapshot, lambda v: len(v.get("history", [])) == 1 and not v.get("pending"))
+            assert query("SELECT expiration_start_ms FROM messages WHERE body='Wygasająca treść S09'")[0][0] is None
+            assert ipc("select", 0) == "true"
+            ipc("activate")
+            eventually(lambda: query("SELECT expiration_start_ms FROM messages WHERE body='Wygasająca treść S09'"), lambda rows: rows and rows[0][0] is not None)
+            # Only the database and snapshot are observed. No cleanup RPC.
+            eventually(lambda: query("SELECT COUNT(*) FROM messages WHERE body='Wygasająca treść S09'")[0][0], lambda n: n == 0)
+            eventually(snapshot, lambda v: len(v.get("history", [])) == 0 and not v.get("pending"))
+            report["checks"].append("unread incoming content waits for native visible-read; one deadline removes content and notification without polling requests")
+            clock = int(time.time() * 1000)
+            receive(disappearing(phone=True, stamp=clock, start=clock, seconds=2, body="Restart po terminie S09"))
+            eventually(lambda: query("SELECT COUNT(*) FROM messages WHERE body='Restart po terminie S09'")[0][0], lambda n: n == 1)
+            ipc("quit"); shell.wait(timeout=8)
+            time.sleep(2.1)
+            shell = start([tool("quickshell"), "--no-color", "--path", entrypoint], "shell-restart")
+            eventually(snapshot, lambda v: v.get("state") == "ready")
+            assert query("SELECT COUNT(*) FROM messages WHERE body IS NOT NULL")[0][0] == 0
+            assert len(records("delete")) == 1
+            report["checks"].append("shell-off deadline is applied before startup history; no resend and no surviving owned processes")
+            ipc("quit"); shell.wait(timeout=8)
+            report["passed"] = True
+        except (OSError, AssertionError, subprocess.SubprocessError) as error:
+            report["failure"] = traceback.format_exc()
+        finally:
+            for process in reversed(processes): stop_process_group(process)
+            remaining = [pid for pid in helpers | {v["pid"] for v in records("start")} if not gone(pid)]
+            combined = runtime_log(logs)
+            output.with_suffix(".log").write_text(combined)
+            report["qmlErrors"] = qml_errors(combined, allow_offscreen_masks=True)
+            report["remainingOwnedProcesses"] = remaining
+            if remaining or report["qmlErrors"]: report["passed"] = False
+            for _, log in logs: log.close()
+    output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
+    print(json.dumps(report, ensure_ascii=False, indent=2))
+    return int(not report["passed"])
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, default=ROOT / "artifacts/signal-s09/retention.json")
+    raise SystemExit(run(parser.parse_args().output.resolve()))

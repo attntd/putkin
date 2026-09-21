@@ -1,0 +1,5 @@
+FAIL [imports/types, exit=255] /home/attntd/projects/signal/modules/messages/MediaPreview.qml
+Warning: /home/attntd/projects/signal/modules/messages/MediaPreview.qml:17:63: Member "fadeDuration" not found on type "Metrics" [missing-property]
+    Behavior on opacity { NumberAnimation { duration: Metrics.fadeDuration; easing.type: Easing.InOutQuad } }
+                                                              ^^^^^^^^^^^^
+FAIL: 7 plików QML, 1 z błędami.

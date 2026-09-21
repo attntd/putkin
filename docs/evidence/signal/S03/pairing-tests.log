@@ -1,0 +1,15 @@
+test_cancel_reaps_attempt_stale_cancel_and_retry (test_signal_pairing.PairingTests.test_cancel_reaps_attempt_stale_cancel_and_retry) ... ok
+test_config_validation_preserves_previous_file_and_rejects_symlink (test_signal_pairing.PairingTests.test_config_validation_preserves_previous_file_and_rejects_symlink) ... ok
+test_disable_persists_and_history_deletion_is_separate (test_signal_pairing.PairingTests.test_disable_persists_and_history_deletion_is_separate) ... ok
+test_lost_finish_reply_reconciles_persisted_account (test_signal_pairing.PairingTests.test_lost_finish_reply_reconciles_persisted_account) ... ok
+test_process_restart_during_pairing_requires_fresh_attempt (test_signal_pairing.PairingTests.test_process_restart_during_pairing_requires_fresh_attempt) ... ok
+test_qr_roundtrip_independent_decoder_and_missing_library (test_signal_pairing.PairingTests.test_qr_roundtrip_independent_decoder_and_missing_library) ... ok
+test_revoked_account_refresh_preserves_history_and_stops_receiver (test_signal_pairing.PairingTests.test_revoked_account_refresh_preserves_history_and_stops_receiver) ... ok
+test_success_double_click_directory_and_restart_without_repairing (test_signal_pairing.PairingTests.test_success_double_click_directory_and_restart_without_repairing) ... ok
+test_timeout_clears_secret_reconciles_and_does_not_automatically_retry_link (test_signal_pairing.PairingTests.test_timeout_clears_secret_reconciles_and_does_not_automatically_retry_link) ... ok
+test_transport_failure_preserves_linked_identity (test_signal_pairing.PairingTests.test_transport_failure_preserves_linked_identity) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 16.637s
+
+OK

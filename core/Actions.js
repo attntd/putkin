@@ -4,8 +4,9 @@
 var catalog = [
     {id: "launcher", title: "Launcher", group: "Shell", shortcut: "SUPER + SPACE"},
     {id: "clipboard", title: "Schowek", group: "Shell", shortcut: "SUPER + V"},
-    {id: "commands", title: "Launcher komend", group: "Shell", shortcut: "SUPER + SHIFT + semicolon"},
-    {id: "settings", title: "Ustawienia", group: "Shell"},
+    {id: "commands", title: "Launcher komend", group: "Shell", shortcut: "SUPER + semicolon"},
+    {id: "messages", title: "Wiadomości", group: "Shell", command: ":messages"},
+    {id: "settings", title: "Ustawienia", group: "Shell", command: ":settings"},
     {id: "quickSettings", title: "Szybkie ustawienia", group: "Shell", shortcut: "SUPER + SHIFT + Q"},
     {id: "audio", title: "Panel dźwięku", group: "Shell"},
     {id: "battery", title: "Panel baterii", group: "Shell"},
@@ -19,8 +20,16 @@ var catalog = [
     {id: "micMute", title: "Wyciszenie mikrofonu", group: "Dźwięk"},
     {id: "brightnessUp", title: "Jaśniej", group: "Ekran"},
     {id: "brightnessDown", title: "Ciemniej", group: "Ekran"},
+    {id: "powersaver", title: "Tryb oszczędny", group: "Zasilanie", command: ":powersaver"},
+    {id: "balanced", title: "Tryb zrównoważony", group: "Zasilanie", command: ":balanced"},
+    {id: "performance", title: "Tryb wydajności", group: "Zasilanie", command: ":performance"},
     {id: "power", title: "Menu zasilania", group: "Sesja", shortcut: "SUPER + SHIFT + P"},
-    {id: "lock", title: "Zablokuj ekran", group: "Sesja"},
+    {id: "lock", title: "Zablokuj ekran", group: "Sesja", command: ":lock"},
+    {id: "shutdown", title: "Wyłącz komputer", group: "Sesja", command: ":shutdown", aliasOf: "poweroff"},
+    {id: "poweroff", title: "Wyłącz komputer", group: "Sesja", command: ":poweroff"},
+    {id: "sleep", title: "Uśpij", group: "Sesja", command: ":sleep"},
+    {id: "hibernate", title: "Hibernuj", group: "Sesja", command: ":hibernate"},
+    {id: "reboot", title: "Uruchom ponownie", group: "Sesja", command: ":reboot"},
     {id: "closeWindow", title: "Zamknij okno", group: "Hyprland"},
     {id: "floating", title: "Przełącz pływające okno", group: "Hyprland"},
     {id: "fullscreen", title: "Przełącz pełny ekran", group: "Hyprland"},
@@ -81,17 +90,57 @@ function problem(rows) {
     return "";
 }
 function normalize(rows) { return rows.map(row => ({action: row.action, shortcut: shortcut(row.shortcut), command: row.command.toLowerCase()})); }
+function completeCatalog(rows, actions) {
+    return Array.isArray(rows) && rows.length === actions.length
+        && actions.every(action => rows.filter(row => row && row.action === action.id).length === 1);
+}
 function parse(text) {
     let value;
     try { value = JSON.parse(text); } catch (_) { return {error: "Niepoprawny JSON ustawień klawiatury."}; }
     if (!value || value.schemaVersion !== 1 || Object.keys(value).some(key => ["schemaVersion", "bindings"].indexOf(key) < 0))
         return {error: "Nieobsługiwana wersja lub opcje ustawień klawiatury."};
-    // Upgrade exactly the previous complete catalog, preserving user edits.
-    // A truncated or unknown catalog still fails normal validation.
-    if (Array.isArray(value.bindings) && value.bindings.length === catalog.length - 1
-            && !value.bindings.some(row => row && row.action === "screenshot")) {
+    // Upgrade complete catalogs from before the session commands, with or
+    // without screenshot. Never fill arbitrary holes in a damaged catalog.
+    // Migrate complete pre-messaging catalogs through the existing steps.
+    const hasMessages = Array.isArray(value.bindings) && value.bindings.some(row => row && row.action === "messages");
+    const legacyCatalog = hasMessages ? catalog : catalog.filter(action => action.id !== "messages");
+    const profiles = ["powersaver", "balanced", "performance"];
+    const previousCatalog = legacyCatalog.filter(action => profiles.indexOf(action.id) < 0);
+    const sessionCatalog = Array.isArray(value.bindings) && value.bindings.some(row => row && profiles.indexOf(row.action) >= 0)
+        ? legacyCatalog : previousCatalog;
+    const added = ["shutdown", "poweroff", "sleep", "hibernate", "reboot"];
+    if (Array.isArray(value.bindings) && !value.bindings.some(row => row && added.indexOf(row.action) >= 0)) {
+        const legacy = sessionCatalog.filter(action => added.indexOf(action.id) < 0
+            && (action.id !== "screenshot" || value.bindings.some(row => row && row.action === "screenshot")));
+        if (completeCatalog(value.bindings, legacy)) {
+            const usedCommands = value.bindings.map(row => typeof row.command === "string" ? row.command.toLowerCase() : "");
+            const usedShortcuts = value.bindings.filter(row => row.action !== "commands").map(row => shortcut(row.shortcut));
+            value.bindings = value.bindings.map(row => {
+                if (row.action === "commands" && shortcut(row.shortcut) === "SUPER + SHIFT + semicolon"
+                        && usedShortcuts.indexOf("SUPER + semicolon") < 0)
+                    return Object.assign({}, row, {shortcut: find("commands").shortcut});
+                if ((row.action === "settings" || row.action === "lock") && row.command === ""
+                        && usedCommands.indexOf(find(row.action).command) < 0)
+                    return Object.assign({}, row, {command: find(row.action).command});
+                return row;
+            }).concat(defaults().filter(row => added.indexOf(row.action) >= 0).map(row =>
+                usedCommands.indexOf(row.command) < 0 ? row : Object.assign({}, row, {command: ""})));
+        }
+    }
+    // The oldest complete catalog also predates screenshot.
+    if (completeCatalog(value.bindings, sessionCatalog.filter(action => action.id !== "screenshot"))) {
         const action = find("screenshot");
         value.bindings = value.bindings.concat([{action: action.id, shortcut: action.shortcut, command: action.command}]);
+    }
+    // Add profile commands only to a complete previous catalog. Existing aliases win.
+    if (completeCatalog(value.bindings, previousCatalog)) {
+        const usedCommands = value.bindings.map(row => typeof row.command === "string" ? row.command.toLowerCase() : "");
+        value.bindings = value.bindings.concat(defaults().filter(row => profiles.indexOf(row.action) >= 0).map(row =>
+            usedCommands.indexOf(row.command) < 0 ? row : Object.assign({}, row, {command: ""})));
+    }
+    if (!hasMessages && completeCatalog(value.bindings, legacyCatalog)) {
+        const used = value.bindings.some(row => typeof row.command === "string" && row.command.toLowerCase() === ":messages");
+        value.bindings = value.bindings.concat([{action: "messages", shortcut: "", command: used ? "" : ":messages"}]);
     }
     const error = problem(value.bindings);
     return error ? {error: error} : {value: normalize(value.bindings)};

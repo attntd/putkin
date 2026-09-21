@@ -1,0 +1,8 @@
+FAIL [imports/types, exit=255] /home/attntd/projects/signal/modules/notifications/NotificationCard.qml
+Warning: /home/attntd/projects/signal/modules/notifications/NotificationCard.qml:206:25: Duplicate binding on property 'leftTarget' [duplicate-property-binding]
+            leftTarget: mute.visible ? mute : null
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+Warning: /home/attntd/projects/signal/modules/notifications/NotificationCard.qml:204:25: Note: previous binding on 'leftTarget' here [duplicate-property-binding]
+            leftTarget: expand.visible ? expand : mute.visible ? mute : selection
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FAIL: 8 plików QML, 1 z błędami.

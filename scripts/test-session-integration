@@ -84,6 +84,27 @@ def run(output, idle=False):
             assert not settled()["error"] and events() == [["suspendThenHibernate", True]]
             check("automatic sleep preserves SuspendThenHibernate after secure confirmation")
             release(); fixture.Clear()
+            assert ipc("probe", "request", "hibernate") == "true"
+            pending = state(); assert pending["locked"] and pending["hold"] and not pending["secure"]
+            assert not events()
+            ipc("probe", "stale", pending["token"] - 1)
+            assert state()["busy"] and not events()
+            ipc("probe", "confirm")
+            assert not settled()["error"] and events() == [["hibernate", True]]
+            check("manual hibernate waits for current secure confirmation and calls Hibernate once")
+            release(); fixture.Clear()
+            ipc("probe", "request", "hibernate")
+            assert "Nie potwierdzono" in settled()["error"]
+            ipc("probe", "confirm"); time.sleep(.08)
+            assert not events()
+            fixture.Capability("hibernate", "na"); ipc("probe", "refresh")
+            eventually(state, lambda s: not s["capabilities"]["hibernate"]["available"], "hibernate unavailable")
+            assert ipc("probe", "request", "hibernate") == "false" and not events()
+            assert state()["capabilities"]["suspend"]["available"]
+            fixture.Capability("hibernate", "yes"); ipc("probe", "refresh")
+            eventually(state, lambda s: s["capabilities"]["hibernate"]["available"], "hibernate available")
+            check("hibernate timeout and unsupported capability do not dispatch or disable suspend")
+            release(); fixture.Clear()
             ipc("probe", "request", "suspend")
             assert "Nie potwierdzono" in settled()["error"]
             ipc("probe", "confirm"); time.sleep(.08)

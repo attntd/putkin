@@ -14,7 +14,7 @@ QtObject {
     property string text: ""
     property string chipMode: ""
     readonly property var parsed: Query.parse(text)
-    readonly property string mode: chipMode || (Query.workspaceInput(text) ? "" : parsed.mode)
+    readonly property string mode: chipMode || (parsed.committed ? parsed.mode : "")
     readonly property string query: chipMode ? text.trim() : parsed.query
     readonly property bool commandInput: chipMode === "command" || (!mode && text.trim().startsWith(":"))
     readonly property string commandText: chipMode === "command" ? ":" + text.replace(/^:/, "") : text
@@ -60,13 +60,10 @@ QtObject {
     }
 
     function commandResults(): var {
-        if (!command) {
-            const configured = keyboard ? keyboard.command(commandText) : null;
-            return configured ? [configured] : [];
-        }
+        if (!command) return keyboard ? keyboard.commandMatches(commandText) : [];
         return [Object.assign({}, command, {
             title: (command.action === "move" ? qsTr("Przenieś okno do workspace %1") : qsTr("Przejdź do workspace %1")).arg(command.workspaceId),
-            subtitle: command.id, icon: ""
+            subtitle: "", icon: ""
         })];
     }
     function edit(value: string): void {
@@ -115,8 +112,8 @@ QtObject {
     function activate(entry: var): bool {
         if (!entry || !active || busy) return false;
         if (entry.kind === "configuredCommand") {
-            const current = keyboard ? keyboard.command(commandText) : null;
-            if (!commandInput || !current || current.action !== entry.action || current.id !== entry.id || !actions) return false;
+            if (!commandInput || !actions || !results.some(current => current.kind === entry.kind
+                && current.action === entry.action && current.id === entry.id)) return false;
             const accepted = actions.invoke(entry.action, commandWindow, commandMonitor);
             if (accepted) activated();
             else lastError = actions.lastError;

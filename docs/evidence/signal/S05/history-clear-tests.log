@@ -1,0 +1,6 @@
+test_disable_persists_and_history_deletion_is_separate (test_signal_pairing.PairingTests.test_disable_persists_and_history_deletion_is_separate) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 1.410s
+
+OK

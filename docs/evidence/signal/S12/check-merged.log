@@ -1,0 +1,9 @@
+FAIL [imports/types, exit=255] /home/attntd/projects/signal/signal-acceptance-test.qml
+Warning: /home/attntd/projects/signal/signal-acceptance-test.qml:44:92: Could not find property "maximumHeight". [missing-property]
+        NotificationCenter { id: centerView; anchors.fill: parent; service: notifications; maximumHeight: 680 }
+                                                                                           ^^^^^^^^^^^^^
+FAIL [imports/types, exit=255] /home/attntd/projects/signal/signal-notifications-test.qml
+Warning: /home/attntd/projects/signal/signal-notifications-test.qml:36:91: Could not find property "maximumHeight". [missing-property]
+            NotificationCenter { id: center; width: parent.width; service: notifications; maximumHeight: window.height - 24 }
+                                                                                          ^^^^^^^^^^^^^
+FAIL: 271 plików QML, 2 z błędami.

@@ -71,7 +71,10 @@ Item {
             backend.settle(false, "Odmowa");
             compare(service.lastError, "Odmowa");
         }
-        function test_escape_returns_to_menu_then_bar() {
+        function test_escape_returns_to_menu_then_bar_data() {
+            return [{tag: "escape", key: Qt.Key_Escape}, {tag: "q", key: Qt.Key_Q}];
+        }
+        function test_escape_returns_to_menu_then_bar(data) {
             preview.barController.focusBar();
             preview.bar.focusQuickSettings();
             const invoker = findChild(preview.bar, "quickSettingsButton");
@@ -79,9 +82,9 @@ Item {
             tryCompare(preview.panelHost, "loaded", true);
             keyClick(Qt.Key_Return);
             tryVerify(() => control("powerCancel").activeFocus);
-            keyClick(Qt.Key_Escape);
+            keyClick(data.key);
             compare(preview.coordinator.activeId, "power"); compare(backend.calls.length, 0);
-            keyClick(Qt.Key_Escape);
+            keyClick(data.key);
             tryCompare(preview.panelHost, "loaded", false);
             compare(preview.barController.screenName, "TEST-1");
         }

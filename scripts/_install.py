@@ -45,7 +45,7 @@ def manifest(root):
 
 
 def source_files(root):
-    selected = [root / "shell.qml", root / "scripts/lock-session"]
+    selected = [root / "shell.qml", root / "scripts/lock-session", root / "scripts/ssh-askpass"]
     for directory in RUNTIME_DIRS:
         base = root / directory
         if not base.is_dir() or base.is_symlink():
@@ -111,6 +111,9 @@ def verify(build):
     record = json.loads((build / MARKER).read_text())
     if record.get("format") != 1 or manifest(build) != record.get("files"):
         raise ValueError(f"Uszkodzona paczka: {build}")
+    if (build / "services/SignalBackend.qml").exists():
+        from _signal_install import runtime
+        runtime(build, build / "dependencies/signal")
 
 
 def validate(stage):
@@ -119,8 +122,16 @@ def validate(stage):
         compile(path.read_bytes(), str(path), "exec")
 
 
-def prepare(store, source=ROOT):
+def prepare(store, source=ROOT, signal_runtime=None):
     expected = source_files(source)
+    origins = {name: source / name for name in expected}
+    if (source / "services/SignalBackend.qml").exists():
+        from _signal_install import runtime
+        signal_runtime, _ = runtime(source, signal_runtime)
+        for name, checksum in manifest(signal_runtime).items():
+            relative = "dependencies/signal/" + name
+            expected[relative] = checksum
+            origins[relative] = signal_runtime / name
     for build in releases(store):
         if manifest(build) == expected:
             validate(build)
@@ -137,7 +148,7 @@ def prepare(store, source=ROOT):
         for relative in expected:
             target = stage / relative
             target.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(source / relative, target)
+            shutil.copy2(origins[relative], target)
         if manifest(stage) != expected:
             raise ValueError("Źródła zmieniły się podczas kopiowania; paczka nie została opublikowana.")
         validate(stage)
@@ -312,11 +323,27 @@ class Session:
             state = json.loads(result)
             return state if state["idle"]["ready"] and state["capabilities"]["lock"]["available"] else False
         until(ready)
-        owner = json.loads(run(["busctl", "--user", "--json=short", "call", "org.freedesktop.DBus",
-                               "/org/freedesktop/DBus", "org.freedesktop.DBus", "GetConnectionUnixProcessID",
-                               "s", "org.freedesktop.Notifications"]))["data"][0]
-        if owner != instance["pid"] or len(instances()) != 1:
-            raise RuntimeError("Konflikt instancji lub właściciela powiadomień.")
+        if (Path(entry).resolve().parent / "services/SignalIpc.qml").exists():
+            def signal_ready():
+                output = self.ipc(entry, "signal", "status")
+                state = json.loads(output)
+                if state["state"] == "failed":
+                    raise RuntimeError("Signal: " + state["errorCode"])
+                return state["state"] in ("idle", "disabled", "ready")
+            until(signal_ready)
+        def notifications_ready():
+            # Lock/idle readiness can precede the notification watcher and
+            # server. A missing D-Bus name during that startup is not a conflict.
+            result = run(["busctl", "--user", "--json=short", "call", "org.freedesktop.DBus",
+                          "/org/freedesktop/DBus", "org.freedesktop.DBus", "GetConnectionUnixProcessID",
+                          "s", "org.freedesktop.Notifications"], check=False)
+            if not result:
+                return False
+            owner = json.loads(result)["data"][0]
+            if owner != instance["pid"] or len(instances()) != 1:
+                raise RuntimeError("Konflikt instancji lub właściciela powiadomień.")
+            return True
+        until(notifications_ready)
         until(lambda: not json.loads(self.ipc(entry, "caffeinate", "status"))["busy"])
         if self.mode != "off":
             self.ipc(entry, "caffeinate", "setMode", self.mode)

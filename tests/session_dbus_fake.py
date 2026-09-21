@@ -30,7 +30,7 @@ class Fixture(dbus.service.Object):
         self.bus = bus
         self.events = []
         self.mode = "ok"
-        self.can = {"reboot": "yes", "poweroff": "yes", "suspend": "yes"}
+        self.can = {"reboot": "yes", "poweroff": "yes", "suspend": "yes", "hibernate": "yes"}
         self.pending = []
         self.leases = {}
         self.blocks = ""
@@ -100,6 +100,10 @@ class Fixture(dbus.service.Object):
         return self.can["suspend"]
 
     @dbus.service.method(MANAGER, in_signature="", out_signature="s")
+    def CanHibernate(self):
+        return self.can["hibernate"]
+
+    @dbus.service.method(MANAGER, in_signature="", out_signature="s")
     def CanSuspendThenHibernate(self):
         return self.can["suspend"]
 
@@ -114,6 +118,10 @@ class Fixture(dbus.service.Object):
     @dbus.service.method(MANAGER, in_signature="b", out_signature="", async_callbacks=("reply", "error"))
     def Suspend(self, interactive, reply, error):
         self.action("suspend", [bool(interactive)], reply, error)
+
+    @dbus.service.method(MANAGER, in_signature="b", out_signature="", async_callbacks=("reply", "error"))
+    def Hibernate(self, interactive, reply, error):
+        self.action("hibernate", [bool(interactive)], reply, error)
 
     @dbus.service.method(MANAGER, in_signature="b", out_signature="", async_callbacks=("reply", "error"))
     def SuspendThenHibernate(self, interactive, reply, error):

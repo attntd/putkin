@@ -1,0 +1,20 @@
+--- SendMessageResultUtils.java
++++ SendMessageResultUtils.java
+@@ -35,7 +35,7 @@
+             }
+             case JsonWriter writer -> {
+                 var results = getJsonSendMessageResults(sendMessageResults.results());
+-                writer.write(Map.of("timestamp", sendMessageResults.timestamp(), "results", results));
++                writer.write(org.asamk.signal.manager.helper.PutkinRetention.result(sendMessageResults.timestamp(), results));
+             }
+         }
+     }
+@@ -52,7 +52,7 @@
+             }
+             case JsonWriter writer -> {
+                 var results = getJsonSendMessageResults(sendMessageResults.results());
+-                writer.write(Map.of("timestamp", sendMessageResults.timestamp(), "results", results));
++                writer.write(org.asamk.signal.manager.helper.PutkinRetention.result(sendMessageResults.timestamp(), results));
+             }
+         }
+         if (!sendMessageResults.hasSuccess()) {

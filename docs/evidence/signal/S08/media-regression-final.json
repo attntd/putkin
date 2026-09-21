@@ -1,0 +1,14 @@
+{
+  "passed": false,
+  "scope": "production QML windows/SQLite/bridge; synthetic CLI; offscreen/private XDG/D-Bus; no phone/compositor",
+  "checks": [
+    "native composer stages/removes/restages four real files; actual send RPC contains four durable paths and text",
+    "received image imported into bounded thumbnail; notification uses it and lock clears it",
+    "real image preview keeps proportions and uses both live theme accents",
+    "QML hard reload preserves five attachments in history and never repeats send"
+  ],
+  "qmlErrors": [
+    "  WARN: QUnifiedTimer::stopAnimationDriver: driver is not running"
+  ],
+  "remainingOwnedProcesses": []
+}

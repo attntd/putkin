@@ -1,0 +1,5 @@
+patching file /tmp/pk-media-build-_pxncf1u/IncomingMessageHandler.java
+patching file /tmp/pk-media-build-_pxncf1u/AttachmentHelper.java
+patching file /tmp/pk-media-build-_pxncf1u/AttachmentStore.java
+PASS: size boundaries and real cache quota
+{"policy": "putkin-media-1", "librarySha256": "8f942b9a6f758d4dc9a0c58f786354c2f75e0721d5b60416384323b33e4c8ed0"}

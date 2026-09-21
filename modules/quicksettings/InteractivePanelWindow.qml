@@ -33,7 +33,10 @@ PanelWindow {
     // Transparent padding also avoids the unresolved Margins value type in
     // the shipped 0.3.1 qmltypes. Only the actual panel accepts pointer input.
     implicitWidth: host.screen ? host.screen.width - host.surfaceX : 1
-    implicitHeight: surface.y + surface.height
+    // A content-sized Wayland buffer can be stretched for one frame while a
+    // smaller configure is acknowledged. Keep the canvas stable as sections
+    // collapse; the surface and input mask still follow the visible content.
+    implicitHeight: host.screen ? host.screen.height : 1
     color: "transparent"
     WlrLayershell.namespace: "putkin-panel"
     WlrLayershell.layer: WlrLayer.Overlay

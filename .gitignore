@@ -29,10 +29,8 @@ core.[0-9]*
 *.swo
 *~
 
-# AI assistant configuration, prompts, and generated design references.
+# Local assistant configuration and generated design references.
 .agents/
 .codex/
-AGENTS.md
 AGENTS.override.md
-/docs/prompts/
 /ChatGPT Image *.png

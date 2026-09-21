@@ -81,7 +81,10 @@ Item {
                 }
             }
         }
-        function test_clipboard_preview_text_image_and_vim_scroll() {
+        function test_clipboard_preview_text_image_and_vim_scroll_data() {
+            return [{tag: "h", key: Qt.Key_H}, {tag: "escape", key: Qt.Key_Escape}, {tag: "q", key: Qt.Key_Q}];
+        }
+        function test_clipboard_preview_text_image_and_vim_scroll(data) {
             const original = backend.clipboard;
             try {
                 clipboardFixture(); open(); type(":c ");
@@ -97,7 +100,7 @@ Item {
                 const scroll = findChild(frame, "launcherPreviewScroll");
                 keyClick(Qt.Key_J); verify(scroll.contentY > 0);
                 keyClick(Qt.Key_K); compare(scroll.contentY, 0);
-                keyClick(Qt.Key_H); verify(list().activeFocus);
+                keyClick(data.key); verify(list().activeFocus);
                 keyClick(Qt.Key_J);
                 tryCompare(launcher, "previewImage", backend.clipboard[1].image);
                 compare(launcher.previewText, "");
@@ -259,6 +262,8 @@ Item {
             compare(launcher.results.length, 1);
             compare(launcher.results[0].workspaceId, destination);
             verify(launcher.results[0].title.endsWith(" " + destination));
+            tryVerify(() => list().itemAtIndex(0) !== null);
+            verify(!findChild(list().itemAtIndex(0), "launcherRowSubtitle").visible);
             compare(launcher.chipMode, "");
             compare(preview.backend.requests.length, 0);
             verify(!launcher.searching);
@@ -461,6 +466,19 @@ Item {
             compare(launcher.results.length, 1);
             compare(launcher.results[0].id, "7");
             compare(Query.results("application", "kit", [{id: "hidden", name: "Kit", noDisplay: true}], [], [], []).length, 0);
+        }
+        function test_q_types_in_search_and_closes_results() {
+            open();
+            keyClick(Qt.Key_Q);
+            compare(search().text, "q");
+            verify(search().activeFocus);
+            compare(preview.coordinator.activeId, "launcher");
+            search().clear(); launcher.edit("");
+            keyClick(Qt.Key_Escape);
+            verify(list().activeFocus);
+            keyClick(Qt.Key_Q);
+            tryCompare(preview.coordinator, "activeId", "");
+            compare(backend.activations.length, 0);
         }
         function test_escape_vim_enter_once_and_text_return() {
             open();

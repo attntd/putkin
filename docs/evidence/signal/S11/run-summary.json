@@ -1,0 +1,64 @@
+{
+  "completedUtc": "2026-09-21T08:36:40.919391+00:00",
+  "scope": "S11 local acceptance only; no live account, deployment or activation",
+  "initialFullRun": {
+    "exitCode": 1,
+    "pythonPassed": 202,
+    "qmlPassed": 667,
+    "failedRunners": [
+      "test-signal-receipts"
+    ],
+    "log": "full-test-before-receipts.log"
+  },
+  "secondFullRun": {
+    "exitCode": 1,
+    "pythonPassed": 202,
+    "qmlPassed": 667,
+    "failedRunners": [
+      "test-panels-integration"
+    ],
+    "log": "full-test-before-panels.log"
+  },
+  "finalFullRun": {
+    "exitCode": 0,
+    "pythonPassed": 202,
+    "qmlPassed": 667,
+    "qmlFailed": 0,
+    "qmlSkipped": 0,
+    "integrationRunners": [
+      "test-launcher-integration",
+      "test-bar-integration",
+      "test-panels-integration",
+      "test-settings-integration",
+      "test-audio-integration",
+      "test-brightness-integration",
+      "test-status-integration",
+      "test-network-integration",
+      "test-bluetooth-integration",
+      "test-notifications-integration",
+      "test-session-integration",
+      "test-desktop-integration",
+      "test-caffeinate-integration",
+      "test-signal-integration",
+      "test-signal-messages",
+      "test-signal-notifications",
+      "test-signal-receipts",
+      "test-signal-groups",
+      "test-signal-retention",
+      "test-signal-interactions",
+      "test-signal-media",
+      "test-signal-pairing",
+      "test-validation-integration"
+    ],
+    "log": "full-test.log"
+  },
+  "check": {
+    "qmlFiles": 259,
+    "errors": 0,
+    "log": "check.log"
+  },
+  "acceptance": "acceptance/report.json",
+  "nativeWayland": "wayland/report.json",
+  "realJvm": "jvm-process.json",
+  "livePhone": "NOT RUN — S12"
+}

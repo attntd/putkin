@@ -19,6 +19,7 @@ Rectangle {
     property var network: null
     property var bluetooth: null
     property var notifications: null
+    property var messages: null
     property string activeModule: ""
     property bool navigating: false
     property bool panelActive: false
@@ -37,6 +38,7 @@ Rectangle {
     signal trayMenuRequested(var item, Item invoker)
     signal trayOverflowRequested(Item invoker)
     signal trayActivationRequested(var item, bool secondary)
+    signal messagesRequested()
     signal dismissed()
     signal quickSettingsRequested(Item invoker)
     signal batteryRequested(Item invoker)
@@ -46,9 +48,16 @@ Rectangle {
     function focusQuickSettings(): void { quickSettings.focusReason = Qt.TabFocusReason; quickSettings.forceActiveFocus(Qt.TabFocusReason); }
     function enter(): void { if (strip.available) strip.enter(); else focusQuickSettings(); }
     readonly property Item firstStatus: trayStrip.width > 0 ? trayStrip.firstControl : networkButton.visible ? networkButton
-        : bluetoothButton.visible ? bluetoothButton : audioButton.visible ? audioButton : batteryButton.visible ? batteryButton : notificationsButton.visible ? notificationsButton : quickSettings
+        : bluetoothButton.visible ? bluetoothButton : audioButton.visible ? audioButton : batteryButton.visible ? batteryButton : notificationsButton.visible ? notificationsButton : messagesButton.visible ? messagesButton : quickSettings
     implicitHeight: Metrics.barHeight
     color: Theme.background
+    Keys.priority: Keys.AfterItem
+    Keys.onPressed: event => {
+        if (DismissKeys.matches(event, root)) {
+            root.dismissed();
+            event.accepted = true;
+        }
+    }
 
     WorkspaceStrip {
         id: strip
@@ -71,7 +80,7 @@ Rectangle {
             tray: root.tray
             capacity: root.width >= 1000 ? Metrics.trayVisibleLimit : root.width >= 600 ? 2 : 0
             previousControl: strip.available ? strip.list.currentItem : quickSettings
-            nextControl: networkButton.visible ? networkButton : bluetoothButton.visible ? bluetoothButton : audioButton.visible ? audioButton : batteryButton.visible ? batteryButton : notificationsButton.visible ? notificationsButton : quickSettings
+            nextControl: networkButton.visible ? networkButton : bluetoothButton.visible ? bluetoothButton : audioButton.visible ? audioButton : batteryButton.visible ? batteryButton : notificationsButton.visible ? notificationsButton : messagesButton.visible ? messagesButton : quickSettings
             onMenuRequested: (item, invoker) => root.trayMenuRequested(item, invoker)
             onOverflowRequested: invoker => root.trayOverflowRequested(invoker)
             onActivationRequested: (item, secondary) => root.trayActivationRequested(item, secondary)
@@ -85,7 +94,7 @@ Rectangle {
             symbol: Icons.network(root.network, true)
             text: root.network ? root.network.statusText : ""
             leftTarget: trayStrip.width > 0 ? trayStrip.lastControl : strip.available ? strip.list.currentItem : null
-            rightTarget: bluetoothButton.visible ? bluetoothButton : audioButton.visible ? audioButton : batteryButton.visible ? batteryButton : notificationsButton.visible ? notificationsButton : quickSettings
+            rightTarget: bluetoothButton.visible ? bluetoothButton : audioButton.visible ? audioButton : batteryButton.visible ? batteryButton : notificationsButton.visible ? notificationsButton : messagesButton.visible ? messagesButton : quickSettings
         }
         StatusButton {
             id: bluetoothButton
@@ -95,7 +104,7 @@ Rectangle {
             symbol: root.bluetooth && root.bluetooth.radioEnabled ? "bluetooth" : "bluetooth_disabled"
             text: root.bluetooth ? root.bluetooth.statusText : ""
             leftTarget: networkButton.visible ? networkButton : trayStrip.width > 0 ? trayStrip.lastControl : strip.available ? strip.list.currentItem : null
-            rightTarget: audioButton.visible ? audioButton : batteryButton.visible ? batteryButton : notificationsButton.visible ? notificationsButton : quickSettings
+            rightTarget: audioButton.visible ? audioButton : batteryButton.visible ? batteryButton : notificationsButton.visible ? notificationsButton : messagesButton.visible ? messagesButton : quickSettings
         }
         StatusButton {
             id: audioButton
@@ -105,7 +114,7 @@ Rectangle {
             text: root.audio ? qsTr("Dźwięk · ") + root.audio.statusText : ""
             highlighted: root.audioPanelActive
             leftTarget: bluetoothButton.visible ? bluetoothButton : networkButton.visible ? networkButton : trayStrip.width > 0 ? trayStrip.lastControl : strip.available ? strip.list.currentItem : null
-            rightTarget: batteryButton.visible ? batteryButton : notificationsButton.visible ? notificationsButton : quickSettings
+            rightTarget: batteryButton.visible ? batteryButton : notificationsButton.visible ? notificationsButton : messagesButton.visible ? messagesButton : quickSettings
             MouseArea {
                 anchors.fill: parent
                 acceptedButtons: Qt.NoButton
@@ -125,7 +134,7 @@ Rectangle {
             visible: root.battery !== null && root.battery.present
             width: visible ? implicitWidth : 0
             leftTarget: audioButton.visible ? audioButton : bluetoothButton.visible ? bluetoothButton : networkButton.visible ? networkButton : trayStrip.width > 0 ? trayStrip.lastControl : strip.available ? strip.list.currentItem : null
-            rightTarget: notificationsButton.visible ? notificationsButton : quickSettings
+            rightTarget: notificationsButton.visible ? notificationsButton : messagesButton.visible ? messagesButton : quickSettings
             KeyNavigation.backtab: leftTarget
             KeyNavigation.tab: rightTarget
             highlighted: root.batteryPanelActive
@@ -141,6 +150,16 @@ Rectangle {
             text: qsTr("Powiadomienia")
             highlighted: root.activeModule === "notifications"
             leftTarget: batteryButton.visible ? batteryButton : audioButton.visible ? audioButton : bluetoothButton.visible ? bluetoothButton : networkButton.visible ? networkButton : trayStrip.width > 0 ? trayStrip.lastControl : strip.available ? strip.list.currentItem : null
+            rightTarget: messagesButton.visible ? messagesButton : quickSettings
+        }
+        StatusButton {
+            id: messagesButton
+            objectName: "barMessages"
+            visible: root.messages !== null
+            text: qsTr("Wiadomości")
+            symbol: root.messages && root.messages.hub.unreadCount > 0 ? "chat" : "chat_bubble"
+            highlighted: root.messages !== null && root.messages.interactive
+            leftTarget: notificationsButton.visible ? notificationsButton : batteryButton.visible ? batteryButton : audioButton.visible ? audioButton : bluetoothButton.visible ? bluetoothButton : networkButton.visible ? networkButton : trayStrip.width > 0 ? trayStrip.lastControl : strip.available ? strip.list.currentItem : null
             rightTarget: quickSettings
         }
         StatusButton {
@@ -149,7 +168,7 @@ Rectangle {
             symbol: "tune"
             text: qsTr("Szybkie ustawienia")
             highlighted: root.panelActive
-            leftTarget: notificationsButton.visible ? notificationsButton : batteryButton.visible ? batteryButton : audioButton.visible ? audioButton : bluetoothButton.visible ? bluetoothButton : networkButton.visible ? networkButton : trayStrip.width > 0 ? trayStrip.lastControl : strip.available ? strip.list.currentItem : null
+            leftTarget: messagesButton.visible ? messagesButton : notificationsButton.visible ? notificationsButton : batteryButton.visible ? batteryButton : audioButton.visible ? audioButton : bluetoothButton.visible ? bluetoothButton : networkButton.visible ? networkButton : trayStrip.width > 0 ? trayStrip.lastControl : strip.available ? strip.list.currentItem : null
             KeyNavigation.tab: strip.available ? strip.list.currentItem : quickSettings
         }
         Clock {
@@ -173,6 +192,7 @@ Rectangle {
             if (button === audioButton) root.audioRequested(button);
             else if (button === networkButton) root.moduleRequested("network", button);
             else if (button === bluetoothButton) root.moduleRequested("bluetooth", button);
+            else if (button === messagesButton) root.messagesRequested();
             else if (button === notificationsButton) root.moduleRequested("notifications", button);
             else root.quickSettingsRequested(button);
         }

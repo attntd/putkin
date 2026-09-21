@@ -1,0 +1,52 @@
+..................................F.............E..........................E...
+======================================================================
+ERROR: test_migration_v1_preserves_history_and_rolls_back_on_failure (test_signal_notifications.NotificationTests.test_migration_v1_preserves_history_and_rolls_back_on_failure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/attntd/projects/signal/tests/test_signal_notifications.py", line 145, in test_migration_v1_preserves_history_and_rolls_back_on_failure
+    self.store = Store(self.lease)
+                 ~~~~~^^^^^^^^^^^^
+  File "/home/attntd/projects/signal/services/signal_store.py", line 89, in __init__
+    with self.transaction():
+         ~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/home/attntd/projects/signal/services/signal_store.py", line 145, in transaction
+    raise Failure("storage_error") from None
+signal_transport.Failure: storage_error
+
+======================================================================
+ERROR: test_schema_v2_migrates_pending_reads_receipts_and_outbox_recipients (test_signal_receipts.ReceiptTests.test_schema_v2_migrates_pending_reads_receipts_and_outbox_recipients)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/attntd/projects/signal/tests/test_signal_receipts.py", line 255, in test_schema_v2_migrates_pending_reads_receipts_and_outbox_recipients
+    self.store = Store(self.lease, self.committed, lambda: self.now)
+                 ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/signal/services/signal_store.py", line 89, in __init__
+    with self.transaction():
+         ~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/home/attntd/projects/signal/services/signal_store.py", line 145, in transaction
+    raise Failure("storage_error") from None
+signal_transport.Failure: storage_error
+
+======================================================================
+FAIL: test_production_subscribes_only_after_durable_store_is_ready (test_signal_lifecycle.LifecycleTests.test_production_subscribes_only_after_durable_store_is_ready)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/attntd/projects/signal/tests/test_signal_lifecycle.py", line 261, in test_production_subscribes_only_after_durable_store_is_ready
+    state = client.state("ready")
+  File "/home/attntd/projects/signal/tests/test_signal_lifecycle.py", line 77, in state
+    return self.read(lambda v: v.get("data", {}).get("serviceState") == state, seconds)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/signal/tests/test_signal_lifecycle.py", line 74, in read
+    raise AssertionError("No expected bridge result")
+AssertionError: No expected bridge result
+
+----------------------------------------------------------------------
+Ran 79 tests in 167.648s
+
+FAILED (failures=1, errors=2)

@@ -1,0 +1,53 @@
+--- IncomingMessageHandler.java
++++ IncomingMessageHandler.java
+@@ -950,6 +950,8 @@
+                                 message.getExpireTimerVersion());
+             }
+         }
++        // Putkin retention v2: view-once never enters the ordinary cache.
++        if (!message.isViewOnce()) {
+         if (!receiveConfig.ignoreAttachments()) {
+             if (message.getAttachments().isPresent()) {
+                 for (var attachment : message.getAttachments().get()) {
+@@ -967,33 +969,6 @@
+                     }
+                 }
+             }
+-            if (message.getSharedContacts().isPresent()) {
+-                for (var contact : message.getSharedContacts().get()) {
+-                    if (contact.getAvatar().isPresent()) {
+-                        context.getAttachmentHelper().downloadAttachment(contact.getAvatar().get().getAttachment());
+-                    }
+-                }
+-            }
+-            if (message.getPreviews().isPresent()) {
+-                final var previews = message.getPreviews().get();
+-                for (var preview : previews) {
+-                    if (preview.getImage().isPresent()) {
+-                        context.getAttachmentHelper().downloadAttachment(preview.getImage().get());
+-                    }
+-                }
+-            }
+-            if (message.getQuote().isPresent()) {
+-                final var quote = message.getQuote().get();
+-
+-                if (quote.getAttachments() != null) {
+-                    for (var quotedAttachment : quote.getAttachments()) {
+-                        final var thumbnail = quotedAttachment.getThumbnail();
+-                        if (thumbnail != null) {
+-                            context.getAttachmentHelper().downloadAttachment(thumbnail);
+-                        }
+-                    }
+-                }
+-            }
+         } else {
+             if (message.getAttachments().isPresent()) {
+                 for (var attachment : message.getAttachments().get()) {
+@@ -1010,6 +985,7 @@
+                 }
+             }
+         }
++        }
+         if (message.getGiftBadge().isPresent()) {
+             handleIncomingGiftBadge(message.getGiftBadge().get());
+         }

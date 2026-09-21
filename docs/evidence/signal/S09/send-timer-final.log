@@ -1,0 +1,6 @@
+test_retention_preflight_sends_with_confirmed_timer_and_expires_old_result (test_signal_history.BridgeHistoryTests.test_retention_preflight_sends_with_confirmed_timer_and_expires_old_result) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.674s
+
+OK

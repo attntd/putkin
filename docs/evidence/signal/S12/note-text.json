@@ -1,0 +1,17 @@
+{
+  "ownNote": true,
+  "phoneTextReceived": true,
+  "nativeTextSend": "sent",
+  "phoneVisibilityConfirmedByUser": true,
+  "service": {
+    "state": "ready",
+    "accountState": "linked",
+    "schemaVersion": 7,
+    "cliVersion": "0.14.8",
+    "errorCode": "",
+    "linkError": "",
+    "eventErrorLocation": "",
+    "qrVisible": false,
+    "processId": 585963
+  }
+}

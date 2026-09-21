@@ -13,15 +13,20 @@ QtObject {
     property real receivedAt: Date.now()
     property real deadline: 0
     property real remaining: 0
-    readonly property bool paused: shown && service.keyboardMonitor === monitorName
+    readonly property var messageReference: notification && notification.internal === true ? notification.messageReference || null : null
+    readonly property real messageTimestamp: messageReference ? notification.messageTimestamp : 0
+    readonly property var replySession: service.messageSession(messageReference)
+    readonly property bool paused: (shown && service.keyboardMonitor === monitorName) || !!(replySession && (replySession.editing || replySession.busy))
     property var actionLabels: null
     property var closedSnapshot: null
     function snapshot(): var {
-        return {appName: appName, summary: summary, body: body, critical: critical,
-            iconName: iconName, imageSource: imageSource, actions: actions, receivedAt: receivedAt, unread: unread};
+        return {historyKey: historyKey, appName: appName, applicationId: applicationId, summary: summary, body: body, critical: critical,
+            iconName: iconName, imageSource: imageSource, actions: actions, receivedAt: receivedAt, unread: unread,
+            messageReference: messageReference, messageTimestamp: messageTimestamp};
     }
     readonly property bool critical: notification !== null && notification.urgency === 2
     readonly property string appName: limit(notification ? notification.appName : "", 128) || qsTr("Aplikacja")
+    readonly property string applicationId: notification && service.applicationService ? service.applicationService.identify(notification) : ""
     readonly property string summary: limit(notification ? notification.summary : "", 512) || qsTr("Powiadomienie")
     readonly property string body: limit(notification ? notification.body : "", 4096)
     readonly property string iconName: Icons.application(notification ? notification.appIcon : "", appName, "", [])
@@ -30,6 +35,7 @@ QtObject {
         return source.indexOf("image://") === 0 || source.indexOf("file:///") === 0 ? source : "";
     }
     readonly property var actions: {
+        if (messageReference) return service.messageActions(messageReference);
         const values = notification ? notification.actions : [];
         return values.slice(0, 8).filter(action => action.identifier !== "inline-reply" && action.identifier.length <= 256).map(action => ({
             identifier: action.identifier,
@@ -62,6 +68,7 @@ QtObject {
         target: root.notification
         function onClosed(_reason: int): void { root.service.remove(root); }
         function onAppNameChanged(): void { root.updated(); }
+        function onDesktopEntryChanged(): void { root.updated(); }
         function onSummaryChanged(): void { root.updated(); }
         function onBodyChanged(): void { root.updated(); }
         function onExpireTimeoutChanged(): void { root.updated(); }

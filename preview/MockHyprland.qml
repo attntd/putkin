@@ -67,4 +67,13 @@ QtObject {
         requests = requests.concat([{ kind: "move", workspaceId: id, address: window.address }]);
         if (autoAcknowledge) window.workspace = { id: id };
     }
+    function focusWindow(window: var): void {
+        requests = requests.concat([{kind: "focusWindow", address: window.address}]);
+        if (autoAcknowledge) {
+            activeWindow = window;
+            monitors = monitors.map(item => ({name: item.name,
+                activeId: item.name === focusedMonitorName ? window.workspace.id : item.activeId}));
+        }
+    }
+    function refreshWindows(): void {}
 }

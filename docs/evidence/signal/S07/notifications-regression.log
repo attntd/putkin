@@ -1,0 +1,26 @@
+bus:
+dbus-daemon[457247]: [session uid=1000 pid=457247 pidfd=4] Connection :1.1 (uid=1000 pid=457282 comm="/usr/bin/python3 -B /home/attntd/projects/signal/s") became a monitor.
+dbus-daemon[457247]: [session uid=1000 pid=457247 pidfd=4] Monitoring connection :1.1 closed.
+dbus-daemon[457247]: [session uid=1000 pid=457247 pidfd=4] Connection :1.8 (uid=1000 pid=457547 comm="/usr/bin/python3 -B /home/attntd/projects/signal/s") became a monitor.
+dbus-daemon[457247]: [session uid=1000 pid=457247 pidfd=4] Monitoring connection :1.8 closed.
+dbus-daemon[457247]: [session uid=1000 pid=457247 pidfd=4] Connection :1.13 (uid=1000 pid=457611 comm="/usr/bin/python3 -B /home/attntd/projects/signal/s") became a monitor.
+dbus-daemon[457247]: [session uid=1000 pid=457247 pidfd=4] Monitoring connection :1.13 closed.
+dbus-daemon[457247]: [session uid=1000 pid=457247 pidfd=4] Connection :1.18 (uid=1000 pid=457710 comm="/usr/bin/python3 -B /home/attntd/projects/signal/s") became a monitor.
+dbus-daemon[457247]: [session uid=1000 pid=457247 pidfd=4] Monitoring connection :1.18 closed.
+
+shell:
+  INFO: Launching config: "/home/attntd/projects/signal/signal-notifications-test.qml"
+  INFO: Shell ID: "c6498b2608cd6230f2552eece8850a49" Path ID "c6498b2608cd6230f2552eece8850a49"
+  INFO: Saving logs to "/tmp/pk-s05-ax2u57if/runtime/quickshell/by-id/ets9aymolt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  INFO: Reloading configuration...
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO: Reloading configuration...
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  INFO: Reloading configuration...
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks

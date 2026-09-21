@@ -52,10 +52,11 @@ UI.FadeScope {
         rememberFocusReason();
         const y = item.mapToItem(flick.contentItem, 0, 0).y;
         const margin = Metrics.focusOffset + Metrics.focusWidth;
+        const visibleHeight = Math.min(item.height, Math.max(1, flick.height - margin * 2));
         if (y - margin < flick.contentY)
             flick.contentY = Math.max(0, y - margin);
-        else if (y + item.height + margin > flick.contentY + flick.height)
-            flick.contentY = Math.min(Math.max(0, flick.contentHeight - flick.height), y + item.height + margin - flick.height);
+        else if (y + visibleHeight + margin > flick.contentY + flick.height)
+            flick.contentY = Math.min(Math.max(0, flick.contentHeight - flick.height), y + visibleHeight + margin - flick.height);
     }
     function revealFocus(): void {
         if (focusedControl && focusedControl.activeFocus)
@@ -69,7 +70,12 @@ UI.FadeScope {
             focus = false;
     }
     Keys.priority: Keys.AfterItem
-    Keys.onEscapePressed: { if (page) page.dismissOrCollapse(); }
+    Keys.onPressed: event => {
+        if (page && DismissKeys.matches(event, root)) {
+            page.dismissOrCollapse();
+            event.accepted = true;
+        }
+    }
     Window.onActiveChanged: {
         if (Window.active && enabled) Qt.callLater(() => {
             if (!root.enabled) return;
@@ -137,13 +143,29 @@ UI.FadeScope {
         sourceComponent: LauncherPreview { service: root.host.launcher; launcherView: root.page }
     }
     Component { id: launcherPage; LauncherView { service: root.host.launcher; previewControl: previewLoader.item as Item; maximumHeight: Math.max(1, root.host.availableHeight - Metrics.space12 * 2) } }
-    Component { id: powerPage; PowerView { sessionService: root.host.sessionService } }
+    Component {
+        id: powerPage
+        PowerView {
+            sessionService: root.host.sessionService
+            requestedAction: root.host.coordinator.session ? root.host.coordinator.session.powerAction || "" : ""
+        }
+    }
     Component { id: batteryPage; BatteryView { battery: root.host.battery; powerProfiles: root.host.powerProfiles } }
     Component { id: audioPage; AudioView { audio: root.host.audio; monitor: root.host.screen ? root.host.screen.name : "" } }
     Component { id: networkPage; NetworkView { network: root.host.network } }
     Component { id: bluetoothPage; BluetoothView { bluetooth: root.host.bluetooth; onHandoffRequested: root.host.coordinator.close(false) } }
-    Component { id: notificationsPage; NotificationCenter { service: root.host.notifications; maximumHeight: Math.max(1, root.host.availableHeight - Metrics.space12 * 2) } }
-    Component { id: settingsPage; SettingsView { settings: root.host.coordinator.settings; maximumHeight: Math.max(1, root.height - Metrics.space12 * 2) } }
+    Component { id: notificationsPage; NotificationCenter { service: root.host.notifications } }
+    Component {
+        id: settingsPage
+        SettingsView {
+            property int settingsRequest: root.host.coordinator.settingsRequest || 0
+            onSettingsRequestChanged: section = root.host.coordinator.settingsSection || "appearance"
+            settings: root.host.coordinator.settings
+            signalService: root.host.signalService
+            section: root.host.coordinator.settingsSection || "appearance"
+            maximumHeight: Math.max(1, root.height - Metrics.space12 * 2)
+        }
+    }
     Component { id: trayPage; TrayView { host: root.host } }
     Connections {
         target: pageLoader.item

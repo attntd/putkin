@@ -9,8 +9,6 @@ function workspaceCommand(text) {
         workspaceId: digit === 0 ? 10 : digit };
 }
 
-function workspaceInput(text) { return text === ":" || /^:(?:mw|w)/i.test(text.trim()); }
-
 function parse(text) {
     const match = text.match(/^:([afc]?)(?:\s+([\s\S]*))?$/i);
     if (!match)

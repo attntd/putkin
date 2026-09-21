@@ -26,6 +26,8 @@ Item {
     AudioService { id: audioModel; backend: audioBackend }
     PanelPreviewScene { id: preview; anchors.fill: parent; panelLoader: testLoader }
     Component { id: textEditor; Controls.TextField { width: 200 } }
+    Component { id: numericEditor; Controls.TextField { width: 200; validator: IntValidator { bottom: 0; top: 99 } } }
+    Component { id: multilineEditor; Controls.TextArea { width: 200; height: 80 } }
 
     TestCase {
         id: tests
@@ -103,13 +105,16 @@ Item {
             compare(preview.barController.screenName, "");
         }
 
-        function test_directions_enter_keypad_space_and_escape_layers() {
+        function test_directions_enter_keypad_space_and_escape_layers_data() {
+            return [{tag: "escape", key: Qt.Key_Escape}, {tag: "q", key: Qt.Key_Q}];
+        }
+        function test_directions_enter_keypad_space_and_escape_layers(data) {
             preview.audio = audioModel;
             open();
             verify(button("audioVolume").activeFocus);
             keyClick(Qt.Key_Return);
             verify(host.window.page.audioSection.expanded);
-            keyClick(Qt.Key_Escape);
+            keyClick(data.key);
             verify(!host.window.page.audioSection.expanded);
             keyClick(Qt.Key_Enter, Qt.KeypadModifier);
             verify(host.window.page.audioSection.expanded);
@@ -124,7 +129,37 @@ Item {
             keyClick(Qt.Key_J); verify(button("accentPreset0").activeFocus);
             keyClick(Qt.Key_K); verify(button("appearanceSection").activeFocus);
             keyClick(Qt.Key_K); verify(button("backButton").activeFocus);
+            keyClick(data.key);
+            compare(coordinator.activeId, "");
+        }
+
+        function test_q_preserves_text_focus_data() {
+            return [
+                {tag: "text", component: textEditor, readonly: false, text: "q"},
+                {tag: "readonly-text", component: textEditor, readonly: true, text: ""},
+                {tag: "numeric-validator", component: numericEditor, readonly: false, text: ""},
+                {tag: "multiline", component: multilineEditor, readonly: false, text: "q"},
+                {tag: "readonly-multiline", component: multilineEditor, readonly: true, text: ""}
+            ];
+        }
+        function test_q_preserves_text_focus(data) {
+            open("settings");
+            const editor = createTemporaryObject(data.component, host.window, {y: 40, readOnly: data.readonly});
+            editor.forceActiveFocus();
+            keyClick(Qt.Key_Q);
+            compare(editor.text, data.text);
+            verify(editor.activeFocus);
+            compare(coordinator.activeId, "settings");
             keyClick(Qt.Key_Escape);
+            compare(coordinator.activeId, "");
+        }
+        function test_modified_q_keeps_panel_open() {
+            open();
+            for (const modifier of [Qt.ControlModifier, Qt.AltModifier, Qt.ShiftModifier]) {
+                keyClick(Qt.Key_Q, modifier);
+                compare(coordinator.activeId, "quickSettings");
+            }
+            keyClick(Qt.Key_Q);
             compare(coordinator.activeId, "");
         }
 
@@ -169,7 +204,10 @@ Item {
             verify(!host.window.page.audioSection.expanded);
         }
 
-        function test_keyboard_bar_entry_and_return_focus() {
+        function test_keyboard_bar_entry_and_return_focus_data() {
+            return [{tag: "escape", key: Qt.Key_Escape}, {tag: "q", key: Qt.Key_Q}];
+        }
+        function test_keyboard_bar_entry_and_return_focus(data) {
             preview.barController.focusBar();
             tryVerify(() => preview.bar.workspaces.list.currentItem.activeFocus);
             keyClick(Qt.Key_End);
@@ -180,7 +218,7 @@ Item {
             tryCompare(host, "loaded", true);
             tryVerify(() => button("settingsButton").activeFocus);
             compare(preview.barController.screenName, "");
-            keyClick(Qt.Key_Escape);
+            keyClick(data.key);
             tryVerify(() => preview.bar.quickSettingsButton.activeFocus);
             compare(preview.barController.screenName, "TEST-1");
             wait(Metrics.panelFade + 30);

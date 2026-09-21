@@ -1,5 +1,59 @@
 # Testowanie Putkin
 
+## Okna uwierzytelniania — 2026-09-20
+
+`python3 -m unittest discover -s tests -p test_authentication.py -v`
+sprawdza Assuan: UTF-8, escaping, porcje danych, błędy i timeout,
+potwierdzenie/odmowę/anulowanie, reset oraz jawne odrzucenie nieobsługiwanych
+wymagań tworzenia hasła. Nie uruchamia agentów użytkownika.
+
+`python3 scripts/test-icons --file tst_authentication.qml` testuje wejście
+Qt, hjkl/Enter/Escape oraz `q` poza polem hasła, fokus myszy/klawiatury, czyszczenie sekretów,
+zmianę tożsamości, kolejkę i blokadę. Rozróżnia niedopasowanie, błąd
+czytnika oraz sukces odcisku i hasła. Używa atrap i prywatnych XDG/D-Bus.
+Odliczanie ma test wypełnienia, glifu po prawej, niezmiennej geometrii,
+ramki klawiatury po przejściu do hasła i jej usunięcia myszą. Sprawdza
+wcześniejsze żądanie hasła, brak fałszywego przejścia po samym zegarze,
+zatrzymanie przy anulowaniu, ponowienie i odczyt konfiguracji timeout.
+
+`python3 scripts/test-wayland --nested --authentication --output artifacts/authentication-wayland`
+sprawdza produkcyjny widok, Socket/IPC i natywny PolkitAgent/AuthFlow przez
+prawdziwe libpolkit. W prywatnych przestrzeniach PID/montowań/sieci działa
+atrapa authority, zastąpiony protokół helpera Polkit oraz fixture identyfikacji
+sesji systemd. `/etc/pam.d` i `/usr/lib/pam.d` są zamaskowane. Żaden test
+nie używa PAM ani czytnika hosta. Prawdziwy GPG agent dostaje osobny GNUPGHOME,
+nowo utworzony klucz testowy i Pinentry Putkina; podpis jest weryfikowany,
+a agent kończony. Klucze użytkownika nie są odczytywane.
+
+Odbiór obejmuje anulowanie i SIGTERM, kolory odcisku z utrwaleniem zielonej
+klatki przed wspólnym fade, obie odmiany reloadu, ponowną rejestrację,
+zwolnienie gniazd i brak błędów QML. Zrzuty dotyczą prywatnego wyjścia.
+Prywatna konfiguracja określa timeout 2 s, a atrapa helpera po tym czasie
+wysyła rzeczywisty protokół timeout → żądanie hasła. Wtype potwierdza
+możliwość natychmiastowego wpisania hasła bez kliknięcia pola.
+
+## Odzyskiwanie aktywnego workspace — 2026-09-20
+
+`scripts/test-bar-integration` wykonuje cztery scenariusze: Hyprlang i Lua,
+każdy ze zwykłą odpowiedzią oraz pierwszym `j/monitors` podzielonym na dwa
+zapisy gniazda. Weryfikuje odzyskanie aktywnych numerów i skupionego monitora,
+`focusedmon` z nieznanym workspace, przełączenie na drugi monitor, komendy
+launchera, brak odpytywania w spoczynku, hotplug, EOF i odczyt `bar status`.
+Wszystkie gniazda, XDG i D-Bus są prywatne; działają natywne modele Quickshella.
+`tst_bar.qml` uzupełnia odbiór o kliknięcia, klawisze i oznaczenia w UI.
+
+## Interakcje powiadomień — 2026-09-20
+
+`python3 scripts/test-icons --file tst_notifications.qml --log /tmp/putkin-notifications-qml.log`
+sprawdza kliknięcia w nagłówek, tytuł i treść, oba Entery, wybór akcji
+domyślnej i brak akcji, `i/Escape`, przejście do następnej karty i powrót,
+zachowanie rozwinięcia, obsługę myszy bez ramki, przewijanie kółkiem nad
+krótką/długą/rozwiniętą treścią i dojście do ostatniej z 20 kart.
+Rozwinięcie sprawdzane jest również przy 320×220 i dla biernych toastów.
+Testy używają prawdziwego wejścia Qt oraz produkcyjnych widoków z atrapami,
+w prywatnych XDG/D-Bus. Regresja współdzielonych kontrolek i paneli:
+`tst_quick_menu.qml`, `tst_panels.qml`, `tst_launcher.qml`, `tst_material_icons.qml`.
+
 ## Stabilny fade — 2026-09-20
 
 `tests/qml/tst_fade.qml` porównuje piksele ramki, tekstu i aktywnego kafelka
@@ -7,6 +61,10 @@ przy opacity 0,25 / 0,5 / 0,75 z pojedynczym złożeniem obrazu końcowego
 na tle. Sprawdza oczekiwanie na gotowość, stałą geometrię podczas fade,
 zamknięcie przed przygotowaniem, zmianę strony, ponowne otwarcie podczas
 zanikania oraz zagnieżdżone przejścia i zakończenie pracy klatkowej.
+Zanikanie zachowuje ostatnią wyrenderowaną klatkę także po wyłączeniu
+kontrolek i utracie fokusu; test pikseli obejmuje panel i zwijaną kolumnę.
+`tst_quick_menu.qml` sprawdza położenie treści przy zwijaniu sekcji,
+w tym wybór trybu Caffeinate i granice przewijania przy trzech wysokościach.
 Testy ustawień obejmują brak opcji ruchu, nawigację po jej usunięciu i
 odczyt starych booleanów bez zapisu, z ich usunięciem przy jawnym zapisie.
 
@@ -15,6 +73,10 @@ GPU sprawdza `python3 scripts/test-fade-wayland --nested --scale 1`
 montowań i sieci, XDG, D-Bus i zagnieżdżonego Hyprlanda. Udostępnione są
 wyłącznie gniazdo Waylanda rodzica i węzeł renderera GPU; domeny sprzętu
 i sesji w widokach są atrapami. Zapisuje logi, raport i wynik sprzątania.
+Uruchamia też produkcyjne okno panelu i wybiera tryb Caffeinate przez
+klawiaturę. Podczas zwijania natywna warstwa musi zachować rozmiar:
+zmniejszanie bufora Waylanda powodowało pojedynczą przeskalowaną klatkę.
+Wynik i próbki geometrii zapisuje w `native-collapse.json`.
 Wcześniejsze testy opcji ograniczania ruchu opisują historyczny kontrakt.
 
 ## Lista i podgląd launchera — 2026-09-20

@@ -1,0 +1,6 @@
+test_expired_outbox_cleanup_and_tombstone_after_restart (test_signal_history.HistoryTests.test_expired_outbox_cleanup_and_tombstone_after_restart) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.013s
+
+OK

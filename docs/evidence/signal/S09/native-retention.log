@@ -1,0 +1,21 @@
+bus:
+dbus-daemon[479435]: [session uid=1000 pid=479435 pidfd=4] Connection :1.1 (uid=1000 pid=479453 comm="/usr/bin/python3 -B /home/attntd/projects/signal/s") became a monitor.
+dbus-daemon[479435]: [session uid=1000 pid=479435 pidfd=4] Monitoring connection :1.1 closed.
+dbus-daemon[479435]: [session uid=1000 pid=479435 pidfd=4] Connection :1.6 (uid=1000 pid=479649 comm="/usr/bin/python3 -B /home/attntd/projects/signal/s") became a monitor.
+dbus-daemon[479435]: [session uid=1000 pid=479435 pidfd=4] Monitoring connection :1.6 closed.
+
+shell:
+  INFO: Launching config: "/home/attntd/projects/signal/signal-retention-test.qml"
+  INFO: Shell ID: "e2240ea9a8f9a2cc4b5b20b512e7a60b" Path ID "e2240ea9a8f9a2cc4b5b20b512e7a60b"
+  INFO: Saving logs to "/tmp/pk-s09-u2nc0x_r/runtime/quickshell/by-id/ox9a74qolt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+
+shell-restart:
+  INFO: Launching config: "/home/attntd/projects/signal/signal-retention-test.qml"
+  INFO: Shell ID: "e2240ea9a8f9a2cc4b5b20b512e7a60b" Path ID "e2240ea9a8f9a2cc4b5b20b512e7a60b"
+  INFO: Saving logs to "/tmp/pk-s09-u2nc0x_r/runtime/quickshell/by-id/c3aaf4qolt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks

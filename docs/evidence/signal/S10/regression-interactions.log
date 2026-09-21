@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "scope": "production QML windows/SQLite/bridge; synthetic CLI; offscreen/private XDG/D-Bus; no phone/compositor",
+  "checks": [
+    "edit and reaction update the existing notification while the messages window is absent; no second card/toast",
+    "actual native composer sends editTimestamp/sendReaction and quote fields through shared bridge; canonical row and ordinary draft preserved",
+    "incoming typing disappears after the real 15-second deadline without a stop event, history row or unread increment",
+    "hard reload restores versions/reactions/quote from SQLite, reaps old bridge and never repeats operations"
+  ],
+  "qmlErrors": [],
+  "remainingOwnedProcesses": []
+}

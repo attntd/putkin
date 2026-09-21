@@ -1,0 +1,18 @@
+--- JsonSyncDataMessage.java
++++ JsonSyncDataMessage.java
+@@ -16,6 +16,7 @@
+         @Deprecated String destination,
+         String destinationNumber,
+         String destinationUuid,
++        long expirationStartTimestamp,
+         @JsonInclude(JsonInclude.Include.NON_NULL) JsonEditMessage editMessage,
+         @JsonUnwrapped JsonDataMessage dataMessage
+ ) {
+@@ -26,6 +27,7 @@
+                 .orElse(null),
+                 transcriptMessage.destination().flatMap(RecipientAddress::number).orElse(null),
+                 transcriptMessage.destination().flatMap(address -> address.uuid().map(UUID::toString)).orElse(null),
++                transcriptMessage.expirationStartTimestamp(),
+                 transcriptMessage.editMessage().map(data -> JsonEditMessage.from(data, m)).orElse(null),
+                 transcriptMessage.message().map(data -> JsonDataMessage.from(data, m)).orElse(null));
+     }

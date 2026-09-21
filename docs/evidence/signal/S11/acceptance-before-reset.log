@@ -1,0 +1,30 @@
+PASS: closed-window text/media notification → exact-recipient quick reply → history → reaction → edit → reverse receipts
+PASS: phone sent-sync creates history without toast; reverse edit/reaction and delete-before-original preserve identity and redaction
+PASS: same process creates group, confirms admin roles and routes incoming group notification
+PASS: local deletion and deadline survive hard reload; no send replay or expired body
+Idle: 60 seconds with messages window closed, no IPC.
+Idle 20/60 s
+Idle 40/60 s
+Idle 60/60 s
+{
+  "passed": false,
+  "scope": "synthetic CLI + real QML/SQLite/pipes, private D-Bus/XDG, offscreen; no phone",
+  "history": {
+    "count": 10000,
+    "seedAndPageSeconds": 63.356,
+    "pageCount": 200,
+    "pageMs": {
+      "median": 10.345555499952752,
+      "p95": 12.604689996805973,
+      "max": 15.172041996265762
+    },
+    "queryPlan": [
+      "SEARCH messages USING INDEX messages_page (conversation_id=? AND (sort_ms,message_id)<(?,?))"
+    ]
+  },
+  "failure": "Traceback (most recent call last):\n  File \"/home/attntd/projects/signal/scripts/test-signal-acceptance\", line 41, in run\n    if not scenario_only: report['performance'] = driver.performance()\n                                                  ~~~~~~~~~~~~~~~~~~^^\n  File \"/home/attntd/projects/signal/tests/signal_acceptance.py\", line 250, in performance\n    started = time.monotonic(); state = self.open()\n                                        ~~~~~~~~~^^\n  File \"/home/attntd/projects/signal/tests/signal_acceptance.py\", line 127, in open\n    return self.wait(lambda s: s.get('loaded') and s.get('presentationOpacity') == 1 and s.get('draftReady') and s.get('count', 0) >= min(50, self.seeded['count']) and not s.get('pending'), 'history ready')\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/attntd/projects/signal/tests/signal_acceptance.py\", line 110, in wait\n    def wait(self, predicate, description, seconds=20): return eventually(self.state, predicate, description, seconds)\n                                                               ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/attntd/projects/signal/tests/signal_acceptance.py\", line 40, in eventually\n    raise AssertionError('Deadline: ' + description)\nAssertionError: Deadline: history ready\n",
+  "qmlErrors": [
+    "  WARN: DelegateModel::cancel: index out range 0 0"
+  ],
+  "remainingOwnedProcesses": []
+}

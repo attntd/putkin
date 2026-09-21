@@ -1,0 +1,11 @@
+bus:
+dbus-daemon[467214]: [session uid=1000 pid=467214 pidfd=4] Connection :1.1 (uid=1000 pid=467247 comm="/usr/bin/python3 -B /home/attntd/projects/signal/s") became a monitor.
+dbus-daemon[467214]: [session uid=1000 pid=467214 pidfd=4] Monitoring connection :1.1 closed.
+
+shell:
+  INFO: Launching config: "/home/attntd/projects/signal/signal-receipts-test.qml"
+  INFO: Shell ID: "a85902edcfed6e48c8ebcf2bcfb849e8" Path ID "a85902edcfed6e48c8ebcf2bcfb849e8"
+  INFO: Saving logs to "/tmp/pk-s06-fvd4gmf1/runtime/quickshell/by-id/ai0azuoolt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks

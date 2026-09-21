@@ -1,0 +1,5 @@
+FAIL [imports/types, exit=255] /home/attntd/projects/signal/signal-acceptance-test.qml
+Warning: /home/attntd/projects/signal/signal-acceptance-test.qml:18:28: Reserved keyword "native" cannot be used as a QML identifier. [syntax]
+    readonly property bool native: Quickshell.env("PUTKIN_SIGNAL_NATIVE") === "1"
+                           ^^^^^^
+FAIL: 259 plików QML, 1 z błędami.

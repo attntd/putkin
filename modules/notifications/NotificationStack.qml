@@ -18,13 +18,26 @@ UI.FadeScope {
     readonly property real cardHeightLimit: (availableHeight - Math.max(0, count - 1) * Metrics.panelGap) / Math.max(1, count)
     implicitHeight: column.implicitHeight
     function cardAt(index: int): Item { return cards.itemAt(index); }
-    function focusInitial(): void { if (navigating && cards.count > 0) cards.itemAt(0).closeControl.forceActiveFocus(controller.focusReason); }
+    function focusInitial(): void {
+        if (!navigating || cards.count === 0) return;
+        for (let i = 0; i < cards.count; ++i) {
+            const card = cards.itemAt(i);
+            if (card.entry && card.entry.historyKey === controller.replyHistoryKey && card.replySession) {
+                card.focusReply(controller.focusReason); return;
+            }
+        }
+        cards.itemAt(0).selectionControl.forceActiveFocus(controller.focusReason);
+    }
     function sync(): void {
         const values = service.visibleOn(screenName);
         for (let index = list.count - 1; index >= 0; index--) {
             const old = list.get(index);
             if (!old.leaving && values.indexOf(old.entry) < 0) {
-                list.setProperty(index, "snapshot", JSON.stringify(old.entry.closedSnapshot || old.entry.snapshot()));
+                const snapshot = Object.assign({}, old.entry.closedSnapshot || old.entry.snapshot());
+                // Internal cards render their current session-history record,
+                // so the fade never retains another copy of message content.
+                if (snapshot.messageReference) { snapshot.summary = ""; snapshot.body = ""; }
+                list.setProperty(index, "snapshot", JSON.stringify(snapshot));
                 list.setProperty(index, "leaving", true);
             }
         }
@@ -44,7 +57,12 @@ UI.FadeScope {
         if (navigating) Qt.callLater(focusInitial);
         else { focus = false; focusedControl = null; }
     }
-    Keys.onEscapePressed: controller.close()
+    Keys.onPressed: event => {
+        if (DismissKeys.matches(event, root)) {
+            controller.close();
+            event.accepted = true;
+        }
+    }
     ListModel { id: list }
     Column {
         id: column
@@ -58,15 +76,22 @@ UI.FadeScope {
                 required property int index
                 required property var model
                 entry: model.leaving ? JSON.parse(model.snapshot) : model.entry
+                service: root.service
                 shown: !model.leaving
                 width: column.width
                 height: Math.min(implicitHeight, root.cardHeightLimit)
                 navigating: root.navigating
-                previousControl: index > 0 && root.cardAt(index - 1) ? root.cardAt(index - 1).closeControl : null
-                nextControl: index + 1 < root.count && root.cardAt(index + 1) ? root.cardAt(index + 1).closeControl : null
+                previousControl: index > 0 && root.cardAt(index - 1) ? root.cardAt(index - 1).selectionControl : null
+                nextControl: index + 1 < root.count && root.cardAt(index + 1) ? root.cardAt(index + 1).selectionControl : null
                 onControlFocused: item => root.focusedControl = item
                 onDismissRequested: root.service.dismiss(entry)
                 onActionRequested: identifier => {
+                    if (entry && entry.messageReference && identifier !== "open") {
+                        if (identifier === "reply") {
+                            if (root.controller.enterReply(entry, Qt.TabFocusReason)) card.focusReply(Qt.TabFocusReason);
+                        } else root.service.invoke(entry, identifier);
+                        return;
+                    }
                     root.controller.close();
                     root.service.invoke(entry, identifier);
                 }

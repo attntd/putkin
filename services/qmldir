@@ -24,11 +24,17 @@ BluetoothBackend 1.0 BluetoothBackend.qml
 BluetoothService 1.0 BluetoothService.qml
 NotificationBackend 1.0 NotificationBackend.qml
 NotificationService 1.0 NotificationService.qml
+NotificationApplicationService 1.0 NotificationApplicationService.qml
 NotificationEntry 1.0 NotificationEntry.qml
 NotificationIpc 1.0 NotificationIpc.qml
 SessionBackend 1.0 SessionBackend.qml
 LockService 1.0 LockService.qml
 PamBackend 1.0 PamBackend.qml
+AuthenticationRequest 1.0 AuthenticationRequest.qml
+AuthenticationService 1.0 AuthenticationService.qml
+AuthenticationSocket 1.0 AuthenticationSocket.qml
+AuthenticationBackend 1.0 AuthenticationBackend.qml
+PolkitRequest 1.0 PolkitRequest.qml
 IdleService 1.0 IdleService.qml
 IdleBackend 1.0 IdleBackend.qml
 SessionService 1.0 SessionService.qml
@@ -47,3 +53,9 @@ ScreenshotService 1.0 ScreenshotService.qml
 ScreenshotBackend 1.0 ScreenshotBackend.qml
 AudioChannelService 1.0 AudioChannelService.qml
 PipewireChannel 1.0 PipewireChannel.qml
+SignalBackend 1.0 SignalBackend.qml
+SignalIpc 1.0 SignalIpc.qml
+SignalService 1.0 SignalService.qml
+SignalMessagingAdapter 1.0 SignalMessagingAdapter.qml
+SignalReplySession 1.0 SignalReplySession.qml
+MessagesIpc 1.0 MessagesIpc.qml

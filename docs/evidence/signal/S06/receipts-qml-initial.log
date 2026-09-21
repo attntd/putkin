@@ -1,0 +1,17 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::SignalReceipts::initTestCase()
+FAIL!  : qmltestrunner::SignalReceipts::test_center_and_reply_do_not_read_phone_read_dismisses_exact_card() Received a warning that resulted in a failure:
+QUnifiedTimer::stopAnimationDriver: driver is not running
+FAIL!  : qmltestrunner::SignalReceipts::test_center_and_reply_do_not_read_phone_read_dismisses_exact_card() Compared values are not the same
+   Actual   (): 0
+   Expected (): 1
+   Loc: [/home/attntd/projects/signal/tests/qml/tst_signal_receipts.qml(89)]
+PASS   : qmltestrunner::SignalReceipts::test_gate_loss_during_debounce_hidden_detail_and_closed_view()
+PASS   : qmltestrunner::SignalReceipts::test_incoming_outside_scrolled_view_and_stale_route_do_not_read()
+PASS   : qmltestrunner::SignalReceipts::test_read_arriving_during_notification_fetch_cannot_recreate_toast()
+PASS   : qmltestrunner::SignalReceipts::test_status_counts_accessible_and_unknown_not_delivered()
+PASS   : qmltestrunner::SignalReceipts::test_visible_range_once_and_unread_shared_with_hub()
+PASS   : qmltestrunner::SignalReceipts::cleanupTestCase()
+Totals: 7 passed, 1 failed, 0 skipped, 0 blacklisted, 8391ms
+********* Finished testing of qmltestrunner *********

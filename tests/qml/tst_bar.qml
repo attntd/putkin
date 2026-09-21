@@ -114,7 +114,12 @@ Item {
             compare(controller.screenName, "");
         }
 
-        function test_keypad_enter_and_escape() {
+        function test_keypad_enter_and_escape_data() {
+            return [{tag: "escape", key: Qt.Key_Escape, status: false},
+                {tag: "q-workspace", key: Qt.Key_Q, status: false},
+                {tag: "q-status", key: Qt.Key_Q, status: true}];
+        }
+        function test_keypad_enter_and_escape(data) {
             controller.focusBar();
             tryVerify(() => first.workspaces.list.currentItem.activeFocus);
             keyClick(Qt.Key_L);
@@ -124,7 +129,8 @@ Item {
             compare(service.activeId("TEST-1"), 12);
             controller.focusBar();
             tryVerify(() => first.workspaces.list.currentItem.activeFocus);
-            keyClick(Qt.Key_Escape);
+            if (data.status) first.focusQuickSettings();
+            keyClick(data.key);
             compare(controller.screenName, "");
             compare(backend.requests.length, 1);
         }

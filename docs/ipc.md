@@ -23,6 +23,7 @@ quickshell ipc --path /ścieżka/putkin/shell.qml call bar close
 | --- | --- | --- |
 | `bar focus(): string` | Nazwa monitora albo pusty napis | Rozpoczyna nawigację na monitorze skupionym przez Hyprlanda. Gdy nie ma odpowiadającego mu ekranu Qt, wybiera pierwszy ekran Qt obecny w modelu Hyprlanda. Bez dostępnego monitora niczego nie skupia. |
 | `bar close(): void` | Brak | Kończy nawigację i oddaje klawiaturę compositorowi. |
+| `bar status(): string` | JSON | Odczyt dostępności, monitorów z `activeId`, `focusedMonitor`, workspace’ów z `visibleOn`, `busy` i `error`; bez zmiany fokusu ani workspace’u. |
 
 `focus` wybiera aktywny workspace danego monitora; powtórne wywołanie
 ponownie ustawia ten wybór. `h`/`l` przesuwają wybór, `Enter` i Enter
@@ -259,7 +260,7 @@ oraz lokalne `quickshell ipc --help`. Reguły numerów i przenoszenia:
 | `launcher` | `toggle()` | `ok` lub błąd koordynatora; Super+Spacja |
 | `launcher` | `open()` | Otwarcie na skupionym monitorze, `ok` lub błąd |
 | `launcher` | `openClipboard()` | Otwarcie lub zmiana trybu na Schowek; `ok` lub błąd; Super+V |
-| `launcher` | `openCommands()` | Otwarcie lub zmiana trybu na komendy z `:` w polu; `ok` lub błąd; Super+: |
+| `launcher` | `openCommands()` | Otwarcie lub zmiana trybu na pusty chip „Komenda”; `ok` lub błąd; Super+; |
 | `launcher` | `close()` | Zamknięcie tylko aktywnego launchera |
 
 Przykład: `quickshell ipc --path /absolutna/instalacja/shell.qml call launcher toggle`.

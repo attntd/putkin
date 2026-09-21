@@ -11,6 +11,7 @@ import sys
 
 from _install import (ROOT, Session, atomic_link, configure, current, file_state, paths, prepare,
                       prune, publish, releases, restore_file, source_files, verify)
+from _signal_install import handoff, inspect, runtime
 
 
 def dependencies():
@@ -29,6 +30,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--destination", type=Path, help="Prywatny prefiks z config/data/state/bin; bez sesji hosta")
     parser.add_argument("--source", type=Path, default=ROOT, help="Źródła runtime; domyślnie to repozytorium")
+    parser.add_argument("--signal-runtime", type=Path, help="Przypięty pakiet CLI/JRE z scripts/package-signal-runtime")
     parser.add_argument("--dry-run", action="store_true", help="Pokaż plan bez zmiany celu")
     parser.add_argument("--activate", action="store_true", help="Przełącz odblokowaną sesję przez UWSM")
     parser.add_argument("--no-prune", action="store_true", help="Odrocz retencję do odbioru pierwszej migracji")
@@ -45,9 +47,13 @@ def main():
         if target is None:
             raise ValueError("Brak wskazanego zachowanego buildu.")
         verify(target)
+    bundle, signal_info = runtime(target or args.source, (target / "dependencies/signal") if target and (target / "services/SignalBackend.qml").exists() else args.signal_runtime)
+    compatibility = inspect(layout, target or args.source)
     plan = {"paths": {k: str(v) for k, v in layout.items()}, "keep": 5,
             "builds": [p.name for p in builds], "restore": str(target) if target else None,
-            "runtime_files": len(source_files(args.source)), "dependencies": dependencies(), "activate": args.activate}
+            "runtime_files": len(json.loads((target / ".putkin-build.json").read_text())["files"]) if target else len(source_files(args.source)),
+            "dependencies": dependencies(), "activate": args.activate,
+            "signalRuntime": signal_info, "signalCompatibility": compatibility}
     if args.dry_run:
         print(json.dumps(plan, indent=2, ensure_ascii=False))
         return 0
@@ -65,7 +71,7 @@ def main():
             if instances():
                 raise RuntimeError("Putkin działa; użyj scripts/install --activate.")
         if target is None:
-            target = prepare(store, args.source)
+            target = prepare(store, args.source, bundle)
         else:
             from _install import validate
             validate(target)
@@ -77,15 +83,19 @@ def main():
             if session:
                 session.stop()
                 stopped = True
-            publish(store, target)
-            configure(layout)
+            with handoff(layout, target):
+                publish(store, target)
+                configure(layout)
             active = session.start() if session else None
         except BaseException:
             fallback = old or (session.old_build if session else None)
             if stopped and session:
                 session.stop()
             if fallback:
-                atomic_link(store / "current", fallback)
+                # A failed new process may already have migrated the database.
+                # Never restart an older Signal reader against newer data.
+                with handoff(layout, fallback):
+                    atomic_link(store / "current", fallback)
             else:
                 (store / "current").unlink(missing_ok=True)
             for path, state in before.items():

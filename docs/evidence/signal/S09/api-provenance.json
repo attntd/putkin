@@ -1,0 +1,50 @@
+{
+  "version": "0.14.8",
+  "policy": "putkin-retention-2",
+  "sources": [
+    {
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/lib/src/main/java/org/asamk/signal/manager/helper/IncomingMessageHandler.java",
+      "sha256": "73db0c2feb2de845fca7719656643dfda0f18ff13977a38733212f1676abd007"
+    },
+    {
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/lib/src/main/java/org/asamk/signal/manager/helper/AttachmentHelper.java",
+      "sha256": "8659cce67c82eb16c798882986e4d5e129ba5b39fb80704c2ce2e1a426a88ab9"
+    },
+    {
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/lib/src/main/java/org/asamk/signal/manager/storage/AttachmentStore.java",
+      "sha256": "08f111691ee151dc9fd7d8437b5b6bbe2e31d0137c3e9fa05939d47471217408"
+    },
+    {
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/src/main/java/org/asamk/signal/json/JsonSyncDataMessage.java",
+      "sha256": "c94ba89cd35ebfb2ddb0d09a032ee58d80663d3d07d8bc8584faa85dbc7dc6b4"
+    },
+    {
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/lib/src/main/java/org/asamk/signal/manager/helper/SendHelper.java",
+      "sha256": "2410c6762c0d81ea02eb54bfd4b49827462f873a685bf723047e88627625df7a"
+    },
+    {
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/lib/src/main/java/org/asamk/signal/manager/storage/sendLog/MessageSendLogStore.java",
+      "sha256": "6dcc586d3110cf3b830d3240087e33954551d6958cfd4b74fdaf10c4985327c5"
+    },
+    {
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/src/main/java/org/asamk/signal/util/SendMessageResultUtils.java",
+      "sha256": "c4edad52dc0f011572a9bd3706be785b3d0523782547643b7e12426e998c619e"
+    },
+    {
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/src/main/java/org/asamk/signal/commands/RemoteDeleteCommand.java",
+      "sha256": "e710f89f6d92dea3689250f6724861a2f7da64260dcf6498a0945d6c3b367d6b"
+    },
+    {
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/src/main/java/org/asamk/signal/commands/UpdateContactCommand.java",
+      "sha256": "bca5b5c7e7fef217979fdcf08d2ac8b15c98b051767611423336a118991c59ae"
+    },
+    {
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/src/main/java/org/asamk/signal/commands/UpdateGroupCommand.java",
+      "sha256": "71ad4a933f088900f4b6940b3c0600a42a6650d647e9f825992140d250c3ad64"
+    },
+    {
+      "url": "https://github.com/AsamK/signal-cli/blob/v0.14.8/lib/src/main/java/org/asamk/signal/manager/storage/messageCache/MessageCache.java",
+      "sha256": "a82fc2dfcd8053b3fad806b51e595a56f26049e7bc78176a3290c23bd236fee0"
+    }
+  ]
+}

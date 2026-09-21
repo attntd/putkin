@@ -1,0 +1,18 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::SignalNotifications::initTestCase()
+PASS   : qmltestrunner::SignalNotifications::test_accent_preview_cancel_and_small_card()
+PASS   : qmltestrunner::SignalNotifications::test_arrival_grouping_no_focus_and_route()
+PASS   : qmltestrunner::SignalNotifications::test_center_and_reply_do_not_read_phone_read_dismisses_exact_card()
+PASS   : qmltestrunner::SignalNotifications::test_center_expired_actions_reply_and_receipt_separation()
+PASS   : qmltestrunner::SignalNotifications::test_deleted_missing_phone_and_burst()
+PASS   : qmltestrunner::SignalNotifications::test_dnd_mute_lock_disconnect_and_redaction()
+PASS   : qmltestrunner::SignalNotifications::test_failed_unknown_restart_and_late_confirmation()
+PASS   : qmltestrunner::SignalNotifications::test_quick_reply_keyboard_context_double_send_and_ime()
+PASS   : qmltestrunner::SignalNotifications::test_quick_reply_typing_stops_on_blur_and_lock()
+PASS   : qmltestrunner::SignalNotifications::test_read_arriving_during_notification_fetch_cannot_recreate_toast()
+PASS   : qmltestrunner::SignalNotifications::test_redaction_removes_exact_history_and_ignores_late_fetch()
+PASS   : qmltestrunner::SignalNotifications::test_replacement_during_edit_timeout_other_conversation_and_hotplug()
+PASS   : qmltestrunner::SignalNotifications::cleanupTestCase()
+Totals: 14 passed, 0 failed, 0 skipped, 0 blacklisted, 14864ms
+********* Finished testing of qmltestrunner *********

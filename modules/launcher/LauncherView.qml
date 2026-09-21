@@ -77,7 +77,7 @@ FocusScope {
             if (!event.isAutoRepeat) activate();
         } else if (event.key === Qt.Key_Down || (navigating && event.key === Qt.Key_J)) select(1);
         else if (event.key === Qt.Key_Up || (navigating && event.key === Qt.Key_K)) select(-1);
-        else if (event.key === Qt.Key_Escape) dismissOrCollapse();
+        else if (DismissKeys.matches(event, root)) dismissOrCollapse();
         else if (navigating && event.key === Qt.Key_L && previewControl && previewControl.visible) previewControl.forceActiveFocus(Qt.TabFocusReason);
         else if (navigating && (event.key === Qt.Key_L || event.key === Qt.Key_Slash || event.key === Qt.Key_I)) focusInitial();
         else if (navigating && event.key === Qt.Key_H) {
@@ -173,6 +173,7 @@ FocusScope {
                 required property var modelData
                 required property int index
                 readonly property bool clipboard: modelData.kind === "clipboard"
+                readonly property bool command: modelData.kind === "configuredCommand" || modelData.kind === "workspaceCommand"
                 width: results.width
                 height: clipboard ? Metrics.launcherClipboardRowHeight : Metrics.launcherRowHeight
                 padding: Metrics.space8
@@ -205,21 +206,30 @@ FocusScope {
                         Layout.preferredHeight: slotSize
                         symbol: Icons.launcher(row.modelData)
                     }
-                    ColumnLayout {
+                    UI.PanelText {
+                        objectName: "launcherRowTitle"
                         Layout.fillWidth: true
-                        spacing: 0
-                        UI.PanelText { objectName: "launcherRowTitle"; Layout.fillWidth: true; textFormat: Text.PlainText; text: row.modelData.title; elide: Text.ElideRight; maximumLineCount: 1; wrapMode: Text.NoWrap }
-                        UI.PanelText {
-                            objectName: "launcherRowSubtitle"
-                            visible: !row.clipboard
-                            Layout.fillWidth: true
-                            text: row.modelData.subtitle || root.label(row.modelData.kind)
-                            textFormat: Text.PlainText
-                            color: Theme.textMuted
-                            font.pixelSize: Metrics.smallFontSize
-                            elide: Text.ElideRight
-                            maximumLineCount: 1
-                        }
+                        Layout.minimumWidth: 0
+                        textFormat: Text.PlainText
+                        text: row.modelData.title
+                        elide: Text.ElideRight
+                        maximumLineCount: 1
+                        wrapMode: Text.NoWrap
+                    }
+                    UI.PanelText {
+                        objectName: "launcherRowSubtitle"
+                        visible: !row.clipboard && !row.command
+                        Layout.minimumWidth: 0
+                        Layout.maximumWidth: row.availableWidth * 0.45
+                        Layout.preferredWidth: implicitWidth
+                        text: row.modelData.subtitle || root.label(row.modelData.kind)
+                        textFormat: Text.PlainText
+                        color: Theme.textMuted
+                        font.pixelSize: Metrics.smallFontSize
+                        horizontalAlignment: Text.AlignRight
+                        elide: Text.ElideRight
+                        maximumLineCount: 1
+                        wrapMode: Text.NoWrap
                     }
                 }
             }

@@ -1,0 +1,10 @@
+{
+  "scripts/install": "48691282f1a15804999bb9cee714ccb354bee32a35a019dbd9668953ae0f6d9d",
+  "scripts/_install.py": "341b6f3220b001e6b1f3657e90aca9ec9c183a3db771c183960537770c9f2a5b",
+  "scripts/_signal_install.py": "28aa209f5e11e7754c2ba2c8fd908caf125bf069bcc1fdc169be0654f6755789",
+  "scripts/package-signal-runtime": "49329a4abbdcea7b008f7aa942e2991970862111f168251dc7fd4c9746598515",
+  "scripts/test-signal-release": "ee1c9644694dbcaf00de407cccd00a7724c7fa85bef70ad49a817eec8e0ecdd5",
+  "services/signal_release.py": "9b292728944e31f2e1cfc034b3fe5dbeca3fd1c8624397080a6ca8d428ecad1a",
+  "services/signal-release.json": "ec80d8a66d1763427c06d28759116200bbfd526ebfcc5ec173c5e97ee1cbac6d",
+  "services/signal-cli-media/distribution.json": "c29bb6b228b1a8449822d3d78b0a96de49d04255bc5a7aedfdeb3a2c2ad8c9ea"
+}

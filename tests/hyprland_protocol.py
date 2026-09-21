@@ -4,12 +4,15 @@ import json
 import re
 import socket
 import threading
+import time
 
 
 class HyprlandPeer:
-    def __init__(self, directory, lua=False):
+    def __init__(self, directory, lua=False, fragment_monitors=False):
         directory.mkdir(parents=True)
         self.lua = lua
+        self.fragment_monitors = fragment_monitors
+        self.fragmented_monitors = False
         self.monitors = [self.monitor(0, "TEST-1", 9, True), self.monitor(1, "TEST-2", 2, False)]
         self.workspaces = [dict(id=i, name=str(i), monitor="TEST-1" if i != 2 else "TEST-2",
                                 windows=int(i == 12), hasfullscreen=False) for i in [2, 9, 12]]
@@ -70,7 +73,19 @@ class HyprlandPeer:
             responses = {"j/status": {"configProvider": "lua" if self.lua else "hyprlang"},
                          "j/monitors": self.monitors, "j/workspaces": self.workspaces, "j/clients": self.clients}
             if request in responses:
-                connection.sendall(json.dumps(responses[request]).encode())
+                response = json.dumps(responses[request]).encode()
+                if request == "j/monitors" and self.fragment_monitors and not self.fragmented_monitors:
+                    self.fragmented_monitors = True
+                    # AF_UNIX is a byte stream: one readyRead need not contain
+                    # the complete JSON response. Quickshell 0.3.1 closes early.
+                    connection.sendall(response[:len(response) // 2])
+                    time.sleep(0.05)
+                    try:
+                        connection.sendall(response[len(response) // 2:])
+                    except BrokenPipeError:
+                        pass
+                else:
+                    connection.sendall(response)
                 return
             focus = re.fullmatch(r'dispatch hl\.dsp\.focus\(\{ monitor = "(\d+)" \}\)', request) if self.lua else re.fullmatch(r"dispatch focusmonitor (\d+)", request)
             activate = re.fullmatch(r'dispatch hl\.dsp\.focus\(\{ workspace = "(\d+)", on_current_monitor = true \}\)', request) if self.lua else re.fullmatch(r"dispatch focusworkspaceoncurrentmonitor (\d+)", request)

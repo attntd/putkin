@@ -60,7 +60,7 @@ FocusScope {
     }
     Keys.onPressed: event => {
         if (event.isAutoRepeat) { event.accepted = true; return; }
-        if (event.key === Qt.Key_Escape || event.key === Qt.Key_Q) root.service.close();
+        if (DismissKeys.matches(event, root)) root.service.close();
         else if (event.key === Qt.Key_F || event.key === Qt.Key_Return || event.key === Qt.Key_Enter) root.service.save();
         else if ([Qt.Key_H, Qt.Key_J, Qt.Key_K, Qt.Key_L].indexOf(event.key) >= 0) save.forceActiveFocus(Qt.TabFocusReason);
         else return;

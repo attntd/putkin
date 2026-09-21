@@ -1,0 +1,10 @@
+PASS: 167 plików QML, 0 z błędami.
+{
+  "current": "/home/attntd/projects/signal/artifacts/signal-s12/destination/data/putkin/releases/20260921-084723-e893a9f8bfc8",
+  "active": null,
+  "removed": [],
+  "retained": [
+    "20260921-084723-e893a9f8bfc8",
+    "20260921-084325-872be9b31b9e"
+  ]
+}

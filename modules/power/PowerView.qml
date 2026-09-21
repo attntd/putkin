@@ -7,6 +7,7 @@ import "../../components" as UI
 Column {
     id: root
     required property var sessionService
+    property string requestedAction: ""
     property string confirmation: ""
     property var controls: []
     readonly property var actions: [
@@ -50,6 +51,10 @@ Column {
         Qt.callLater(focusInitial, reason);
     }
     onEnabledChanged: { if (!enabled) confirmation = ""; }
+    onRequestedActionChanged: {
+        confirmation = requestedAction;
+        if (confirmation) Qt.callLater(focusInitial);
+    }
 
     UI.PanelText { width: parent.width; text: qsTr("Zasilanie"); font.bold: true }
     UI.PanelText {

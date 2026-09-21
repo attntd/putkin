@@ -42,7 +42,7 @@ FocusScope {
         if (event.isAutoRepeat) { event.accepted = true; return; }
         if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) root.service.confirm(false);
         else if (event.key === Qt.Key_W) root.service.confirm(true);
-        else if (event.key === Qt.Key_Escape || event.key === Qt.Key_Q) root.service.close();
+        else if (DismissKeys.matches(event, root)) root.service.close();
         else return;
         event.accepted = true;
     }

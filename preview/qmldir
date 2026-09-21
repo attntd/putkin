@@ -32,3 +32,5 @@ MockAudioChannel 1.0 MockAudioChannel.qml
 MockCaffeinateBackend 1.0 MockCaffeinateBackend.qml
 MockLockBackend 1.0 MockLockBackend.qml
 MockPamBackend 1.0 MockPamBackend.qml
+MockSignalBackend 1.0 MockSignalBackend.qml
+MockMessagingBackend 1.0 MockMessagingBackend.qml

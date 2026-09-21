@@ -135,6 +135,10 @@
       "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/content_paste/default/24px.svg",
       "sha256": "5d716f9d4a627ac350507322aead0fb1dec36e02c444bddea1ef67042889b897"
     },
+    "delete": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/delete/default/24px.svg",
+      "sha256": "ec75e756af4e37a926a2f64ef8f59eac85276a658fc8a7aef0cc12c5e871e971"
+    },
     "description": {
       "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/description/default/24px.svg",
       "sha256": "65e2c1ac1ca2d0a894c8d8d89e530cb5df940d7ff0effbeb8c5f4b234a477670"
@@ -338,6 +342,14 @@
     "volume_up": {
       "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/volume_up/default/24px.svg",
       "sha256": "53e1499625a35bba9a86ae6650845357e937709b1f872d7bae1d513c4ef0dc5f"
+    },
+    "add": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/add/default/24px.svg",
+      "sha256": "e9532de2b9be01ce951e899e98ee673bb97acd574f0db118feb72fe074a1c376"
+    },
+    "send": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/send/default/24px.svg",
+      "sha256": "34e2232851b874c646ed77f1e90b85c9649e25605c636efdc351673579487675"
     }
   }
 }

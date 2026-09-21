@@ -6,6 +6,7 @@ QtObject {
     property bool tracked: false
     property bool lastGeneration: false
     property string appName: "Putkin"
+    property string desktopEntry: ""
     property string appIcon: ""
     property string summary: "Powiadomienie testowe"
     property string body: ""

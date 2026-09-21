@@ -1,0 +1,14 @@
+bus:
+
+shell:
+  INFO: Launching config: "/home/attntd/projects/signal/signal-messages-test.qml"
+  INFO: Shell ID: "f451c95cd0655703d9b4a54da791848b" Path ID "f451c95cd0655703d9b4a54da791848b"
+  INFO: Saving logs to "/tmp/pk-s04-p686pe6x/runtime/quickshell/by-id/t3d9wpkolt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  INFO: Reloading configuration...
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks

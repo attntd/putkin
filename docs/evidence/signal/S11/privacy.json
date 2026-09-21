@@ -1,0 +1,183 @@
+{
+  "passed": true,
+  "scope": "Known privacy canaries and actual pairing-URI patterns in saved logs/JSON; fixtures and screenshots contain intentional synthetic data only.",
+  "checks": [
+    "pairing_uri",
+    "private_error",
+    "private_body",
+    "identity_body",
+    "expired_body",
+    "locked_body"
+  ],
+  "files": [
+    {
+      "file": "acceptance/report.json",
+      "sha256": "1216b237881c525f653ae64f4af8120dfde90f4bd49dcbd89501009f9151c22f"
+    },
+    {
+      "file": "acceptance/runtime.log",
+      "sha256": "009f4eb21ba7aaab8e9668e87542e69142281c6407d021c7c6427af6a03493f3"
+    },
+    {
+      "file": "acceptance-before-reset.log",
+      "sha256": "3b6a9398138e033854285393b6b0d3fba5f54b2aeee44cf36142ec6bae254d80"
+    },
+    {
+      "file": "acceptance-run.log",
+      "sha256": "1298f68c9fddc2a8cce185667edaa2954427f6b464fc241f1b4b34e01f69d5a4"
+    },
+    {
+      "file": "audio-targeted.log",
+      "sha256": "302e6d3d8a15485341c41a7864490339d038e06ead3d49a78972c2453a351d15"
+    },
+    {
+      "file": "check-initial.log",
+      "sha256": "017346dd0254e081b9ec4fb1bed125ae2d2cc5b686aaa8df72479f99d633e771"
+    },
+    {
+      "file": "check.log",
+      "sha256": "2130ac77a46173d92b0a88a189ec915174393ccf26d1eb5e414f6dda71220c91"
+    },
+    {
+      "file": "cli-api.json",
+      "sha256": "471970dd5c4458b2af6cbf6fba53b7dba20e08a4acf1a3ca12752a3143ef5b75"
+    },
+    {
+      "file": "cli-api.log",
+      "sha256": "f04f10e474c4311abba8d6b39e961240cc95e07b2585f1872b2a75bf7faa91ab"
+    },
+    {
+      "file": "cli-policy-pin.json",
+      "sha256": "9c0e26c951f0a6d8da2ccc133ed0920bf09d2b985994f5ee8cced103d76f35ad"
+    },
+    {
+      "file": "cli-policy.log",
+      "sha256": "56bcfb30f226bf38fa580d4c19784d9d2a4e46c28cb0ee20de5d9cb3c52f7adc"
+    },
+    {
+      "file": "executable-modes.json",
+      "sha256": "d2e0e5989fc5bbeefd5abe4010c07596cbf77a50045b03dec132cd9c86b14329"
+    },
+    {
+      "file": "full-test-before-panels.log",
+      "sha256": "2f24c17a7225a60967bdececdd35eea74a68629e42ffe7329a3f1c1ee013c389"
+    },
+    {
+      "file": "full-test-before-receipts.log",
+      "sha256": "99427f49f22e775a97291e2790770ea0164fcdaac05bc78393459bb5b07def7d"
+    },
+    {
+      "file": "full-test.log",
+      "sha256": "c3674dc5d8a8d1c3eb8bf24016d6d8a4de9a142725802613a82350d45d6229fa"
+    },
+    {
+      "file": "input-targeted.log",
+      "sha256": "65cfb3ff20b915960697da28ccb8e579abff98cf65052d2d360865d0f23e9f7b"
+    },
+    {
+      "file": "jvm-process-run.log",
+      "sha256": "47f44928ccc19ef3930dace3b595fbd37bfb3183a225466ce62f69526ebf26ac"
+    },
+    {
+      "file": "jvm-process.json",
+      "sha256": "47f44928ccc19ef3930dace3b595fbd37bfb3183a225466ce62f69526ebf26ac"
+    },
+    {
+      "file": "jvm-process.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "panels-final-run.log",
+      "sha256": "d524892e6812c9c3d391e2424a45eeac0cab8b25e6bc035b34ba9faf607bc94f"
+    },
+    {
+      "file": "panels-final.json",
+      "sha256": "e1af7efd47d553db416d7a994b2f8f7ae48dc7004228331f824dddd557252f32"
+    },
+    {
+      "file": "panels-final.log",
+      "sha256": "12b38827de8ee8c1c160853fd45c9c29083cb61e25dca4a3f9042e23c904a86d"
+    },
+    {
+      "file": "performance-targeted.log",
+      "sha256": "251cd23aa4c05ce6b9da749a83856564cf8270d329ba49bb7a521d3c4e426ee8"
+    },
+    {
+      "file": "receipts-before-fix.json",
+      "sha256": "63bd6237cb261fb757821ff792a12cdd630bb24f74c24e51c3d483af80ef22ad"
+    },
+    {
+      "file": "receipts-diagnostic-run.log",
+      "sha256": "b8da7cc81a0d0c5824126deacf59c0da9671a446cbefeccdaa5ad3b6132f8a57"
+    },
+    {
+      "file": "receipts-diagnostic.json",
+      "sha256": "b8da7cc81a0d0c5824126deacf59c0da9671a446cbefeccdaa5ad3b6132f8a57"
+    },
+    {
+      "file": "receipts-diagnostic.log",
+      "sha256": "ea19b3e91d119da20cd3f47ab16e418a837f97b526d1a1b62a0c620d74965a02"
+    },
+    {
+      "file": "receipts-final-run.log",
+      "sha256": "2cd91770c737cc5c875bdadde01988f17347e5de949d1ba5c2162e6f2e3dd4c2"
+    },
+    {
+      "file": "receipts-final.json",
+      "sha256": "2cd91770c737cc5c875bdadde01988f17347e5de949d1ba5c2162e6f2e3dd4c2"
+    },
+    {
+      "file": "receipts-final.log",
+      "sha256": "fcd5ee83403e8abcbf9c0dbfc2d18b6bf76a65c03271c039457fcca10e51d8fb"
+    },
+    {
+      "file": "reliability-targeted.log",
+      "sha256": "6a027d5f6c67cb9b14817511c5f85f8a22c78f665bc169f4d48cf658f749d4c3"
+    },
+    {
+      "file": "run-summary.json",
+      "sha256": "001ac7c9cfea967c9c37a2be98efafa8f04b9fe9e663fff63fa37efd2dd05350"
+    },
+    {
+      "file": "scenario-targeted.log",
+      "sha256": "32a50b2afd02daa6e9c5a571c9832e3f1b3eae75e4ab83eaabd6b71d0d671b3f"
+    },
+    {
+      "file": "wayland/capture-tool.json",
+      "sha256": "09edef4cb57057428dc2d52fe684902a5e90c84300a2036fbef52cc195ef217a"
+    },
+    {
+      "file": "wayland/cleanup.json",
+      "sha256": "3caee804f85d369432076d862825beb234ab15da8c32b6d75ef98a60995abda3"
+    },
+    {
+      "file": "wayland/command.json",
+      "sha256": "a84e5a98ed6583fddd332b6b2437c611521f32372ef4663b6b984d00175c5f45"
+    },
+    {
+      "file": "wayland/hyprland.log",
+      "sha256": "95e02a64407c4e6a18d95f0d7e43cf85666cc38fe96fde48646ab6744456cf3e"
+    },
+    {
+      "file": "wayland/pointer-build.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "wayland/report.json",
+      "sha256": "bdaa8156612f1b7c7096fb9a027e8854e066888c3ee5214e0d0532e761a82388"
+    },
+    {
+      "file": "wayland/signal-report.json",
+      "sha256": "a0da153006beb837474d3e8520ee1cdf4fdf76990cb808d0124d007ed5d56d3b"
+    },
+    {
+      "file": "wayland/signal.log",
+      "sha256": "7c893f5d10313d2726cf1fae58bba820fe845c6deaa3817cb7ee9be875bdc34f"
+    },
+    {
+      "file": "wayland-run.log",
+      "sha256": "34dd88047d2125ff8f88f3505708db5e4ca9613e46df47d10bf3007c8f8b96ff"
+    }
+  ],
+  "findings": []
+}

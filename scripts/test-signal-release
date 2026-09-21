@@ -1,0 +1,120 @@
+#!/usr/bin/env python3
+"""Run the installed Signal bridge/CLI/JRE with an empty, networkless account."""
+import argparse
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+import tempfile
+import time
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def inside(package):
+    sys.path[:0] = [str(ROOT / "tests"), str(package / "services")]
+    from test_signal_lifecycle import Client, environment, gone
+    report = {"scope": "packaged production bridge/CLI/JRE, empty account, network disabled", "states": []}
+    with tempfile.TemporaryDirectory(prefix="pk-installed-") as tmp:
+        base = Path(tmp)
+        env = environment(base)
+        command = [sys.executable, "-B", str(package / "services/signal_backend.py")]
+        clients = []
+        try:
+            client = Client(env, command=command); clients.append(client)
+            first = client.state("idle")["data"]
+            assert first["schemaVersion"] == 7 and first["accountState"] == "unlinked"
+            assert first["cliVersion"] == "" and not first["errorCode"]
+            report["states"].append("unconfigured idle: schema 7, no CLI")
+            client.send("enable", "account.configure", {"enabled": True})
+            assert client.reply("enable")["result"]["accepted"]
+            linked = client.read(lambda v: v.get("data", {}).get("serviceState") == "idle"
+                                and v["data"].get("cliVersion") == "0.14.8", seconds=20)["data"]
+            assert linked["accountState"] == "unlinked" and not linked["errorCode"], linked
+            report["states"].append("pinned CLI 0.14.8 checked, empty account, no automatic pairing")
+            client.close()
+            assert gone(client.process.pid)
+            client = Client(env, command=command); clients.append(client)
+            again = client.state("idle", seconds=20)["data"]
+            assert again["cliVersion"] == "0.14.8" and again["accountState"] == "unlinked" and not again["errorCode"]
+            client.send("disable", "account.configure", {"enabled": False})
+            assert client.reply("disable")["result"]["accepted"]
+            client.state("disabled")
+            client.close()
+            assert gone(client.process.pid)
+            marker = Path(env["XDG_DATA_HOME"]) / "putkin/signal/release.json"
+            assert json.loads(marker.read_text())["cliStore"] == "signal-cli-0.14.8"
+            assert not (package / "history.sqlite3").exists()
+            report["states"].append("restart and disable preserve configuration, schema and protocol marker")
+        finally:
+            for client in clients: client.close()
+        remaining = []
+        for path in Path("/proc").glob("[0-9]*/cmdline"):
+            try: raw = path.read_bytes()
+            except OSError: continue
+            if b"signal_backend.py" in raw or b"org.asamk.signal.Main" in raw:
+                remaining.append(path.parent.name)
+        assert not remaining, remaining
+        report["cleanup"] = "no bridge or JVM"
+        sys.path.insert(0, str(ROOT / "scripts"))
+        from _common import isolated_environment, stop_process_group, qml_errors
+        ui = base / "ui"
+        ui.mkdir()
+        ui_env = isolated_environment(ui)
+        entry = ROOT / "signal-release-test.qml"
+        with (base / "qml.log").open("w+") as log:
+            process = subprocess.Popen(["dbus-run-session", "--", "quickshell", "--no-color", "--path", str(entry)],
+                                       env=ui_env, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+            try:
+                deadline = time.monotonic() + 10
+                while True:
+                    result = subprocess.run(["quickshell", "ipc", "--path", str(entry), "call", "releaseTest", "check"],
+                                            env=ui_env, capture_output=True, text=True, timeout=3)
+                    if result.returncode == 0 or process.poll() is not None or time.monotonic() >= deadline:
+                        break
+                    time.sleep(.1)
+                assert result.returncode == 0 and result.stdout.strip() == "PASS", result.stdout + result.stderr
+            finally:
+                stop_process_group(process)
+            log.seek(0)
+            output = log.read()
+            assert not qml_errors(output), output
+        report["ipc"] = "native Quickshell: private status, pairing, repeated settings, blocked/linked refusal"
+        report["result"] = "PASS"
+    print(json.dumps(report, indent=2))
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--package", required=True, type=Path)
+    parser.add_argument("--output", type=Path)
+    parser.add_argument("--inside", action="store_true")
+    args = parser.parse_args()
+    if args.inside:
+        inside(args.package)
+        return
+    sys.path.insert(0, str(ROOT / "scripts"))
+    from _install import verify
+    verify(args.package.resolve())
+    if not args.output or not shutil.which("bwrap"):
+        parser.error("--output and bubblewrap required; no unisolated fallback")
+    command = ["bwrap", "--unshare-all", "--die-with-parent", "--new-session", "--clearenv",
+        "--ro-bind", "/usr", "/usr", "--symlink", "usr/bin", "/bin", "--symlink", "usr/lib", "/lib",
+        "--symlink", "usr/lib", "/lib64", "--proc", "/proc", "--dev", "/dev", "--tmpfs", "/tmp",
+        "--ro-bind", str(ROOT), "/project", "--ro-bind", str(args.package.resolve()), "/release",
+        "--setenv", "PATH", "/usr/bin", "--setenv", "LANG", "C.UTF-8",
+        "--", "python3", "-B", "/project/scripts/test-signal-release", "--inside", "--package", "/release"]
+    result = subprocess.run(command, capture_output=True, text=True, timeout=75)
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.with_suffix(".log").write_text(result.stdout + result.stderr)
+    if result.returncode:
+        sys.exit(result.stderr or result.stdout)
+    report = json.loads(result.stdout)
+    args.output.write_text(json.dumps(report, indent=2) + "\n")
+    print(json.dumps(report))
+
+
+if __name__ == "__main__":
+    main()

@@ -52,6 +52,12 @@ def run(output):
                 value = ipc("probe", "snapshot", starting=True)
                 return ipc_json(value)
 
+            def released(description):
+                # LazyLoader deactivates before Qt delivers deferred destruction.
+                # Require both states; a real leaked surface still times out.
+                return eventually(state, lambda s: s.get("loaded") is False
+                    and s["created"] == s["destroyed"], description)
+
             try:
                 eventually(state, lambda s: "loaded" in s, "entrypoint ready")
                 time.sleep(0.15)  # Startup timer completes before exercising IPC.
@@ -70,14 +76,15 @@ def run(output):
                 assert state()["created"] == count + 1, "settings creates a separate window"
                 ipc("probe", "selectMonitor", "TEST-2")
                 assert ipc("ui", "openQuickSettings") == "ok"
-                eventually(state, lambda s: s.get("screen") == "TEST-2" and s.get("loaded"), "focused monitor")
+                eventually(state, lambda s: s.get("screen") == "TEST-2" and s.get("loaded")
+                    and s["created"] - s["destroyed"] == 1, "focused monitor and released previous surface")
                 assert state()["created"] - state()["destroyed"] == 1
                 ipc("probe", "removeSecond")
-                eventually(state, lambda s: s.get("loaded") is False, "hotplug releases loader")
+                released("hotplug releases loader and surface")
                 assert ipc("ui", "openQuickSettings") == "ok"
                 eventually(state, lambda s: s.get("loaded") and s.get("screen") == "TEST-1", "monitor fallback")
                 ipc("ui", "closePanels")
-                closed = eventually(state, lambda s: s.get("loaded") is False, "close")
+                closed = released("close and destroy surface")
                 assert closed["created"] == closed["destroyed"]
 
                 initial_tree = measurement.process_tree(process.pid)
@@ -88,12 +95,13 @@ def run(output):
                 samples = [{"cycle": 0, **measurement.snapshot(pid)}]
                 for cycle in range(1, 21):
                     assert ipc("ui", "toggleQuickSettings") == "ok"
-                    opened = eventually(state, lambda s: s.get("loaded") and s.get("focus") == "caffeinateToggle", "cycle open")
+                    opened = eventually(state, lambda s: s.get("loaded") and s.get("focus") == "caffeinateToggle"
+                        and s["created"] - s["destroyed"] == 1, "cycle open")
                     assert opened["created"] - opened["destroyed"] == 1
                     assert ipc("ui", "toggleQuickSettings") == "ok"
                     closing = state()
                     assert not closing["interactive"] and not closing["pageEnabled"]
-                    closed = eventually(state, lambda s: s.get("loaded") is False, "cycle close")
+                    closed = released("cycle close and destroy surface")
                     assert closed["created"] == closed["destroyed"], closed
                     samples.append({"cycle": cycle, **measurement.snapshot(pid)})
                 ipc("probe", "clearScreens")

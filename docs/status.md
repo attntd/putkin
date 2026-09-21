@@ -1,5 +1,668 @@
 # Status implementacji
 
+## Signal S12 — pakiet i aktywacja — 2026-09-21
+
+**Wdrożone: `20260921-110638-03f24e35e2b4`. Podstawowy odbiór live PASS.**
+
+Kolejne dopracowanie: kropki bez ramki w pierwszej linii treści, reakcje
+bez ramki obok godziny/statusu. Obraz w rozmowie jest klikalną miniaturą;
+nazwa, rozmiar i Zapisz/Otwórz/Zamknij są dopiero w podglądzie.
+MessageHistory, AttachmentCard i MediaPreview oraz testy zaktualizowane.
+272 QML, 32 celowane testy Qt i natywny Wayland PASS. Wdrożenie kod 0;
+Signal `ready/linked`, Caffeinate zachowane. [Dowody](evidence/signal/S12/ui-refinement/README.md).
+
+Po uwagach użytkownika: tylko ramka Hyprlanda, Szczegóły w prawym
+górnym rogu wraz z ustawieniem znikania, menu ⋯ u góry dymka,
+reakcje w wierszu godziny, własne dymki w akcencie. Composer ma 36 px
+i rośnie z tekstem. Zmieniono sześć widoków wiadomości i testowe fixture.
+272 QML, 44 celowane testy Qt i prywatny Wayland PASS; zrzuty obejrzane.
+Aktywacja kod 0, Signal `ready/linked`, brak błędów i ponownego skanu.
+[Dowody układu](evidence/signal/S12/ui-layout/README.md).
+
+Pakiet zawiera przypięte CLI/JRE; instalator kontroluje schemat i wersje,
+blokuje niezgodny downgrade i nie cofa danych. Prywatny rollback PASS.
+Zachowano nowsze zmiany main (uwierzytelnianie, launcher, powiadomienia).
+Pełna regresja: 218 Python, 787 Qt i 23 integracje PASS; dodatkowe testy
+wydania 11 PASS. Końcowa bramka 272 QML bez błędów.
+
+Aktywacja, otwarcie/zamknięcie wiadomości, kontrolowany stop/start i brak
+bridge po stopie odebrane na pulpicie. Caffeinate `presentation`, ustawienia
+i pięć buildów zachowane. Powrót: `20260921-104858-36c9df96d894`.
+W ustawieniach wyświetlono prawdziwy QR; nie zapisano go w dowodach.
+Użytkownik potwierdził skan i wysyłkę (`sent`); potem wystąpił `invalid_event`.
+Poprawiono akcje pisania na właściwe dla CLI `STARTED`/`STOPPED`; rzeczywisty
+serializator JVM i 71 testów PASS. Aktualizacja wróciła do `ready/linked`
+bez skanu. Tekst w Notatce działa w obie strony, z potwierdzoną widocznością
+na obu urządzeniach. Użytkownik potwierdził reakcje i załączniki z drugą osobą.
+Użytkownik potwierdził też edycję na obu urządzeniach oraz Otwórz właściwą
+rozmowę i odpowiedź bez okna z powiadomienia. Podstawowy odbiór zaliczony.
+Potwierdził również zmiany statusu odczytu, usuwanie wiadomości i rozmowy
+grupowe. Otwarte pozostają warianty prywatności/read sync, wszystkie tryby
+usuwania, znikanie, szczegółowa administracja grup oraz próby sprzętowe.
+Nie wykonano commita ani zmian Signal Desktop.
+
+[Pełny status](signal/STATUS.md), [obsługa i rollback](signal/OPERATIONS.md),
+[macierz live](signal/ACCEPTANCE.md), [dowody](evidence/signal/S12/README.md).
+
+## Signal S11 — odporność, odbiór i wydajność — 2026-09-21
+
+**S11 ukończony lokalnie; następny S12.** Gotowa [macierz odbioru](signal/ACCEPTANCE.md)
+z dowodami domeny, QML, prywatnego Waylanda i rzeczywistego CLI/JVM bez konta.
+Połączony E2E obejmuje oba kierunki sync na atrapach, media, quick reply,
+interakcje, grupę, raporty, usunięcie/wygaśnięcie i restart bez replay.
+
+Poprawiono hotplug w NotificationService i reset modelu w MessageHistory.
+Naprawiono oczekiwanie Audio na fade, kolejność fokusu w teście receipts
+oraz oczekiwanie paneli na odroczone zniszczenie widoku Qt.
+Nowe runnery acceptance/Wayland, fault injection i pomiary; rzeczywisty IME
+w teście wejścia Qt. Publiczny IPC v1, SQLite v7 i pin putkin-retention-2
+bez zmian; test.metrics działa tylko z jawną atrapą.
+
+**Końcowo PASS:** 259 QML bez błędów, 202 Python, 667 Qt i 23 integracje,
+w tym wszystkie 9 Signala. Dwa wcześniejsze przebiegi ujawniły wyścigi fixture
+receipts i paneli; po poprawkach cały zestaw przeszedł z kodem 0. Natywny Wayland,
+Qt/IME, lokalne API, polityka mediów/retencji i lifecycle JVM: PASS.
+10 000 wiadomości: mediana strony 10,04 ms, p95 13,11 ms; 60 s idle:
+QML 0,05 s CPU, bridge 0,00 s. 20/20 okien zwolnionych, 8 delegatów,
+wzrost median RSS +2352 KiB. Prawdziwy JVM osobno: 155,23 MiB RSS bez wzrostu.
+[Polecenia, logi, próbki i zrzuty](evidence/signal/S11/README.md).
+
+Telefon, wskazany rozmówca/grupa, fizyczny suspend/IME/portal/audio i pomiar
+konta live pozostają S12. ACK/COMMIT, unknown, brak dowolnego replay oraz
+granice retencji są jawne w macierzy. S12 ma najpierw przygotować pakiet
+z oboma przypiętymi jarami i rollback bez cofania danych, potem aktywację
+i próby live. Bez aktywacji pulpitu i commita w S11.
+
+## Signal S10 — grupy, kontakty i akceptacja — 2026-09-21
+
+**S10 ukończony lokalnie; następny S11.** Nowa rozmowa ma kontakty/profile,
+katalog grup i zaproszeń, tworzenie z avatarem oraz dołączanie przez link.
+Szczegóły grupy obejmują role, członków, uprawnienia i opuszczenie.
+ACI/groupId zachowują historię po zmianie profilu. Trwałe operacje i readback
+obsługują unknown/partial bez automatycznego tworzenia drugiej grupy.
+Utrata członkostwa blokuje composer i stare quick reply. Akceptacja próśb
+poprzedza read/typing/reply; blokada jest oddzielona od lokalnego mute/hidden.
+
+Nowe signal_directory/groups.py, SQLite v7, widoki NewConversation oraz
+ConversationDetails, rozszerzony adapter/historia/powiadomienia i testy.
+CLI nadal 0.14.8 JVM + putkin-retention-2, IPC v1. Poprawiono zakończenie
+sendera po anulowaniu transportu oraz oczekiwanie na render po reloadzie S04.
+
+Backend **197 PASS**, QML **258 plików bez błędów**, celowany Qt **80 PASS**.
+Pełny Qt: **666 PASS, 1 FAIL** w Audio; osobne Audio **22 PASS** (wliczone w 80).
+Natywny S10 i osiem poprzednich runnerów końcowo PASS, bez błędów QML
+ani osieroconych procesów. [Wyniki i zrzuty](evidence/signal/S10/README.md),
+[przekazanie prac](signal/STATUS.md).
+
+Wyłącznie syntetyczne konta, prywatne XDG/D-Bus i Qt offscreen. Odczyt
+akceptacji/blokady CLI nie dowodzi odbioru przez telefon; API nie ujawnia
+rewizji grupy ani trybu akceptacji linku. Próby live pozostają w S12.
+Bez aktywacji i commita. Następny S11: macierz odbioru, odporność i wydajność;
+sprawdzić też niestabilny test Audio w pełnym zestawie.
+
+## Signal S09 — usuwanie i wiadomości znikające — 2026-09-21
+
+**S09 ukończony lokalnie; następny S10.** Lokalne usunięcie i remoteDelete,
+ustawienie czasu rozmowy, trwałe odliczanie od wysłania/odczytu/read sync.
+Usunięcie obejmuje wersje, cytaty, media i powiadomienia; spóźnione zdarzenia
+nie odtwarzają treści. Jedno timerfd, cleanup przed historią na starcie,
+WAL/GC z odzyskiwaniem i przerywanie dekodera ostatniej kopii.
+
+Nowe signal_retention.py, schema v6, testy i runner; zmiany magazynu,
+outboxu, transportu, mediów, adaptera i widoków/powiadomień. IPC delete /
+expiration / redacted; CLI 0.14.8 + putkin-retention-2 eksportuje start i
+faktyczny timer wysyłki, poprawia Notatkę oraz czyści/wyłącza resend log.
+
+**PASS:** `scripts/check` — 254 QML; pełny backend — 128 testów;
+pełny QtTest — 659 wyników bez FAIL/SKIP; retencja/media — 30 testów,
+instalator — 15 testów. Natywne runnery S09/S07 bez błędów QML i osieroconych
+procesów; rzeczywiste poprawione klasy JVM i próba pustego konta/RPC: PASS.
+[Pełne wyniki i polecenia](evidence/signal/S09/README.md).
+
+Bez wdrożenia/telefonu. View-once niedostępny, delete-for-me lokalne;
+wyłączony shell sprząta przy starcie, brak obietnicy secure erase SSD.
+Wyłączenie resend log ogranicza naprawę błędów odszyfrowania u rozmówcy.
+Następny krok: S10 na SQLite v6 i nowym pinie, bez aktywacji pulpitu.
+
+## Signal S08 — reakcje, edycje, cytaty i pisanie — 2026-09-21
+
+**S08 ukończony lokalnie; następny S09.** Reakcje z osobami/liczbą i
+cofnięciem własnej, edycje w osobnym edytorze,
+cytaty z nawigacją lub jawnym brakiem oryginału, wzmianki grup UTF-16
+oraz ulotny wskaźnik pisania. Zwykły szkic zachowuje tekst, pliki i cytat.
+
+Nowe signal_content/interactions/mutations/typing.py, schema v5 oraz
+MessageText.js; zmiany reducera, outboxu/receipts, adaptera, kompozytora,
+historii, quick reply, ustawień i powiadomień. IPC message.edit/react,
+typing.set i metadane message.send; CLI send.editTimestamp, sendReaction,
+quote/mention/textStyle i sendTyping. Ten sam pin 0.14.8 + putkin-media-1.
+
+**PASS:** `scripts/check` — 252 QML; pełny backend — 111 testów;
+pełny QtTest — 650 wyników bez FAIL/SKIP; celowane interakcje — 19 testów.
+Prywatne runnery natywne S08/S06/S07 przeszły bez błędów QML i osieroconych
+procesów. Komendy i logi: [dowody S08](evidence/signal/S08/README.md).
+
+Bez wdrożenia i konta live. Pisanie ma **osobny lokalny przełącznik,
+domyślnie wyłączony**; CLI nie eksportuje ustawienia telefonu. Limity
+edycji opierają się na znanej historii, testy syntetyczne nie dowodzą
+odbioru przez drugie urządzenie. Telefon/kompozytor pozostają S11/S12.
+Następny **S09**: najpierw brakujący expirationStartTimestamp, następnie
+usuwanie i retencja obejmująca wersje, cytaty, media i mutacje inflight.
+[Status i ograniczenia](signal/STATUS.md#s08--reakcje-edycje-odpowiedzi-i-pisanie--2026-09-21).
+
+## Signal S07 — media i załączniki — 2026-09-21
+
+**S07 ukończony lokalnie; następny S08.** Kompozycja przyjmuje wiele plików,
+drop i obraz ze schowka. Historia ma miniatury, podgląd obrazu, Qt audio/wideo
+oraz jawny zapis/otwarcie. Wspólne akcenty, klawiatura i fokus zachowane.
+
+Nowe signal_media.py/schema v4, AttachmentCard/MediaPreview, IPC
+attachment.stage/paste/remove/save/open; zmiany outboxu, adaptera,
+kompozytora i powiadomień. Trwały magazyn, limity i cleanup po referencjach.
+CLI 0.14.8 wymaga zbudowanej polityki putkin-media-1: view-once/expiring
+pomijają pobranie, pozostałe media mają ograniczenia rozmiaru i cache.
+
+**PASS:** check 250 QML, backend 92 testy, pełna regresja QML 642 wyniki
+i 6 końcowych wyników mediów; realne zdarzenia drop/callback FileDialog,
+prywatny runner Qt/SQLite z atrapą CLI, rzeczywiste klasy poprawionego JVM,
+regresja S05/S06, idle 60 s bez CPU/RPC i 15 testów instalatora.
+
+Bez wdrożenia i konta live. Telefon, portal, rzeczywisty schowek Waylanda
+i fizyczne audio pozostają S11/S12; audio nie oznacza nagrywania voice notes.
+Odbiorca pliku dostaje nazwę UUID.ext; nazwa źródłowa pozostaje lokalna.
+Następny: **S08 — reakcje, edycje, odpowiedzi i wskaźnik pisania**.
+[Status, komendy, ograniczenia i dowody](signal/STATUS.md#s07--media-i-załączniki--2026-09-21).
+
+## Signal S06 — statusy i odczyt między urządzeniami — 2026-09-20
+
+**S06 ukończony lokalnie; następny S07.** Wiersze pokazują dostarczenie,
+read/viewed oraz częściowe liczby odbiorców grupy. Własny odczyt zmniejsza
+trwały unread paska/listy i wygasza dokładny toast. Potwierdzenie wymaga
+aktywnego, widocznego, odblokowanego okna i konkretnego zakresu wiadomości;
+centrum/reply nie wywołują read.
+
+Nowe signal_receipts.py/schema v3, messages.read/message.read oraz
+sendReceipt z batchami po autorze. Zmiany Store/Outbox/Account/bridge,
+SignalMessagingAdapter, okna/historii i koordynatora powiadomień.
+Runner `scripts/test-signal-receipts` i nowe testy reducerów/viewportu,
+rozszerzone testy kart i kasowania historii. IPC pozostaje v1.
+
+**PASS:** `scripts/check` (245 QML), pełny backend (77 testów) i końcowe
+18 testów celowanych; pełny QtTest **636 PASS, 0 FAIL/SKIP**. Natywne
+Qt/SQLite/bridge z atrapą, regresje S04/S05/D-Bus, reload/cleanup i 60 s
+idle bez RPC/ticków CPU; instalator 15 testów w prywatnych katalogach.
+
+Bez aktywacji pulpitu i konta live. CLI respektuje prywatność, lecz nie
+zwraca osobnego ACK self-sync; unknown nie dowodzi odczytu telefonu.
+Sent sync grupy 0.14.8 pomija listę odbiorców (total=null).
+Macierz telefonu z włączonymi/wyłączonymi receipts oraz fizyczny kompozytor
+pozostają S11/S12. Następny: **S07 — media i załączniki**, bez wdrożenia.
+[Dokładny status, komendy, ograniczenia i dowody](signal/STATUS.md#s06--raporty-i-odczyt-między-urządzeniami--2026-09-20).
+
+## Signal S05 — powiadomienia i quick reply — 2026-09-20
+
+**S05 ukończony lokalnie; następny S06.**
+
+Własne karty Signala otwierają właściwą rozmowę i pozwalają odpowiedzieć
+wewnątrz toasta/centrum, także po timeout i przy zamkniętym oknie.
+Jeden toast na rozmowę, pasywne nadejście, DND, lokalne wyciszenie i lock.
+Szkic reply jest osobny od edytora okna; SQLite v2 wiąże go atomowo
+z istniejącym outboxem. Failed zachowuje treść, unknown nie powtarza send.
+Nie ma drugiego serwera ani globalnego inline reply dla obcych klientów.
+
+Zmiany: LocalNotification/NotificationService/Entry, karty/centrum/fokus,
+nowe SignalNotifications, SignalReplySession, NotificationReply,
+signal_replies.py i migracja v2, połączenia shella oraz testy/runner S05.
+**PASS:** 243 QML w check, 62 testy backendu + celowany test kasowania,
+10 wyników UI S05, 15 testów instalatora, natywny S05/SQLite z atrapą,
+regresja protokołu D-Bus i okna S04. Końcowa pełna regresja QML:
+**628 PASS, 0 FAIL/SKIP**.
+
+Nie aktywowano pulpitu i nie podłączono konta. Fizyczny kompozytor,
+IME i telefon pozostają S11/S12. Następny: **S06 — receipts/read sync**;
+odczyt centrum nie oznacza odczytu rozmowy.
+[Dokładny status, pliki i dowody](signal/STATUS.md#s05--powiadomienia-i-quick-reply--2026-09-20).
+
+## Signal S04 — wspólne okno wiadomości — 2026-09-20
+
+**S04 ukończony; następny S05 — powiadomienia i quick reply.**
+Jedno leniwe natywne okno ma wyszukiwanie rozmów, paginowaną historię,
+trwałe szkice, wysyłanie tekstu i nową rozmowę bez próbnego send.
+Na małym ekranie lista i szczegóły są osobno. Wspólny UI jest oddzielony
+od SignalMessagingAdapter; routing obejmuje usługę, konto i rozmowę.
+Wejścia: pasek, `:messages`, katalog działań oraz IPC. Bez BlueFerry,
+wtyczek i nowego globalnego skrótu.
+
+**PASS:** 238 QML w scripts/check, 56 testów backendu Signala,
+616 wyników pełnej regresji QML, 15 końcowych wyników nowego UI/kontrolera,
+15 testów instalatora oraz natywne testy wiadomości, parowania i lifecycle.
+Testy używają atrap, prywatnych XDG/D-Bus i offscreen. Fizyczny fokus,
+rzeczywisty silnik IME i telefon wymagają późniejszego odbioru;
+licznik odczytu pozostaje do S06. Bez aktywacji zmian na pulpicie.
+
+[Pliki, API, dowody i następny krok](signal/STATUS.md#s04--okno-wiadomości-tekst-i-nowa-rozmowa--2026-09-20).
+
+## Signal S03 — parowanie i ustawienia — 2026-09-20
+
+**S03 ukończony; następny S04 — okno rozmów, tekst i nowa rozmowa.**
+Istniejące ustawienia mają sekcję Signal: nazwa urządzenia, parowanie QR,
+anulowanie i wygaśnięcie, kontrola konta oraz lokalny stop/resume odbioru.
+Usunięcie lokalnej historii ma osobne potwierdzenie. QR pozostaje w pamięci;
+powtórny start nie tworzy drugiej próby, a utrata odpowiedzi finishLink
+prowadzi do sprawdzenia zapisanego konta. Awaria bridge podczas parowania
+czyści kod i pozwala ponownie uruchomić usługę z ustawień.
+
+- **PASS:** 225 QML, 52 testy Python Signala, 601 wyników pełnej regresji
+  QML, 11 ponowionych wyników ustawień S03 i 15 testów instalatora.
+- **PASS:** natywne SettingsWindow/SignalBackend z atrapą, QR dekodowany
+  niezależnym ZXing, cancel/timeout/restart/SIGKILL i oba akcenty.
+- **PASS:** 60 s idle z 0 ticków CPU pomocników, trwałość historii/outboxu
+  po reloadzie i brak pozostałych procesów.
+- Testy są syntetyczne. Bez telefonu, rzeczywistego konta i aktywacji
+  pulpitu. Brak eventu auth w CLI oznacza kontrolę powiązania przy
+  odświeżeniu, operacji lub restarcie, bez okresowego pollingu.
+
+[Pliki, API, dowody i następny krok](signal/STATUS.md#s03--parowanie-konta-i-ustawienia--2026-09-20).
+
+## Signal S02 — historia, synchronizacja i outbox — 2026-09-20
+
+**S02 ukończony; następny S03 — parowanie i ustawienia.** Historia SQLite
+obejmuje wiadomości przychodzące, wysłane z telefonu i lokalny tekst.
+Działa deduplikacja po tożsamości protokołu, stronicowanie, trwałe szkice
+z kontrolą wersji i jedna kolejka wysyłania dla przyszłego okna/quick reply.
+Commit poprzedza zmiany QML; unknown po awarii/timeout nie powoduje
+automatycznego ponowienia. Późny wynik RPC rozstrzyga tę samą operację.
+
+- **PASS:** 220 QML, 42 testy Signala, 15 testów instalatora.
+- **PASS:** natywne QML/SQLite z atrapą, trwałość po soft/hard reload,
+  błędy dysku/migracji, crash przed/po COMMIT, częściowe wyniki i timeout.
+- **PASS:** 60 s idle, 0 ticków CPU obu pomocników i 0 osieroconych PID.
+- Nie ma jeszcze okna rozmów ani parowania. Znikające/view-once pozostają
+  bez treści, media jako metadane; pełna retencja jest bramką S09.
+  Bez konta, wysyłki do rzeczywistych kontaktów i aktywacji pulpitu.
+
+[Pliki, API, dowody i następny krok](signal/STATUS.md#s02--historia-synchronizacja-i-kolejka-wysyłania--2026-09-20).
+
+## Signal S01 — proces usługi i transport — 2026-09-20
+
+**Ukończony S01; następny S02.** SignalService/Backend i pomocnik Python
+są podłączone raz do korzenia shella. Usługa ma wyłączność magazynu,
+asynchroniczny transport, generacje, ograniczone ponawianie i cleanup
+bridge/CLI po EOF/TERM/KILL, również poza UWSM i przy reloadzie.
+Zamknięcie okna nie zatrzymuje usługi. Odbiór produkcyjny pozostaje
+zablokowany do gotowości trwałej historii z S02.
+
+- **PASS:** 220 QML bez błędów, 19 testów Signala, 15 instalatora,
+  3 diagnostyki runtime oraz natywna integracja QML z atrapą.
+- **PASS:** 60 s idle, 0 ticków CPU helpera i atrapy, bez nowych
+  procesów/RPC; cleanup bez osieroconych procesów.
+- **PASS:** realny signal-cli 0.14.8/JVM w bwrap bez sieci/konta;
+  dziedziczenie blokady i śmierć właściciela podczas pracy/startu.
+- Bez aktywacji, parowania i wysyłania wiadomości; bez commita.
+
+[Pełny status i przekazanie](signal/STATUS.md),
+[kontrakty](signal/CONTRACTS.md), [odtworzenie testów](signal/TESTING.md).
+
+## Signal S00 — audyt i kontrakty — 2026-09-20
+
+**Ukończony pierwszy etap roadmapy Signala.** Zweryfikowano punkty
+integracji istniejącego shella i API przypiętego signal-cli **0.14.8**.
+Wybrano dystrybucję JVM (prywatny Temurin 25.0.4.1+1) i JSON-RPC po stdio
+z ręczną subskrypcją po gotowości bazy. Powstały kontrakty usługi/danych/UI,
+mapa API i luk, plan odbioru oraz wykonywalny fake z syntetycznymi eventami.
+
+- Kontrola całego QML: **PASS**, 217 plików, 0 błędów; transport: **PASS**,
+  5 testów. Probe rzeczywistego CLI w bwrap bez sieci/konta: **PASS**,
+  16 kontroli, w tym 18 odpowiedzi JSON-RPC i poprawny EOF wariantu JVM.
+- Zachowano negatywny wynik wariantu native: odpowiedzi działały,
+  ale EOF powodował exit=99/GraalVM. Nie jest wybraną bazą implementacji.
+- S09 wymaga uzupełnienia brakującego `expirationStartTimestamp` w JSON
+  sent sync. View-once pozostaje niedostępne, „usuń u mnie” lokalne.
+  Nie uznano mocków ani audytu kodu za synchronizację z telefonem.
+- Produkcyjne źródła shella i aktywne wydanie bez zmian. Bez parowania,
+  wysyłania wiadomości, pakietów systemowych i aktywacji. Narzędzia są
+  w ignorowanych artefaktach tego checkoutu. Następny etap: **S01**.
+
+[Szczegółowy status i dowody](signal/STATUS.md),
+[kontrakty](signal/CONTRACTS.md), [API](signal/API.md),
+[testowanie i odtworzenie narzędzi](signal/TESTING.md).
+
+## Wspólny launcher, powiadomienia i Q — 2026-09-21
+
+**Scalone do `main` i wdrożone: `20260921-080356-f26716f87551`.**
+Źródła runtime z commita `8ba66f1`; wszystkie **290 plików** zgodne
+z oboma katalogami roboczymi. Odbiór **PASS**: jedna instancja,
+poprawny właściciel powiadomień, zarejestrowany Polkit, skróty gotowe.
+Ustawienia zachowane; timeout odcisku odczytany jako **10000 ms**, taki
+sam jak bezpośrednio przed instalacją. Log QML i konfiguracja Hyprlanda
+bez błędów. Paczka: **146 QML PASS**.
+[Odbiór](evidence/launcher-shell-merge-activation.json),
+[instalacja](evidence/launcher-shell-merge-install.log).
+
+Wspólna wersja łączy poprawki launchera i powiadomień z natywnym
+uwierzytelnianiem oraz odliczaniem odcisku. Zmiany wcześniej pozostawały
+w dwóch katalogach roboczych; utrwalono je osobno (`fe096d1`, `d44c13b`)
+i połączono bez utraty żadnego modułu. Q obejmuje także okna uwierzytelniania,
+z zachowaniem zwykłego wpisywania litery w polu hasła.
+
+Opis aplikacji lub ścieżka pliku w launcherze są teraz po prawej stronie
+nazwy w tym samym wierszu. Długi opis jest skracany; komendy nadal pokazują
+sam opis działania, a schowek jedną linię treści. Zachowano dopasowanie
+prefiksów komend, wspólny wynik shutdown/poweroff i trzy profile zasilania.
+Centrum ma dzwonek i kosz w nagłówku, poprawną nawigację J/K oraz H/L,
+aktywację całej karty, usuwanie obsłużonych wpisów i otwieranie aplikacji
+z historii. Q działa jak Escape poza polami tekstowymi.
+
+- Pełna kontrola: **228 QML PASS**, bez błędów.
+- Pełny przebieg Qt: **710 PASS, 0 FAIL**, 26 zestawów, bez ostrzeżeń;
+  limit procesu 480 s, zakończenie po 323 s.
+- Instalator po poprawce gotowości D-Bus: **17 PASS**; pomocniki uwierzytelniania: **6 PASS**.
+- Natywne powiadomienia: **15 grup PASS**, w tym akcje, zużywanie historii,
+  otwarcie testowej aplikacji z archiwum i 20 cykli życia providera.
+- Obejrzano podglądy 1366×768 (aplikacje) i 320×480 (długa ścieżka).
+- Porównanie wcześniejszych zmian main: 120 plików bez zmian; sześć
+  pozostałych zawiera integrację modułów, Q oraz odpowiadające testy i dokumentację.
+
+[Zestawienie](evidence/launcher-shell-merge-tests.json),
+[QML](evidence/launcher-shell-merge-qml.log),
+[kontrola](evidence/launcher-shell-merge-check.log),
+[Python](evidence/launcher-shell-merge-python.log),
+[powiadomienia](evidence/launcher-shell-merge-notifications.json),
+[zachowanie main](evidence/launcher-shell-merge-preservation.json),
+[aplikacje](evidence/launcher-inline-descriptions.png),
+[mały ekran](evidence/launcher-inline-descriptions-small.png).
+Testy używały atrap i izolacji; nie uruchamiały PAM, czytnika ani
+operacji zasilania hosta. Archiwalny Signal jest sprawdzony na aplikacji testowej.
+
+Pierwsza próba aktywacji wykryła wyścig instalatora: gotowość blokady/idle
+wyprzedziła rejestrację nazwy powiadomień w D-Bus. Instalator prawidłowo
+przywrócił poprzednią wersję. Poprawka czeka na rejestrację serwera
+w istniejącym limicie 15 s, nadal odrzucając właściciela z innym PID.
+[Końcowe testy instalatora](evidence/launcher-shell-merge-installer-final.log),
+[pierwsza próba](evidence/launcher-shell-merge-first-install.log).
+
+## Odliczanie odcisku w Polkit — 2026-09-20
+
+**Wdrożone: `20260920-210039-bf2eb74b4b79`.** Odbiór działającej wersji
+**PASS**: jedna instancja Putkina, Polkit zarejestrowany, timeout odczytany
+jako **30000 ms**, wszystkie 287 plików runtime zgodne z testowanymi
+źródłami. Paczka: **144 QML PASS**. Ustawienia zachowane, log QML i
+konfiguracja Hyprlanda czyste. [Odbiór](evidence/authentication-countdown-activation.json),
+[instalacja](evidence/authentication-countdown-final-install.log),
+[log](evidence/authentication-countdown-live.log).
+
+Glif jest po prawej, a pasek w tej samej ramce wypełnia się od lewej.
+Timeout pochodzi z odczytu systemowego pliku Polkit: lokalnie 30 s.
+Rzeczywista prośba o hasło zamienia ten obszar w pole tekstowe z fokusem
+klawiatury; po timeout glif znika. Kliknięcie usuwa ramkę fokusu.
+Geometria pozostaje stała także w przerwie między komunikatami timeout
+i hasła. Wspólny gradient i fade są zachowane.
+
+- `scripts/check`: **226 QML PASS**, 0 błędów.
+- QML: **16 PASS**, bez ostrzeżeń; rosnący pasek, położenie glifu,
+  stabilna geometria, fokus i dosłowne hjkl, wcześniejsze żądanie hasła,
+  zatrzymanie odliczania, zmiana tożsamości oraz parsowanie timeout.
+- Natywny Wayland: **11 grup PASS**, w tym odczyt prywatnej konfiguracji
+  2 s, rozdzielone w czasie komunikaty timeout/hasła i natychmiastowe
+  wpisanie hasła przez wtype. Zakończono wszystkie procesy testowe.
+- Obejrzano zrzuty rosnącego paska i pola z ramką; mają ten sam obszar.
+  Pierwsza asercja geometrii czytała pozycjoner przed zakończeniem układu;
+  końcowy test czeka na klatkę i sprawdza także przerwę po timeout.
+
+Pasek szacuje czas od komunikatu gotowości; nie zastępuje zdarzeń PAM.
+Nieznany lub nieograniczony timeout nie uruchamia odliczania. Polityka
+PAM pozostaje niezmieniona; fizycznego skanera ani PAM hosta nie testowano.
+
+[Zestawienie](evidence/authentication-countdown-summary.json),
+[kontrola](evidence/authentication-countdown-check.log),
+[QML](evidence/authentication-countdown-qml.log),
+[Wayland](evidence/authentication-countdown-wayland/report.json),
+[pasek](evidence/authentication-countdown-wayland/authentication-countdown.png),
+[pole hasła](evidence/authentication-countdown-wayland/authentication-countdown-password.png).
+
+## Natywne okna uwierzytelniania — 2026-09-20
+
+**Wdrożone: `20260920-204030-237db1e11390`.** Jedna instancja Putkina,
+zarejestrowany natywny PolkitAgent, zewnętrzny agent wyłączony. SSH/sudo
+askpass i GPG Pinentry są podłączone; konfiguracja Fish/UWSM/GPG jest
+zgodna z chezmoi. Zachowano stare ścieżki askpass dla uruchomionych
+aplikacji, bez restartu agenta SSH. Ustawienia pozostały identyczne.
+Wszystkie **287 plików runtime** odpowiadają końcowym testowanym źródłom;
+log działającego shella i konfiguracja Hyprlanda bez błędów i ostrzeżeń.
+[Odbiór](evidence/authentication-final-activation.json),
+[instalacja](evidence/authentication-final-install.log),
+[log](evidence/authentication-final-live.log),
+[pełne przywracanie](install.md#okna-uwierzytelniania--2026-09-20).
+
+Zaimplementowano wspólny widok Polkit, SSH/sudo askpass i Pinentry. Teksty
+oraz minimalistyczny układ zatwierdził użytkownik. Fade pochodzi z tego
+samego FadeScope/FadePresentation co pozostałe powierzchnie. Odcisk ma
+neutralny/czerwony/zielony glif; niedopasowanie nie wyświetla tekstu,
+błąd czytnika ma komunikat. Zielony stan wynika z sukcesu AuthFlow;
+oddanie hasła/PIN-u przez askpass lub Pinentry nie udaje sukcesu.
+
+- `scripts/check`: **226 QML PASS**, 0 błędów.
+- QML: **639 PASS w 26 zakończonych zestawach**, w tym **12** nowego
+  uwierzytelniania. Runner całości osiągnął 240 s podczas Settings;
+  Settings i cztery pozostałe zestawy ukończono osobno, bez FAIL.
+- Assuan/Python: **6 PASS** — escaping UTF-8/%/nowych linii, porcje
+  odpowiedzi, reset błędu, timeout, anulowanie/odmowa i nieobsługiwane wymagania.
+- Instalator: **15 PASS**; nowy stały `scripts/ssh-askpass` jest częścią
+  manifestu wydania. Prywatna paczka: **144 QML PASS**.
+- Natywny Wayland: **10 grup PASS** — prawdziwe Socket/IPC, PolkitAgent,
+  AuthFlow i libpolkit z prywatną authority i atrapą helpera. Odrzucone
+  hasło, ponowienie/sukces, odcisk i błąd czytnika, czerwony glif zachowany
+  przy szybkim przejściu do hasła, kolorowe zrzuty,
+  SSH/PIN/dotyk, kolejka, blokada, skala 1,25, 320×240 logicznych,
+  długi kontekst, usunięcie monitora oraz oba reloady. Brak ostrzeżeń QML.
+- Prawdziwy prywatny GPG agent wywołał Pinentry Putkina; wpisane przez
+  wtype hasło klucza testowego pozwoliło podpisać plik i zweryfikować podpis.
+  Oddzielny GNUPGHOME został usunięty, a jego agent zakończony.
+
+Pierwsze próby wykryły niewidoczny wiersz po zmianie rodzaju żądania,
+obsługę drugiego Entera, kolejność rozłączenia gniazda i utratę obiektu
+monitora przed sygnałem zmiany listy ekranów. Poprawiono zachowanie;
+końcowy przebieg natywny oraz Qt są zielone. Sandbox blokował utworzenie
+prywatnego D-Bus; uruchomienie poza nim zachowało XDG, magistrale i atrapy.
+Nie wyciszano importów ani diagnostyki.
+
+**Granice:** bez fizycznego skanera, PIN-u prawdziwego YubiKeya ani
+uwierzytelniania PAM hosta. Rozpoznawanie komunikatów odcisku obejmuje
+fprintd 1.94.5 w PL/EN. Systemowy stos Polkit nadal wybiera najpierw odcisk,
+potem hasło; UI nie zmienia polityki. Nowe żądanie Polkit przy zajętym
+oknie jest odrzucane, żeby nie skanować w tle. Pinentry obsługuje używanie
+istniejących kluczy, potwierdzenia i komunikaty; tworzenie nowych haseł,
+powtarzanie i wymagania jakości są jawnie odrzucane.
+
+[Kontrakt](authentication.md), [zestawienie](evidence/authentication-test-summary.json),
+[QML](evidence/authentication-qml.log), [kontrola](evidence/authentication-check.log),
+[Python](evidence/authentication-python.log), [instalator](evidence/authentication-install-tests.log),
+[Wayland](evidence/authentication-wayland/report.json),
+[zielony glif](evidence/authentication-wayland/authentication-fingerprint-success.png),
+[czerwony glif](evidence/authentication-wayland/authentication-fingerprint-mismatch.png),
+[przejście do hasła](evidence/authentication-wayland/authentication-fingerprint-password.png),
+[błąd czytnika](evidence/authentication-wayland/authentication-reader-error.png).
+
+## Instalacja najnowszego main — 2026-09-20
+
+**Wdrożone: `20260920-180112-c20011bd9d2d`**, źródła `main` z commita
+`c503fb1`. Repozytorium nie ma skonfigurowanego zdalnego źródła; zainstalowano
+najnowszy lokalny kod. Aktualizacja obejmuje 12 plików runtime: komendy
+sesji i Super+;, stabilizację fade/zwijania paneli oraz usunięcie pustego
+przycisku domyślnej akcji powiadomienia Kitty.
+
+- `scripts/check`: **217 QML PASS**, 0 błędów; walidacja paczki:
+  **137 QML PASS**, 274 pliki zgodne ze sprawdzonymi źródłami.
+- Instalator: **15 testów PASS** na prywatnych plikach i D-Bus.
+- QML: **627 PASS w 25 zestawach**, bez błędów asercji. Pełny runner
+  osiągnął limit 240 s podczas BatteryTray, po ukończeniu 21 zestawów
+  (540 PASS). Pozostałe cztery zestawy uruchomiono osobno: BatteryTray
+  **48 PASS**, Validation **13 PASS**, VisualContract **19 PASS**,
+  WindowAppearance **7 PASS**, bez błędów i pominięć.
+- Integracja sesji: **13 scenariuszy PASS**, prywatne XDG i oba D-Bus,
+  atrapy logind/blokady, bez pozostałych procesów.
+- Pierwsze próby instalatora i QML w sandboxie blokowały tworzenie gniazd
+  prywatnego D-Bus (`Operation not permitted`). Ponowne przebiegi poza
+  sandboxem zachowały izolację testów. Nie wyciszano błędów importów.
+
+`scripts/install --activate` zakończył się powodzeniem. Odbiór aktywnej
+wersji: **PASS** — jedna instancja `putkin.service active/running`, poprawny
+właściciel powiadomień, skróty gotowe i zastosowane, jeden wpis komend
+`SUPER + semicolon`, model workspace zgodny z Hyprlandem, blokada i idle
+gotowe. Log QML oraz konfiguracja Hyprlanda bez błędów i ostrzeżeń.
+Ustawienia zachowane bajt w bajt, Caffeinate nadal `off`.
+
+`previous` wskazuje `20260920-172244-98dd3094da3d`; zachowano pięć buildów.
+Powrót z odblokowanej sesji: `scripts/install --restore --activate`.
+Podczas instalacji nie wykonywano fizycznego wyłączenia, restartu,
+uśpienia, hibernacji, blokady ani uwierzytelniania PAM. Nie powtarzano
+odbioru animacji na GPU; bieżące testy interfejsu działały offscreen.
+
+[Podsumowanie testów](evidence/latest-install-test-summary.json),
+[kontrola QML](evidence/latest-install-check.log),
+[testy instalatora](evidence/latest-install-tests.log),
+[integracja sesji](evidence/latest-install-session.json),
+[przebieg instalacji](evidence/latest-install-activation-run.log),
+[odbiór](evidence/latest-install-activation.json),
+[log działającego shella](evidence/latest-install-live.log).
+
+## Domyślna akcja powiadomienia Kitty — 2026-09-20
+
+Lokalny kod Kitty (`kitty/notifications.py`) wysyła `default` z etykietą
+zawierającą pojedynczą spację. Karta renderowała ją jako pusty przycisk.
+Akcja `default` jest teraz pomijana wyłącznie w przyciskach; kliknięcie
+nagłówka/treści i Enter nadal ją wywołują. Dodatkowe akcje zachowują
+przyciski oraz nawigację. Pusty wiersz akcji nie zajmuje miejsca.
+
+- `scripts/check`: **217 QML PASS**, 0 błędów.
+- Powiadomienia: **37 PASS**, w tym pięć przypadków Kitty/default,
+  kliknięcia, Enter, zastąpienie akcji, geometria i dodatkowe przyciski.
+- Quick Menu / centrum: **27 PASS**, 0 FAIL i pominięć.
+- Obejrzano syntetyczny zrzut offscreen bez przycisku:
+  `/tmp/kitty-notification-after.png`; końcowy przebieg wizualny **3 PASS**.
+  Pierwsza asercja podglądu błędnie sprawdzała wartość zwrotną zapisu obrazu;
+  poprawiono harness, sam obraz był zapisany prawidłowo.
+- Logi: `/tmp/kitty-notifications-qml.log`, `/tmp/kitty-quick_menu-qml.log`
+  i `/tmp/kitty-notification-visual.log`. Testy używały atrap i prywatnego D-Bus.
+- Po połączeniu z poprawką animacji z `main` (`6b6721c`): powiadomienia
+  **37 PASS**, Quick Menu **35 PASS**, kontrola sześciu plików QML **PASS**.
+  Logi: `/tmp/kitty-merge-notifications.log`, `/tmp/kitty-merge-quick_menu.log`.
+
+Wdrożona później w instalacji najnowszego `main` opisanej powyżej.
+Nie wykonano nowego testu natywnego klienta Kitty.
+[Kontrakt powiadomień](notifications.md).
+
+## Komendy sesji i Super+; — 2026-09-20
+
+Tryb komend otwiera `Super+;`, bez Shift. Domyślne komendy to
+`shutdown`/`poweroff`, `sleep`, `hibernate`, `lock`, `reboot` i `settings`.
+Wyłączenie i restart otwierają istniejące potwierdzenie z fokusem na Anuluj.
+Uśpienie i hibernacja czekają na potwierdzoną blokadę kompozytora.
+Migracja kompletnych starszych ustawień dodaje komendy i zmienia stary
+domyślny skrót, zachowując własne przypisania oraz zajęte nazwy/skróty.
+
+- `scripts/check`: **217 QML PASS**, 0 błędów.
+- Testy QML: klawiatura **22 PASS**, screenshot **19 PASS**, sesja
+  **10 PASS**, launcher **62 PASS**; razem **113 PASS**, 0 FAIL i pominięć.
+- Adapter skrótów: **6 testów Python PASS**.
+- `scripts/test-session-integration`: **13 scenariuszy PASS** na prywatnym
+  D-Bus z atrapą logind, w tym Hibernate dopiero po aktualnym secure,
+  brak wywołania po timeout i niezależność dostępności suspend/hibernate.
+  Raport: `/tmp/launcher-commands-session.json`.
+- `scripts/test-keyboard-wayland`: **11 scenariuszy PASS** w izolowanym
+  Hyprlandzie, w tym rzeczywiste wejście Super+;, zapis skrótów, komendy,
+  przeładowanie oraz brak duplikatów i błędów QML/konfiguracji.
+  Raport: `/tmp/launcher-commands-keyboard/result.json`.
+
+Zmianę wdrożono później w instalacji najnowszego `main` opisanej powyżej.
+Nie wykonywano rzeczywistego wyłączenia, restartu, uśpienia, hibernacji
+lub uwierzytelniania PAM.
+[Kontrakt launchera](launcher.md), [ustawienia i migracja](keyboard.md).
+
+## Odzyskiwanie aktywnego workspace — 2026-09-20
+
+**Wdrożone: `20260920-172244-98dd3094da3d`**, poprawka scalona do `main`
+w commicie `53b3e70`.
+
+Po wdrożeniu powiadomień użytkownik zgłosił brak aktywnego numeru na pasku
+i timeout kliknięcia; skróty Hyprlanda nadal działały. Odczyt kompozytora
+pokazał poprawny aktywny workspace. Źródła Quickshella 0.3.1 i test prywatnego
+gniazda wykazały, że podzielona odpowiedź `j/monitors` pozostawia model bez
+skupionego monitora i aktywnych numerów. [Odtworzenie](evidence/workspace-recovery-before.log).
+Nie przechwycono pierwotnej odpowiedzi IPC działającego procesu; potwierdzono
+mechanizm odtwarzający zgłoszone objawy, nie sam pakiet z aktywnej sesji.
+
+Adapter ponawia natywny odczyt po zmianie niepełnego stanu, bez pollingu.
+Dodano `bar status` do odczytu modelu bez zmiany fokusu/workspace’u.
+[Kontrakt i sprawdzone API](workspaces.md#odzyskiwanie-danych-monitorów--2026-09-20).
+
+- `scripts/check`: **217 QML PASS**, 0 błędów; [log](evidence/workspace-recovery-check.log).
+- `tst_bar.qml`: **13 PASS**, 0 FAIL, 0 pominięć; kliknięcia, klawiatura,
+  oznaczenia, drugi monitor, timeout i utrata połączenia; [log](evidence/workspace-recovery-bar-qml.log).
+- Natywna integracja na prywatnych gniazdach: **4 scenariusze PASS**,
+  Hyprlang/Lua × zwykła/podzielona odpowiedź; potwierdzono również odzyskanie
+  po `focusedmon` z `?`, komendy launchera, hotplug, EOF i brak zapytań
+  w spoczynku; [log](evidence/workspace-recovery-integration.log).
+
+Instalacja: **137 QML PASS**, dwa zmienione pliki runtime; [log](evidence/workspace-recovery-install.log).
+Odbiór działającej wersji: **PASS**, `bar status` i `hyprctl -j monitors`
+zgodnie wskazują workspace 1 na eDP-1 i skupiony eDP-1; model paska ma
+`visibleOn: eDP-1`, bez oczekującej akcji i bez błędu. Jedna instancja
+PID 334201, poprawny właściciel powiadomień, gotowe skróty, blokada i idle,
+274 pliki zgodne z `main`, ustawienia zachowane. Log QML i konfiguracja
+Hyprlanda czyste; wyjątek znanego ostrzeżenia traya nie był potrzebny.
+Zachowano poprzednie wydanie powiadomień i pięć buildów.
+[Raport](evidence/workspace-recovery-activation.json).
+Obejrzany zrzut wyłącznie fragmentu paska potwierdza widoczne wypełnienie
+aktywnego numeru 1: [oznaczenie](evidence/workspace-recovery-bar.png).
+
+## Interakcje powiadomień — 2026-09-20
+
+**Wdrożone: `20260920-170400-e2d7150ad167`.** Przycisk × jest domyślnie bez tła i ramki, z grubszym
+symbolem. Karta ma własny fokus; kliknięcie nagłówka/treści oraz Enter
+wywołują akcję. Skrócony tekst rozwija się przez `i` lub strzałkę, a Escape
+zwija go przed zamknięciem panelu. `j/k` zachowują przechodzenie między
+kartami i stan rozwinięcia. Centrum przewija całą listę, także kółkiem nad
+tekstem; powrót klawiaturą odsłania początek wysokiej karty.
+
+- `scripts/check`: **PASS**, 217 QML, 0 błędów.
+- `tst_notifications.qml`: **32 PASS** przy skali 1 oraz **32 PASS** przy
+  skali 1,25; obejmuje ekran 320×220, kliknięcia, Enter, rozwijanie,
+  nawigację w obie strony, Escape, przewijanie 20 kart i bierne toasty.
+- Regresja: Quick Menu **27 PASS**, panele **12 PASS**, launcher **62 PASS**,
+  ikony **94 PASS**; łącznie z powyższymi **259 PASS**, 0 FAIL i 0 pominięć.
+  Testy końcowe bez ostrzeżeń QML. Logi tej sesji:
+  `/tmp/putkin-notifications-{qml,scale125,quick-menu,panels,launcher,icons}.log`.
+- Obejrzano syntetyczne zrzuty offscreen kart zwiniętych i rozwiniętych,
+  także przy 320×220. Skorygowano ramkę wyboru tak, aby mieściła się
+  w warstwie karty. Dodatkowy przebieg wizualny: **4 PASS**.
+- Początkowy sandbox blokował gniazdo prywatnego D-Bus; powtórzenie
+  dopuszczono poza tym ograniczeniem, nadal z prywatnym XDG/D-Bus i atrapami.
+  Pierwszy rozszerzony test wykazał za wczesne sprawdzanie układu tekstu;
+  końcowe asercje oczekują na przeliczenie geometrii Qt.
+
+Po poleceniu użytkownika scalono zmiany do `main` przez fast-forward,
+commit `34c11f1`, i uruchomiono instalator z `--activate`. Walidacja paczki:
+**137 QML PASS**. Pierwsza próba automatycznie przywróciła poprzednią wersję
+z powodu błędu odczytu `IconName` zewnętrznego StatusNotifierItem; identyczny
+komunikat wystąpił w starej wersji. Ponowienie dopuszczało wyłącznie te dwa
+konkretne komunikaty po pozostałych kontrolach instalatora, ale wyjątek
+**nie został użyty**: nowy proces wystartował z czystym logiem.
+[Pierwsza próba](evidence/notification-fixes-install-first-attempt.log),
+[udana instalacja](evidence/notification-fixes-install.log).
+
+Odbiór aktywnej sesji **PASS**: jedna instancja PID 327892, usługa
+`active/running`, ten sam PID właścicielem powiadomień, skróty zastosowane,
+blokada i idle gotowe. Wszystkie 274 pliki runtime odpowiadają `main`;
+settings.json, keyboard.json i launch.json zachowały sumy. Zachowano tryb
+Caffeinate „Prezentacja”, pięć buildów i poprzednią wersję do powrotu.
+Log QML oraz konfiguracja Hyprlanda bez ostrzeżeń/błędów.
+[Raport odbioru](evidence/notification-fixes-activation.json).
+
+Nie wykonywano nowego testu wejścia UI na natywnym Waylandzie ani prób
+blokady/PAM/suspend. [Kontrakt](notifications.md#karty-rozwijanie-i-przewijanie--2026-09-20),
+[odtwarzanie testów](testing.md#interakcje-powiadomień--2026-09-20).
+
 ## Repozytorium Git i wykluczenia AI — 2026-09-20
 
 Zainicjowano repozytorium Git 2.55.0 na gałęzi `main`, bez commitów.
@@ -114,6 +777,34 @@ Zmieniono adapter, sondę testową, testy natywne i dokumentację;
 Nie uruchamiano pełnego shella na aktywnym pulpicie ani nie odczytywano
 schowka użytkownika. Późniejsze wspólne wdrożenie z fade i launcherem
 opisano powyżej.
+
+## Równe zanikanie i zwijanie Caffeinate — 2026-09-20
+
+Warstwy panelu i zwijanej kolumny zachowują ostatni wyrenderowany obraz
+podczas zamykania. Wyłączenie kontrolek i utrata fokusu nadal następują
+od razu, ale nie zmieniają już fragmentów zanikającej ramki.
+Natywne okno panelu zachowuje wysokość ekranu; widoczna powierzchnia
+i maska wejścia nadal odpowiadają treści. Zapis klatek prywatnego Waylanda
+odtworzył jedną pomniejszoną, przesuniętą klatkę przy zwijaniu Caffeinate
+przed poprawką i stałą górną krawędź po poprawce.
+
+- `scripts/check`: **217 QML PASS**, 0 błędów.
+- Regresja QML: **612 różnych wyników PASS** w 25 zestawach. Zbiorczy
+  runner osiągnął limit 240 s po 544 wynikach bez błędów asercji;
+  pozostałe zestawy ukończono osobno, bez błędów i pominięć.
+- `scripts/test-fade-wayland`: **PASS** przy skali 1 i 1,25, w tym
+  piksele zanikania po wyłączeniu kontrolek, pozycje treści i natywne
+  okno Caffeinate podczas wyboru trybu oraz zwijania.
+- `scripts/test-wayland --launcher-preview`: **PASS**, w tym kliknięcia
+  w przezroczystym obszarze i poza panelem oraz skala 1,5.
+- Po integracji z `main` (`e8df4a9`): ponownie **PASS** testów GPU,
+  natywnego Caffeinate oraz **22 PASS** klawiatury i komend launchera.
+  Raporty: `/tmp/animation-jitter-merge-wayland/` oraz
+  `/tmp/animation-jitter-merge-keyboard.log`.
+
+Logi i raporty tej sesji: `/tmp/animation-jitter-*`. Testy używają atrap,
+prywatnych XDG/D-Bus i odizolowanego kompozytora. Poprawka nie została
+jeszcze zainstalowana w aktywnej sesji.
 
 ## Stabilny fade bez opcji ograniczania ruchu — 2026-09-20
 

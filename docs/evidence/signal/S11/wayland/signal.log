@@ -1,0 +1,9 @@
+  INFO: Launching config: "/home/attntd/projects/signal/signal-acceptance-test.qml"
+  INFO: Shell ID: "286145526025216d239ec042db20ebf4" Path ID "286145526025216d239ec042db20ebf4"
+  INFO: Saving logs to "/tmp/pw-_fd2rqfv/r/quickshell/by-id/01zgfplt/log.qslog"
+  INFO: Configuration Loaded
+ DEBUG qml: S11_PHASE before-hotplug
+ DEBUG qml: S11_PHASE after-hotplug
+ DEBUG qml: S11_PHASE locked
+  INFO: Reloading configuration...
+  INFO: Configuration Loaded

@@ -410,7 +410,10 @@ Item {
             preview.coordinator.screens = [preview.firstScreen];
             tryCompare(preview.panelHost, "loaded", false);
         }
-        function test_overflow_all_items_scrolling_back_and_escape_restore() {
+        function test_overflow_all_items_scrolling_back_and_escape_restore_data() {
+            return [{tag: "escape", key: Qt.Key_Escape}, {tag: "q", key: Qt.Key_Q}];
+        }
+        function test_overflow_all_items_scrolling_back_and_escape_restore(data) {
             scene.width = 320; scene.height = 220;
             preview.barController.focusBar();
             preview.bar.trayStrip.lastControl.forceActiveFocus();
@@ -423,9 +426,9 @@ Item {
             keyClick(Qt.Key_L); verify(control("trayAppMenu-app15").activeFocus);
             keyClick(Qt.Key_Return);
             tryVerify(() => page().showingMenu && page().depth === 1);
-            keyClick(Qt.Key_Escape);
+            keyClick(data.key);
             tryCompare(preview.coordinator, "activeId", "trayOverflow");
-            keyClick(Qt.Key_Escape);
+            keyClick(data.key);
             tryCompare(preview.panelHost, "loaded", false);
             tryVerify(() => preview.bar.trayStrip.lastControl.activeFocus);
         }

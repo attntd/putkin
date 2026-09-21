@@ -1,5 +1,49 @@
 # Środowisko i rozwój
 
+## Wspólny launcher i shell — 2026-09-21
+
+Potwierdzono lokalnie Qt **6.11.2** i Quickshell **0.3.1**. Opisy wyników
+launchera korzystają z `RowLayout`, preferowanej i maksymalnej szerokości
+oraz skracania tekstu. Sprawdzono [Layout](https://doc.qt.io/qt-6.11/qml-qtquick-layouts-layout.html)
+i [Text](https://doc.qt.io/qt-6.11/qml-qtquick-text.html) dla tej wersji Qt.
+Podglądy obejmują aplikacje przy 1366×768 i ścieżkę pliku przy 320×480.
+Wspólny `DismissKeys` zachowuje wpisywanie `q` w TextInput/TextEdit,
+także w nowych oknach uwierzytelniania.
+
+## Okna uwierzytelniania — 2026-09-20
+
+Sprawdzono Quickshell 0.3.1, Qt 6.11.2, Polkit 127, OpenSSH 10.5p1,
+Pinentry 1.3.3, GnuPG 2.4.9 i fprintd 1.94.5. Moduł Services.Polkit
+udostępnia natywny agent; nie dodano pluginu C++ ani dodatkowego demona.
+Pomocniki SSH/Pinentry używają standardowej biblioteki Python 3.14,
+prywatnych gniazd Unix i SO_PEERCRED. Widoki otrzymują zależności jawnie.
+
+W qmltypes 0.3.1 typ flow pomija przestrzeń nazw C++, a sygnał Socket.error
+nie opisuje LocalSocketError. Adapter czyta natywne flow przez wariant
+i łączy sygnał błędu przez connect; nie wyłącza kontroli importów.
+Obie ścieżki przetestowano na prawdziwym Quickshell/libpolkit.
+[Oficjalne API i kontrakt](authentication.md), [izolacja testów](testing.md#okna-uwierzytelniania--2026-09-20).
+
+Przy korekcie odliczania ponownie potwierdzono Qt 6.11.2 i Quickshell 0.3.1.
+Sprawdzono [FileView.text / watchChanges](https://quickshell.org/docs/v0.3.1/types/Quickshell.Io/FileView/)
+oraz [NumberAnimation](https://doc.qt.io/qt-6/qml-qtquick-numberanimation.html).
+Lokalny `pam_fprintd(8)` opisuje domyślny timeout 30 s; odczyt
+`/etc/pam.d/polkit-1` potwierdził jawne `max-tries=1 timeout=30`.
+
+## Interakcje powiadomień — 2026-09-20
+
+Przed zmianą potwierdzono lokalnie `qmake6 -query QT_VERSION`: **6.11.2**
+i `qs --version`: **0.3.1**. Sprawdzono oficjalne API Qt 6.11:
+[Text.truncated / maximumLineCount](https://doc.qt.io/qt-6.11/qml-qtquick-text.html),
+[ScrollView](https://doc.qt.io/qt-6.11/qml-qtquick-controls-scrollview.html),
+[Control.wheelEnabled](https://doc.qt.io/qt-6.11/qml-qtquick-controls-control.html#wheelEnabled-prop),
+[Flickable.interactive](https://doc.qt.io/qt-6.11/qml-qtquick-flickable.html#interactive-prop),
+[AbstractButton](https://doc.qt.io/qt-6.11/qml-qtquick-controls-abstractbutton.html)
+i [ShapePath.strokeWidth](https://doc.qt.io/qt-6.11/qml-qtquick-shapes-shapepath.html#strokeWidth-prop).
+Wspólny `Glyph` przyjmuje opcjonalną szerokość obrysu w pikselach widoku;
+domyślne ikony pozostają bez obrysu. Karty centrum wyłączają własną obsługę
+kółka i gestu przewijania, przekazując je otaczającemu panelowi.
+
 ## Fade — 2026-09-20
 
 Lokalne `qs --version`, `qmake -query QT_VERSION` i qmltypes potwierdzają

@@ -1,0 +1,17 @@
+test_cancel_preparation_and_foreign_account_leave_no_files (test_signal_media.MediaBridgeTests.test_cancel_preparation_and_foreign_account_leave_no_files) ... ok
+test_real_bridge_stages_sends_receives_and_restarts_media (test_signal_media.MediaBridgeTests.test_real_bridge_stages_sends_receives_and_restarts_media) ... ok
+test_corrupt_decoder_is_explicit_and_no_thumbnail (test_signal_media.MediaTests.test_corrupt_decoder_is_explicit_and_no_thumbnail) ... ok
+test_dimensions_source_change_permissions_and_synthetic_clipboard (test_signal_media.MediaTests.test_dimensions_source_change_permissions_and_synthetic_clipboard) ... ok
+test_draft_remove_quota_disk_full_and_startup_orphans (test_signal_media.MediaTests.test_draft_remove_quota_disk_full_and_startup_orphans) ... ok
+test_incoming_phone_sync_shared_refs_and_retention_hook (test_signal_media.MediaTests.test_incoming_phone_sync_shared_refs_and_retention_hook) ... ok
+test_known_upload_failure_retry_and_thumbnail_regeneration_failure (test_signal_media.MediaTests.test_known_upload_failure_retry_and_thumbnail_regeneration_failure) ... ok
+test_multiple_media_draft_send_and_restart_survive_original_removal (test_signal_media.MediaTests.test_multiple_media_draft_send_and_restart_survive_original_removal) ... ok
+test_reject_zero_large_mime_executable_and_paths (test_signal_media.MediaTests.test_reject_zero_large_mime_executable_and_paths) ... ok
+test_save_explicit_no_overwrite_no_symlink_and_failure_cleanup (test_signal_media.MediaTests.test_save_explicit_no_overwrite_no_symlink_and_failure_cleanup) ... ok
+test_unknown_upload_failure_retry_cancel_and_loss (test_signal_media.MediaTests.test_unknown_upload_failure_retry_cancel_and_loss) ... ok
+test_view_once_and_expiring_create_no_managed_copies (test_signal_media.MediaTests.test_view_once_and_expiring_create_no_managed_copies) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 11.882s
+
+OK

@@ -1,0 +1,36 @@
+PASS: closed-window text/media notification → exact-recipient quick reply → history → reaction → edit → reverse receipts
+PASS: phone sent-sync creates history without toast; reverse edit/reaction and delete-before-original preserve identity and redaction
+PASS: same process creates group, confirms admin roles and routes incoming group notification
+PASS: local deletion and deadline survive hard reload; no send replay or expired body
+Idle: 60 seconds with messages window closed, no IPC.
+Idle 20/60 s
+Idle 40/60 s
+Idle 60/60 s
+PASS: 60 s closed-window idle; 20 opens/closes release every window; 50/100-row pagination over 10k history, bounded delegates/processes/RSS
+{
+  "passed": true,
+  "scope": "synthetic CLI + real QML/SQLite/pipes, private D-Bus/XDG, offscreen; no phone",
+  "history": {
+    "count": 120,
+    "seedAndPageSeconds": 0.107,
+    "pageCount": 3,
+    "pageMs": {
+      "median": 13.857801008271053,
+      "p95": 13.857801008271053,
+      "max": 14.609070000005886
+    },
+    "queryPlan": [
+      "SEARCH messages USING INDEX messages_page (conversation_id=? AND (sort_ms,message_id)<(?,?))"
+    ]
+  },
+  "scenarioOnly": false,
+  "checks": [
+    "closed-window text/media notification → exact-recipient quick reply → history → reaction → edit → reverse receipts",
+    "phone sent-sync creates history without toast; reverse edit/reaction and delete-before-original preserve identity and redaction",
+    "same process creates group, confirms admin roles and routes incoming group notification",
+    "local deletion and deadline survive hard reload; no send replay or expired body",
+    "60 s closed-window idle; 20 opens/closes release every window; 50/100-row pagination over 10k history, bounded delegates/processes/RSS"
+  ],
+  "qmlErrors": [],
+  "remainingOwnedProcesses": []
+}

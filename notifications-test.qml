@@ -11,7 +11,8 @@ ShellRoot {
     id: root
     readonly property real generation: Date.now()
     NotificationBackend { id: backend }
-    NotificationService { id: service; backend: backend; screens: view.scene.coordinator.screens; monitorService: view.scene.backend }
+    NotificationApplicationService { id: applications; workspaceService: view.scene.workspaceService; applications: DesktopEntries.applications.values }
+    NotificationService { id: service; backend: backend; screens: view.scene.coordinator.screens; monitorService: view.scene.backend; applicationService: applications }
     PanelPreviewWindow { id: view; notifications: service }
     NotificationIpc { service: service; controller: view.scene.notificationController }
     IpcHandler {
@@ -32,6 +33,7 @@ ShellRoot {
         }
         function dismiss(id: int): void { service.dismiss(service.find(id)); }
         function invoke(id: int, action: string): bool { return service.invoke(service.find(id), action); }
+        function invokeHistory(key: int, action: string): bool { return service.invokeHistory(key, action); }
         function dnd(enabled: bool): void { service.dnd = enabled; }
         function clear(): void { service.clear(); }
         function timeout(value: int): void { service.defaultTimeout = value; }
