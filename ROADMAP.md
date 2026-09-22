@@ -1,5 +1,15 @@
 # Roadmapa Putkin
 
+## Wybrana korekta — położenie i fade launchera, 2026-09-22
+
+Środek pola wyszukiwania na połowie wysokości aktywnego ekranu, niezależnie
+od wyników i podglądu. Lista mieści najwyżej pięć wierszy i przewija się
+klawiaturą, kółkiem oraz suwakiem w stylu shella. Rozwinięcie listy i zmiana
+podglądu tekstu/obrazu używają fade 200 ms; geometria zmienia się przy pełnej
+przezroczystości. Zakres obejmuje tę korektę i testy współdzielonych widoków.
+[Kontrakt](docs/launcher.md#położenie-lista-i-przejścia--2026-09-22),
+[wyniki](docs/status.md#położenie-i-fade-launchera--2026-09-22).
+
 ## Wybrany zakres — instalacja i modułowe dotfiles, 2026-09-22
 
 Naprawa instalacji na kolejnym komputerze: automatyczne przygotowanie Signal,

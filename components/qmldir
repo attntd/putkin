@@ -9,6 +9,8 @@ PanelText 1.0 PanelText.qml
 TextField 1.0 TextField.qml
 Glyph 1.0 Glyph.qml
 FadeScope 1.0 FadeScope.qml
+FadeSwap 1.0 FadeSwap.qml
+ScrollBar 1.0 ScrollBar.qml
 FadePresentation 1.0 FadePresentation.qml
 FadeColumn 1.0 FadeColumn.qml
 ActionTile 1.0 ActionTile.qml

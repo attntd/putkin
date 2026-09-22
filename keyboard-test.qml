@@ -118,6 +118,7 @@ ShellRoot {
         function saveColor(): bool { return settings.save(); }
         function query(value: string): void { launcher.edit(value); }
         function launcherFixture(): void {
+            launcherBackend.applications = Array.from({length: 20}, (_, i) => ({id: "fixture-" + i, name: "Aplikacja " + String(i).padStart(2, "0")}));
             launcherBackend.clipboard = [
                 {id: "12", preview: "Tekst podglądu", binary: false, fullText: "Tekst podglądu\n\n" + "Zażółć gęślą jaźń.\n".repeat(80)},
                 {id: "11", preview: "[[ binary data png 640x360 ]]", binary: true, image: Qt.resolvedUrl("tests/fixtures/launcher-preview.png").toString()}
@@ -126,7 +127,10 @@ ShellRoot {
         function launcherSnapshot(): string {
             const window = host.window, content = window ? window.contentItem : null;
             const list = root.find(content, "launcherResults"), frame = root.find(content, "launcherPreview");
+            const search = root.find(content, "launcherSearch"), resultsFade = root.find(content, "launcherResultsFade");
+            const previewFade = root.find(content, "launcherPreviewFade");
             const image = root.find(frame, "launcherPreviewImage"), scroll = root.find(frame, "launcherPreviewScroll");
+            const scrollbar = root.find(frame, "launcherPreviewScrollbar");
             const surface = content ? content.children.find(child => child["viewport"] !== undefined) : null;
             function geometry(item) {
                 if (!item) return null;
@@ -136,9 +140,15 @@ ShellRoot {
             const focus = content && content.Window.window ? content.Window.window.activeFocusItem : null;
             return JSON.stringify({active: panels.activeId, loaded: host.loaded, previewId: launcher.previewId,
                 text: launcher.previewText, imageReady: image ? image.status === Image.Ready : false,
-                focus: focus ? focus.objectName : "", list: geometry(list), frame: geometry(frame),
+                focus: focus ? focus.objectName : "", search: geometry(search), list: geometry(list), frame: geometry(frame),
                 surface: geometry(surface), primaryHeight: surface ? surface.primaryHeight : 0,
                 opacity: surface ? surface.opacity : 0,
+                resultsOpacity: resultsFade ? resultsFade.opacity : 0, resultsCurrent: resultsFade ? resultsFade.current : false,
+                resultCount: list ? list.count : 0, listContentY: list ? list.contentY : 0,
+                selectedIndex: surface && surface.page ? surface.page.selectedIndex : -1,
+                previewOpacity: previewFade ? previewFade.opacity : 0, previewCurrent: previewFade ? previewFade.current : false,
+                displayedPreviewId: previewFade && previewFade.displayedValue ? previewFade.displayedValue.id : "",
+                previewScrollbar: geometry(scrollbar), previewScrollSize: scrollbar ? scrollbar.size : 1,
                 contentY: scroll ? scroll.contentY : 0, activations: launcherBackend.activations.length});
         }
         function activate(): bool { return launcher.activate(launcher.results[0]); }

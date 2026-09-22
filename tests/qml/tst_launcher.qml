@@ -42,6 +42,7 @@ Item {
             preview.errorNotificationsEnabled = false;
             preview.coordinator.screens = [preview.firstScreen, preview.secondScreen];
             scene.width = 1000; scene.height = 700;
+            mouseMove(scene, 0, 0);
             activated.clear();
         }
         function cleanup() { preview.coordinator.close(false); tryCompare(loader, "active", false); }
@@ -55,8 +56,20 @@ Item {
         function search() { return findChild(loader.item, "launcherSearch"); }
         function chip() { return findChild(loader.item, "launcherChip"); }
         function list() { return findChild(loader.item, "launcherResults"); }
+        function settleResults() {
+            const fade = findChild(loader.item, "launcherResultsFade");
+            tryVerify(() => fade.requested ? fade.current && fade.opacity === 1 : fade.opacity === 0);
+        }
+        function settlePreview() {
+            const fade = findChild(loader.item, "launcherPreviewFade");
+            if (preview.panelHost.launcherPreviewSize > 0 && (backend.automatic || launcher.previewText.length || launcher.previewImage.length))
+                tryVerify(() => fade.current && fade.contentReady && fade.opacity === 1
+                    && fade.displayedValue.id === launcher.previewId);
+        }
         function type(value) {
             for (let index = 0; index < value.length; index++) keyClick(value[index]);
+            settleResults();
+            settlePreview();
         }
         function clipboardFixture() {
             backend.clipboard = [
@@ -64,11 +77,105 @@ Item {
                 {id: "11", preview: "[[ binary data png 640x360 ]]", binary: true, image: Qt.resolvedUrl("../fixtures/launcher-preview.png").toString()}
             ];
         }
+        function test_search_center_is_fixed_data() {
+            return [{tag: "wide", width: 1920, height: 1080}, {tag: "laptop", width: 1366, height: 768},
+                {tag: "compact", width: 1000, height: 700}, {tag: "narrow", width: 800, height: 600},
+                {tag: "tiny", width: 320, height: 220}];
+        }
+        function test_search_center_is_fixed(data) {
+            scene.width = data.width; scene.height = data.height;
+            open(); settleResults();
+            const field = search(), origin = field.mapToItem(scene, 0, 0), panelX = loader.item.x;
+            fuzzyCompare(origin.y + field.height / 2, data.height / 2, 0.5);
+            type(":c ");
+            compare(field.mapToItem(scene, 0, 0).y, origin.y);
+            compare(loader.item.x, panelX);
+            search().selectAll(); keyClick(Qt.Key_Backspace); type("no matching clipboard item");
+            compare(field.mapToItem(scene, 0, 0).y, origin.y);
+            compare(loader.item.x, panelX);
+            verify(loader.item.y + loader.item.primaryHeight <= data.height - Metrics.panelGap);
+        }
+        function test_five_visible_results_with_keyboard_wheel_and_scrollbar_data() {
+            return [{tag: "apps", clipboard: false, rowHeight: 52}, {tag: "clipboard", clipboard: true, rowHeight: 36}];
+        }
+        function test_five_visible_results_with_keyboard_wheel_and_scrollbar(data) {
+            const oldApps = backend.applications, oldClipboard = backend.clipboard;
+            try {
+                if (data.clipboard) backend.clipboard = Array.from({length: 20}, (_, i) => ({id: String(i), preview: "Entry " + i, binary: false}));
+                else backend.applications = Array.from({length: 20}, (_, i) => ({id: "app-" + i, name: "App " + i}));
+                open(); type(data.clipboard ? ":c " : ":a ");
+                compare(list().count, 20);
+                compare(list().currentIndex, -1);
+                compare(list().height, data.rowHeight * 5);
+                const bar = findChild(loader.item, "launcherResultsScrollbar");
+                verify(bar.visible && bar.size < 1);
+                compare(bar.contentItem.radius, 0);
+                keyClick(Qt.Key_Escape); keyClick(Qt.Key_End);
+                compare(loader.item.page.selectedIndex, 19);
+                tryVerify(() => list().contentY > 0);
+                list().forceLayout();
+                const last = list().itemAtIndex(19);
+                verify(last !== null && last.y + last.height <= list().contentY + list().height + 1);
+                keyClick(Qt.Key_Home);
+                tryCompare(list(), "contentY", 0);
+                mouseWheel(list(), 30, 30, 0, -120);
+                tryVerify(() => list().contentY > 0);
+                list().cancelFlick();
+                list().contentY = 0;
+                const knob = bar.contentItem;
+                mouseDrag(bar, bar.width / 2, knob.y + knob.height / 2, 0, bar.height / 2);
+                verify(list().contentY > 0);
+                compare(list().focusReason, Qt.MouseFocusReason);
+                compare(backend.activations.length, 0);
+            } finally { backend.applications = oldApps; backend.clipboard = oldClipboard; }
+        }
+        function test_results_resize_only_while_transparent_and_keep_latest_query() {
+            const original = backend.applications;
+            try {
+                backend.applications = Array.from({length: 12}, (_, i) => ({id: "fixture-" + i, name: "Fixture " + i}));
+                open(); type(":a ");
+                const fade = findChild(loader.item, "launcherResultsFade");
+                const origin = search().mapToItem(scene, 0, 0), oldHeight = fade.height;
+                launcher.edit("Fixture 1");
+                compare(fade.displayedValue.entries.length, 12);
+                tryVerify(() => fade.opacity > 0 && fade.opacity < 1);
+                compare(fade.height, oldHeight);
+                launcher.edit("Fixture 11");
+                settleResults();
+                compare(fade.displayedValue.entries.length, 1);
+                compare(list().itemAtIndex(0).modelData.id, "fixture-11");
+                verify(fade.height < oldHeight);
+                compare(search().mapToItem(scene, 0, 0), origin);
+                verify(!fade.fadePresentation.preparation.running);
+            } finally { backend.applications = original; }
+        }
+        function test_preview_holds_old_text_during_fade_then_reveals_image() {
+            const original = backend.clipboard;
+            try {
+                clipboardFixture(); open(); type(":c ");
+                const fade = findChild(loader.item, "launcherPreviewFade");
+                const previous = fade.displayedValue.text;
+                keyClick(Qt.Key_Down);
+                tryVerify(() => fade.opacity > 0 && fade.opacity < 1);
+                compare(fade.displayedValue.text, previous);
+                tryCompare(launcher, "previewImage", backend.clipboard[1].image);
+                settlePreview();
+                compare(fade.displayedValue.id, "11");
+                const frame = findChild(loader.item, "launcherPreview");
+                compare(findChild(frame, "launcherPreviewImage").status, Image.Ready);
+                launcher.edit("missing clipboard item");
+                tryVerify(() => fade.opacity > 0 && fade.opacity < 1);
+                compare(findChild(loader.item, "launcherPreview"), frame);
+                tryVerify(() => findChild(loader.item, "launcherPreview") === null);
+                compare(fade.displayedValue, null);
+            } finally { backend.clipboard = original; }
+        }
         function test_filtered_lists_and_compact_clipboard() {
             open();
             for (const mode of ["application", "file", "clipboard", "recent"]) {
                 launcher.chipMode = mode;
                 launcher.edit("");
+                settleResults();
                 tryCompare(findChild(loader.item, "launcherHeading"), "visible", false);
                 verify(chip().visible);
                 if (mode === "clipboard" || mode === "application") {
@@ -130,6 +237,7 @@ Item {
                 tryCompare(launcher, "previewId", "11");
                 compare(backend.activations.length, 0);
                 verify(!findChild(second, "focusIndicator").visible);
+                settlePreview();
                 keyClick(Qt.Key_L);
                 const frame = findChild(loader.item, "launcherPreview");
                 const ring = findChild(frame, "focusIndicator");
@@ -143,6 +251,25 @@ Item {
                 verify(!findChild(second, "focusIndicator").visible);
                 compare(backend.activations.length, 1);
                 backend.activated(launcher.request, "Odmowa");
+            } finally { backend.clipboard = original; }
+        }
+        function test_text_preview_click_keeps_navigation() {
+            const original = backend.clipboard;
+            try {
+                clipboardFixture(); open(); type(":c ");
+                const frame = findChild(loader.item, "launcherPreview");
+                keyClick(Qt.Key_Escape); keyClick(Qt.Key_L);
+                verify(frame.activeFocus);
+                mouseClick(frame, frame.width / 2, frame.height / 2);
+                verify(!findChild(frame, "focusIndicator").visible);
+                const bar = findChild(frame, "launcherPreviewScrollbar");
+                compare(bar.height, frame.availableHeight);
+                verify(bar.visible && bar.size < 1);
+                const knob = bar.contentItem;
+                mouseDrag(bar, bar.width / 2, knob.y + knob.height / 2, 0, bar.height / 2);
+                verify(findChild(frame, "launcherPreviewScroll").contentY > 0);
+                verify(!findChild(frame, "focusIndicator").visible);
+                keyClick(Qt.Key_H); verify(list().activeFocus);
             } finally { backend.clipboard = original; }
         }
         function test_preview_ignores_stale_replies_filter_and_close() {
@@ -307,6 +434,7 @@ Item {
             verify(chip().visible);
             verify(launcher.results.every(entry => entry.kind === "clipboard"));
             launcher.startMode("commands");
+            settleResults();
             verify(search().activeFocus);
             verify(chip().visible);
             compare(chip().text, "Komenda");
@@ -578,7 +706,8 @@ Item {
             backend.clipboardError = "Schowek niedostępny";
             launcher.edit(":c ");
             tryVerify(() => preview.notificationStack !== null && preview.notificationStack.count > 0);
-            verify(preview.notificationStack.x > loader.item.x + loader.item.width);
+            verify(preview.notificationStack.x > loader.item.x + preview.panelHost.surfaceWidth
+                || preview.notificationStack.y + preview.notificationStack.height < loader.item.y);
             verify(search().activeFocus);
             compare(preview.coordinator.activeId, "launcher");
         }

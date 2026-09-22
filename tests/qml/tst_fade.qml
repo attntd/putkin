@@ -31,10 +31,40 @@ Rectangle {
             UI.Button { objectName: "columnButton"; width: parent.width; text: "Wi-Fi"; highlighted: true }
         }
     }
+    Component {
+        id: swapComponent
+        UI.FadeSwap {
+            x: 30; y: 30
+            width: displayedValue ? displayedValue.width : 0
+            height: 100
+            value: ({width: 300, color: "#eeeeee"})
+            Rectangle { anchors.fill: parent; color: parent.displayedValue ? parent.displayedValue.color : "transparent" }
+        }
+    }
     TestCase {
         name: "Fade"
         when: windowShown
         function init() { failOnWarning(/.*/); }
+        function test_content_swap_preserves_previous_frame_and_only_latest_value() {
+            const item = createTemporaryObject(swapComponent, scene);
+            tryCompare(item, "opacity", 1);
+            item.value = {width: 200, color: "#ff0000"};
+            compare(item.width, 300);
+            tryVerify(() => item.opacity > 0 && item.opacity < 1);
+            compare(item.displayedValue.color, "#eeeeee");
+            compare(item.width, 300);
+            item.value = {width: 160, color: "#0000ff"};
+            tryVerify(() => item.current && item.opacity > 0 && item.opacity < 1);
+            compare(item.width, 160);
+            compare(item.displayedValue.color, "#0000ff");
+            tryCompare(item, "opacity", 1);
+            verify(!item.fadePresentation.preparation.running);
+            item.requested = false;
+            tryVerify(() => item.opacity > 0 && item.opacity < 1);
+            compare(item.displayedValue.color, "#0000ff");
+            tryCompare(item, "displayedValue", null);
+            verify(!item.visible);
+        }
         function test_layer_preserves_opaque_pixels_and_position() {
             // Transparent layers use grayscale text AA instead of the software
             // window's subpixel AA; compare frame/fill geometry without text.

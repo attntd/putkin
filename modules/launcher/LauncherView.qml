@@ -21,10 +21,22 @@ FocusScope {
     readonly property bool navigating: results.activeFocus
     readonly property int count: service ? service.results.length : 0
     readonly property bool showHeading: service && service.historyView && !service.mode && !service.commandInput
-    readonly property real rowsHeight: count ? service.results.slice(0, 7).reduce((height, entry) =>
-        height + (entry.kind === "clipboard" ? Metrics.launcherClipboardRowHeight : Metrics.launcherRowHeight), 0) : Metrics.launcherRowHeight
-    implicitHeight: Math.min(maximumHeight, Metrics.controlHeight + Metrics.space8
-        + (showHeading ? heading.implicitHeight + Metrics.space12 : 0) + rowsHeight)
+    readonly property string emptyText: service && service.commandInput ? ""
+        : service && !service.backend.ready && service.backend.lastError ? "Launcher niedostępny"
+        : service && (!service.backend.ready || service.searching) ? "Wyszukiwanie…"
+        : service && service.mode === "clipboard" && service.backend.clipboardError ? "Schowek niedostępny"
+        : service && service.historyView ? "Brak ostatnich pozycji" : "Brak wyników"
+    readonly property var displayedEntries: resultsFade.displayedValue ? resultsFade.displayedValue.entries : []
+    readonly property real rowsHeight: {
+        const heights = displayedEntries.map(entry => entry.kind === "clipboard" ? Metrics.launcherClipboardRowHeight : Metrics.launcherRowHeight);
+        const requested = heights.slice(0, Metrics.launcherVisibleResults).reduce((sum, height) => sum + height, 0);
+        // Mixed results must not expose extra compact rows after scrolling.
+        const limited = heights.length ? Math.min(requested, Metrics.launcherVisibleResults * Math.min(...heights)) : Metrics.launcherRowHeight;
+        return Math.max(0, Math.min(limited, maximumHeight - Metrics.space12 * 2 - Metrics.controlHeight
+            - Metrics.space8 - (heading.visible ? heading.implicitHeight + Metrics.space12 : 0)));
+    }
+    implicitHeight: Math.max(Metrics.controlHeight + Metrics.space12 * 2,
+        resultsFade.visible ? resultsFade.y + resultsFade.height : 0)
     signal dismissed()
     signal requested(string surface)
     signal ensureVisible(Item item)
@@ -101,48 +113,77 @@ FocusScope {
         function onFocusRequested(): void { root.focusInitial(); }
     }
 
-    ColumnLayout {
-        anchors.fill: parent
-        spacing: Metrics.space8
-        RowLayout {
+    UI.AccentRectangle {
+        width: root.width
+        height: Metrics.controlHeight + Metrics.space12 * 2
+        color: Theme.backgroundStrong
+        border.color: Theme.accentBorder
+        border.width: Metrics.borderWidth
+        accentOutline: true
+    }
+    RowLayout {
+        x: Metrics.space12
+        y: Metrics.space12
+        width: root.width - Metrics.space12 * 2
+        height: Metrics.controlHeight
+        spacing: Metrics.space12
+        UI.Glyph { symbol: "search"; section: "launcher"; Layout.preferredWidth: slotSize; Layout.preferredHeight: slotSize }
+        UI.NavigationButton {
+            id: chip
+            objectName: "launcherChip"
+            visible: root.service && root.service.chipMode.length > 0
+            text: root.label(root.service ? root.service.chipMode : "")
+            trailingIcon: "close"
+            iconSection: "launcher"
+            verticalPadding: 2
+            highlighted: true
+            Accessible.name: root.label(root.service ? root.service.chipMode : "") + ", usuń filtr"
+            Layout.maximumWidth: Math.max(80, root.width * 0.4)
+            rightTarget: search
+            downTarget: results
+            onClicked: { root.service.removeFilter(false); root.focusInitial(focusReason); }
+        }
+        UI.TextField {
+            id: search
+            objectName: "launcherSearch"
             Layout.fillWidth: true
-            spacing: Metrics.space12
-            UI.Glyph { symbol: "search"; section: "launcher"; Layout.preferredWidth: slotSize; Layout.preferredHeight: slotSize }
-            UI.NavigationButton {
-                id: chip
-                objectName: "launcherChip"
-                visible: root.service && root.service.chipMode.length > 0
-                text: root.label(root.service ? root.service.chipMode : "")
-                trailingIcon: "close"
-                iconSection: "launcher"
-                verticalPadding: 2
-                highlighted: true
-                Accessible.name: root.label(root.service ? root.service.chipMode : "") + ", usuń filtr"
-                Layout.maximumWidth: Math.max(80, root.width * 0.4)
-                rightTarget: search
-                downTarget: results
-                onClicked: { root.service.removeFilter(false); root.focusInitial(focusReason); }
-            }
-            UI.TextField {
-                id: search
-                objectName: "launcherSearch"
-                Layout.fillWidth: true
-                Layout.minimumWidth: 40
-                text: root.service ? root.service.text : ""
-                placeholderText: root.service && root.service.commandInput ? "" : root.service && root.service.chipMode ? "Szukaj…" : "Szukaj aplikacji, plików, schowka…"
-                Accessible.name: "Wyszukiwanie"
-                KeyNavigation.tab: results
-                KeyNavigation.backtab: chip.visible ? chip : results
-                onTextEdited: root.service.edit(text)
-                Keys.onPressed: event => root.key(event)
-            }
+            Layout.minimumWidth: 40
+            text: root.service ? root.service.text : ""
+            placeholderText: root.service && root.service.commandInput ? "" : root.service && root.service.chipMode ? "Szukaj…" : "Szukaj aplikacji, plików, schowka…"
+            Accessible.name: "Wyszukiwanie"
+            KeyNavigation.tab: results
+            KeyNavigation.backtab: chip.visible ? chip : results
+            onTextEdited: root.service.edit(text)
+            Keys.onPressed: event => root.key(event)
+        }
+    }
+    UI.FadeSwap {
+        id: resultsFade
+        objectName: "launcherResultsFade"
+        y: Metrics.space12 + Metrics.controlHeight
+        width: root.width
+        height: displayedValue ? Metrics.space8 + (heading.visible ? heading.implicitHeight + Metrics.space12 : 0)
+            + root.rowsHeight + Metrics.space12 : 0
+        clip: true
+        value: ({entries: root.service ? root.service.results : [], heading: root.showHeading, empty: root.emptyText})
+        requested: root.count > 0 || root.emptyText.length > 0
+        onDisplayedValueChanged: Qt.callLater(root.reveal)
+        UI.AccentRectangle {
+            y: -resultsFade.y
+            width: root.width
+            height: resultsFade.y + resultsFade.height
+            color: Theme.backgroundStrong
+            border.color: Theme.accentBorder
+            border.width: Metrics.borderWidth
+            accentOutline: true
         }
         UI.PanelText {
             id: heading
-            Layout.fillWidth: true
-            Layout.topMargin: Metrics.space4
+            x: Metrics.space12
+            y: Metrics.space12
+            width: root.width - Metrics.space12 * 2
             objectName: "launcherHeading"
-            visible: root.showHeading
+            visible: resultsFade.displayedValue !== null && resultsFade.displayedValue.heading
             text: "Ostatnie"
             color: Theme.textMuted
             font.pixelSize: Metrics.smallFontSize
@@ -151,13 +192,17 @@ FocusScope {
             id: results
             property int focusReason: Qt.TabFocusReason
             objectName: "launcherResults"
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            Layout.minimumHeight: 0
+            x: Metrics.space12
+            y: Metrics.space8 + (heading.visible ? heading.implicitHeight + Metrics.space12 : 0)
+            width: root.width - Metrics.space12 * 2
+            height: root.rowsHeight
             clip: true
             boundsBehavior: Flickable.StopAtBounds
-            model: root.service ? root.service.results : []
+            model: root.displayedEntries
             currentIndex: -1
+            // ListView selects its first delegate after an empty model is
+            // replaced. Selection and keyboard input belong to this scope.
+            onCountChanged: currentIndex = -1
             keyNavigationEnabled: false
             activeFocusOnTab: true
             onActiveFocusChanged: { if (activeFocus) focusReason = Qt.TabFocusReason; }
@@ -167,18 +212,23 @@ FocusScope {
             UI.ControlInput { id: resultsInput; control: results }
             Keys.onPressed: event => root.key(event)
             onHeightChanged: root.queueReconcile()
-            Controls.ScrollBar.vertical: Controls.ScrollBar { policy: Controls.ScrollBar.AsNeeded }
+            Controls.ScrollBar.vertical: UI.ScrollBar {
+                id: resultScroll
+                objectName: "launcherResultsScrollbar"
+                onPressedChanged: { if (pressed) results.focusReason = Qt.MouseFocusReason; }
+            }
             delegate: Controls.ItemDelegate {
                 id: row
                 required property var modelData
                 required property int index
                 readonly property bool clipboard: modelData.kind === "clipboard"
                 readonly property bool command: modelData.kind === "configuredCommand" || modelData.kind === "workspaceCommand"
-                width: results.width
+                width: results.width - (resultScroll.size < 1 ? resultScroll.width + Metrics.space4 : 0)
                 height: clipboard ? Metrics.launcherClipboardRowHeight : Metrics.launcherRowHeight
                 padding: Metrics.space8
                 hoverEnabled: true
                 focusPolicy: Qt.NoFocus
+                enabled: resultsFade.current
                 Accessible.name: modelData.title + ", " + root.label(modelData.kind)
                 onPressedChanged: { if (pressed) results.focusReason = Qt.MouseFocusReason; }
                 onClicked: { root.selectedIndex = index; root.rememberSelection(); root.activate(); }
@@ -236,12 +286,8 @@ FocusScope {
             UI.PanelText {
                 objectName: "launcherEmptyState"
                 anchors.fill: parent
-                visible: root.count === 0 && !(root.service && root.service.commandInput)
-                text: root.service && root.service.commandInput ? ""
-                    : root.service && !root.service.backend.ready && root.service.backend.lastError ? "Launcher niedostępny"
-                    : root.service && (!root.service.backend.ready || root.service.searching) ? "Wyszukiwanie…"
-                    : root.service && root.service.mode === "clipboard" && root.service.backend.clipboardError ? "Schowek niedostępny"
-                    : root.service && root.service.historyView ? "Brak ostatnich pozycji" : "Brak wyników"
+                visible: root.displayedEntries.length === 0 && text.length > 0
+                text: resultsFade.displayedValue ? resultsFade.displayedValue.empty : ""
                 color: Theme.textMuted
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter

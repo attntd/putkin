@@ -20,11 +20,14 @@ UI.FadeScope {
     required property var host
     property var focusedControl: null
     property int focusedReason: Qt.TabFocusReason
+    readonly property bool launcher: host.surfaceId === "launcher"
     readonly property var page: pageLoader.item
     readonly property alias viewport: flick
-    readonly property real primaryHeight: Math.min(height, (page ? page.implicitHeight : 0) + Metrics.space12 * 2)
+    readonly property real pageInset: launcher ? 0 : Metrics.space12 * 2
+    readonly property real previewWidth: previewFade.visible ? previewFade.width : 0
+    readonly property real primaryHeight: Math.min(height, (page ? page.implicitHeight : 0) + pageInset)
     implicitWidth: host.surfaceExtentWidth
-    implicitHeight: Math.max((page ? page.implicitHeight : 0) + Metrics.space12 * 2, host.launcherPreviewSize)
+    implicitHeight: Math.max((page ? page.implicitHeight : 0) + pageInset, previewWidth)
     enabled: host.interactive
     shown: host.interactive
     contentReady: pageLoader.status === Loader.Ready
@@ -50,6 +53,7 @@ UI.FadeScope {
             return;
         focusedControl = item;
         rememberFocusReason();
+        if (launcher) return; // The field stays fixed; only the result list scrolls.
         const y = item.mapToItem(flick.contentItem, 0, 0).y;
         const margin = Metrics.focusOffset + Metrics.focusWidth;
         const visibleHeight = Math.min(item.height, Math.max(1, flick.height - margin * 2));
@@ -92,6 +96,7 @@ UI.FadeScope {
     }
 
     UI.AccentRectangle {
+        visible: !root.launcher
         width: root.host.surfaceWidth
         height: root.primaryHeight
         color: Theme.backgroundStrong
@@ -100,6 +105,7 @@ UI.FadeScope {
         accentOutline: true
     }
     Controls.ScrollView {
+        visible: !root.launcher
         readonly property real inset: Metrics.space12 - Metrics.focusOffset - Metrics.focusWidth
         x: inset
         y: inset
@@ -115,34 +121,51 @@ UI.FadeScope {
             contentHeight: pageLoader.height + (Metrics.focusOffset + Metrics.focusWidth) * 2
             onHeightChanged: Qt.callLater(root.revealFocus)
             onContentHeightChanged: Qt.callLater(root.revealFocus)
-            Loader {
-                id: pageLoader
-                x: Metrics.focusOffset + Metrics.focusWidth
-                y: x
-                width: Math.max(1, flick.width - x * 2)
-                sourceComponent: root.host.surfaceId === "settings" ? settingsPage
-                    : root.host.surfaceId === "power" ? powerPage
-                    : root.host.surfaceId === "launcher" ? launcherPage
-                    : root.host.surfaceId === "battery" ? batteryPage
-                    : root.host.surfaceId === "audio" ? audioPage
-                    : root.host.surfaceId === "network" ? networkPage
-                    : root.host.surfaceId === "bluetooth" ? bluetoothPage
-                    : root.host.surfaceId === "notifications" ? notificationsPage
-                    : root.host.surfaceId === "trayOverflow" || root.host.surfaceId === "trayMenu" ? trayPage : quickPage
-                onLoaded: { root.focusedControl = null; Qt.callLater(root.focusInitial); }
+        }
+    }
+    Loader {
+        id: pageLoader
+        parent: root.launcher ? root : flick.contentItem
+        x: root.launcher ? 0 : Metrics.focusOffset + Metrics.focusWidth
+        y: x
+        width: root.launcher ? root.host.surfaceWidth : Math.max(1, flick.width - x * 2)
+        sourceComponent: root.host.surfaceId === "settings" ? settingsPage
+            : root.host.surfaceId === "power" ? powerPage
+            : root.host.surfaceId === "launcher" ? launcherPage
+            : root.host.surfaceId === "battery" ? batteryPage
+            : root.host.surfaceId === "audio" ? audioPage
+            : root.host.surfaceId === "network" ? networkPage
+            : root.host.surfaceId === "bluetooth" ? bluetoothPage
+            : root.host.surfaceId === "notifications" ? notificationsPage
+            : root.host.surfaceId === "trayOverflow" || root.host.surfaceId === "trayMenu" ? trayPage : quickPage
+        onLoaded: { root.focusedControl = null; Qt.callLater(root.focusInitial); }
+    }
+    Component { id: quickPage; QuickSettingsView { caffeinate: root.host.caffeinate; nightLight: root.host.nightLight; sessionService: root.host.sessionService; audio: root.host.audio; brightness: root.host.brightness; battery: root.host.battery; network: root.host.network; bluetooth: root.host.bluetooth; notifications: root.host.notifications; notificationController: root.host.notificationController; onHandoffRequested: root.host.coordinator.close(false); monitor: root.host.screen ? root.host.screen.name : "" } }
+    UI.FadeSwap {
+        id: previewFade
+        objectName: "launcherPreviewFade"
+        readonly property LauncherPreview previewPage: previewLoader.item as LauncherPreview
+        x: root.host.surfaceWidth + Metrics.panelGap
+        width: displayedValue ? displayedValue.size : 0
+        height: width
+        value: ({size: root.host.launcherPreviewSize, id: root.host.launcher ? root.host.launcher.previewId : "",
+            text: root.host.launcher ? root.host.launcher.previewText : "", image: root.host.launcher ? root.host.launcher.previewImage : ""})
+        requested: root.launcher && root.host.interactive && value.size > 0 && root.page !== null
+            && (value.text.length > 0 || value.image.length > 0)
+        contentReady: previewPage !== null && previewPage.contentReady
+        Loader {
+            id: previewLoader
+            anchors.fill: parent
+            active: previewFade.displayedValue !== null
+            sourceComponent: LauncherPreview {
+                service: root.host.launcher
+                launcherView: root.page
+                previewText: previewFade.displayedValue ? previewFade.displayedValue.text : ""
+                previewImage: previewFade.displayedValue ? previewFade.displayedValue.image : ""
             }
         }
     }
-    Component { id: quickPage; QuickSettingsView { caffeinate: root.host.caffeinate; nightLight: root.host.nightLight; sessionService: root.host.sessionService; audio: root.host.audio; brightness: root.host.brightness; battery: root.host.battery; network: root.host.network; bluetooth: root.host.bluetooth; notifications: root.host.notifications; notificationController: root.host.notificationController; onHandoffRequested: root.host.coordinator.close(false); monitor: root.host.screen ? root.host.screen.name : "" } }
-    Loader {
-        id: previewLoader
-        active: root.host.launcherPreviewSize > 0 && root.page !== null
-        x: root.host.surfaceWidth + Metrics.panelGap
-        width: root.host.launcherPreviewSize
-        height: width
-        sourceComponent: LauncherPreview { service: root.host.launcher; launcherView: root.page }
-    }
-    Component { id: launcherPage; LauncherView { service: root.host.launcher; previewControl: previewLoader.item as Item; maximumHeight: Math.max(1, root.host.availableHeight - Metrics.space12 * 2) } }
+    Component { id: launcherPage; LauncherView { service: root.host.launcher; previewControl: previewLoader.item as Item; maximumHeight: root.host.availableHeight } }
     Component {
         id: powerPage
         PowerView {

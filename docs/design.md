@@ -293,9 +293,14 @@ pliki w katalogu domowym i schowek. `:a `, `:f `, `:c ` zamieniają prefiks
 w usuwalną etykietę filtra (odpowiednik pigułki poprzednika, z kwadratowymi
 rogami Putkina). Puste zapytanie pokazuje ostatnie użycia; `: ` wybiera
 samą historię. Bez interpretacji poleceń powłoki i integracji terminala.
-Panel ma szerokość do 640 px, jest wyśrodkowany na aktywnym monitorze,
-używa wspólnych tokenów, ramek 2 px i wyłącznie przejścia opacity.
-Wyszukiwanie nie blokuje wpisywania, a lista mieści się w wysokości ekranu.
+Panel ma szerokość do 640 px. Środek pola wyszukiwania jest na połowie
+wysokości aktywnego monitora; lista rozwija się poniżej, bez przesuwania
+pola. Używa wspólnych tokenów, ramek 2 px i wyłącznie przejścia opacity.
+Lista mieści najwyżej pięć wierszy oraz granice ekranu, z przewijaniem
+i kwadratowym suwakiem w kolorach shella. Wymiana wyników i podglądu
+tekstu/obrazu wygasza poprzednią zawartość przez 200 ms, zmienia ją przy
+opacity 0 i pokazuje przygotowaną nową zawartość przez fade 200 ms.
+Wyszukiwanie nie blokuje wpisywania.
 Enter aktywuje, strzałki wybierają; Escape z pola przechodzi do nawigacji
 `j/k`, kolejny zamyka, `h/l` i `/` wracają do pola/filtra. Litery w polu
 są tekstem. Backspace w pustym polu odtwarza prefiks filtra.

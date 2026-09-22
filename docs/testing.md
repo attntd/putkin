@@ -133,13 +133,19 @@ zmniejszanie bufora Waylanda powodowało pojedynczą przeskalowaną klatkę.
 Wynik i próbki geometrii zapisuje w `native-collapse.json`.
 Wcześniejsze testy opcji ograniczania ruchu opisują historyczny kontrakt.
 
-## Lista i podgląd launchera — 2026-09-20
+## Lista i podgląd launchera — 2026-09-20, korekta 2026-09-22
 
 `python3 scripts/test-icons --file tst_launcher.qml --log artifacts/launcher-preview-qml.log`
 sprawdza prawdziwe wejście Qt: brak powtórzonych nagłówków, wiersze schowka
 36 px bez ikony/podpisu, wybór wskaźnikiem i klawiaturą, brak kopiowania
 przez podgląd, l/h, j/k i Enter, dosłowny tekst i proporcje obrazu, ramkę
 wyłącznie przy klawiaturze, spóźnione odpowiedzi oraz sześć rozmiarów ekranu.
+Korekta obejmuje środek pola przy pięciu rozdzielczościach od 320×220 do
+1920×1080, limit pięciu wierszy, Home/End, prawdziwe kółko i przeciąganie
+suwaka. Testy zmian zapytania i tekst → obraz sprawdzają pośrednie opacity,
+zachowanie starej zawartości i geometrii do opacity 0, wybór najnowszego
+zapytania oraz zwolnienie podglądu po fade. `tst_fade.qml` sprawdza ten sam
+kontrakt bez launchera, w tym przerwaną wymianę i zatrzymanie pracy klatkowej.
 
 `python3 -m unittest discover -s tests -p test_launcher.py -v` dekoduje
 prawdziwe wpisy cliphist: wieloliniowy UTF-8, PNG, limit tekstu, zły/usunięty
@@ -154,7 +160,10 @@ uruchamia produkcyjne okno panelu na prywatnym kompozytorze, z atrapami
 schowka i sprzętu. Wtype oraz prywatny wskaźnik sprawdzają fokus, przewijanie,
 kliknięcie wewnątrz podglądu, poza krótszą listą i w przerwie pomiędzy
 ramkami, skalę 1,5 oraz pojedynczą aktywację Enterem. Zrzuty dotyczą tylko
-prywatnego wyjścia. Pełna regresja QML obejmuje pozostałych użytkowników
+prywatnego wyjścia. Korekta dodaje natywne centrowanie pola w obu skalach,
+20 aplikacji w liście pięciu wierszy, dojście do ostatniej i zapis pośrednich
+klatek opacity oraz geometrii przy zmianie wyników i podglądu.
+Pełna regresja QML obejmuje pozostałych użytkowników
 `PanelSurface`. [Rzeczywiste wyniki](status.md).
 
 ## Domyślne qs i retencja buildów — 2026-09-20

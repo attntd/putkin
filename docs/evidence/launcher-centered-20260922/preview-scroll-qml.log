@@ -1,0 +1,12 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::Launcher::initTestCase()
+PASS   : qmltestrunner::Launcher::test_clipboard_preview_text_image_and_vim_scroll(h)
+PASS   : qmltestrunner::Launcher::test_clipboard_preview_text_image_and_vim_scroll(escape)
+PASS   : qmltestrunner::Launcher::test_clipboard_preview_text_image_and_vim_scroll(q)
+PASS   : qmltestrunner::Launcher::test_preview_holds_old_text_during_fade_then_reveals_image()
+PASS   : qmltestrunner::Launcher::test_preview_pointer_selection_and_focus()
+PASS   : qmltestrunner::Launcher::test_text_preview_click_keeps_navigation()
+PASS   : qmltestrunner::Launcher::cleanupTestCase()
+Totals: 8 passed, 0 failed, 0 skipped, 0 blacklisted, 8001ms
+********* Finished testing of qmltestrunner *********

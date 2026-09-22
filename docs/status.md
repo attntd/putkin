@@ -1,5 +1,39 @@
 # Status implementacji
 
+## Położenie i fade launchera — 2026-09-22
+
+**Gotowe w źródłach i sprawdzone w izolacji; aktywna instalacja nie była
+przełączana.** Środek pola wyszukiwania pozostaje na połowie wysokości
+ekranu. Lista rozwija się poniżej, mieści najwyżej pięć wierszy i przewija
+się klawiaturą, kółkiem oraz kwadratowym suwakiem w kolorach shella.
+Podgląd również ma dopasowany suwak, z miejscem oddzielonym od tekstu.
+
+Wyniki, ich tło oraz podgląd tekstu/obrazu wygaszają poprzednią klatkę
+przez 200 ms. Dane i wymiary zmieniają się przy opacity 0; przygotowana
+nowa zawartość pojawia się przez fade. Szybkie zapytania zachowują ostatnią
+wersję. Pole pozostaje dostępne, a podgląd nie przesuwa go w pionie ani
+poziomie. Skorygowano automatyczne nadawanie fokusu pierwszemu delegatowi
+ListView po wymianie pustego modelu, kliknięcie przewijanej treści i
+przeciąganie suwaków po nawigacji klawiaturą.
+
+| Sprawdzenie | Wynik |
+| --- | --- |
+| `scripts/check` | **PASS**, 274 pliki QML, 0 błędów; [log](evidence/launcher-centered-20260922/check.log). Końcowe zmiany ponownie sprawdzone w 5 plikach: [log](evidence/launcher-centered-20260922/final-check.log). |
+| Launcher | **PASS**, 75 testów: centrowanie od 320×220 do 1920×1080, limit pięciu, Home/End, kółko i suwak, szybkie zapytania, tekst/obraz, fokus i istniejące komendy; [log](evidence/launcher-centered-20260922/launcher-qml.log). Po dopasowaniu geometrii suwaka podglądu: 8 końcowych testów PASS, [log](evidence/launcher-centered-20260922/preview-scroll-qml.log). |
+| Fade | **PASS**, 13 testów z porównaniem pikseli oraz wymianą zawartości wyłącznie po wygaszeniu; [log](evidence/launcher-centered-20260922/fade-qml.log). |
+| Pełna regresja QML | **PASS**, 812 testów, 0 failed; [log](evidence/launcher-centered-20260922/all-qml.log). |
+| Integracja launchera | **PASS**, 7 grup przez produkcyjne QML/IPC/Process, rzeczywiste fd/cliphist i prywatne atrapy; [raport](evidence/launcher-centered-20260922/integration.json), [log](evidence/launcher-centered-20260922/integration.log). |
+| Natywny Wayland / GPU | **PASS**, 5 scenariuszy: centrowanie przy skali 1 i 1,5, pięć z 20 wyników, ostatnia pozycja, fade wyników i tekst → obraz, maska wejścia, fokus oraz pojedyncza aktywacja. Zapisano 8 próbek podglądu i 9 próbek listy; [raport](evidence/launcher-centered-20260922/report.json). |
+| Sprzątanie izolacji | **PASS**, brak pozostałych procesów potomnych, prywatny katalog usunięty; [raport](evidence/launcher-centered-20260922/cleanup.json). |
+
+Obejrzano natywne zrzuty [pięciu wyników](evidence/launcher-centered-20260922/launcher-native-five-results.png),
+[tekstu](evidence/launcher-centered-20260922/launcher-native-text.png),
+[obrazu](evidence/launcher-centered-20260922/launcher-native-image.png)
+i [skali 150%](evidence/launcher-centered-20260922/launcher-native-scale-1.5.png).
+Testy korzystały z prywatnych XDG, D-Bus, Waylanda i atrap domen sprzętowych.
+Niewykonane: przełączenie aktywnego shella oraz odbiór na drugim fizycznym
+komputerze. [Kontrakt](launcher.md#położenie-lista-i-przejścia--2026-09-22).
+
 ## Tryb clean-slate — 2026-09-22
 
 **Zaimplementowany i sprawdzony w prywatnym prefiksie; konfiguracja aktywnego

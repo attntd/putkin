@@ -51,7 +51,7 @@ PanelWindow {
         Region {
             x: surface.x + root.host.surfaceWidth + Metrics.panelGap
             y: surface.y
-            width: root.host.interactive ? root.host.launcherPreviewSize : 0
+            width: root.host.interactive ? surface.previewWidth : 0
             height: width
         }
     }

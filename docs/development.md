@@ -1,5 +1,20 @@
 # Środowisko i rozwój
 
+## Centrowanie i przewijanie launchera — 2026-09-22
+
+Ponownie potwierdzono Qt **6.11.2** i Quickshell **0.3.1**. Sprawdzono
+oficjalne [ListView](https://doc.qt.io/qt-6.11/qml-qtquick-listview.html),
+[ScrollBar](https://doc.qt.io/qt-6.11/qml-qtquick-controls-scrollbar.html),
+[stylowanie suwaka](https://doc.qt.io/qt-6.11/qtquickcontrols-customize.html#customizing-scrollbar)
+oraz [warstwy Item](https://doc.qt.io/qt-6/qml-qtquick-item.html#layer.enabled-prop).
+Pasywny [TapHandler](https://doc.qt.io/qt-6/qml-qtquick-taphandler.html)
+utrzymuje nawigację podglądu po kliknięciu przewijanej treści.
+Suwak jest podpięty do rzeczywistego Flickable/ListView; zachowuje natywną
+obsługę myszy i rozmiar uchwytu. `FadeSwap` używa istniejącego przygotowania
+klatek i zatrzymuje pracę po ustaleniu zawartości. Nie animuje wymiarów okna.
+Testy wejścia używają API [QtTest](https://doc.qt.io/qt-6.11/qml-qttest-testcase.html),
+prywatnych XDG/D-Bus i atrap; odbiór GPU działa w prywatnym Hyprlandzie.
+
 ## Czysta instalacja — 2026-09-22
 
 Ponownie potwierdzono Python **3.14.7** i systemd **261.3**. Kopie drzew

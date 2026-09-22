@@ -34,6 +34,7 @@ QtObject {
     })
     readonly property int tooltipDelay: 600
     readonly property int launcherWidth: 640
+    readonly property int launcherVisibleResults: 5
     readonly property int launcherPreviewSize: 320
     readonly property int launcherPreviewMinimum: 160
     readonly property int launcherClipboardRowHeight: 36

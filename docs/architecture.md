@@ -465,6 +465,16 @@ Oficjalne źródła: [Window](https://doc.qt.io/qt-6.11/qml-qtquick-window.html)
 
 ## Launcher — rozszerzenie
 
+Korekta 2026-09-22: `PanelHost.launcherTop` kotwiczy środek pola do połowy
+wysokości ekranu, a dostępna wysokość listy wynika z miejsca poniżej pola.
+Launcher omija zewnętrzny Flickable w `PanelSurface`: przewija się sama
+lista do pięciu wierszy. `FadeSwap` zachowuje migawkę wyświetlanych danych
+do końca fade, przy opacity 0 podmienia ją na najnowszą i korzysta z
+przygotowania oraz kompozycji istniejącego `FadeScope`. Pole nie traci
+fokusu przy zmianie wyników. Podgląd czeka także na gotowość `Image`.
+Wspólny `ScrollBar` zachowuje natywne wejście Qt, tokeny i gradient grupy;
+przeciąganie usuwa ramkę klawiatury w liście i podglądzie.
+
 Korekta podglądu 2026-09-20: `LauncherView` przekazuje wybraną pozycję do
 `LauncherService.previewEntry`. Backend wysyła rewizję i ID do istniejącego
 pomocnika; zadanie `preview_clipboard` dekoduje tekst lub adres data obrazu,
@@ -473,10 +483,12 @@ i usuwa treść po zamknięciu. Nie ma dodatkowego procesu stałego, pollingu
 ani plików podglądu. Widok nadal nie wykonuje poleceń systemowych.
 
 `PanelHost.surfaceWidth` zachowuje szerokość głównej listy; `surfaceExtentWidth`
-dodaje dopasowany kwadrat podglądu. `PanelSurface` obejmuje oba obszary wspólnym
+dodaje rezerwę dopasowanego kwadratu podglądu od początku sesji launchera.
+`PanelSurface` obejmuje oba obszary wspólnym
 gradientem, a `LauncherPreview` dostaje jawnie serwis i widok listy. Natywna
 maska `InteractivePanelWindow` łączy dwa prostokąty, z wyłączeniem przerwy
-i obszaru pod krótszą listą. Jeden grab i jedno okno obejmują całość.
+i obszaru pod krótszą listą. Maska podglądu pozostaje do końca jego fade.
+Jeden grab i jedno okno obejmują całość.
 
 `LauncherService` i `LauncherBackend` są jedną współdzieloną parą.
 Widok `modules/launcher/LauncherView.qml` korzysta z istniejącego PanelHost,

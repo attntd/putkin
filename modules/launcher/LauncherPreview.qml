@@ -7,6 +7,9 @@ Controls.Control {
     id: root
     required property var service
     required property var launcherView
+    property string previewText: service.previewText
+    property string previewImage: service.previewImage
+    readonly property bool contentReady: !previewImage.length || picture.status === Image.Ready || picture.status === Image.Error
     objectName: "launcherPreview"
     padding: Metrics.space12
     focusPolicy: Qt.StrongFocus
@@ -44,9 +47,10 @@ Controls.Control {
     }
     contentItem: Item {
         Image {
+            id: picture
             objectName: "launcherPreviewImage"
             anchors.fill: parent
-            source: root.service.previewImage
+            source: root.previewImage
             sourceSize: Qt.size(Metrics.launcherPreviewSize * 2, Metrics.launcherPreviewSize * 2)
             fillMode: Image.PreserveAspectFit
             autoTransform: true
@@ -54,11 +58,21 @@ Controls.Control {
             visible: source.toString().length > 0
         }
         Controls.ScrollView {
+            id: scrollView
             anchors.fill: parent
-            visible: root.service.previewImage.length === 0
+            visible: root.previewImage.length === 0
             contentWidth: availableWidth
+            rightPadding: Metrics.space12 + Metrics.space4
             focusPolicy: Qt.NoFocus
             Controls.ScrollBar.horizontal.policy: Controls.ScrollBar.AlwaysOff
+            Controls.ScrollBar.vertical: UI.ScrollBar {
+                objectName: "launcherPreviewScrollbar"
+                parent: scrollView
+                x: scrollView.width - width
+                y: scrollView.topPadding
+                height: scrollView.availableHeight
+                onPressedChanged: { if (pressed) root.focusReason = Qt.MouseFocusReason; }
+            }
             Flickable {
                 id: textView
                 objectName: "launcherPreviewScroll"
@@ -66,11 +80,21 @@ Controls.Control {
                 boundsBehavior: Flickable.StopAtBounds
                 contentWidth: width
                 contentHeight: content.implicitHeight
+                // ScrollView filters pointer events before the outer Control.
+                // Keep its text click on the same keyboard navigation target.
+                TapHandler {
+                    gesturePolicy: TapHandler.DragThreshold
+                    onPressedChanged: {
+                        if (!pressed) return;
+                        root.focusReason = Qt.MouseFocusReason;
+                        root.forceActiveFocus(Qt.MouseFocusReason);
+                    }
+                }
                 UI.PanelText {
                     id: content
                     objectName: "launcherPreviewText"
                     width: textView.width
-                    text: root.service.previewText
+                    text: root.previewText
                     textFormat: Text.PlainText
                     wrapMode: Text.Wrap
                     onTextChanged: textView.contentY = 0

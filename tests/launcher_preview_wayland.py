@@ -18,7 +18,7 @@ def run(environment, base, output, first, hypr, launch):
     Path(env['HOME']).mkdir()
     entry = str(ROOT / 'keyboard-test.qml')
     app, log = launch([tool('quickshell'), '--no-color', '--path', entry], 'launcher-preview', env)
-    checks, captures = [], []
+    checks, captures, transitions = [], [], {}
 
     def ipc(target, method, *args, startup=False):
         reply = subprocess.run([tool('quickshell'), 'ipc', '--path', entry, 'call', target, method, *map(str, args)],
@@ -45,11 +45,28 @@ def run(environment, base, output, first, hypr, launch):
         checks.append(description)
         print('PASS: ' + description, flush=True)
 
+    def centered(result, height):
+        field = result['search']
+        assert abs(field['y'] + field['height'] / 2 - height / 2) <= .5, result
+
+    def transition(name, ready):
+        samples = []
+        def sample():
+            result = state()
+            samples.append({key: result[key] for key in ('search', 'list', 'primaryHeight', 'resultsOpacity',
+                'resultCount', 'previewOpacity', 'displayedPreviewId')})
+            return result
+        result = eventually(sample, ready, name)
+        transitions[name] = samples
+        return result
+
     def open_launcher():
         hypr('dispatch', 'hl.dsp.focus({monitor=' + json.dumps(first) + '})')
         assert ipc('launcher', 'openClipboard') == 'ok'
         return eventually(state, lambda s: s.get('focus') == 'launcherSearch' and s.get('frame')
-                          and s.get('text') and s.get('opacity') == 1, 'clipboard preview ready')
+                          and s.get('text') and s.get('opacity') == 1
+                          and s.get('resultsOpacity') == 1 and s.get('previewOpacity') == 1
+                          and s.get('previewCurrent'), 'clipboard preview ready')
 
     eventually(lambda: ipc_json(ipc('probe', 'snapshot', startup=True)),
                lambda s: s.get('ready') and not s.get('keyboardBusy'), 'private shell ready')
@@ -59,16 +76,21 @@ def run(environment, base, output, first, hypr, launch):
     ipc('probe', 'launcherFixture')
     hypr('dismissnotify')
     result = open_launcher()
+    centered(result, 1080)
     frame, surface = result['frame'], result['surface']
     assert frame['width'] == frame['height'] == 320 and frame['y'] == surface['y'], result
     assert frame['x'] == surface['x'] + 648, result
+    assert result['previewScrollbar']['height'] == frame['height'] - 24 and result['previewScrollSize'] < 1, result
     capture('launcher-native-text')
     keys('Escape', 'l')
     eventually(state, lambda s: s['focus'] == 'launcherPreview', 'right to preview')
     keys('j')
     eventually(state, lambda s: s['contentY'] > 0, 'scroll preview')
     keys('h', 'j')
-    result = eventually(state, lambda s: s['previewId'] == '11' and s['imageReady'], 'next image preview')
+    result = transition('text-to-image', lambda s: s['previewId'] == '11' and s['imageReady']
+                        and s['previewCurrent'] and s['previewOpacity'] == 1)
+    assert any(0 < s['previewOpacity'] < 1 for s in transitions['text-to-image']), transitions
+    assert all(s['search']['y'] == result['search']['y'] for s in transitions['text-to-image']), transitions
     assert result['activations'] == 0
     capture('launcher-native-image')
     check('native text/image rendering, square aligned at top, hjkl navigation and scrolling without copying')
@@ -89,10 +111,33 @@ def run(environment, base, output, first, hypr, launch):
     eventually(state, lambda s: not s['loaded'], 'gap outside mask')
     check('gap between the two frames remains outside the native input mask')
 
+    assert ipc('launcher', 'toggle') == 'ok'
+    eventually(state, lambda s: s.get('focus') == 'launcherSearch', 'application search focus')
+    ipc('probe', 'query', ':a ')
+    result = eventually(state, lambda s: s['opacity'] == 1 and s['resultCount'] == 20 and s['resultsCurrent']
+                        and s['resultsOpacity'] == 1, 'five visible application results')
+    centered(result, 1080)
+    assert result['list']['height'] == 5 * 52, result
+    capture('launcher-native-five-results')
+    keys('Escape', 'End')
+    result = eventually(state, lambda s: s['selectedIndex'] == 19 and s['listContentY'] > 0, 'last application result')
+    assert result['activations'] == 0, result
+    ipc('probe', 'query', 'Aplikacja 19')
+    result = transition('list-to-one-result', lambda s: s['resultCount'] == 1 and s['resultsCurrent']
+                        and s['resultsOpacity'] == 1)
+    centered(result, 1080)
+    assert result['list']['height'] == 52, result
+    assert any(0 < s['resultsOpacity'] < 1 for s in transitions['list-to-one-result']), transitions
+    assert all(s['search']['y'] == result['search']['y'] for s in transitions['list-to-one-result']), transitions
+    keys('Escape')
+    eventually(state, lambda s: not s['loaded'], 'close application results')
+    check('search field stays at half screen height; five rows, End reaches result 20, list resize fades')
+
     hypr('eval', 'hl.monitor({output=' + json.dumps(first) + ',mode="1920x1080@60",position="2000x0",scale=1.5})')
     eventually(lambda: hypr('monitors', data=True), lambda ms: any(m['name'] == first and m['scale'] == 1.5 for m in ms), 'fractional output')
     time.sleep(.2)
     result = open_launcher()
+    centered(result, 720)
     assert result['surface']['x'] >= 8 and result['frame']['x'] + result['frame']['width'] <= 1280 - 8, result
     assert result['surface']['y'] == result['frame']['y'], result
     capture('launcher-native-scale-1.5')
@@ -100,5 +145,5 @@ def run(environment, base, output, first, hypr, launch):
     eventually(state, lambda s: not s['loaded'] and s['activations'] == 1, 'one activation')
     check('fractional scale keeps both frames on output; Enter activates exactly one selected clipboard item')
     assert not qml_errors(runtime_log(log)), runtime_log(log)
-    return {'result': 'PASS', 'checks': checks, 'captures': captures, 'final': state(),
+    return {'result': 'PASS', 'checks': checks, 'captures': captures, 'transitions': transitions, 'final': state(),
             'isolation': 'private Wayland, XDG and buses; clipboard, hardware and session fixtures'}

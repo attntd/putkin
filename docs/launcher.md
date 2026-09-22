@@ -25,6 +25,25 @@ pozwalają dojść do pierwszej/ostatniej pozycji. `q` zamyka panel z listy lub
 filtra; w polu wyszukiwania pozostaje zwykłą literą, podobnie jak hjkl.
 Wpis schowka jest kopiowany; użytkownik sam wkleja go do wybranej aplikacji.
 
+## Położenie, lista i przejścia — 2026-09-22
+
+Środek pola wyszukiwania leży na połowie wysokości aktywnego ekranu.
+Lista rozwija się pod nim; liczba wyników i podgląd nie przesuwają pola
+w pionie. Maksymalnie pięć wierszy mieści się w przewijanej liście
+(260 px aplikacji/plików albo 180 px schowka). Na małym ekranie dostępna
+wysokość dodatkowo ogranicza listę. Wyniki mieszane uwzględniają wysokość
+najkrótszego wiersza, aby po przewinięciu nie pokazać ich więcej niż pięć.
+Kółko, przeciąganie suwaka i dotychczasowa nawigacja klawiaturą docierają
+do wszystkich wyników. Suwak ma kwadratowe końce, kolory Mocha i wspólny
+gradient akcentu przy wskazaniu lub przeciąganiu.
+
+Sekcja wyników wraz z tłem oraz podgląd tekstu/obrazu mają fade 200 ms
+InOutCubic. Poprzednia zawartość wygasa przed wymianą modelu, wymiarów lub
+źródła obrazu; nowa pojawia się po przygotowaniu układu i obrazu.
+Szybkie wpisywanie pokazuje najnowsze zapytanie po zakończeniu wygaszania.
+Pole wyszukiwania pozostaje dostępne. Zamknięcie zwalnia utrzymywaną
+klatkę podglądu po fade; backend od razu anuluje odczyt i usuwa swój wynik.
+
 ## Podgląd schowka — 2026-09-20
 
 Wybrany klawiaturą lub najechaniem wskaźnika wpis schowka ma podgląd po
@@ -34,8 +53,10 @@ tekst jest dosłowny, zawija się i przewija. `l`/Tab wchodzi do podglądu,
 `j/k` przewija, `h`/Escape/`q` wraca do listy, Enter kopiuje wybrany wpis.
 Samo wybranie pozycji niczego nie kopiuje ani nie zmienia historii.
 
-Główna lista zachowuje szerokość do 640 px. W razie potrzeby cała grupa
-przesuwa się w lewo, a podgląd zmniejsza do dostępnego miejsca. Jeśli nie
+Główna lista zachowuje szerokość do 640 px. Miejsce na opcjonalny podgląd
+jest rezerwowane przy otwieraniu, więc jego pojawienie się nie przesuwa
+grupy. W razie potrzeby grupa zaczyna bliżej lewej krawędzi, a podgląd
+zmniejsza się do dostępnego miejsca. Jeśli nie
 mieści się kwadrat co najmniej 160 px, podgląd znika. Obie ramki używają
 jednego gradientu grupy; natywna maska wejścia obejmuje tylko te prostokąty.
 Ramki fokusu pojawiają się wyłącznie przy nawigacji klawiaturą.
@@ -46,7 +67,8 @@ odpowiedzi. Tekst ma limit podglądu 32 768 znaków, niezależny od skrótu
 160 znaków w liście; kopiowanie nadal zachowuje cały wpis do 2 MiB. Obraz
 trafia do Qt jako adres data, bez dodatkowego pliku; Qt używa
 sourceSize 640 × 640 i `cache: false`. Zmiana wyboru,
-filtru lub zamknięcie usuwa poprzednią treść podglądu. Brak nowych podpisów,
+filtru lub zamknięcie usuwa poprzednią treść serwisu; widok zachowuje
+poprzednią klatkę tylko na czas wygaszania. Brak nowych podpisów,
 podpowiedzi i tooltipów.
 
 ## Komendy workspace

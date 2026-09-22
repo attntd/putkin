@@ -27,23 +27,30 @@ QtObject {
     // Never read item during asynchronous incubation.
     readonly property var window: loader.active ? loader.item : null
     readonly property int availableWidth: screen ? Math.max(1, screen.width - Metrics.panelGap * 2) : 1
-    readonly property int availableHeight: screen ? Math.max(1, screen.height - Metrics.barHeight - Metrics.panelGap * 2) : 1
+    readonly property real launcherTop: screen ? Math.max(Metrics.barHeight + Metrics.panelGap,
+        screen.height / 2 - Metrics.space12 - Metrics.controlHeight / 2) : 0
+    readonly property int availableHeight: screen ? Math.max(1, screen.height
+        - (surfaceId === "launcher" ? launcherTop : Metrics.barHeight + Metrics.panelGap) - Metrics.panelGap) : 1
     readonly property real rightEdge: surfaceId === "trayMenu" || surfaceId === "trayOverflow"
         ? anchorRight : screen ? screen.width - Metrics.panelGap : 0
     readonly property int surfaceWidth: Math.min(surfaceId === "settings" ? Metrics.settingsWidth : surfaceId === "launcher" ? Metrics.launcherWidth : Metrics.panelWidth, availableWidth)
-    readonly property int launcherPreviewSize: {
-        if (surfaceId !== "launcher" || !launcher || !launcher.previewId) return 0;
+    readonly property int launcherPreviewCapacity: {
+        if (surfaceId !== "launcher") return 0;
         const size = Math.min(Metrics.launcherPreviewSize, availableHeight, availableWidth - surfaceWidth - Metrics.panelGap);
         return size >= Metrics.launcherPreviewMinimum ? size : 0;
     }
-    readonly property int surfaceExtentWidth: surfaceWidth + (launcherPreviewSize ? Metrics.panelGap + launcherPreviewSize : 0)
+    readonly property int launcherPreviewSize: launcher && launcher.previewId ? launcherPreviewCapacity : 0
+    // Reserve the optional preview from the start, so a clipboard reply cannot
+    // move the field sideways.
+    readonly property int surfaceExtentWidth: surfaceWidth + (launcherPreviewCapacity ? Metrics.panelGap + launcherPreviewCapacity : 0)
     readonly property real surfaceX: (surfaceId === "power" || surfaceId === "launcher" || surfaceId === "settings") && screen
         ? Math.min((screen.width - surfaceWidth) / 2, screen.width - Metrics.panelGap - surfaceExtentWidth)
         : Math.max(Metrics.panelGap, Math.min(availableWidth + Metrics.panelGap
         - surfaceWidth, rightEdge - surfaceWidth))
 
     function surfaceY(height: real): real {
-        return (surfaceId === "power" || surfaceId === "launcher" || surfaceId === "settings") && screen ? Math.max(Metrics.barHeight + Metrics.panelGap, (screen.height - height) / 2)
+        if (surfaceId === "launcher") return launcherTop;
+        return (surfaceId === "power" || surfaceId === "settings") && screen ? Math.max(Metrics.barHeight + Metrics.panelGap, (screen.height - height) / 2)
             : Metrics.barHeight + Metrics.panelGap;
     }
 
