@@ -390,7 +390,9 @@ Item {
             compare(launcher.results[0].workspaceId, destination);
             verify(launcher.results[0].title.endsWith(" " + destination));
             tryVerify(() => list().itemAtIndex(0) !== null);
-            verify(!findChild(list().itemAtIndex(0), "launcherRowSubtitle").visible);
+            verify(findChild(list().itemAtIndex(0), "launcherRowSubtitle").visible);
+            compare(findChild(list().itemAtIndex(0), "launcherRowSubtitle").text, "Workspace");
+            compare(findChild(list().itemAtIndex(0), "launcherApplicationIcon").symbol, "desktop_windows");
             compare(launcher.chipMode, "");
             compare(preview.backend.requests.length, 0);
             verify(!launcher.searching);
@@ -568,7 +570,7 @@ Item {
         }
         function test_all_prefixes_paste_and_literal_colon() {
             open();
-            for (const mode of [{text: ":C zawartość", kind: "clipboard"}, {text: ":f Plan", kind: "file"}, {text: ": ostatnie", kind: "recent"}]) {
+            for (const mode of [{text: ":C zawartość", kind: "clipboard"}, {text: ":f Plan", kind: "file"}, {text: ": balanced", kind: "command"}]) {
                 launcher.removeFilter(false);
                 launcher.edit(mode.text);
                 compare(launcher.chipMode, mode.kind);
@@ -578,6 +580,40 @@ Item {
             launcher.edit(":xyz");
             compare(launcher.chipMode, "");
             compare(launcher.query, ":xyz");
+        }
+        function test_colon_space_commits_command_chip_and_backspace_restores_prefix() {
+            open(); type(":");
+            compare(launcher.chipMode, "");
+            keyClick(Qt.Key_Space);
+            compare(launcher.chipMode, "command");
+            verify(chip().visible); compare(chip().text, "Komenda");
+            compare(search().text, ""); compare(search().cursorPosition, 0);
+            verify(search().activeFocus); verify(launcher.commandInput); verify(!launcher.historyView);
+            keyClick(Qt.Key_Backspace);
+            compare(launcher.chipMode, ""); compare(search().text, ":");
+            compare(search().cursorPosition, 1); verify(search().activeFocus);
+            keyClick(Qt.Key_Space); type("w3");
+            compare(launcher.command.workspaceId, 3); compare(search().text, "w3");
+            compare(preview.backend.requests.length, 0); compare(backend.activations.length, 0);
+            search().selectAll(); keyClick(Qt.Key_Backspace);
+            mouseClick(chip());
+            compare(launcher.chipMode, ""); verify(search().activeFocus);
+            compare(search().text, ""); verify(launcher.historyView);
+            compare(launcher.results[0].title, "Kitty");
+        }
+        function test_pasted_command_prefix_and_literal_filtered_colon() {
+            open(); launcher.edit(":   balanced");
+            compare(launcher.chipMode, "command"); compare(search().text, "balanced");
+            compare(launcher.commandText, ":balanced");
+            launcher.edit(": w3");
+            compare(search().text, "w3"); compare(launcher.command.workspaceId, 3);
+            for (const prefix of [":a ", ":f ", ":c "]) {
+                launcher.startMode("commands"); launcher.edit(prefix);
+                verify(!launcher.commandInput);
+                launcher.edit(": balanced");
+                verify(!launcher.commandInput); compare(launcher.query, ": balanced");
+            }
+            compare(preview.backend.requests.length, 0); compare(backend.activations.length, 0);
         }
         function test_recent_default_rank_and_filters() {
             open();

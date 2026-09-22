@@ -3,26 +3,26 @@
 // Closed catalog. A command names an action; it is never a shell expression.
 var catalog = [
     {id: "launcher", title: "Launcher", group: "Shell", shortcut: "SUPER + SPACE"},
-    {id: "clipboard", title: "Schowek", group: "Shell", shortcut: "SUPER + V"},
+    {id: "clipboard", title: "Schowek", group: "Schowek", shortcut: "SUPER + V"},
     {id: "commands", title: "Launcher komend", group: "Shell", shortcut: "SUPER + semicolon"},
-    {id: "messages", title: "Wiadomości", group: "Shell", command: ":messages"},
-    {id: "settings", title: "Ustawienia", group: "Shell", command: ":settings"},
-    {id: "quickSettings", title: "Szybkie ustawienia", group: "Shell", shortcut: "SUPER + Q"},
-    {id: "audio", title: "Panel dźwięku", group: "Shell"},
-    {id: "battery", title: "Panel baterii", group: "Shell"},
+    {id: "messages", title: "Wiadomości", group: "Wiadomości", command: ":messages"},
+    {id: "settings", title: "Ustawienia", group: "Ustawienia", command: ":settings"},
+    {id: "quickSettings", title: "Szybkie ustawienia", group: "Ustawienia", shortcut: "SUPER + Q"},
+    {id: "audio", title: "Panel dźwięku", group: "Dźwięk"},
+    {id: "battery", title: "Panel baterii", group: "Bateria"},
     {id: "bar", title: "Nawigacja paskiem", group: "Shell", shortcut: "SUPER + B"},
-    {id: "notifications", title: "Powiadomienia", group: "Shell", shortcut: "SUPER + SHIFT + N"},
-    {id: "dnd", title: "Nie przeszkadzać", group: "Shell"},
-    {id: "screenshot", title: "Zrzut ekranu", group: "Shell", shortcut: "Print", command: ":screenshot"},
+    {id: "notifications", title: "Powiadomienia", group: "Powiadomienia", shortcut: "SUPER + SHIFT + N"},
+    {id: "dnd", title: "Nie przeszkadzać", group: "Powiadomienia"},
+    {id: "screenshot", title: "Zrzut ekranu", group: "Ekran", shortcut: "Print", command: ":screenshot"},
     {id: "volumeUp", title: "Głośniej", group: "Dźwięk"},
     {id: "volumeDown", title: "Ciszej", group: "Dźwięk"},
     {id: "mute", title: "Wyciszenie głośnika", group: "Dźwięk"},
     {id: "micMute", title: "Wyciszenie mikrofonu", group: "Dźwięk"},
     {id: "brightnessUp", title: "Jaśniej", group: "Ekran"},
     {id: "brightnessDown", title: "Ciemniej", group: "Ekran"},
-    {id: "powersaver", title: "Tryb oszczędny", group: "Zasilanie", command: ":powersaver"},
-    {id: "balanced", title: "Tryb zrównoważony", group: "Zasilanie", command: ":balanced"},
-    {id: "performance", title: "Tryb wydajności", group: "Zasilanie", command: ":performance"},
+    {id: "powersaver", title: "Tryb oszczędny", group: "Bateria", command: ":powersaver"},
+    {id: "balanced", title: "Tryb zrównoważony", group: "Bateria", command: ":balanced"},
+    {id: "performance", title: "Tryb wydajności", group: "Bateria", command: ":performance"},
     {id: "power", title: "Menu zasilania", group: "Sesja", shortcut: "SUPER + SHIFT + P"},
     {id: "lock", title: "Zablokuj ekran", group: "Sesja", command: ":lock"},
     {id: "shutdown", title: "Wyłącz komputer", group: "Sesja", command: ":shutdown", aliasOf: "poweroff"},
@@ -30,21 +30,21 @@ var catalog = [
     {id: "sleep", title: "Uśpij", group: "Sesja", command: ":sleep"},
     {id: "hibernate", title: "Hibernuj", group: "Sesja", command: ":hibernate"},
     {id: "reboot", title: "Uruchom ponownie", group: "Sesja", command: ":reboot"},
-    {id: "closeWindow", title: "Zamknij okno", group: "Hyprland"},
-    {id: "floating", title: "Przełącz pływające okno", group: "Hyprland"},
-    {id: "fullscreen", title: "Przełącz pełny ekran", group: "Hyprland"},
-    {id: "focusLeft", title: "Fokus w lewo", group: "Hyprland"},
-    {id: "focusDown", title: "Fokus w dół", group: "Hyprland"},
-    {id: "focusUp", title: "Fokus w górę", group: "Hyprland"},
-    {id: "focusRight", title: "Fokus w prawo", group: "Hyprland"},
-    {id: "moveLeft", title: "Przenieś okno w lewo", group: "Hyprland"},
-    {id: "moveDown", title: "Przenieś okno w dół", group: "Hyprland"},
-    {id: "moveUp", title: "Przenieś okno w górę", group: "Hyprland"},
-    {id: "moveRight", title: "Przenieś okno w prawo", group: "Hyprland"}
+    {id: "closeWindow", title: "Zamknij okno", group: "Okna"},
+    {id: "floating", title: "Przełącz pływające okno", group: "Okna"},
+    {id: "fullscreen", title: "Przełącz pełny ekran", group: "Okna"},
+    {id: "focusLeft", title: "Fokus w lewo", group: "Okna"},
+    {id: "focusDown", title: "Fokus w dół", group: "Okna"},
+    {id: "focusUp", title: "Fokus w górę", group: "Okna"},
+    {id: "focusRight", title: "Fokus w prawo", group: "Okna"},
+    {id: "moveLeft", title: "Przenieś okno w lewo", group: "Okna"},
+    {id: "moveDown", title: "Przenieś okno w dół", group: "Okna"},
+    {id: "moveUp", title: "Przenieś okno w górę", group: "Okna"},
+    {id: "moveRight", title: "Przenieś okno w prawo", group: "Okna"}
 ];
 for (var workspace = 1; workspace <= 10; ++workspace) {
-    catalog.push({id: "workspace" + workspace, title: "Workspace " + workspace, group: "Hyprland"});
-    catalog.push({id: "moveWorkspace" + workspace, title: "Przenieś okno do workspace " + workspace, group: "Hyprland"});
+    catalog.push({id: "workspace" + workspace, title: "Workspace " + workspace, group: "Workspace"});
+    catalog.push({id: "moveWorkspace" + workspace, title: "Przenieś okno do workspace " + workspace, group: "Workspace"});
 }
 
 function find(id) { return catalog.find(action => action.id === id) || null; }

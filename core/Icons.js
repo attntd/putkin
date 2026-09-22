@@ -77,6 +77,11 @@ function application(id, title, icon, categories) {
 function launcher(entry) {
     if (!entry) return "apps";
     if (entry.kind === "application") return application(entry.id, entry.title, entry.icon, entry.application && entry.application.categories);
+    if (entry.kind === "configuredCommand") return ({
+        Shell: "terminal", Schowek: "content_paste", Wiadomości: "chat_bubble", Ustawienia: "settings",
+        Dźwięk: "volume_up", Bateria: "battery_android_full", Powiadomienia: "notifications",
+        Ekran: "desktop_windows", Sesja: "power_settings_new", Okna: "desktop_windows", Workspace: "desktop_windows"
+    })[entry.subtitle] || "terminal";
     return entry.kind === "file" ? "description" : entry.kind === "clipboard" ? "content_paste"
         : entry.kind === "workspaceCommand" ? "desktop_windows" : "terminal";
 }

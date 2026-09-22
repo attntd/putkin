@@ -16,8 +16,8 @@ QtObject {
     readonly property var parsed: Query.parse(text)
     readonly property string mode: chipMode || (parsed.committed ? parsed.mode : "")
     readonly property string query: chipMode ? text.trim() : parsed.query
-    readonly property bool commandInput: chipMode === "command" || (!mode && text.trim().startsWith(":"))
-    readonly property string commandText: chipMode === "command" ? ":" + text.replace(/^:/, "") : text
+    readonly property bool commandInput: mode === "command" || (!mode && text.trim().startsWith(":"))
+    readonly property string commandText: mode === "command" ? ":" + query.replace(/^:\s*/, "") : text
     readonly property var command: commandInput ? Query.workspaceCommand(commandText) : null
     readonly property var results: commandInput ? commandResults()
         : Query.results(mode, query, Array.from(backend.applications), files, backend.clipboard, backend.history)
@@ -63,20 +63,18 @@ QtObject {
         if (!command) return keyboard ? keyboard.commandMatches(commandText) : [];
         return [Object.assign({}, command, {
             title: (command.action === "move" ? qsTr("Przenieś okno do workspace %1") : qsTr("Przejdź do workspace %1")).arg(command.workspaceId),
-            subtitle: "", icon: ""
+            subtitle: qsTr("Workspace"), icon: ""
         })];
     }
     function edit(value: string): void {
         const prefix = Query.parse(value);
-        if (chipMode === "command" && /^:[afc]\s+/i.test(value)) {
-            chipMode = prefix.mode; text = value.replace(/^:[afc]\s+/i, "");
-        } else if (!chipMode && prefix.committed) {
+        if ((!chipMode || chipMode === "command") && prefix.committed) {
             chipMode = prefix.mode;
             text = value.replace(/^:[afc]?\s+/i, "");
         } else text = value;
     }
     function removeFilter(restorePrefix: bool): void {
-        const prefix = chipMode === "command" ? ":" : Query.prefix(chipMode);
+        const prefix = Query.prefix(chipMode);
         chipMode = "";
         if (restorePrefix) text = prefix;
     }

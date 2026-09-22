@@ -177,7 +177,7 @@ Item {
             tryVerify(() => control("backButton") && control("backButton").activeFocus);
         }
         function test_command_suggestions_data() {
-            return [{tag: "colon", chip: false}, {tag: "command-chip", chip: true}];
+            return [{tag: "colon", chip: false}, {tag: "command-chip", chip: true}, {tag: "colon-space", chip: false, space: true}];
         }
         function test_command_suggestions(data) {
             verify(preview.coordinator.open("launcher", preview.firstScreen, null));
@@ -185,6 +185,12 @@ Item {
             tryVerify(() => control("launcherSearch") && control("launcherSearch").activeFocus);
             if (data.chip) launcher.startMode("commands");
             else type(":");
+            if (data.space) keyClick(Qt.Key_Space);
+            if (data.chip || data.space) {
+                compare(control("launcherChip").text, "Komenda");
+                compare(control("launcherSearch").text, "");
+                verify(control("launcherSearch").activeFocus);
+            }
             compare(launcher.results.length, keyboard.persisted.filter(row => row.command).length - 1);
             compare(launcher.results.filter(entry => entry.title === "Wyłącz komputer").length, 1);
             type("s");
@@ -196,7 +202,9 @@ Item {
             tryVerify(() => list.itemAtIndex(0) !== null && list.itemAtIndex(0).modelData.action === "sleep");
             const row = list.itemAtIndex(0);
             compare(findChild(row, "launcherRowTitle").text, "Uśpij");
-            verify(!findChild(row, "launcherRowSubtitle").visible);
+            verify(findChild(row, "launcherRowSubtitle").visible);
+            compare(findChild(row, "launcherRowSubtitle").text, "Sesja");
+            compare(findChild(row, "launcherApplicationIcon").symbol, "power_settings_new");
             verify(!launcher.searching);
             compare(sessionBackend.calls, []);
             sessionBackend.automatic = false;
@@ -342,9 +350,9 @@ Item {
         function test_power_profile_commands_data() {
             const cases = [];
             for (const command of ["powersaver", "balanced", "performance"])
-                for (const chip of [false, true])
-                    cases.push({tag: command + (chip ? "-chip" : "-colon"), command: command,
-                        profile: command === "powersaver" ? "power-saver" : command, chip: chip});
+                for (const mode of ["colon", "chip", "colon-space"])
+                    cases.push({tag: command + "-" + mode, command: command,
+                        profile: command === "powersaver" ? "power-saver" : command, mode: mode});
             return cases;
         }
         function test_power_profile_commands(data) {
@@ -354,10 +362,16 @@ Item {
             verify(preview.coordinator.open("launcher", preview.firstScreen, null));
             tryCompare(loader, "active", true);
             tryVerify(() => control("launcherSearch") && control("launcherSearch").activeFocus);
-            if (data.chip) launcher.startMode("commands");
-            type((data.chip ? "" : ":") + data.command.slice(0, -1));
+            if (data.mode === "chip") launcher.startMode("commands");
+            type((data.mode === "chip" ? "" : data.mode === "colon-space" ? ": " : ":") + data.command.slice(0, -1));
             compare(launcher.results.length, 1);
             compare(launcher.results[0].action, data.command);
+            const list = control("launcherResults");
+            tryVerify(() => list.itemAtIndex(0) !== null && list.itemAtIndex(0).modelData.action === data.command);
+            const row = list.itemAtIndex(0);
+            verify(findChild(row, "launcherRowSubtitle").visible);
+            compare(findChild(row, "launcherRowSubtitle").text, "Bateria");
+            compare(findChild(row, "launcherApplicationIcon").symbol, "battery_android_full");
             compare(profileBackend.calls, 0);
             keyClick(Qt.Key_Return);
             compare(profileBackend.calls, 1);
@@ -370,6 +384,38 @@ Item {
             tryVerify(() => control("batteryProfile-" + data.profile) !== null);
             verify(control("batteryProfile-" + data.profile).checked);
             compare(sessionBackend.calls, []);
+        }
+        function test_command_category_follows_action_after_alias_edit_data() {
+            return [
+                {tag: "profile", action: "balanced", category: "Bateria", icon: "battery_android_full"},
+                {tag: "audio", action: "volumeDown", category: "Dźwięk", icon: "volume_up"},
+                {tag: "settings", action: "settings", category: "Ustawienia", icon: "settings"},
+                {tag: "messages", action: "messages", category: "Wiadomości", icon: "chat_bubble"},
+                {tag: "clipboard", action: "clipboard", category: "Schowek", icon: "content_paste"},
+                {tag: "notifications", action: "dnd", category: "Powiadomienia", icon: "notifications"},
+                {tag: "screen", action: "screenshot", category: "Ekran", icon: "desktop_windows"},
+                {tag: "window", action: "floating", category: "Okna", icon: "desktop_windows"},
+                {tag: "workspace", action: "workspace3", category: "Workspace", icon: "desktop_windows"}
+            ];
+        }
+        function test_command_category_follows_action_after_alias_edit(data) {
+            saveAlias(data.action, ":custom");
+            verify(preview.coordinator.open("launcher", preview.firstScreen, null));
+            tryCompare(loader, "active", true);
+            tryVerify(() => control("launcherSearch") && control("launcherSearch").activeFocus);
+            type(": custom");
+            compare(launcher.chipMode, "command"); compare(launcher.results.length, 1);
+            const list = control("launcherResults");
+            tryVerify(() => list.itemAtIndex(0) !== null && list.itemAtIndex(0).modelData.action === data.action);
+            tryVerify(() => control("launcherResultsFade").current && control("launcherResultsFade").opacity === 1);
+            const row = list.itemAtIndex(0), subtitle = findChild(row, "launcherRowSubtitle");
+            verify(subtitle.visible); compare(subtitle.text, data.category);
+            compare(findChild(row, "launcherApplicationIcon").symbol, data.icon);
+            verify(subtitle.width <= row.availableWidth * 0.45);
+            verify(row.Accessible.name.endsWith(", " + data.category));
+            verify(control("launcherSearch").activeFocus);
+            compare(profileBackend.calls, 0); compare(sessionBackend.calls, []);
+            compare(windowActions.calls, []); compare(launcherBackend.activations.length, 0);
         }
         function test_power_profile_rejections_and_already_active() {
             verify(actions.invoke("balanced", null, "TEST-1"));

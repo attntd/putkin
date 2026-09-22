@@ -1,0 +1,7 @@
+PASS: Super+Space, colon then space commits Komenda with focus; categorized vectors, five rows and balanced fade
+PASS: native text/image rendering, square aligned at top, hjkl navigation and scrolling without copying
+PASS: preview click stays inside the grab; transparent area below the list dismisses; close releases preview
+PASS: gap between the two frames remains outside the native input mask
+PASS: search field stays at half screen height; five rows, End reaches result 20, list resize fades
+PASS: fractional scale keeps both frames on output; Enter activates exactly one selected clipboard item
+PASS: native launcher preview layout, pointer mask and keyboard navigation

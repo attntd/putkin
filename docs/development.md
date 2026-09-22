@@ -1,5 +1,13 @@
 # Środowisko i rozwój
 
+## Chip i kategorie komend — 2026-09-22
+
+Potwierdzono Qt **6.11.2** i Quickshell **0.3.1**. Parser i metadane
+korzystają z udokumentowanego [środowiska JavaScript QML](https://doc.qt.io/qt-6.11/qtqml-javascript-hostenvironment.html).
+Podpis kategorii zachowuje istniejący [Layout](https://doc.qt.io/qt-6.11/qml-qtquick-layouts-layout.html).
+Wejście i fokus sprawdzono przez [QtTest](https://doc.qt.io/qt-6.11/qml-qttest-testcase.html)
+oraz rzeczywiste Super+Spacja i wpisywanie przez wtype w prywatnym Hyprlandzie.
+
 ## Centrowanie i przewijanie launchera — 2026-09-22
 
 Ponownie potwierdzono Qt **6.11.2** i Quickshell **0.3.1**. Sprawdzono

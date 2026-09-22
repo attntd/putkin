@@ -83,6 +83,12 @@ def run(output):
                 close_launcher()
                 checks.append('production IPC opens commands and clipboard directly, including switching an open launcher')
                 open_launcher()
+                ipc('probe', 'edit', ': ')
+                result = state()
+                assert result['mode'] == 'command' and result['text'] == '' and result['commandInput'], result
+                assert result['focus'] == 'launcherSearch' and result['results'] == [], result
+                checks.append('colon-space commits command mode with an empty focused field through the production service')
+                close_launcher(); open_launcher()
                 ipc('probe', 'edit', ':a ')
                 for query, symbol in [('demo', 'terminal'), ('icon absolute', 'apps'), ('icon missing', 'apps'), ('icon empty', 'apps')]:
                     ipc('probe', 'edit', query)

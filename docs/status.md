@@ -1,5 +1,29 @@
 # Status implementacji
 
+## Chip i kategorie komend — 2026-09-22
+
+Super+Spacja → `:` → spacja tworzy chip „Komenda” i pozostawia puste pole
+z fokusem. Backspace odtwarza dwukropek, kliknięcie usuwa filtr, a wklejenie
+prefiksu działa również w trybie komend. Wiersze pokazują kategorię i ikonę
+ze wspólnego katalogu działań, także po zmianie aliasu: profile → Bateria,
+głośność → Dźwięk, blokada i zasilanie sesji → Sesja, okna → Okna.
+Zachowane są dosłowne filtry, sortowanie i wspólna obsługa działań.
+
+| Sprawdzenie | Wynik |
+| --- | --- |
+| `scripts/check` | **PASS**, 274 QML, 0 błędów; [log](evidence/launcher-command-categories-20260922/check.log). Końcowa sonda natywna: 1 QML, 0 błędów; [log](evidence/launcher-command-categories-20260922/final-check.log). |
+| Launcher | **PASS**, 77 testów; prefiks, fokus, kursor, Backspace, wklejenie i filtry, wszystkie workspace oraz regresja pięciu wyników i podglądu; [log](evidence/launcher-command-categories-20260922/launcher-qml.log). |
+| Klawiatura i komendy | **PASS**, 49 testów; kategorie i ikony po zmianie aliasu, 3 sposoby wpisania każdego profilu i wykonanie przez atrapę, sortowanie, sesja i zapis przypisań; [log](evidence/launcher-command-categories-20260922/keyboard-qml.log). |
+| Integracja launchera | **PASS**, 8 grup; nowy prefiks w produkcyjnym serwisie, IPC, DesktopEntries, fd i cliphist w prywatnych XDG/D-Bus; [raport](evidence/launcher-command-categories-20260922/integration.json). |
+| Natywny Wayland | **PASS**, 6 scenariuszy; rzeczywiste Super+Spacja, dwukropek i spacja, fokus chipa, kategorie i wektory, centrowanie i limit pięciu; 8 próbek fade przy przejściu do wyniku balanced. Regresja tekstu/obrazu i skali 150%; [raport](evidence/launcher-command-categories-20260922/report.json), [sprzątanie](evidence/launcher-command-categories-20260922/cleanup.json). |
+
+Obejrzano natywne zrzuty [listy komend](evidence/launcher-command-categories-20260922/launcher-native-command-categories.png)
+i [profilu zrównoważonego](evidence/launcher-command-categories-20260922/launcher-native-balanced.png).
+Testy korzystały z prywatnych XDG, D-Bus i Waylanda oraz atrap sprzętu
+i sesji. Nie wykonywano odbioru na drugim fizycznym komputerze ani pełnej
+regresji wszystkich modułów; dla tej zmiany wykonano powyższe testy launchera
+i współdzielonego katalogu komend. [Kontrakt](launcher.md#chip-i-kategorie-komend--2026-09-22).
+
 ## Położenie i fade launchera — 2026-09-22
 
 **Wdrożone lokalnie: `20260922-164237-43dac342d904`, kod z `9eaa38b`.**

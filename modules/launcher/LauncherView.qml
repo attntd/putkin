@@ -229,7 +229,7 @@ FocusScope {
                 hoverEnabled: true
                 focusPolicy: Qt.NoFocus
                 enabled: resultsFade.current
-                Accessible.name: modelData.title + ", " + root.label(modelData.kind)
+                Accessible.name: modelData.title + ", " + (command ? modelData.subtitle : root.label(modelData.kind))
                 onPressedChanged: { if (pressed) results.focusReason = Qt.MouseFocusReason; }
                 onClicked: { root.selectedIndex = index; root.rememberSelection(); root.activate(); }
                 HoverHandler {
@@ -268,7 +268,7 @@ FocusScope {
                     }
                     UI.PanelText {
                         objectName: "launcherRowSubtitle"
-                        visible: !row.clipboard && !row.command
+                        visible: !row.clipboard
                         Layout.minimumWidth: 0
                         Layout.maximumWidth: row.availableWidth * 0.45
                         Layout.preferredWidth: implicitWidth

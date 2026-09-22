@@ -1444,6 +1444,19 @@ scripts/test-status-integration --output artifacts/battery-integration.json
 Scenariusze `battery`, `batteryCharging`, `batteryLow`, `batteryAbsent`,
 `batteryFull`, `batteryNoTime`, `batteryNoProfiles` włączają atrapy statusu.
 
+## Chip i kategorie komend — 2026-09-22
+
+`tst_launcher.qml` sprawdza osobne naciśnięcia dwukropka i spacji, chip,
+kursor, Backspace, kliknięcie usuwające filtr, wklejenie prefiksu oraz
+dosłowny tekst w filtrach. `tst_keyboard.qml` renderuje kategorie i ikony,
+sprawdza ich zachowanie po zmianie aliasu i wykonuje trzy profile zasilania
+przez atrapę, z dwukropkiem, chipem lub dwukropkiem ze spacją.
+`scripts/test-launcher-integration` obejmuje nowy prefiks w produkcyjnym
+serwisie na prywatnym D-Bus i XDG. `scripts/test-wayland --nested --launcher-preview`
+otwiera panel rzeczywistym Super+Spacja, wpisuje `:` i spację, sprawdza
+fokus, pięć wyników i kategorię „Bateria”; zapisuje zrzuty i próbki fade.
+Wszystkie działania sprzętowe i sesji w testach pozostają atrapami.
+
 ## Komendy workspace launchera
 
 `tst_launcher.qml` sprawdza przez klawiaturę wszystkie cyfry `:wN` i `:mwN`,

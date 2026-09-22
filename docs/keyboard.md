@@ -76,7 +76,11 @@ po początku nazwy, bez rozróżniania wielkości liter. Sam `:` lub puste pole
 w trybie „Komenda” pokazuje wszystkie przypisane komendy; dokładne dopasowanie
 jest pierwsze. Enter lub kliknięcie wykonuje wybrany wynik przez ten sam
 `ActionController`, również gdy wpisano tylko część nazwy. Wiersze pokazują
-opis działania bez dodatkowego podpisu `:nazwa`.
+opis działania i jego kategorię z pasującą ikoną, bez dodatkowego podpisu
+`:nazwa`. Dwukropek ze spacją w zwykłym launcherze tworzy chip „Komenda”
+i pozostawia puste pole z fokusem. Kategoria zależy od działania, więc
+zmiana aliasu zachowuje np. „Bateria” dla profilu zrównoważonego.
+Ten sam katalog określa etykiety grup w ustawieniach klawiatury.
 `shutdown` i `poweroff` mają wspólny wynik „Wyłącz komputer”: launcher pokazuje
 go raz, dopasowując obie nazwy. Dotychczasowe osobne przypisania i własne
 skróty pozostają zachowane w ustawieniach.

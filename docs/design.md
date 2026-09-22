@@ -291,8 +291,9 @@ mają jednobarwne ikony, równe pola i padding. Zastępuje to wcześniejszy Papi
 Na życzenie użytkownika dodajemy launcher pod `Super+Spacja`: aplikacje,
 pliki w katalogu domowym i schowek. `:a `, `:f `, `:c ` zamieniają prefiks
 w usuwalną etykietę filtra (odpowiednik pigułki poprzednika, z kwadratowymi
-rogami Putkina). Puste zapytanie pokazuje ostatnie użycia; `: ` wybiera
-samą historię. Bez interpretacji poleceń powłoki i integracji terminala.
+rogami Putkina). Puste zapytanie bez filtra pokazuje ostatnie użycia;
+`: ` zatwierdza chip „Komenda” i pozostawia puste pole z fokusem.
+Bez interpretacji poleceń powłoki i integracji terminala.
 Panel ma szerokość do 640 px. Środek pola wyszukiwania jest na połowie
 wysokości aktywnego monitora; lista rozwija się poniżej, bez przesuwania
 pola. Używa wspólnych tokenów, ramek 2 px i wyłącznie przejścia opacity.
@@ -320,6 +321,12 @@ Korekta 2026-09-17: `Super+V` otwiera launcher z filtrem schowka,
 Nagłówek historii nazywa się „Ostatnie”. W trybie komend dwukropek jest
 reprezentowany przez chip; wpisanie `:w3` w zwykłym launcherze działa nadal.
 Niepełne komendy, w tym `:w`, nie pokazują tekstu pomocniczego.
+
+Korekta 2026-09-22: wiersze komend pokazują kategorię działania po prawej
+i odpowiadającą jej ikonę po lewej. Profile zasilania należą do „Bateria”,
+głośność do „Dźwięk”, blokada i operacje sesji do „Sesja”. Kategorie
+zachowują istniejący limit 45% szerokości podpisu, także dla własnych aliasów.
+[Pełne przypisania](launcher.md#chip-i-kategorie-komend--2026-09-22).
 
 ### Rozszerzenie: Ustawienia i Klawiatura — 2026-09-17
 

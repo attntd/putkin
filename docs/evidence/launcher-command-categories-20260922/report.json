@@ -1,0 +1,837 @@
+{
+  "timestamp_utc": "2026-09-22T17:05:37.488412+00:00",
+  "checks": [
+    "native launcher preview layout, pointer mask and keyboard navigation"
+  ],
+  "captures": [],
+  "mode": "native nested Hyprland, private HEADLESS outputs, GPU renderer, explicit domain mocks",
+  "isolation": "private PID/network/mount namespaces, XDG and session D-Bus; only parent Wayland socket and GPU render node shared",
+  "version": {
+    "branch": "v0.56.2",
+    "commit": "efb50993780079460b0cbed1363e2166a2de1d9f",
+    "version": "0.56.2",
+    "dirty": false,
+    "commit_message": "[gha] Nix: update inputs",
+    "commit_date": "Wed Aug 5 14:13:21 2026",
+    "tag": "v0.56.2",
+    "commits": "7661",
+    "buildAquamarine": "0.15.0",
+    "buildHyprlang": "0.6.8",
+    "buildHyprutils": "0.14.1",
+    "buildHyprcursor": "0.1.13",
+    "buildHyprgraphics": "0.5.1",
+    "systemAquamarine": "0.15.1",
+    "systemHyprlang": "0.6.8",
+    "systemHyprutils": "0.14.2",
+    "systemHyprcursor": "0.1.13",
+    "systemHyprgraphics": "0.5.1",
+    "abiHash": "efb50993780079460b0cbed1363e2166a2de1d9f_aq_0.15_hu_0.14_hg_0.5_hc_0.1_hlg_0.6",
+    "flags": []
+  },
+  "initial_monitors": [
+    {
+      "id": 0,
+      "name": "WAYLAND-1",
+      "description": "",
+      "make": "",
+      "model": "",
+      "serial": "",
+      "width": 1920,
+      "height": 1080,
+      "physicalWidth": 0,
+      "physicalHeight": 0,
+      "refreshRate": 60.0,
+      "x": 3920,
+      "y": 0,
+      "activeWorkspace": {
+        "id": 1,
+        "name": "1"
+      },
+      "specialWorkspace": {
+        "id": 0,
+        "name": ""
+      },
+      "reserved": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "scale": 1,
+      "transform": 0,
+      "focused": false,
+      "dpmsStatus": true,
+      "vrr": false,
+      "solitary": "0",
+      "solitaryBlockedBy": [
+        "NOTIFICATION",
+        "WINDOWED",
+        "CANDIDATE"
+      ],
+      "activelyTearing": false,
+      "tearingBlockedBy": [
+        "NOT_TORN",
+        "USER",
+        "SUPPORT",
+        "CANDIDATE",
+        "HW_CURSOR"
+      ],
+      "directScanoutTo": "0",
+      "directScanoutBlockedBy": [
+        "USER",
+        "CANDIDATE"
+      ],
+      "disabled": false,
+      "currentFormat": "XRGB8888",
+      "mirrorOf": "none",
+      "availableModes": [],
+      "colorManagementPreset": "srgb",
+      "sdrBrightness": 1,
+      "sdrSaturation": 1,
+      "sdrMinLuminance": 0.2,
+      "sdrMaxLuminance": 80,
+      "hardwareCursorsInUse": true
+    },
+    {
+      "id": 1,
+      "name": "HEADLESS-1",
+      "description": "",
+      "make": "",
+      "model": "",
+      "serial": "",
+      "width": 1920,
+      "height": 1080,
+      "physicalWidth": 0,
+      "physicalHeight": 0,
+      "refreshRate": 60.0,
+      "x": 2000,
+      "y": 0,
+      "activeWorkspace": {
+        "id": 2,
+        "name": "2"
+      },
+      "specialWorkspace": {
+        "id": 0,
+        "name": ""
+      },
+      "reserved": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "scale": 1,
+      "transform": 0,
+      "focused": true,
+      "dpmsStatus": true,
+      "vrr": false,
+      "solitary": "0",
+      "solitaryBlockedBy": [
+        "NOTIFICATION",
+        "WINDOWED",
+        "CANDIDATE"
+      ],
+      "activelyTearing": false,
+      "tearingBlockedBy": [
+        "NOT_TORN",
+        "USER",
+        "SUPPORT",
+        "CANDIDATE"
+      ],
+      "directScanoutTo": "0",
+      "directScanoutBlockedBy": [
+        "USER",
+        "SW",
+        "CANDIDATE"
+      ],
+      "disabled": false,
+      "currentFormat": "XRGB8888",
+      "mirrorOf": "none",
+      "availableModes": [
+        "1920x1080@60.00Hz"
+      ],
+      "colorManagementPreset": "srgb",
+      "sdrBrightness": 1,
+      "sdrSaturation": 1,
+      "sdrMinLuminance": 0.2,
+      "sdrMaxLuminance": 80,
+      "hardwareCursorsInUse": true
+    }
+  ],
+  "launcher_preview": {
+    "result": "PASS",
+    "checks": [
+      "Super+Space, colon then space commits Komenda with focus; categorized vectors, five rows and balanced fade",
+      "native text/image rendering, square aligned at top, hjkl navigation and scrolling without copying",
+      "preview click stays inside the grab; transparent area below the list dismisses; close releases preview",
+      "gap between the two frames remains outside the native input mask",
+      "search field stays at half screen height; five rows, End reaches result 20, list resize fades",
+      "fractional scale keeps both frames on output; Enter activates exactly one selected clipboard item"
+    ],
+    "captures": [
+      "launcher-native-command-categories.png",
+      "launcher-native-balanced.png",
+      "launcher-native-text.png",
+      "launcher-native-image.png",
+      "launcher-native-five-results.png",
+      "launcher-native-scale-1.5.png"
+    ],
+    "transitions": {
+      "commands-to-balanced": [
+        {
+          "search": {
+            "x": 823,
+            "y": 522,
+            "width": 445,
+            "height": 36
+          },
+          "list": {
+            "x": 652,
+            "y": 566,
+            "width": 616,
+            "height": 260
+          },
+          "primaryHeight": 328,
+          "resultsOpacity": 0.983616,
+          "resultCount": 11,
+          "previewOpacity": 0,
+          "displayedPreviewId": ""
+        },
+        {
+          "search": {
+            "x": 823,
+            "y": 522,
+            "width": 445,
+            "height": 36
+          },
+          "list": {
+            "x": 652,
+            "y": 566,
+            "width": 616,
+            "height": 260
+          },
+          "primaryHeight": 328,
+          "resultsOpacity": 0.744,
+          "resultCount": 11,
+          "previewOpacity": 0,
+          "displayedPreviewId": ""
+        },
+        {
+          "search": {
+            "x": 823,
+            "y": 522,
+            "width": 445,
+            "height": 36
+          },
+          "list": {
+            "x": 652,
+            "y": 566,
+            "width": 616,
+            "height": 260
+          },
+          "primaryHeight": 328,
+          "resultsOpacity": 0.087808,
+          "resultCount": 11,
+          "previewOpacity": 0,
+          "displayedPreviewId": ""
+        },
+        {
+          "search": {
+            "x": 823,
+            "y": 522,
+            "width": 445,
+            "height": 36
+          },
+          "list": {
+            "x": 652,
+            "y": 566,
+            "width": 616,
+            "height": 52
+          },
+          "primaryHeight": 120,
+          "resultsOpacity": 0,
+          "resultCount": 1,
+          "previewOpacity": 0,
+          "displayedPreviewId": ""
+        },
+        {
+          "search": {
+            "x": 823,
+            "y": 522,
+            "width": 445,
+            "height": 36
+          },
+          "list": {
+            "x": 652,
+            "y": 566,
+            "width": 616,
+            "height": 52
+          },
+          "primaryHeight": 120,
+          "resultsOpacity": 0.017968500000000002,
+          "resultCount": 1,
+          "previewOpacity": 0,
+          "displayedPreviewId": ""
+        },
+        {
+          "search": {
+            "x": 823,
+            "y": 522,
+            "width": 445,
+            "height": 36
+          },
+          "list": {
+            "x": 652,
+            "y": 566,
+            "width": 616,
+            "height": 52
+          },
+          "primaryHeight": 120,
+          "resultsOpacity": 0.442368,
+          "resultCount": 1,
+          "previewOpacity": 0,
+          "displayedPreviewId": ""
+        },
+        {
+          "search": {
+            "x": 823,
+            "y": 522,
+            "width": 445,
+            "height": 36
+          },
+          "list": {
+            "x": 652,
+            "y": 566,
+            "width": 616,
+            "height": 52
+          },
+          "primaryHeight": 120,
+          "resultsOpacity": 0.968,
+          "resultCount": 1,
+          "previewOpacity": 0,
+          "displayedPreviewId": ""
+        },
+        {
+          "search": {
+            "x": 823,
+            "y": 522,
+            "width": 445,
+            "height": 36
+          },
+          "list": {
+            "x": 652,
+            "y": 566,
+            "width": 616,
+            "height": 52
+          },
+          "primaryHeight": 120,
+          "resultsOpacity": 1,
+          "resultCount": 1,
+          "previewOpacity": 0,
+          "displayedPreviewId": ""
+        }
+      ],
+      "text-to-image": [
+        {
+          "search": {
+            "x": 823,
+            "y": 522,
+            "width": 445,
+            "height": 36
+          },
+          "list": {
+            "x": 652,
+            "y": 566,
+            "width": 616,
+            "height": 72
+          },
+          "primaryHeight": 140,
+          "resultsOpacity": 1,
+          "resultCount": 2,
+          "previewOpacity": 0.997952,
+          "displayedPreviewId": "12"
+        },
+        {
+          "search": {
+            "x": 823,
+            "y": 522,
+            "width": 445,
+            "height": 36
+          },
+          "list": {
+            "x": 652,
+            "y": 566,
+            "width": 616,
+            "height": 72
+          },
+          "primaryHeight": 140,
+          "resultsOpacity": 1,
+          "resultCount": 2,
+          "previewOpacity": 0.557632,
+          "displayedPreviewId": "12"
+        },
+        {
+          "search": {
+            "x": 823,
+            "y": 522,
+            "width": 445,
+            "height": 36
+          },
+          "list": {
+            "x": 652,
+            "y": 566,
+            "width": 616,
+            "height": 72
+          },
+          "primaryHeight": 140,
+          "resultsOpacity": 1,
+          "resultCount": 2,
+          "previewOpacity": 0.087808,
+          "displayedPreviewId": "12"
+        },
+        {
+          "search": {
+            "x": 823,
+            "y": 522,
+            "width": 445,
+            "height": 36
+          },
+          "list": {
+            "x": 652,
+            "y": 566,
+            "width": 616,
+            "height": 72
+          },
+          "primaryHeight": 140,
+          "resultsOpacity": 1,
+          "resultCount": 2,
+          "previewOpacity": 0,
+          "displayedPreviewId": "11"
+        },
+        {
+          "search": {
+            "x": 823,
+            "y": 522,
+            "width": 445,
+            "height": 36
+          },
+          "list": {
+            "x": 652,
+            "y": 566,
+            "width": 616,
+            "height": 72
+          },
+          "primaryHeight": 140,
+          "resultsOpacity": 1,
+          "resultCount": 2,
+          "previewOpacity": 0.016384000000000003,
+          "displayedPreviewId": "11"
+        },
+        {
+          "search": {
+            "x": 823,
+            "y": 522,
+            "width": 445,
+            "height": 36
+          },
+          "list": {
+            "x": 652,
+            "y": 566,
+            "width": 616,
+            "height": 72
+          },
+          "primaryHeight": 140,
+          "resultsOpacity": 1,
+          "resultCount": 2,
+          "previewOpacity": 0.25600000000000006,
+          "displayedPreviewId": "11"
+        },
+        {
+          "search": {
+            "x": 823,
+            "y": 522,
+            "width": 445,
+            "height": 36
+          },
+          "list": {
+            "x": 652,
+            "y": 566,
+            "width": 616,
+            "height": 72
+          },
+          "primaryHeight": 140,
+          "resultsOpacity": 1,
+          "resultCount": 2,
+          "previewOpacity": 0.912192,
+          "displayedPreviewId": "11"
+        },
+        {
+          "search": {
+            "x": 823,
+            "y": 522,
+            "width": 445,
+            "height": 36
+          },
+          "list": {
+            "x": 652,
+            "y": 566,
+            "width": 616,
+            "height": 72
+          },
+          "primaryHeight": 140,
+          "resultsOpacity": 1,
+          "resultCount": 2,
+          "previewOpacity": 1,
+          "displayedPreviewId": "11"
+        }
+      ],
+      "list-to-one-result": [
+        {
+          "search": {
+            "x": 839,
+            "y": 522,
+            "width": 429,
+            "height": 36
+          },
+          "list": {
+            "x": 652,
+            "y": 566,
+            "width": 616,
+            "height": 260
+          },
+          "primaryHeight": 328,
+          "resultsOpacity": 0.997952,
+          "resultCount": 20,
+          "previewOpacity": 0,
+          "displayedPreviewId": ""
+        },
+        {
+          "search": {
+            "x": 839,
+            "y": 522,
+            "width": 429,
+            "height": 36
+          },
+          "list": {
+            "x": 652,
+            "y": 566,
+            "width": 616,
+            "height": 260
+          },
+          "primaryHeight": 328,
+          "resultsOpacity": 0.8689279999999999,
+          "resultCount": 20,
+          "previewOpacity": 0,
+          "displayedPreviewId": ""
+        },
+        {
+          "search": {
+            "x": 839,
+            "y": 522,
+            "width": 429,
+            "height": 36
+          },
+          "list": {
+            "x": 652,
+            "y": 566,
+            "width": 616,
+            "height": 260
+          },
+          "primaryHeight": 328,
+          "resultsOpacity": 0.186624,
+          "resultCount": 20,
+          "previewOpacity": 0,
+          "displayedPreviewId": ""
+        },
+        {
+          "search": {
+            "x": 839,
+            "y": 522,
+            "width": 429,
+            "height": 36
+          },
+          "list": {
+            "x": 652,
+            "y": 566,
+            "width": 616,
+            "height": 260
+          },
+          "primaryHeight": 328,
+          "resultsOpacity": 0.0001714999999999911,
+          "resultCount": 20,
+          "previewOpacity": 0,
+          "displayedPreviewId": ""
+        },
+        {
+          "search": {
+            "x": 839,
+            "y": 522,
+            "width": 429,
+            "height": 36
+          },
+          "list": {
+            "x": 652,
+            "y": 566,
+            "width": 616,
+            "height": 52
+          },
+          "primaryHeight": 120,
+          "resultsOpacity": 0,
+          "resultCount": 1,
+          "previewOpacity": 0,
+          "displayedPreviewId": ""
+        },
+        {
+          "search": {
+            "x": 839,
+            "y": 522,
+            "width": 429,
+            "height": 36
+          },
+          "list": {
+            "x": 652,
+            "y": 566,
+            "width": 616,
+            "height": 52
+          },
+          "primaryHeight": 120,
+          "resultsOpacity": 0.055296,
+          "resultCount": 1,
+          "previewOpacity": 0,
+          "displayedPreviewId": ""
+        },
+        {
+          "search": {
+            "x": 839,
+            "y": 522,
+            "width": 429,
+            "height": 36
+          },
+          "list": {
+            "x": 652,
+            "y": 566,
+            "width": 616,
+            "height": 52
+          },
+          "primaryHeight": 120,
+          "resultsOpacity": 0.813376,
+          "resultCount": 1,
+          "previewOpacity": 0,
+          "displayedPreviewId": ""
+        },
+        {
+          "search": {
+            "x": 839,
+            "y": 522,
+            "width": 429,
+            "height": 36
+          },
+          "list": {
+            "x": 652,
+            "y": 566,
+            "width": 616,
+            "height": 52
+          },
+          "primaryHeight": 120,
+          "resultsOpacity": 0.993088,
+          "resultCount": 1,
+          "previewOpacity": 0,
+          "displayedPreviewId": ""
+        },
+        {
+          "search": {
+            "x": 839,
+            "y": 522,
+            "width": 429,
+            "height": 36
+          },
+          "list": {
+            "x": 652,
+            "y": 566,
+            "width": 616,
+            "height": 52
+          },
+          "primaryHeight": 120,
+          "resultsOpacity": 1,
+          "resultCount": 1,
+          "previewOpacity": 0,
+          "displayedPreviewId": ""
+        }
+      ]
+    },
+    "commands": {
+      "all": {
+        "active": "launcher",
+        "loaded": true,
+        "previewId": "",
+        "mode": "command",
+        "fieldText": "",
+        "chipText": "Komenda",
+        "rows": [
+          {
+            "action": "balanced",
+            "category": "Bateria",
+            "categoryVisible": true,
+            "icon": "battery_android_full",
+            "iconReady": true
+          },
+          {
+            "action": "hibernate",
+            "category": "Sesja",
+            "categoryVisible": true,
+            "icon": "power_settings_new",
+            "iconReady": true
+          },
+          {
+            "action": "lock",
+            "category": "Sesja",
+            "categoryVisible": true,
+            "icon": "power_settings_new",
+            "iconReady": true
+          },
+          {
+            "action": "messages",
+            "category": "Wiadomości",
+            "categoryVisible": true,
+            "icon": "chat_bubble",
+            "iconReady": true
+          },
+          {
+            "action": "performance",
+            "category": "Bateria",
+            "categoryVisible": true,
+            "icon": "battery_android_full",
+            "iconReady": true
+          }
+        ],
+        "text": "",
+        "imageReady": false,
+        "focus": "launcherSearch",
+        "search": {
+          "x": 823,
+          "y": 522,
+          "width": 445,
+          "height": 36
+        },
+        "list": {
+          "x": 652,
+          "y": 566,
+          "width": 616,
+          "height": 260
+        },
+        "frame": null,
+        "surface": {
+          "x": 640,
+          "y": 510,
+          "width": 968,
+          "height": 328
+        },
+        "primaryHeight": 328,
+        "opacity": 1,
+        "resultsOpacity": 1,
+        "resultsCurrent": true,
+        "resultCount": 11,
+        "listContentY": 0,
+        "selectedIndex": 0,
+        "previewOpacity": 0,
+        "previewCurrent": false,
+        "displayedPreviewId": "",
+        "previewScrollbar": null,
+        "previewScrollSize": 1,
+        "contentY": 0,
+        "activations": 0
+      },
+      "balanced": {
+        "active": "launcher",
+        "loaded": true,
+        "previewId": "",
+        "mode": "command",
+        "fieldText": "bal",
+        "chipText": "Komenda",
+        "rows": [
+          {
+            "action": "balanced",
+            "category": "Bateria",
+            "categoryVisible": true,
+            "icon": "battery_android_full",
+            "iconReady": true
+          }
+        ],
+        "text": "",
+        "imageReady": false,
+        "focus": "launcherSearch",
+        "search": {
+          "x": 823,
+          "y": 522,
+          "width": 445,
+          "height": 36
+        },
+        "list": {
+          "x": 652,
+          "y": 566,
+          "width": 616,
+          "height": 52
+        },
+        "frame": null,
+        "surface": {
+          "x": 640,
+          "y": 510,
+          "width": 968,
+          "height": 120
+        },
+        "primaryHeight": 120,
+        "opacity": 1,
+        "resultsOpacity": 1,
+        "resultsCurrent": true,
+        "resultCount": 1,
+        "listContentY": 0,
+        "selectedIndex": 0,
+        "previewOpacity": 0,
+        "previewCurrent": false,
+        "displayedPreviewId": "",
+        "previewScrollbar": null,
+        "previewScrollSize": 1,
+        "contentY": 0,
+        "activations": 0
+      }
+    },
+    "final": {
+      "active": "",
+      "loaded": false,
+      "previewId": "",
+      "mode": "clipboard",
+      "fieldText": "",
+      "chipText": "",
+      "rows": [],
+      "text": "",
+      "imageReady": false,
+      "focus": "",
+      "search": null,
+      "list": null,
+      "frame": null,
+      "surface": null,
+      "primaryHeight": 0,
+      "opacity": 0,
+      "resultsOpacity": 0,
+      "resultsCurrent": false,
+      "resultCount": 0,
+      "listContentY": 0,
+      "selectedIndex": -1,
+      "previewOpacity": 0,
+      "previewCurrent": false,
+      "displayedPreviewId": "",
+      "previewScrollbar": null,
+      "previewScrollSize": 1,
+      "contentY": 0,
+      "activations": 1
+    },
+    "isolation": "private Wayland, XDG and buses; clipboard, hardware and session fixtures"
+  },
+  "result": "PASS",
+  "process_exit_codes": [
+    0,
+    -15
+  ],
+  "remaining_child_pids": [],
+  "elapsed_s": 6.762861273000453
+}

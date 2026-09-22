@@ -13,12 +13,12 @@ function parse(text) {
     const match = text.match(/^:([afc]?)(?:\s+([\s\S]*))?$/i);
     if (!match)
         return { mode: "", query: text.trim(), committed: false };
-    return { mode: ({ a: "application", f: "file", c: "clipboard" })[match[1].toLowerCase()] || "recent",
+    return { mode: ({ a: "application", f: "file", c: "clipboard" })[match[1].toLowerCase()] || "command",
         query: (match[2] || "").trim(), committed: /^:[afc]?\s/i.test(text) };
 }
 
 function prefix(mode) {
-    return ({ application: ":a", file: ":f", clipboard: ":c", recent: ":" })[mode] || "";
+    return ({ application: ":a", file: ":f", clipboard: ":c", command: ":" })[mode] || "";
 }
 
 function normalized(value) {

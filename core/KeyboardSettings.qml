@@ -79,7 +79,7 @@ QtObject {
                 return true;
             })
             .map(row => ({kind: "configuredCommand", id: row.command, action: row.action,
-                title: Actions.find(row.action).title, subtitle: "", icon: ""}));
+                title: Actions.find(row.action).title, subtitle: Actions.find(row.action).group, icon: ""}));
     }
     readonly property Connections fileChanges: Connections {
         target: root.storage

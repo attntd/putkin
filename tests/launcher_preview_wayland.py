@@ -18,7 +18,7 @@ def run(environment, base, output, first, hypr, launch):
     Path(env['HOME']).mkdir()
     entry = str(ROOT / 'keyboard-test.qml')
     app, log = launch([tool('quickshell'), '--no-color', '--path', entry], 'launcher-preview', env)
-    checks, captures, transitions = [], [], {}
+    checks, captures, transitions, commands = [], [], {}, {}
 
     def ipc(target, method, *args, startup=False):
         reply = subprocess.run([tool('quickshell'), 'ipc', '--path', entry, 'call', target, method, *map(str, args)],
@@ -75,6 +75,36 @@ def run(environment, base, output, first, hypr, launch):
                'fixture target mapped before opening the launcher')
     ipc('probe', 'launcherFixture')
     hypr('dismissnotify')
+    hypr('dispatch', 'hl.dsp.focus({monitor=' + json.dumps(first) + '})')
+    subprocess.run([tool('wtype'), '-M', 'logo', '-s', '100', '-k', 'space', '-m', 'logo'],
+                   env=env, check=True, capture_output=True, timeout=5)
+    eventually(state, lambda s: s['focus'] == 'launcherSearch' and s['opacity'] == 1, 'Super+Space search focus')
+    subprocess.run([tool('wtype'), ':'], env=env, check=True, capture_output=True, timeout=5)
+    eventually(state, lambda s: s['fieldText'] == ':' and s['chipText'] == '', 'colon before commit')
+    keys('space')
+    result = eventually(state, lambda s: s['mode'] == 'command' and s['chipText'] == 'Komenda'
+                        and s['fieldText'] == '' and s['focus'] == 'launcherSearch'
+                        and s['resultsCurrent'] and s['resultsOpacity'] == 1
+                        and len(s['rows']) == 5 and all(r['iconReady'] for r in s['rows']), 'colon-space command chip')
+    centered(result, 1080)
+    assert result['list']['height'] == 5 * 52 and result['resultCount'] > 5, result
+    assert result['rows'][0] == {'action': 'balanced', 'category': 'Bateria', 'categoryVisible': True,
+                                 'icon': 'battery_android_full', 'iconReady': True}, result
+    commands['all'] = result
+    capture('launcher-native-command-categories')
+    subprocess.run([tool('wtype'), 'bal'], env=env, check=True, capture_output=True, timeout=5)
+    result = transition('commands-to-balanced', lambda s: s['fieldText'] == 'bal' and s['resultCount'] == 1
+                        and s['resultsCurrent'] and s['resultsOpacity'] == 1)
+    assert result['rows'][0]['action'] == 'balanced' and result['rows'][0]['category'] == 'Bateria', result
+    assert result['focus'] == 'launcherSearch' and result['activations'] == 0, result
+    assert any(0 < s['resultsOpacity'] < 1 for s in transitions['commands-to-balanced']), transitions
+    assert all(s['search']['y'] == result['search']['y'] for s in transitions['commands-to-balanced']), transitions
+    commands['balanced'] = result
+    capture('launcher-native-balanced')
+    keys('Escape', 'Escape')
+    eventually(state, lambda s: not s['loaded'], 'close command results without activation')
+    check('Super+Space, colon then space commits Komenda with focus; categorized vectors, five rows and balanced fade')
+
     result = open_launcher()
     centered(result, 1080)
     frame, surface = result['frame'], result['surface']
@@ -145,5 +175,5 @@ def run(environment, base, output, first, hypr, launch):
     eventually(state, lambda s: not s['loaded'] and s['activations'] == 1, 'one activation')
     check('fractional scale keeps both frames on output; Enter activates exactly one selected clipboard item')
     assert not qml_errors(runtime_log(log)), runtime_log(log)
-    return {'result': 'PASS', 'checks': checks, 'captures': captures, 'transitions': transitions, 'final': state(),
+    return {'result': 'PASS', 'checks': checks, 'captures': captures, 'transitions': transitions, 'commands': commands, 'final': state(),
             'isolation': 'private Wayland, XDG and buses; clipboard, hardware and session fixtures'}

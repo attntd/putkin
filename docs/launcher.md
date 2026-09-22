@@ -7,14 +7,15 @@ z fokusem, bez Shift. Oba skróty
 zmieniają tryb również w już otwartym launcherze i przywracają fokus pola.
 Wyszukiwanie bez prefiksu łączy aplikacje, pliki oraz schowek. Puste pole
 pokazuje ostatnio wywołane pozycje pod nagłówkiem „Ostatnie”. Wpisz `:a `, `:f ` lub `:c `, aby
-zamienić prefiks w etykietę Aplikacje, Pliki lub Schowek. `: ` wybiera
-historię. Etykietę usuwa kliknięcie; Backspace w pustym polu odtwarza prefiks.
+zamienić prefiks w etykietę Aplikacje, Pliki lub Schowek. `: ` tworzy chip
+„Komenda” i puste pole z fokusem. Etykietę usuwa kliknięcie; Backspace w pustym polu odtwarza prefiks.
 Lista z filtrem nie ma dodatkowego nagłówka. Schowek pokazuje wyłącznie
 jedną linię treści w wierszu 36 px, bez ikony i podpisu „Schowek”. Ikony
 oraz dotychczasowa wysokość wierszy aplikacji pozostają. Opis aplikacji
 lub ścieżka pliku jest w tej samej linii co nazwa, wyrównany do prawej.
 Zajmuje najwyżej 45% szerokości zawartości wiersza; długi tekst jest skracany,
-z pozostawieniem miejsca na nazwę. Komendy nadal pokazują sam opis działania.
+z pozostawieniem miejsca na nazwę. Komendy pokazują opis działania,
+kategorię po prawej i pasującą ikonę po lewej.
 
 Enter aktywuje wybraną pozycję. Strzałki wybierają wynik bez opuszczania
 pola. Escape/Tab z pola przechodzą do listy: `j/k` wybierają, `h` przechodzi
@@ -24,6 +25,32 @@ zamyka panel; pusta lista zamyka się pierwszym Escape. Home/End w liście
 pozwalają dojść do pierwszej/ostatniej pozycji. `q` zamyka panel z listy lub
 filtra; w polu wyszukiwania pozostaje zwykłą literą, podobnie jak hjkl.
 Wpis schowka jest kopiowany; użytkownik sam wkleja go do wybranej aplikacji.
+
+## Chip i kategorie komend — 2026-09-22
+
+Super+Spacja → `:` → spacja przełącza do tego samego trybu co Super+;.
+Spacja zatwierdza chip „Komenda”, usuwa prefiks z pola i pozostawia w nim
+kursor. Sam dwukropek nadal pokazuje komendy przed zatwierdzeniem chipa.
+Wklejenie `: balanced` daje chip i tekst `balanced`; Backspace w pustym
+polu przywraca `:`, a kliknięcie chipa usuwa filtr. Filtry Aplikacje,
+Pliki i Schowek traktują dwukropek ze spacją jak zwykły tekst.
+
+Kategorie pochodzą ze wspólnego katalogu działań, także po zmianie aliasu:
+
+| Działania | Kategoria |
+| --- | --- |
+| Profile oszczędny, zrównoważony i wydajności oraz panel baterii | Bateria |
+| Głośność, wyciszenia i panel dźwięku | Dźwięk |
+| Blokada, uśpienie, hibernacja, wyłączenie i restart | Sesja |
+| Jasność i zrzut ekranu | Ekran |
+| Fokus, przenoszenie, zamykanie i tryby okna | Okna |
+| Przełączanie workspace i przenoszenie na workspace | Workspace |
+| Pozostałe panele i funkcje | Ustawienia, Wiadomości, Powiadomienia, Schowek lub Shell |
+
+Kategoria używa istniejącego miejsca na opis po prawej, do 45% szerokości
+wiersza. Ikony pochodzą ze wspólnego katalogu wektorowego shella.
+Zachowane są sortowanie według nazwy komendy, pierwszeństwo dokładnego
+dopasowania, limit pięciu widocznych wyników i fade przy zmianie listy.
 
 ## Położenie, lista i przejścia — 2026-09-22
 
@@ -82,7 +109,7 @@ gdy jego numeru nie ma jeszcze w pasku. Wielkość liter nie ma znaczenia.
 
 Niepełna lub niepoprawna komenda workspace pozostawia pustą listę, bez tekstu
 pomocniczego. Sam `:` rozpoczyna tryb komend i pokazuje zapisane komendy;
-`: ` nadal wybiera historię. Aktywny filtr
+`: ` zatwierdza chip „Komenda”. Aktywny filtr aplikacji, plików lub schowka
 zachowuje dosłowne wyszukiwanie, np. `:c :w3` znajduje tekst w schowku.
 Komendy nie trafiają do historii aplikacji/plików ani pomocnika Python.
 W trybie z chipem „Komenda” dwukropek jest dodawany do zapytania wewnętrznie;
@@ -93,7 +120,7 @@ rozróżniania wielkości liter, np. `:sl` lub `sl` w trybie „Komenda” pokaz
 „Uśpij”. Dokładne dopasowanie jest pierwsze, pozostałe są alfabetyczne według
 nazwy komendy. Enter lub kliknięcie uruchamia wybraną podpowiedź przez wspólny
 `ActionController`, także przed wpisaniem całej nazwy. Wiersz komendy zawiera
-tylko opis działania, bez dodatkowego podpisu `:nazwa`. Prefiksy `:a`, `:f`
+opis działania oraz kategorię, bez dodatkowego podpisu `:nazwa`. Prefiksy `:a`, `:f`
 i `:c` stają się filtrami dopiero po spacji.
 [Ustawienia skrótów i komend](keyboard.md).
 

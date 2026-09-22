@@ -1,5 +1,14 @@
 # Roadmapa Putkin
 
+## Wybrana korekta — chip i kategorie komend, 2026-09-22
+
+Po otwarciu launchera przez Super+Spacja wpisanie dwukropka i spacji
+tworzy chip „Komenda”, pozostawiając puste pole z fokusem. Komendy mają
+kategorie i ikony zgodne z działaniem, np. profile zasilania → Bateria.
+Zakres obejmuje parser, wspólny katalog działań, prezentację i testy.
+[Kontrakt](docs/launcher.md#chip-i-kategorie-komend--2026-09-22),
+[wyniki](docs/status.md#chip-i-kategorie-komend--2026-09-22).
+
 ## Wybrana korekta — położenie i fade launchera, 2026-09-22
 
 **Wdrożone lokalnie: `20260922-164237-43dac342d904`.**

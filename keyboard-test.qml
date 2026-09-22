@@ -131,6 +131,15 @@ ShellRoot {
             const previewFade = root.find(content, "launcherPreviewFade");
             const image = root.find(frame, "launcherPreviewImage"), scroll = root.find(frame, "launcherPreviewScroll");
             const scrollbar = root.find(frame, "launcherPreviewScrollbar");
+            const chip = root.find(content, "launcherChip");
+            const rows = [];
+            for (let i = 0; list && i < Math.min(list.count, 5); ++i) {
+                const row = list.itemAtIndex(i);
+                if (!row) continue;
+                const subtitle = root.find(row, "launcherRowSubtitle"), icon = root.find(row, "launcherApplicationIcon");
+                rows.push({action: row.modelData.action || "", category: subtitle.text, categoryVisible: subtitle.visible,
+                    icon: icon.renderedSymbol, iconReady: icon.ready});
+            }
             const surface = content ? content.children.find(child => child["viewport"] !== undefined) : null;
             function geometry(item) {
                 if (!item) return null;
@@ -139,6 +148,7 @@ ShellRoot {
             }
             const focus = content && content.Window.window ? content.Window.window.activeFocusItem : null;
             return JSON.stringify({active: panels.activeId, loaded: host.loaded, previewId: launcher.previewId,
+                mode: launcher.mode, fieldText: search ? search.text : "", chipText: chip && chip.visible ? chip.text : "", rows: rows,
                 text: launcher.previewText, imageReady: image ? image.status === Image.Ready : false,
                 focus: focus ? focus.objectName : "", search: geometry(search), list: geometry(list), frame: geometry(frame),
                 surface: geometry(surface), primaryHeight: surface ? surface.primaryHeight : 0,

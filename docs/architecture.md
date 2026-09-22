@@ -508,6 +508,12 @@ Nie dodaje procesu, odpytywania ani zależności widoku od Hyprlanda.
 i `openCommands` ustawiają filtr/prefiks po otwarciu wspólnego panelu.
 Zmiana trybu unieważnia późną aktywację i przenosi fokus do pola tekstowego.
 
+`LauncherQuery.parse` rozpoznaje `: ` jako zatwierdzony tryb `command`.
+`LauncherService.edit` zamienia prefiks na chip przy zachowaniu dosłownego
+tekstu w filtrach aplikacji, plików i schowka. `KeyboardSettings` dołącza
+grupę z `Actions.catalog` do opisu wyniku; `Icons.launcher` dobiera do niej
+wektor. Kategorie są metadanymi działań, bez zmiany schematu przypisań.
+
 Rozszerzenie audio 2026-09-17: `AudioView` jest stroną tego samego PanelHost.
 `AudioChannelService` i `PipewireChannel` współdzielą logikę poziomu,
 wyciszania i potwierdzania urządzenia dla wyjścia oraz mikrofonu.
