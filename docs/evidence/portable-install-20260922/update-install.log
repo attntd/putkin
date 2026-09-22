@@ -1,0 +1,706 @@
+PASS: 167 plików QML, 0 z błędami.
+{
+  "current": "/tmp/putkin-new-computer-test/data/putkin/releases/20260922-145302-6b3c39ce5be0",
+  "active": null,
+  "removed": [],
+  "retained": [
+    "20260922-145302-6b3c39ce5be0",
+    "20260922-144056-c7b2c1a3a1bc"
+  ],
+  "configuration": [
+    {
+      "path": "/tmp/putkin-new-computer-test/config/kitty/kitty.conf",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/kitty/current-theme.conf",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/kitty/ssh.conf",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/fish/config.fish",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/fish/conf.d/aliases.fish",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/fish/conf.d/editor.fish",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/fish/conf.d/ssh-agent.fish",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/fish/conf.d/hyprland_autostart.fish",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/fish/functions/fish_greeting.fish",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/nvim/init.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/nvim/lazy-lock.json",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/nvim/lua/vim-options.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/nvim/lua/plugins.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/nvim/lua/plugins/catppuccin.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/nvim/lua/plugins/codecompanion.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/nvim/lua/plugins/completions.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/nvim/lua/plugins/lsp-config.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/nvim/lua/plugins/none-ls.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/nvim/lua/plugins/nvim-tmux-navigation.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/nvim/lua/plugins/oil.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/nvim/lua/plugins/rails.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/nvim/lua/plugins/render-markdown.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/nvim/lua/plugins/snacks.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/nvim/lua/plugins/swagger-preview.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/nvim/lua/plugins/treesitter.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/nvim/lua/plugins/vim-test.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/yazi/yazi.toml",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/yazi/keymap.toml",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/yazi/theme.toml",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/yazi/package.toml",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/yazi/flavors/catppuccin-mocha.yazi/LICENSE",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/yazi/flavors/catppuccin-mocha.yazi/LICENSE-tmtheme",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/yazi/flavors/catppuccin-mocha.yazi/flavor.toml",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/yazi/flavors/catppuccin-mocha.yazi/tmtheme.xml",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/yazi/plugins/mediainfo.yazi/LICENSE",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/yazi/plugins/mediainfo.yazi/adobe.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/yazi/plugins/mediainfo.yazi/audio.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/yazi/plugins/mediainfo.yazi/const.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/yazi/plugins/mediainfo.yazi/image.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/yazi/plugins/mediainfo.yazi/main.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/yazi/plugins/mediainfo.yazi/none-media-preview.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/yazi/plugins/mediainfo.yazi/utils.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/yazi/plugins/mediainfo.yazi/video.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/yazi/plugins/piper.yazi/LICENSE",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/yazi/plugins/piper.yazi/main.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/yazi/plugins/toggle-pane.yazi/LICENSE",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/yazi/plugins/toggle-pane.yazi/main.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/yazi/plugins/zoom.yazi/LICENSE",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/yazi/plugins/zoom.yazi/main.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/Kvantum/catppuccin-mocha-mauve/catppuccin-mocha-mauve.kvconfig",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/Kvantum/catppuccin-mocha-mauve/catppuccin-mocha-mauve.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/Kvantum/kvantum.kvconfig",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-3.0/settings.ini",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/settings.ini",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/qt5ct/qt5ct.conf",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/qt6ct/qt6ct.conf",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/glow/glow.yml",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/btop/btop.conf",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/voxtype/config.toml",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/starship.toml",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/mimeapps.list",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/xdg-terminals.list",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/uwsm/env",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/home/.tmux.conf",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/putkin/launch.json",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/putkin/settings.json",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/putkin/signal.json",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/hypr/backgrounds/Cloudsnight.jpg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/hypr/backgrounds/Rainnight.jpg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/hypr/backgrounds/forrest.png",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/hypr/backgrounds/lonely-fish.png",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/hypr/backgrounds/shaded_landscape.png",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/zen/putkin.default/chrome/userChrome.css",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/zen/putkin.default/chrome/userContent.css",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/zen/putkin.default/chrome/zen-logo-mocha.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/zen/putkin.default/chrome/zen-themes.css",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/zen/putkin.default/zen-keyboard-shortcuts.json",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/zen/putkin.default/user.js",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/hypr/hyprland.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/hypr/local.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/hypr/environment.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/hypr/permissions.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/hypr/input.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/hypr/appearance.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/hypr/animations.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/hypr/layout.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/hypr/rules.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/hypr/lib/paths.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/hypr/lib/bindings.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/hypr/keybinds/init.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/hypr/keybinds/apps.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/hypr/keybinds/windows.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/hypr/keybinds/workspaces.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/hypr/keybinds/hardware.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/hypr/keybinds/shell.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/hypr/autostart.lua",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/checkbox-checked-symbolic.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/checkbox-checked-symbolic@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/checkbox-mixed-symbolic.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/checkbox-mixed-symbolic@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/close-symbolic.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/close-symbolic@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/cursor-handle-symbolic.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/maximize-symbolic.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/maximize-symbolic@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/menu-radio-symbolic.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/menu-radio-symbolic@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/minimize-symbolic.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/minimize-symbolic@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/radio-checked-symbolic.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/radio-checked-symbolic@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/radio-mixed-symbolic.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/radio-mixed-symbolic@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-horz-marks-after-slider-dark.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-horz-marks-after-slider-dark@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-horz-marks-after-slider-disabled-dark.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-horz-marks-after-slider-disabled-dark@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-horz-marks-after-slider-disabled.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-horz-marks-after-slider-disabled@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-horz-marks-after-slider.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-horz-marks-after-slider@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-horz-marks-before-slider-dark.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-horz-marks-before-slider-dark@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-horz-marks-before-slider-disabled-dark.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-horz-marks-before-slider-disabled-dark@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-horz-marks-before-slider-disabled.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-horz-marks-before-slider-disabled@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-horz-marks-before-slider.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-horz-marks-before-slider@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-vert-marks-after-slider-dark.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-vert-marks-after-slider-dark@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-vert-marks-after-slider-disabled-dark.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-vert-marks-after-slider-disabled-dark@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-vert-marks-after-slider-disabled.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-vert-marks-after-slider-disabled@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-vert-marks-after-slider.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-vert-marks-after-slider@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-vert-marks-before-slider-dark.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-vert-marks-before-slider-dark@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-vert-marks-before-slider-disabled-dark.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-vert-marks-before-slider-disabled-dark@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-vert-marks-before-slider-disabled.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-vert-marks-before-slider-disabled@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-vert-marks-before-slider.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/scale-vert-marks-before-slider@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/selectionmode-checkbox-checked-dark.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/selectionmode-checkbox-checked-dark@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/selectionmode-checkbox-checked.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/selectionmode-checkbox-checked@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/selectionmode-checkbox-unchecked-dark.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/selectionmode-checkbox-unchecked-dark@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/selectionmode-checkbox-unchecked.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/selectionmode-checkbox-unchecked@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/small-checkbox-checked-symbolic.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/small-checkbox-checked-symbolic@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/small-checkbox-mixed-symbolic.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/small-checkbox-mixed-symbolic@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/small-radio-checked-symbolic.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/small-radio-checked-symbolic@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/small-radio-mixed-symbolic.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/small-radio-mixed-symbolic@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/unmaximize-symbolic.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/assets/unmaximize-symbolic@2.svg",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/gtk-dark.css",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/gtk.css",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/bin/update-check-cache",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/systemd/user/fish-update-check.service",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/systemd/user/fish-update-check.timer",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/systemd/user/fish-update-check.path",
+      "action": "unchanged"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/config/gtk-4.0/LICENSE",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/home/.ssh/config",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/home/.gnupg/gpg-agent.conf",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-new-computer-test/home/.gitconfig",
+      "action": "install"
+    }
+  ],
+  "configBackup": "/tmp/putkin-new-computer-test/state/putkin/config-backups/20260922-145349-89a_eu1h",
+  "optionalMissing": []
+}

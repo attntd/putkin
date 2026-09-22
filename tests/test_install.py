@@ -339,8 +339,10 @@ class LauncherTest(unittest.TestCase):
 
 
 class SessionReadinessTest(unittest.TestCase):
-    def start_with_owners(self, responses):
-        layout = installer.paths(Path('/unused-private-install-test'))
+    def start_with_owners(self, responses, log='INFO: Configuration Loaded', crash=False):
+        temporary = tempfile.TemporaryDirectory(prefix='pk-startup-test-')
+        self.addCleanup(temporary.cleanup)
+        layout = installer.paths(Path(temporary.name))
         instance = {'pid': 42, 'id': 'fixture', 'config_path': str(layout['entry'])}
         responses = iter(responses)
 
@@ -351,15 +353,18 @@ class SessionReadinessTest(unittest.TestCase):
                 self.assertFalse(check)
                 return next(responses)
             if command[:2] == ['quickshell', 'log']:
-                return 'INFO: Configuration Loaded'
+                return log
+            if command[0] == 'systemctl':
+                return 'Result=signal\nExecMainStatus=11'
             if command[0] == 'quickshell' and 'session' in command:
                 return json.dumps({'idle': {'ready': True}, 'capabilities': {'lock': {'available': True}}})
             if command[0] == 'quickshell' and 'caffeinate' in command:
                 return json.dumps({'busy': False, 'mode': 'off', 'error': ''})
             raise AssertionError(command)
 
+        states = iter([[instance], []]) if crash else None
         with patch.object(installer, 'run', side_effect=run) as runner, \
-                patch.object(installer, 'instances', return_value=[instance]), \
+                patch.object(installer, 'instances', side_effect=(lambda: next(states, [])) if crash else lambda: [instance]), \
                 patch.object(installer.time, 'sleep'):
             result = installer.Session(layout).start()
             calls = [call for call in runner.call_args_list if call.args[0][0] == 'busctl']
@@ -373,6 +378,16 @@ class SessionReadinessTest(unittest.TestCase):
     def test_existing_foreign_notification_owner_still_aborts(self):
         with self.assertRaisesRegex(RuntimeError, 'Konflikt instancji'):
             self.start_with_owners([json.dumps({'data': [99]})])
+
+    def test_nonfatal_warning_is_reported_without_tearing_down_a_ready_shell(self):
+        result, _ = self.start_with_owners([json.dumps({'data': [42]})], log='WARN: optional tray icon missing')
+        self.assertEqual(result['warnings'], ['WARN: optional tray icon missing'])
+
+    def test_real_runtime_error_and_process_exit_still_fail(self):
+        with self.assertRaisesRegex(RuntimeError, 'TypeError'):
+            self.start_with_owners([json.dumps({'data': [42]})], log='TypeError: invalid property')
+        with self.assertRaisesRegex(RuntimeError, 'zakończył się'):
+            self.start_with_owners([], crash=True)
 
 
 if __name__ == "__main__":

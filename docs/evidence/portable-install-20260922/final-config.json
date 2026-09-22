@@ -1,0 +1,11 @@
+{
+  "result": "PASS",
+  "files": 173,
+  "updated": [
+    {
+      "path": "/tmp/putkin-auto-build-final/bin/update-check-cache",
+      "action": "update"
+    }
+  ],
+  "allMatchSource": true
+}

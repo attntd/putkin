@@ -1,0 +1,701 @@
+{
+  "format": 1,
+  "files": [
+    {
+      "source": "apps/kitty/kitty.conf",
+      "target": "config:kitty/kitty.conf"
+    },
+    {
+      "source": "apps/kitty/current-theme.conf",
+      "target": "config:kitty/current-theme.conf"
+    },
+    {
+      "source": "apps/kitty/ssh.conf",
+      "target": "config:kitty/ssh.conf"
+    },
+    {
+      "source": "apps/fish/config.fish",
+      "target": "config:fish/config.fish"
+    },
+    {
+      "source": "apps/fish/conf.d/aliases.fish",
+      "target": "config:fish/conf.d/aliases.fish"
+    },
+    {
+      "source": "apps/fish/conf.d/editor.fish",
+      "target": "config:fish/conf.d/editor.fish"
+    },
+    {
+      "source": "apps/fish/conf.d/ssh-agent.fish",
+      "target": "config:fish/conf.d/ssh-agent.fish"
+    },
+    {
+      "source": "apps/fish/conf.d/hyprland_autostart.fish",
+      "target": "config:fish/conf.d/hyprland_autostart.fish"
+    },
+    {
+      "source": "apps/fish/functions/fish_greeting.fish",
+      "target": "config:fish/functions/fish_greeting.fish"
+    },
+    {
+      "source": "apps/nvim/init.lua",
+      "target": "config:nvim/init.lua"
+    },
+    {
+      "source": "apps/nvim/lazy-lock.json",
+      "target": "config:nvim/lazy-lock.json"
+    },
+    {
+      "source": "apps/nvim/lua/vim-options.lua",
+      "target": "config:nvim/lua/vim-options.lua"
+    },
+    {
+      "source": "apps/nvim/lua/plugins.lua",
+      "target": "config:nvim/lua/plugins.lua"
+    },
+    {
+      "source": "apps/nvim/lua/plugins/catppuccin.lua",
+      "target": "config:nvim/lua/plugins/catppuccin.lua"
+    },
+    {
+      "source": "apps/nvim/lua/plugins/codecompanion.lua",
+      "target": "config:nvim/lua/plugins/codecompanion.lua"
+    },
+    {
+      "source": "apps/nvim/lua/plugins/completions.lua",
+      "target": "config:nvim/lua/plugins/completions.lua"
+    },
+    {
+      "source": "apps/nvim/lua/plugins/lsp-config.lua",
+      "target": "config:nvim/lua/plugins/lsp-config.lua"
+    },
+    {
+      "source": "apps/nvim/lua/plugins/none-ls.lua",
+      "target": "config:nvim/lua/plugins/none-ls.lua"
+    },
+    {
+      "source": "apps/nvim/lua/plugins/nvim-tmux-navigation.lua",
+      "target": "config:nvim/lua/plugins/nvim-tmux-navigation.lua"
+    },
+    {
+      "source": "apps/nvim/lua/plugins/oil.lua",
+      "target": "config:nvim/lua/plugins/oil.lua"
+    },
+    {
+      "source": "apps/nvim/lua/plugins/rails.lua",
+      "target": "config:nvim/lua/plugins/rails.lua"
+    },
+    {
+      "source": "apps/nvim/lua/plugins/render-markdown.lua",
+      "target": "config:nvim/lua/plugins/render-markdown.lua"
+    },
+    {
+      "source": "apps/nvim/lua/plugins/snacks.lua",
+      "target": "config:nvim/lua/plugins/snacks.lua"
+    },
+    {
+      "source": "apps/nvim/lua/plugins/swagger-preview.lua",
+      "target": "config:nvim/lua/plugins/swagger-preview.lua"
+    },
+    {
+      "source": "apps/nvim/lua/plugins/treesitter.lua",
+      "target": "config:nvim/lua/plugins/treesitter.lua"
+    },
+    {
+      "source": "apps/nvim/lua/plugins/vim-test.lua",
+      "target": "config:nvim/lua/plugins/vim-test.lua"
+    },
+    {
+      "source": "apps/yazi/yazi.toml",
+      "target": "config:yazi/yazi.toml"
+    },
+    {
+      "source": "apps/yazi/keymap.toml",
+      "target": "config:yazi/keymap.toml"
+    },
+    {
+      "source": "apps/yazi/theme.toml",
+      "target": "config:yazi/theme.toml"
+    },
+    {
+      "source": "apps/yazi/package.toml",
+      "target": "config:yazi/package.toml"
+    },
+    {
+      "source": "apps/yazi/flavors/catppuccin-mocha.yazi/LICENSE",
+      "target": "config:yazi/flavors/catppuccin-mocha.yazi/LICENSE"
+    },
+    {
+      "source": "apps/yazi/flavors/catppuccin-mocha.yazi/LICENSE-tmtheme",
+      "target": "config:yazi/flavors/catppuccin-mocha.yazi/LICENSE-tmtheme"
+    },
+    {
+      "source": "apps/yazi/flavors/catppuccin-mocha.yazi/flavor.toml",
+      "target": "config:yazi/flavors/catppuccin-mocha.yazi/flavor.toml"
+    },
+    {
+      "source": "apps/yazi/flavors/catppuccin-mocha.yazi/tmtheme.xml",
+      "target": "config:yazi/flavors/catppuccin-mocha.yazi/tmtheme.xml"
+    },
+    {
+      "source": "apps/yazi/plugins/mediainfo.yazi/LICENSE",
+      "target": "config:yazi/plugins/mediainfo.yazi/LICENSE"
+    },
+    {
+      "source": "apps/yazi/plugins/mediainfo.yazi/adobe.lua",
+      "target": "config:yazi/plugins/mediainfo.yazi/adobe.lua"
+    },
+    {
+      "source": "apps/yazi/plugins/mediainfo.yazi/audio.lua",
+      "target": "config:yazi/plugins/mediainfo.yazi/audio.lua"
+    },
+    {
+      "source": "apps/yazi/plugins/mediainfo.yazi/const.lua",
+      "target": "config:yazi/plugins/mediainfo.yazi/const.lua"
+    },
+    {
+      "source": "apps/yazi/plugins/mediainfo.yazi/image.lua",
+      "target": "config:yazi/plugins/mediainfo.yazi/image.lua"
+    },
+    {
+      "source": "apps/yazi/plugins/mediainfo.yazi/main.lua",
+      "target": "config:yazi/plugins/mediainfo.yazi/main.lua"
+    },
+    {
+      "source": "apps/yazi/plugins/mediainfo.yazi/none-media-preview.lua",
+      "target": "config:yazi/plugins/mediainfo.yazi/none-media-preview.lua"
+    },
+    {
+      "source": "apps/yazi/plugins/mediainfo.yazi/utils.lua",
+      "target": "config:yazi/plugins/mediainfo.yazi/utils.lua"
+    },
+    {
+      "source": "apps/yazi/plugins/mediainfo.yazi/video.lua",
+      "target": "config:yazi/plugins/mediainfo.yazi/video.lua"
+    },
+    {
+      "source": "apps/yazi/plugins/piper.yazi/LICENSE",
+      "target": "config:yazi/plugins/piper.yazi/LICENSE"
+    },
+    {
+      "source": "apps/yazi/plugins/piper.yazi/main.lua",
+      "target": "config:yazi/plugins/piper.yazi/main.lua"
+    },
+    {
+      "source": "apps/yazi/plugins/toggle-pane.yazi/LICENSE",
+      "target": "config:yazi/plugins/toggle-pane.yazi/LICENSE"
+    },
+    {
+      "source": "apps/yazi/plugins/toggle-pane.yazi/main.lua",
+      "target": "config:yazi/plugins/toggle-pane.yazi/main.lua"
+    },
+    {
+      "source": "apps/yazi/plugins/zoom.yazi/LICENSE",
+      "target": "config:yazi/plugins/zoom.yazi/LICENSE"
+    },
+    {
+      "source": "apps/yazi/plugins/zoom.yazi/main.lua",
+      "target": "config:yazi/plugins/zoom.yazi/main.lua"
+    },
+    {
+      "source": "apps/Kvantum/catppuccin-mocha-mauve/catppuccin-mocha-mauve.kvconfig",
+      "target": "config:Kvantum/catppuccin-mocha-mauve/catppuccin-mocha-mauve.kvconfig"
+    },
+    {
+      "source": "apps/Kvantum/catppuccin-mocha-mauve/catppuccin-mocha-mauve.svg",
+      "target": "config:Kvantum/catppuccin-mocha-mauve/catppuccin-mocha-mauve.svg"
+    },
+    {
+      "source": "apps/Kvantum/kvantum.kvconfig",
+      "target": "config:Kvantum/kvantum.kvconfig"
+    },
+    {
+      "source": "apps/gtk-3.0/settings.ini",
+      "target": "config:gtk-3.0/settings.ini"
+    },
+    {
+      "source": "apps/gtk-4.0/settings.ini",
+      "target": "config:gtk-4.0/settings.ini"
+    },
+    {
+      "source": "apps/qt5ct/qt5ct.conf",
+      "target": "config:qt5ct/qt5ct.conf"
+    },
+    {
+      "source": "apps/qt6ct/qt6ct.conf",
+      "target": "config:qt6ct/qt6ct.conf"
+    },
+    {
+      "source": "apps/glow/glow.yml",
+      "target": "config:glow/glow.yml"
+    },
+    {
+      "source": "apps/btop/btop.conf",
+      "target": "config:btop/btop.conf"
+    },
+    {
+      "source": "apps/voxtype/config.toml",
+      "target": "config:voxtype/config.toml"
+    },
+    {
+      "source": "apps/starship.toml",
+      "target": "config:starship.toml"
+    },
+    {
+      "source": "apps/mimeapps.list",
+      "target": "config:mimeapps.list"
+    },
+    {
+      "source": "apps/xdg-terminals.list",
+      "target": "config:xdg-terminals.list"
+    },
+    {
+      "source": "session/uwsm/env",
+      "target": "config:uwsm/env"
+    },
+    {
+      "source": "apps/tmux/tmux.conf",
+      "target": "home:.tmux.conf"
+    },
+    {
+      "source": "putkin/launch.json",
+      "target": "config:putkin/launch.json",
+      "policy": "seed"
+    },
+    {
+      "source": "putkin/settings.json",
+      "target": "config:putkin/settings.json",
+      "policy": "seed"
+    },
+    {
+      "source": "putkin/signal.json",
+      "target": "config:putkin/signal.json",
+      "policy": "seed"
+    },
+    {
+      "source": "hypr/backgrounds/Cloudsnight.jpg",
+      "target": "config:hypr/backgrounds/Cloudsnight.jpg"
+    },
+    {
+      "source": "hypr/backgrounds/Rainnight.jpg",
+      "target": "config:hypr/backgrounds/Rainnight.jpg"
+    },
+    {
+      "source": "hypr/backgrounds/forrest.png",
+      "target": "config:hypr/backgrounds/forrest.png"
+    },
+    {
+      "source": "hypr/backgrounds/lonely-fish.png",
+      "target": "config:hypr/backgrounds/lonely-fish.png"
+    },
+    {
+      "source": "hypr/backgrounds/shaded_landscape.png",
+      "target": "config:hypr/backgrounds/shaded_landscape.png"
+    },
+    {
+      "source": "apps/zen/chrome/userChrome.css",
+      "target": "zen:chrome/userChrome.css"
+    },
+    {
+      "source": "apps/zen/chrome/userContent.css",
+      "target": "zen:chrome/userContent.css"
+    },
+    {
+      "source": "apps/zen/chrome/zen-logo-mocha.svg",
+      "target": "zen:chrome/zen-logo-mocha.svg"
+    },
+    {
+      "source": "apps/zen/chrome/zen-themes.css",
+      "target": "zen:chrome/zen-themes.css"
+    },
+    {
+      "source": "apps/zen/zen-keyboard-shortcuts.json",
+      "target": "zen:zen-keyboard-shortcuts.json"
+    },
+    {
+      "source": "apps/zen/user.js",
+      "target": "zen:user.js"
+    },
+    {
+      "source": "hypr/hyprland.lua",
+      "target": "config:hypr/hyprland.lua"
+    },
+    {
+      "source": "hypr/local.lua",
+      "target": "config:hypr/local.lua",
+      "policy": "seed"
+    },
+    {
+      "source": "hypr/environment.lua",
+      "target": "config:hypr/environment.lua"
+    },
+    {
+      "source": "hypr/permissions.lua",
+      "target": "config:hypr/permissions.lua"
+    },
+    {
+      "source": "hypr/input.lua",
+      "target": "config:hypr/input.lua"
+    },
+    {
+      "source": "hypr/appearance.lua",
+      "target": "config:hypr/appearance.lua"
+    },
+    {
+      "source": "hypr/animations.lua",
+      "target": "config:hypr/animations.lua"
+    },
+    {
+      "source": "hypr/layout.lua",
+      "target": "config:hypr/layout.lua"
+    },
+    {
+      "source": "hypr/rules.lua",
+      "target": "config:hypr/rules.lua"
+    },
+    {
+      "source": "hypr/lib/paths.lua",
+      "target": "config:hypr/lib/paths.lua"
+    },
+    {
+      "source": "hypr/lib/bindings.lua",
+      "target": "config:hypr/lib/bindings.lua"
+    },
+    {
+      "source": "hypr/keybinds/init.lua",
+      "target": "config:hypr/keybinds/init.lua"
+    },
+    {
+      "source": "hypr/keybinds/apps.lua",
+      "target": "config:hypr/keybinds/apps.lua"
+    },
+    {
+      "source": "hypr/keybinds/windows.lua",
+      "target": "config:hypr/keybinds/windows.lua"
+    },
+    {
+      "source": "hypr/keybinds/workspaces.lua",
+      "target": "config:hypr/keybinds/workspaces.lua"
+    },
+    {
+      "source": "hypr/keybinds/hardware.lua",
+      "target": "config:hypr/keybinds/hardware.lua"
+    },
+    {
+      "source": "hypr/keybinds/shell.lua",
+      "target": "config:hypr/keybinds/shell.lua"
+    },
+    {
+      "source": "hypr/autostart.lua",
+      "target": "config:hypr/autostart.lua"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/checkbox-checked-symbolic.svg",
+      "target": "config:gtk-4.0/assets/checkbox-checked-symbolic.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/checkbox-checked-symbolic@2.svg",
+      "target": "config:gtk-4.0/assets/checkbox-checked-symbolic@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/checkbox-mixed-symbolic.svg",
+      "target": "config:gtk-4.0/assets/checkbox-mixed-symbolic.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/checkbox-mixed-symbolic@2.svg",
+      "target": "config:gtk-4.0/assets/checkbox-mixed-symbolic@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/close-symbolic.svg",
+      "target": "config:gtk-4.0/assets/close-symbolic.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/close-symbolic@2.svg",
+      "target": "config:gtk-4.0/assets/close-symbolic@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/cursor-handle-symbolic.svg",
+      "target": "config:gtk-4.0/assets/cursor-handle-symbolic.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/maximize-symbolic.svg",
+      "target": "config:gtk-4.0/assets/maximize-symbolic.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/maximize-symbolic@2.svg",
+      "target": "config:gtk-4.0/assets/maximize-symbolic@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/menu-radio-symbolic.svg",
+      "target": "config:gtk-4.0/assets/menu-radio-symbolic.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/menu-radio-symbolic@2.svg",
+      "target": "config:gtk-4.0/assets/menu-radio-symbolic@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/minimize-symbolic.svg",
+      "target": "config:gtk-4.0/assets/minimize-symbolic.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/minimize-symbolic@2.svg",
+      "target": "config:gtk-4.0/assets/minimize-symbolic@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/radio-checked-symbolic.svg",
+      "target": "config:gtk-4.0/assets/radio-checked-symbolic.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/radio-checked-symbolic@2.svg",
+      "target": "config:gtk-4.0/assets/radio-checked-symbolic@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/radio-mixed-symbolic.svg",
+      "target": "config:gtk-4.0/assets/radio-mixed-symbolic.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/radio-mixed-symbolic@2.svg",
+      "target": "config:gtk-4.0/assets/radio-mixed-symbolic@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-horz-marks-after-slider-dark.svg",
+      "target": "config:gtk-4.0/assets/scale-horz-marks-after-slider-dark.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-horz-marks-after-slider-dark@2.svg",
+      "target": "config:gtk-4.0/assets/scale-horz-marks-after-slider-dark@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-horz-marks-after-slider-disabled-dark.svg",
+      "target": "config:gtk-4.0/assets/scale-horz-marks-after-slider-disabled-dark.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-horz-marks-after-slider-disabled-dark@2.svg",
+      "target": "config:gtk-4.0/assets/scale-horz-marks-after-slider-disabled-dark@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-horz-marks-after-slider-disabled.svg",
+      "target": "config:gtk-4.0/assets/scale-horz-marks-after-slider-disabled.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-horz-marks-after-slider-disabled@2.svg",
+      "target": "config:gtk-4.0/assets/scale-horz-marks-after-slider-disabled@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-horz-marks-after-slider.svg",
+      "target": "config:gtk-4.0/assets/scale-horz-marks-after-slider.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-horz-marks-after-slider@2.svg",
+      "target": "config:gtk-4.0/assets/scale-horz-marks-after-slider@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-horz-marks-before-slider-dark.svg",
+      "target": "config:gtk-4.0/assets/scale-horz-marks-before-slider-dark.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-horz-marks-before-slider-dark@2.svg",
+      "target": "config:gtk-4.0/assets/scale-horz-marks-before-slider-dark@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-horz-marks-before-slider-disabled-dark.svg",
+      "target": "config:gtk-4.0/assets/scale-horz-marks-before-slider-disabled-dark.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-horz-marks-before-slider-disabled-dark@2.svg",
+      "target": "config:gtk-4.0/assets/scale-horz-marks-before-slider-disabled-dark@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-horz-marks-before-slider-disabled.svg",
+      "target": "config:gtk-4.0/assets/scale-horz-marks-before-slider-disabled.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-horz-marks-before-slider-disabled@2.svg",
+      "target": "config:gtk-4.0/assets/scale-horz-marks-before-slider-disabled@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-horz-marks-before-slider.svg",
+      "target": "config:gtk-4.0/assets/scale-horz-marks-before-slider.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-horz-marks-before-slider@2.svg",
+      "target": "config:gtk-4.0/assets/scale-horz-marks-before-slider@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-vert-marks-after-slider-dark.svg",
+      "target": "config:gtk-4.0/assets/scale-vert-marks-after-slider-dark.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-vert-marks-after-slider-dark@2.svg",
+      "target": "config:gtk-4.0/assets/scale-vert-marks-after-slider-dark@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-vert-marks-after-slider-disabled-dark.svg",
+      "target": "config:gtk-4.0/assets/scale-vert-marks-after-slider-disabled-dark.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-vert-marks-after-slider-disabled-dark@2.svg",
+      "target": "config:gtk-4.0/assets/scale-vert-marks-after-slider-disabled-dark@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-vert-marks-after-slider-disabled.svg",
+      "target": "config:gtk-4.0/assets/scale-vert-marks-after-slider-disabled.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-vert-marks-after-slider-disabled@2.svg",
+      "target": "config:gtk-4.0/assets/scale-vert-marks-after-slider-disabled@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-vert-marks-after-slider.svg",
+      "target": "config:gtk-4.0/assets/scale-vert-marks-after-slider.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-vert-marks-after-slider@2.svg",
+      "target": "config:gtk-4.0/assets/scale-vert-marks-after-slider@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-vert-marks-before-slider-dark.svg",
+      "target": "config:gtk-4.0/assets/scale-vert-marks-before-slider-dark.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-vert-marks-before-slider-dark@2.svg",
+      "target": "config:gtk-4.0/assets/scale-vert-marks-before-slider-dark@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-vert-marks-before-slider-disabled-dark.svg",
+      "target": "config:gtk-4.0/assets/scale-vert-marks-before-slider-disabled-dark.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-vert-marks-before-slider-disabled-dark@2.svg",
+      "target": "config:gtk-4.0/assets/scale-vert-marks-before-slider-disabled-dark@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-vert-marks-before-slider-disabled.svg",
+      "target": "config:gtk-4.0/assets/scale-vert-marks-before-slider-disabled.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-vert-marks-before-slider-disabled@2.svg",
+      "target": "config:gtk-4.0/assets/scale-vert-marks-before-slider-disabled@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-vert-marks-before-slider.svg",
+      "target": "config:gtk-4.0/assets/scale-vert-marks-before-slider.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/scale-vert-marks-before-slider@2.svg",
+      "target": "config:gtk-4.0/assets/scale-vert-marks-before-slider@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/selectionmode-checkbox-checked-dark.svg",
+      "target": "config:gtk-4.0/assets/selectionmode-checkbox-checked-dark.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/selectionmode-checkbox-checked-dark@2.svg",
+      "target": "config:gtk-4.0/assets/selectionmode-checkbox-checked-dark@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/selectionmode-checkbox-checked.svg",
+      "target": "config:gtk-4.0/assets/selectionmode-checkbox-checked.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/selectionmode-checkbox-checked@2.svg",
+      "target": "config:gtk-4.0/assets/selectionmode-checkbox-checked@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/selectionmode-checkbox-unchecked-dark.svg",
+      "target": "config:gtk-4.0/assets/selectionmode-checkbox-unchecked-dark.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/selectionmode-checkbox-unchecked-dark@2.svg",
+      "target": "config:gtk-4.0/assets/selectionmode-checkbox-unchecked-dark@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/selectionmode-checkbox-unchecked.svg",
+      "target": "config:gtk-4.0/assets/selectionmode-checkbox-unchecked.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/selectionmode-checkbox-unchecked@2.svg",
+      "target": "config:gtk-4.0/assets/selectionmode-checkbox-unchecked@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/small-checkbox-checked-symbolic.svg",
+      "target": "config:gtk-4.0/assets/small-checkbox-checked-symbolic.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/small-checkbox-checked-symbolic@2.svg",
+      "target": "config:gtk-4.0/assets/small-checkbox-checked-symbolic@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/small-checkbox-mixed-symbolic.svg",
+      "target": "config:gtk-4.0/assets/small-checkbox-mixed-symbolic.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/small-checkbox-mixed-symbolic@2.svg",
+      "target": "config:gtk-4.0/assets/small-checkbox-mixed-symbolic@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/small-radio-checked-symbolic.svg",
+      "target": "config:gtk-4.0/assets/small-radio-checked-symbolic.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/small-radio-checked-symbolic@2.svg",
+      "target": "config:gtk-4.0/assets/small-radio-checked-symbolic@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/small-radio-mixed-symbolic.svg",
+      "target": "config:gtk-4.0/assets/small-radio-mixed-symbolic.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/small-radio-mixed-symbolic@2.svg",
+      "target": "config:gtk-4.0/assets/small-radio-mixed-symbolic@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/unmaximize-symbolic.svg",
+      "target": "config:gtk-4.0/assets/unmaximize-symbolic.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/assets/unmaximize-symbolic@2.svg",
+      "target": "config:gtk-4.0/assets/unmaximize-symbolic@2.svg"
+    },
+    {
+      "source": "apps/gtk-4.0/gtk-dark.css",
+      "target": "config:gtk-4.0/gtk-dark.css"
+    },
+    {
+      "source": "apps/gtk-4.0/gtk.css",
+      "target": "config:gtk-4.0/gtk.css"
+    },
+    {
+      "source": "session/bin/update-check-cache",
+      "target": "bin:update-check-cache"
+    },
+    {
+      "source": "session/systemd/fish-update-check.service",
+      "target": "config:systemd/user/fish-update-check.service"
+    },
+    {
+      "source": "session/systemd/fish-update-check.timer",
+      "target": "config:systemd/user/fish-update-check.timer"
+    },
+    {
+      "source": "session/systemd/fish-update-check.path",
+      "target": "config:systemd/user/fish-update-check.path"
+    },
+    {
+      "source": "apps/gtk-4.0/LICENSE",
+      "target": "config:gtk-4.0/LICENSE"
+    },
+    {
+      "source": "apps/ssh/config",
+      "target": "home:.ssh/config"
+    },
+    {
+      "source": "apps/gnupg/gpg-agent.conf",
+      "target": "home:.gnupg/gpg-agent.conf"
+    },
+    {
+      "source": "apps/git/gitconfig",
+      "target": "home:.gitconfig"
+    }
+  ]
+}

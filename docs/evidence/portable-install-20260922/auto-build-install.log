@@ -1,0 +1,727 @@
+Signal: nakładanie poprawek i kompilacja
+patching file /tmp/pk-media-build-q104qr9j/IncomingMessageHandler.java
+patching file /tmp/pk-media-build-q104qr9j/AttachmentHelper.java
+patching file /tmp/pk-media-build-q104qr9j/AttachmentStore.java
+patching file /tmp/pk-media-build-q104qr9j/JsonSyncDataMessage.java
+patching file /tmp/pk-media-build-q104qr9j/SendHelper.java
+patching file /tmp/pk-media-build-q104qr9j/MessageSendLogStore.java
+patching file /tmp/pk-media-build-q104qr9j/SendMessageResultUtils.java
+PASS: size boundaries and real cache quota
+{"policy": "putkin-retention-2", "librarySha256": "5551eae0dc4efddf89039b125c20ac8520793141e31c9af4c6dc1d43c9e1db9d", "applicationSha256": "f6c04e0856530875bbb2f1b4f4d2b621408c057b089e2b87567c69d65e2fa502"}
+{
+  "bundle": "/home/attntd/projects/putkin/artifacts/signal-auto-build-cache/bcfcebef74761e3c69690d0be6836303c7d7edbd1675395361da765f266f116f/.build-1tnfalep/runtime",
+  "platform": "linux-x86_64",
+  "cliVersion": "0.14.8",
+  "javaVersion": "25.0.4.1+1",
+  "policy": "putkin-retention-2",
+  "treeSha256": "bcfcebef74761e3c69690d0be6836303c7d7edbd1675395361da765f266f116f"
+}
+PASS: 167 plików QML, 0 z błędami.
+{
+  "current": "/tmp/putkin-auto-build-final/data/putkin/releases/20260922-145554-6b3c39ce5be0",
+  "active": null,
+  "removed": [],
+  "retained": [
+    "20260922-145554-6b3c39ce5be0"
+  ],
+  "configuration": [
+    {
+      "path": "/tmp/putkin-auto-build-final/config/kitty/kitty.conf",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/kitty/current-theme.conf",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/kitty/ssh.conf",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/fish/config.fish",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/fish/conf.d/aliases.fish",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/fish/conf.d/editor.fish",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/fish/conf.d/ssh-agent.fish",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/fish/conf.d/hyprland_autostart.fish",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/fish/functions/fish_greeting.fish",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/nvim/init.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/nvim/lazy-lock.json",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/nvim/lua/vim-options.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/nvim/lua/plugins.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/nvim/lua/plugins/catppuccin.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/nvim/lua/plugins/codecompanion.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/nvim/lua/plugins/completions.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/nvim/lua/plugins/lsp-config.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/nvim/lua/plugins/none-ls.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/nvim/lua/plugins/nvim-tmux-navigation.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/nvim/lua/plugins/oil.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/nvim/lua/plugins/rails.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/nvim/lua/plugins/render-markdown.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/nvim/lua/plugins/snacks.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/nvim/lua/plugins/swagger-preview.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/nvim/lua/plugins/treesitter.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/nvim/lua/plugins/vim-test.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/yazi/yazi.toml",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/yazi/keymap.toml",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/yazi/theme.toml",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/yazi/package.toml",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/yazi/flavors/catppuccin-mocha.yazi/LICENSE",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/yazi/flavors/catppuccin-mocha.yazi/LICENSE-tmtheme",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/yazi/flavors/catppuccin-mocha.yazi/flavor.toml",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/yazi/flavors/catppuccin-mocha.yazi/tmtheme.xml",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/yazi/plugins/mediainfo.yazi/LICENSE",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/yazi/plugins/mediainfo.yazi/adobe.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/yazi/plugins/mediainfo.yazi/audio.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/yazi/plugins/mediainfo.yazi/const.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/yazi/plugins/mediainfo.yazi/image.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/yazi/plugins/mediainfo.yazi/main.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/yazi/plugins/mediainfo.yazi/none-media-preview.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/yazi/plugins/mediainfo.yazi/utils.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/yazi/plugins/mediainfo.yazi/video.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/yazi/plugins/piper.yazi/LICENSE",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/yazi/plugins/piper.yazi/main.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/yazi/plugins/toggle-pane.yazi/LICENSE",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/yazi/plugins/toggle-pane.yazi/main.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/yazi/plugins/zoom.yazi/LICENSE",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/yazi/plugins/zoom.yazi/main.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/Kvantum/catppuccin-mocha-mauve/catppuccin-mocha-mauve.kvconfig",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/Kvantum/catppuccin-mocha-mauve/catppuccin-mocha-mauve.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/Kvantum/kvantum.kvconfig",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-3.0/settings.ini",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/settings.ini",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/qt5ct/qt5ct.conf",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/qt6ct/qt6ct.conf",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/glow/glow.yml",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/btop/btop.conf",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/voxtype/config.toml",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/starship.toml",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/mimeapps.list",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/xdg-terminals.list",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/uwsm/env",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/home/.tmux.conf",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/putkin/launch.json",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/putkin/settings.json",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/putkin/signal.json",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/hypr/backgrounds/Cloudsnight.jpg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/hypr/backgrounds/Rainnight.jpg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/hypr/backgrounds/forrest.png",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/hypr/backgrounds/lonely-fish.png",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/hypr/backgrounds/shaded_landscape.png",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/zen/profiles.ini",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/zen/putkin.default/chrome/userChrome.css",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/zen/putkin.default/chrome/userContent.css",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/zen/putkin.default/chrome/zen-logo-mocha.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/zen/putkin.default/chrome/zen-themes.css",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/zen/putkin.default/zen-keyboard-shortcuts.json",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/zen/putkin.default/user.js",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/hypr/hyprland.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/hypr/local.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/hypr/environment.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/hypr/permissions.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/hypr/input.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/hypr/appearance.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/hypr/animations.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/hypr/layout.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/hypr/rules.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/hypr/lib/paths.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/hypr/lib/bindings.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/hypr/keybinds/init.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/hypr/keybinds/apps.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/hypr/keybinds/windows.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/hypr/keybinds/workspaces.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/hypr/keybinds/hardware.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/hypr/keybinds/shell.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/hypr/autostart.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/checkbox-checked-symbolic.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/checkbox-checked-symbolic@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/checkbox-mixed-symbolic.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/checkbox-mixed-symbolic@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/close-symbolic.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/close-symbolic@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/cursor-handle-symbolic.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/maximize-symbolic.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/maximize-symbolic@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/menu-radio-symbolic.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/menu-radio-symbolic@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/minimize-symbolic.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/minimize-symbolic@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/radio-checked-symbolic.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/radio-checked-symbolic@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/radio-mixed-symbolic.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/radio-mixed-symbolic@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-horz-marks-after-slider-dark.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-horz-marks-after-slider-dark@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-horz-marks-after-slider-disabled-dark.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-horz-marks-after-slider-disabled-dark@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-horz-marks-after-slider-disabled.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-horz-marks-after-slider-disabled@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-horz-marks-after-slider.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-horz-marks-after-slider@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-horz-marks-before-slider-dark.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-horz-marks-before-slider-dark@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-horz-marks-before-slider-disabled-dark.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-horz-marks-before-slider-disabled-dark@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-horz-marks-before-slider-disabled.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-horz-marks-before-slider-disabled@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-horz-marks-before-slider.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-horz-marks-before-slider@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-vert-marks-after-slider-dark.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-vert-marks-after-slider-dark@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-vert-marks-after-slider-disabled-dark.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-vert-marks-after-slider-disabled-dark@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-vert-marks-after-slider-disabled.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-vert-marks-after-slider-disabled@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-vert-marks-after-slider.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-vert-marks-after-slider@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-vert-marks-before-slider-dark.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-vert-marks-before-slider-dark@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-vert-marks-before-slider-disabled-dark.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-vert-marks-before-slider-disabled-dark@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-vert-marks-before-slider-disabled.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-vert-marks-before-slider-disabled@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-vert-marks-before-slider.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/scale-vert-marks-before-slider@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/selectionmode-checkbox-checked-dark.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/selectionmode-checkbox-checked-dark@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/selectionmode-checkbox-checked.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/selectionmode-checkbox-checked@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/selectionmode-checkbox-unchecked-dark.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/selectionmode-checkbox-unchecked-dark@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/selectionmode-checkbox-unchecked.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/selectionmode-checkbox-unchecked@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/small-checkbox-checked-symbolic.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/small-checkbox-checked-symbolic@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/small-checkbox-mixed-symbolic.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/small-checkbox-mixed-symbolic@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/small-radio-checked-symbolic.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/small-radio-checked-symbolic@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/small-radio-mixed-symbolic.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/small-radio-mixed-symbolic@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/unmaximize-symbolic.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/assets/unmaximize-symbolic@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/gtk-dark.css",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/gtk.css",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/bin/update-check-cache",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/systemd/user/fish-update-check.service",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/systemd/user/fish-update-check.timer",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/systemd/user/fish-update-check.path",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/config/gtk-4.0/LICENSE",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/home/.ssh/config",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/home/.gnupg/gpg-agent.conf",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-auto-build-final/home/.gitconfig",
+      "action": "install"
+    }
+  ],
+  "configBackup": "/tmp/putkin-auto-build-final/state/putkin/config-backups/20260922-145643-9a_qv9fc",
+  "optionalMissing": []
+}

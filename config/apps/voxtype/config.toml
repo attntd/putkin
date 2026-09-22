@@ -1,0 +1,30 @@
+# Secret: VOXTYPE_WHISPER_API_KEY in the environment of the running daemon.
+engine = "whisper"
+state_file = "auto"
+
+[hotkey]
+# Bind `voxtype record toggle` to a shortcut in the desktop environment.
+enabled = false
+mode = "toggle"
+
+[audio]
+device = "default"
+sample_rate = 16000
+max_duration_secs = 120
+
+[whisper]
+mode = "remote"
+remote_endpoint = "http://192.168.0.50:8091"
+remote_model = "whisper-1"
+remote_timeout_secs = 180
+language = "pl"
+translate = false
+
+[output]
+mode = "paste"
+paste_keys = "ctrl+shift+v"
+fallback_to_clipboard = true
+auto_submit = false
+
+[text]
+smart_auto_submit = false

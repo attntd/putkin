@@ -45,7 +45,7 @@ def verify_runtime(bundle, source=ROOT):
     if platform.system() != "Linux" or platform.machine() != "x86_64":
         raise ValueError("Runtime Signala wymaga Linux x86_64/glibc.")
     if tree_digest(tree(bundle)) != pin["treeSha256"]:
-        raise ValueError("Nieprawidłowy runtime Signala (SHA-256 lub prawa wykonania). Przygotuj scripts/package-signal-runtime.")
+        raise ValueError("Nieprawidłowy runtime Signala (SHA-256 lub prawa wykonania). Odtwórz go przez scripts/prepare-signal --cache NOWY_KATALOG.")
     return {key: pin[key] for key in ("platform", "cliVersion", "javaVersion", "policy", "treeSha256")}
 
 

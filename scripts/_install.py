@@ -15,20 +15,28 @@ KEEP = 5
 MARKER = ".putkin-build.json"
 BUILD_NAME = re.compile(r"[0-9]{8}-(?:[a-z0-9-]+-)?[0-9a-f]{12}")
 RUNTIME_DIRS = ("assets", "components", "config", "core", "modules", "services")
+RUNTIME_CONFIG = {"desktop-appearance.lua", "menu-keybinds.lua", "shell-layers.lua",
+                  "hyprsunset.example.conf", "hyprsunset-putkin.example.conf", "settings.example.json",
+                  "pam.d/putkin-password", "pam.d/putkin-fingerprint"}
 
 
 def paths(destination=None):
     if destination:
         base = Path(destination).absolute()
         config, data, state, binary = (base / p for p in ("config", "data", "state", "bin"))
+        user_home = base / "home"
     else:
         base = Path.home()
-        config = Path(os.environ.get("XDG_CONFIG_HOME") or base / ".config")
-        data = Path(os.environ.get("XDG_DATA_HOME") or base / ".local/share")
-        state = Path(os.environ.get("XDG_STATE_HOME") or base / ".local/state")
+        def xdg(name, default):
+            path = Path(os.environ.get(name) or base / default)
+            return path if path.is_absolute() else base / default
+        config = xdg("XDG_CONFIG_HOME", ".config")
+        data = xdg("XDG_DATA_HOME", ".local/share")
+        state = xdg("XDG_STATE_HOME", ".local/state")
         binary = base / ".local/bin"
+        user_home = base
     return {"store": data / "putkin", "state": state / "putkin",
-            "entry": config / "quickshell/shell.qml", "launcher": binary / "qs"}
+            "entry": config / "quickshell/shell.qml", "launcher": binary / "qs", "home": user_home}
 
 
 def manifest(root):
@@ -51,6 +59,8 @@ def source_files(root):
         if not base.is_dir() or base.is_symlink():
             raise ValueError(f"Brak katalogu runtime: {base}")
         for path in base.rglob("*"):
+            if directory == "config" and str(path.relative_to(base)) not in RUNTIME_CONFIG:
+                continue  # Application settings are installed separately, never in immutable builds.
             if "__pycache__" in path.parts or path.suffix == ".pyc":
                 continue
             if path.is_symlink():
@@ -64,7 +74,7 @@ def source_files(root):
 
 
 def atomic_file(path, data, mode=0o600):
-    path.parent.mkdir(parents=True, exist_ok=True)
+    path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
     fd, name = tempfile.mkstemp(prefix=".putkin-", dir=path.parent)
     try:
         with os.fdopen(fd, "wb") as stream:
@@ -120,6 +130,8 @@ def validate(stage):
     subprocess.run([str(ROOT / "scripts/check"), str(stage)], check=True)
     for path in stage.rglob("*.py"):
         compile(path.read_bytes(), str(path), "exec")
+    from _preflight import compile_runtime
+    compile_runtime(stage)
 
 
 def prepare(store, source=ROOT, signal_runtime=None):
@@ -302,6 +314,15 @@ class Session:
         until(lambda: not instances())
 
     def start(self, entry=None):
+        try:
+            return self._start(entry)
+        except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as error:
+            status = run(["systemctl", "--user", "show", "putkin.service", "-p", "Result,ExecMainCode,ExecMainStatus,NRestarts"], check=False)
+            report = self.layout["state"] / "activation-error.txt"
+            atomic_file(report, (str(error) + "\n" + status + "\n").encode())
+            raise RuntimeError(f"Start Putkina nie powiódł się: {error}\nDiagnostyka: {report}") from error
+
+    def _start(self, entry=None):
         if entry is None:
             entry = self.layout["entry"]
             run([self.layout["launcher"]])
@@ -316,7 +337,12 @@ class Session:
                 command.append("PUTKIN_WALLPAPER=" + wallpaper)
             run(command + ["quickshell", "--no-duplicate", "--path", entry])
         instance = until(lambda: next((i for i in instances() if i["config_path"] == str(entry)), None))
+        def alive():
+            if not any(i["id"] == instance["id"] and i["pid"] == instance["pid"] for i in instances()):
+                raise RuntimeError("Proces Putkina zakończył się podczas sprawdzania gotowości. "
+                                   + run(["quickshell", "log", "--no-color", "--id", instance["id"]], check=False))
         def ready():
+            alive()
             result = run(["quickshell", "ipc", "--id", instance["id"], "call", "session", "status"], check=False)
             if not result.startswith("{"):
                 return False
@@ -325,6 +351,7 @@ class Session:
         until(ready)
         if (Path(entry).resolve().parent / "services/SignalIpc.qml").exists():
             def signal_ready():
+                alive()
                 output = self.ipc(entry, "signal", "status")
                 state = json.loads(output)
                 if state["state"] == "failed":
@@ -332,6 +359,7 @@ class Session:
                 return state["state"] in ("idle", "disabled", "ready")
             until(signal_ready)
         def notifications_ready():
+            alive()
             # Lock/idle readiness can precede the notification watcher and
             # server. A missing D-Bus name during that startup is not a conflict.
             result = run(["busctl", "--user", "--json=short", "call", "org.freedesktop.DBus",
@@ -350,6 +378,8 @@ class Session:
         until(lambda: (state := json.loads(self.ipc(entry, "caffeinate", "status")))["mode"] == self.mode
               and not state["busy"] and not state["error"])
         log = run(["quickshell", "log", "--no-color", "--id", instance["id"]])
-        if any(word in log for word in ("WARN", "ERROR", "TypeError", "ReferenceError", "Traceback")):
+        alive()
+        if any(word in log for word in ("ERROR", "QFATAL", "TypeError", "ReferenceError", "Traceback", "Failed to load", "Failed to reload")):
             raise RuntimeError(log)
+        instance = {**instance, "warnings": [line for line in log.splitlines() if "WARN" in line]}
         return instance

@@ -1,0 +1,9 @@
+PASS: 167 plików QML, 0 z błędami.
+{
+  "current": "/tmp/putkin-bubble-width-stage/data/putkin/releases/20260921-135130-96e7045e65b0",
+  "active": null,
+  "removed": [],
+  "retained": [
+    "20260921-135130-96e7045e65b0"
+  ]
+}

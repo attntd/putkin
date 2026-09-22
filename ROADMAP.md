@@ -1,5 +1,33 @@
 # Roadmapa Putkin
 
+## Wybrany zakres — instalacja i modułowe dotfiles, 2026-09-22
+
+Naprawa instalacji na kolejnym komputerze: automatyczne przygotowanie Signal,
+kontrola zależności i startu oraz konfiguracja Hyprlanda i aplikacji razem
+z shellem. Modułowy `config/`, przenośne ścieżki, lokalne ustawienia sprzętu,
+backup i eksport bez sekretów. Na polecenie użytkownika także `--clean-slate`:
+archiwizacja i świeże dotfiles, usunięcie dawnych fragmentów i wyłączenie
+rozpoznanych autostartów starego shella, z zachowaniem kluczy i danych kont.
+Rozszerzenie etapu 13 wybrane przez użytkownika;
+bez nowych funkcji UI. [Wyniki](docs/status.md#instalacja-przenośna-i-modułowe-dotfiles--2026-09-22).
+
+## Wybrana korekta — Super+H i otwieranie rozmowy, 2026-09-21
+
+Przywrócenie Super+H do fokusu okna po lewej i usunięcie tego skrótu
+z Wiadomości. Quick Menu zachowuje Super+Q. Otwarcie rozmowy, również
+po ponownym utworzeniu okna, pokazuje najnowsze wiadomości na dole.
+Zakres obejmuje tę korektę i jej testy, bez kolejnych etapów.
+**Wdrożone: `20260921-141345-67428b3b725f`.**
+[Testy i aktywacja](docs/status.md#przywrócenie-superh-i-otwieranie-rozmowy-na-dole--2026-09-21).
+
+## Wybrana korekta — szerokość wiadomości i skróty, 2026-09-21
+
+Dymki dopasowane do treści, maksymalnie 50% szerokości historii rozmowy.
+Super+H otwiera Wiadomości, Super+Q otwiera Quick Menu.
+Zakres ograniczony do układu wiadomości i tych dwóch przypisań.
+**Wdrożone: `20260921-135431-96e7045e65b0`.**
+[Testy i aktywacja](docs/status.md#dopasowanie-dymków-i-superh--superq--2026-09-21).
+
 ## Wybrany zakres — okna uwierzytelniania, 2026-09-20
 
 **Korekta wdrożona: `20260920-210039-bf2eb74b4b79`.**

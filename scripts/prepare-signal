@@ -1,0 +1,22 @@
+#!/usr/bin/env python3
+"""Download, patch and verify Putkin's Signal runtime; no account or activation."""
+import argparse
+import json
+from pathlib import Path
+import subprocess
+import sys
+from _common import ROOT
+from _signal_bootstrap import build
+from signal_release import verify_runtime
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--source", type=Path, default=ROOT)
+    parser.add_argument("--cache", type=Path)
+    parser.add_argument("--offline", action="store_true")
+    args = parser.parse_args()
+    try:
+        bundle = build(args.source, args.cache, args.offline)
+        print(json.dumps({"bundle": str(bundle), **verify_runtime(bundle, args.source)}, indent=2))
+    except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as error:
+        sys.exit("prepare-signal: " + str(error))

@@ -39,6 +39,8 @@ def main():
     if wallpaper is not None:
         if not isinstance(wallpaper, str):
             raise ValueError("wallpaper w launch.json musi być tekstem.")
+        if wallpaper.startswith("$XDG_CONFIG_HOME/"):
+            wallpaper = str(config / wallpaper.removeprefix("$XDG_CONFIG_HOME/"))
         command.append("PUTKIN_WALLPAPER=" + wallpaper)
     command += [quickshell, "--no-duplicate"]
     result = subprocess.run(command)

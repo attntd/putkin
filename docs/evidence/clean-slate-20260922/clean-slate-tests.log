@@ -1,0 +1,18 @@
+test_backup_failure_never_removes_old_configuration (test_clean_slate.CleanSlateTests.test_backup_failure_never_removes_old_configuration) ... ok
+test_custom_catalog_uses_zen_target_not_source_name_to_select_reset (test_clean_slate.CleanSlateTests.test_custom_catalog_uses_zen_target_not_source_name_to_select_reset) ... ok
+test_dry_run_and_conflicting_flags_leave_destination_unchanged (test_clean_slate.CleanSlateTests.test_dry_run_and_conflicting_flags_leave_destination_unchanged) ... ok
+test_failed_publication_restores_dotfiles_launcher_and_runtime (test_clean_slate.CleanSlateTests.test_failed_publication_restores_dotfiles_launcher_and_runtime) ... ok
+test_global_autostart_gets_user_hidden_override_without_global_write (test_clean_slate.CleanSlateTests.test_global_autostart_gets_user_hidden_override_without_global_write) ... ok
+test_keys_accounts_private_values_and_browser_data_stay_in_place (test_clean_slate.CleanSlateTests.test_keys_accounts_private_values_and_browser_data_stay_in_place) ... ok
+test_legacy_autostarts_units_and_overrides_are_disabled_and_restorable (test_clean_slate.CleanSlateTests.test_legacy_autostarts_units_and_overrides_are_disabled_and_restorable) ... ok
+test_logout_guard_and_legacy_service_failure_restore_only_identified_units (test_clean_slate.CleanSlateTests.test_logout_guard_and_legacy_service_failure_restore_only_identified_units) ... ok
+test_overlapping_xdg_backup_or_runtime_is_rejected_before_reset (test_clean_slate.CleanSlateTests.test_overlapping_xdg_backup_or_runtime_is_rejected_before_reset) ... ok
+test_process_death_during_removal_and_writes_recovers_complete_trees (test_clean_slate.CleanSlateTests.test_process_death_during_removal_and_writes_recovers_complete_trees) ... ok
+test_reset_manifest_cannot_target_account_directory_or_linked_parent (test_clean_slate.CleanSlateTests.test_reset_manifest_cannot_target_account_directory_or_linked_parent) ... ok
+test_reset_removes_old_fragments_and_resets_edits_and_seed (test_clean_slate.CleanSlateTests.test_reset_removes_old_fragments_and_resets_edits_and_seed) ... ok
+test_symlink_roots_and_resources_do_not_copy_or_change_external_targets (test_clean_slate.CleanSlateTests.test_symlink_roots_and_resources_do_not_copy_or_change_external_targets) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 1.118s
+
+OK

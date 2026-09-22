@@ -116,6 +116,16 @@ ramki. Jedyną ramką okna zarządza Hyprland, zgodnie z aktywnością okna.
 Nazwa rozmowy i przycisk „Szczegóły” zajmują jeden wiersz, przycisk po prawej.
 Ustawienie znikania wiadomości znajduje się w Szczegółach.
 
+Dymek dopasowuje szerokość do treści, autora i stopki, do maksymalnie 50%
+szerokości historii rozmowy. Dłuższy tekst zawija się; załączniki i rozwinięte
+akcje także mieszczą się w tym limicie. Super+H zachowuje nawigację
+do okna po lewej, a Quick Menu otwiera Super+Q. Wiadomości pozostają
+dostępne przez `:messages` i ikonę w pasku.
+
+Otwarcie rozmowy pokazuje najnowsze wiadomości na dole, także po
+ponownym utworzeniu okna lub opóźnionym wczytaniu historii. Ręczne
+przewijanie w górę zachowuje pozycję przy nadejściu nowych wiadomości.
+
 Menu ⋯ jest w prawym górnym rogu dymka, wyrównane do pierwszego wiersza
 treści. Kropki i reakcje nie mają tła ani ramki; używają kontrastowego
 koloru tekstu dymka, z obrysem tylko przy fokusie klawiatury. Reakcje są

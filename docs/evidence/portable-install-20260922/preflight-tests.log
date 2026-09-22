@@ -1,0 +1,9 @@
+test_invalid_hyprland_config_is_rejected_before_target_exists (test_install_preflight.PreflightTests.test_invalid_hyprland_config_is_rejected_before_target_exists) ... ok
+test_old_quickshell_is_rejected_with_detected_and_required_versions (test_install_preflight.PreflightTests.test_old_quickshell_is_rejected_with_detected_and_required_versions) ... ok
+test_real_missing_native_module_is_a_failure (test_install_preflight.PreflightTests.test_real_missing_native_module_is_a_failure) ... ok
+test_real_production_imports_and_modular_hyprland_pass_without_writes (test_install_preflight.PreflightTests.test_real_production_imports_and_modular_hyprland_pass_without_writes) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 2.215s
+
+OK

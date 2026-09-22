@@ -1,4 +1,183 @@
-# Lokalne przełączenie na Putkin
+# Instalacja Putkina
+
+## Instalacja na kolejnym komputerze — 2026-09-22
+
+Instalator obejmuje shell, przypięty Signal oraz konfigurację programów
+z [`config/catalog.json`](../config/catalog.json). Układ i zasady edycji:
+[`config/README.md`](../config/README.md). Nie wymaga chezmoi ani poprzedniego
+repozytorium. Poniższa procedura zastępuje wcześniejsze ręczne kroki Signala
+oraz pierwszego podłączania Hyprlanda.
+
+Na Arch Linux x86_64, z Pythonem, Gitem i zainstalowanym `yay` albo `paru`:
+
+```sh
+scripts/install --install-packages
+```
+
+Polecenie wykonuje pełne `pacman -Syu --needed` oraz instalację brakujących
+pakietów AUR z jawnych list w `config/packages/`. Nie uruchamiaj instalatora
+przez sudo; sudo jest używane wyłącznie dla pacmana. Bez `--install-packages`
+nie ma zmiany pakietów systemowych. Na innych dystrybucjach trzeba dostarczyć
+odpowiedniki zależności samodzielnie. Weryfikowane minimum: Quickshell 0.3.1,
+Qt 6.11.2, Hyprland 0.56.2 z konfiguracją Lua; runtime Signal wymaga Linux
+x86_64/glibc. Konfiguracja i hardware innych dystrybucji nie były testowane.
+
+Jeśli zależności są już zainstalowane:
+
+```sh
+scripts/doctor
+scripts/install --dry-run
+scripts/install
+```
+
+Pierwsza instalacja zapisuje moduły Hyprlanda, aplikacje i autostart `qs`.
+Po wejściu do sesji Hyprlanda przez UWSM shell uruchamia się automatycznie.
+Fish zachowuje uruchamianie UWSM z interaktywnego logowania; z istniejącego
+terminala można też wybrać `uwsm start -e -D Hyprland hyprland.desktop`.
+Jeżeli Putkin już działa, aktualizacja to `scripts/install --activate`.
+Instalator nie zatrzymuje innego shella ani obcego serwera powiadomień.
+Systemowe usługi sprzętu, PAM i czytnik odcisku pozostają konfiguracją systemu.
+
+### Świeży start: `--clean-slate`
+
+Po wylogowaniu z sesji graficznej uruchom z TTY:
+
+```sh
+scripts/install --clean-slate
+# Jeśli trzeba również zainstalować zależności na Arch:
+scripts/install --clean-slate --install-packages
+```
+
+Tryb zapisuje prywatny backup **całej zastępowanej konfiguracji**, usuwa ją
+z aktywnych katalogów, a następnie odtwarza pliki z paczki. Usuwa też stare
+pliki niewymienione w `catalog.json`, np. `hyprland.conf`, nieużywane moduły,
+pluginy i fragmenty autostartu. Nadpisuje lokalne edycje, `local.lua` oraz
+ustawienia Putkina oznaczone `seed`; nie przejmuje starych `monitors.lua`.
+Konfiguracje są sprawdzane przed rozpoczęciem czyszczenia. Błąd backupu
+pozostawia oryginały, a błąd instalacji odtwarza poprzednie pliki.
+
+Zakres obejmuje katalogi konfiguracji programów dostarczanych z Putkinem
+oraz rozpoznanych wcześniejszych shelli. Lista i wyjątki są opisane w
+[`config/README.md`](../config/README.md#zakres-clean-slate).
+Stare jednostki użytkownika dostają maski systemd, ich powiązania autostartu
+są usuwane, a wpisy XDG autostart dostają `Hidden=true`. Dotyczy także
+rozpoznanych własnych nazw jednostek z poleceniem starego shella w `ExecStart`.
+Istniejące rozpoznane usługi są zatrzymywane; błąd przywraca ich poprzedni stan.
+Usługi systemowe i pakiety pozostają na miejscu. Po kolejnym logowaniu przez
+Hyprland/UWSM uruchamia się Putkin.
+
+Klucze SSH/GPG, konta i historia Signala, tokeny w osobnych chronionych plikach
+oraz dane profilu Zen pozostają na miejscu. Zen dostaje świeży katalog CSS,
+`user.js` i skróty w istniejącym profilu; cookies, hasła, `prefs.js`, rozszerzenia
+i historia nie są resetowane. Sekrety wpisane bezpośrednio w usuwanych starych
+plikach konfiguracyjnych pozostają w **lokalnym backupie**, nie w nowej paczce
+ani eksporcie. Takiej kopii całej konfiguracji nie używa się do przenoszenia
+dotfiles na drugi komputer; do tego nadal służy `scripts/export-config`.
+
+Plan można obejrzeć także z aktywnego pulpitu, bez zmiany plików i usług:
+
+```sh
+scripts/install --clean-slate --dry-run
+```
+
+Wynik `cleanSlate` zawiera katalogi do wyczyszczenia, chronione wyjątki,
+maskowane jednostki i wyłączane autostarty. `configBackup` po instalacji
+wskazuje kopię obsługiwaną przez `scripts/restore-config`. Backup zachowuje
+również stare dowiązania, bez odczytywania ich zewnętrznych celów.
+Odtwarzanie tej kopii również wymaga wylogowania; przywraca konfigurację
+i możliwość startu wcześniejszych usług, ale nie uruchamia starego pulpitu.
+
+`--clean-slate` można łączyć z `--config-source`, `--offline`,
+`--install-packages` lub prywatnym `--destination`. Nie łączy się z
+`--activate`, `--shell-only`, `--restore` ani `--replace-config`.
+Bez tej flagi nadal obowiązuje dotychczasowa aktualizacja zachowująca
+lokalne edycje. Nie uruchamiaj czyszczenia z terminala w trwającej sesji
+graficznej; instalator odmawia przed zmianami.
+
+### Signal bez ręcznego patchowania
+
+Instalator sam wybiera zgodny runtime z wydania/cache albo pobiera przypięte
+CLI, źródła Java i JDK/JRE, sprawdza SHA-256, nakłada poprawki i buduje paczkę.
+Nie używa przypadkowego `signal-cli` z PATH. Nie trzeba wskazywać spatchowanej
+wersji ani instalować Javy systemowo. Pobrania są w
+`$XDG_CACHE_HOME/putkin/signal` (domyślnie `~/.cache/putkin/signal`).
+Nie ma pobierania podczas startu shella. Dry-run tylko pokazuje brakującą
+czynność i nie buduje paczki.
+
+```sh
+scripts/prepare-signal       # opcjonalnie, przygotowanie przed instalacją
+scripts/test-signal-cli      # sam wybiera runtime i wykonuje test offline
+scripts/install --offline   # gotowy runtime lub komplet pobrań w cache
+```
+
+`--signal-runtime KATALOG` jest opcją zaawansowaną dla gotowych paczek,
+a `--signal-cache KATALOG` zmienia cache instalatora. Obce lub uszkodzone
+pliki są odrzucane. Instalacja przenosi ustawienia Signala, ale nie konto,
+wiadomości ani klucze. Nowy komputer paruje się osobno z telefonu.
+
+### Dotfiles, aktualizacja i powrót
+
+Przenoszone są ustawienia Hyprlanda, Kitty/Fish/Starship, Neovima,
+Yazi z pluginami i motywem, Zen (CSS, skróty, wskazane preferencje),
+GTK/Qt/Kvantum, tmux, btop, Glow, Voxtype, Git oraz konfiguracja klientów SSH/GPG.
+Neovim pobiera przypięte pluginy przy pierwszym uruchomieniu. Konta, hasła,
+tokeny, klucze SSH/GPG, historia i sesje przeglądarki pozostają poza paczką.
+Sekrety, np. token dyktowania, trzeba ustawić ręcznie.
+
+Przy zwykłej instalacji `hypr/local.lua` jest lokalny i nie jest nadpisywany. Nazwy monitorów
+poprzedniego komputera nie trafiają do nowej instalacji. Podczas aktualizacji
+lokalne edycje konfiguracji zostają z wynikiem `preserve-local`; przejęcie ich
+z repozytorium wymaga `--replace-config`. `--shell-only` aktualizuje sam shell.
+
+Nowsze ustawienia można przenieść bez sekretów przez osobny eksport:
+
+```sh
+scripts/export-config --output /tmp/moj-putkin-config
+# Po przeniesieniu repozytorium i tej paczki na kolejny komputer:
+scripts/install --config-source /sciezka/moj-putkin-config
+```
+
+Backup zastąpionych plików jest prywatny, poza repozytorium:
+`$XDG_STATE_HOME/putkin/config-backups/ID/`. Instalator wypisuje `configBackup`.
+Błąd publikacji/aktywacji cofa pliki i runtime; przerwaną transakcję plików
+odtwarza przed następną instalacją. Retencja pięciu buildów nie usuwa backupów
+konfiguracji ani danych konta. Ręczny powrót do kodu:
+
+```sh
+scripts/install --restore --activate
+```
+
+Powrót do konfiguracji wykonaj po wyjściu z sesji graficznej:
+
+```sh
+scripts/restore-config --backup /sciezka/config-backups/ID --dry-run
+scripts/restore-config --backup /sciezka/config-backups/ID
+```
+
+Restore plików dotyczy konkretnej lokalnej kopii. Sam `--restore` runtime
+nie cofa dotfiles, historii, kluczy ani schematu bazy Signala.
+
+### Diagnostyka i test prywatnej instalacji
+
+`scripts/doctor` zbiera wersje/zależności, sprawdza rzeczywiste moduły
+w procesie Quickshella i pokazuje wybór runtime Signal. Nie uruchamia
+produkcyjnych usług ani pełnego shella. Instalacja dodatkowo wykonuje
+`scripts/check` i `Hyprland --verify-config` w prywatnej przestrzeni.
+Błędy importów blokują publikację. Zwykłe ostrzeżenia są raportowane osobno;
+rzeczywisty błąd QML, zniknięcie procesu lub brak gotowości powodują rollback.
+Nieudany start zapisuje `~/.local/state/putkin/activation-error.txt` z błędem
+oraz wynikiem procesu systemd. Istniejące logi nadal są dostępne przez
+`qs log` i `journalctl --user -u putkin.service -b`.
+
+```sh
+scripts/install --destination /tmp/putkin-test --dry-run
+scripts/install --destination /tmp/putkin-test
+scripts/export-config --destination /tmp/putkin-test --output /tmp/putkin-export
+```
+
+Prywatny cel ma `config/`, `data/`, `state/`, `bin/` i `home/`.
+Nie można łączyć go z `--activate` ani `--install-packages`.
+[Testy i rzeczywiste ograniczenia](status.md#instalacja-przenośna-i-modułowe-dotfiles--2026-09-22).
 
 ## Wspólna wersja main — 2026-09-21
 

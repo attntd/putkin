@@ -1,0 +1,12 @@
+{
+  "targetBindingsBefore": [
+    {
+      "modmask": 64,
+      "key": "h",
+      "description": "[Focus] Left",
+      "dispatcher": "__lua"
+    }
+  ],
+  "keyboardSettingsExists": false,
+  "current": "/home/attntd/.local/share/putkin/releases/20260921-110638-03f24e35e2b4"
+}

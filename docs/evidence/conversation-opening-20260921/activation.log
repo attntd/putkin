@@ -1,0 +1,21 @@
+PASS: 167 plików QML, 0 z błędami.
+{
+  "current": "/home/attntd/.local/share/putkin/releases/20260921-141345-67428b3b725f",
+  "active": {
+    "config_path": "/home/attntd/.config/quickshell/shell.qml",
+    "id": "ifednwwplt",
+    "launch_time": "2026-09-21T16:14:47",
+    "pid": 625230,
+    "shell_id": "770bba0d0f619c4ab3ab0453a539d542"
+  },
+  "removed": [
+    "20260921-090336-8f92f3b0b020"
+  ],
+  "retained": [
+    "20260921-141345-67428b3b725f",
+    "20260921-135431-96e7045e65b0",
+    "20260921-110638-03f24e35e2b4",
+    "20260921-104858-36c9df96d894",
+    "20260921-091350-39f9ddda75b4"
+  ]
+}

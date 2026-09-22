@@ -1,5 +1,15 @@
 # Putkin
 
+**Nowy komputer:** `scripts/install --install-packages` na Arch z yay/paru,
+albo `scripts/install` z gotowymi zależnościami. Signal buduje się automatycznie,
+a [konfiguracja programów](config/README.md) instaluje się razem z shellem,
+bez sekretów. [Instrukcja](docs/install.md).
+
+**Świeży start na istniejącym koncie:** `scripts/install --clean-slate`,
+z TTY po wylogowaniu. Archiwizuje zastępowaną konfigurację, usuwa stare
+fragmenty i wyłącza rozpoznane autostarty wcześniejszego shella.
+Podgląd zakresu: `scripts/install --clean-slate --dry-run`.
+
 **Uruchamianie:** `qs` — domyślna konfiguracja Putkin, przez UWSM.
 Aktualizacja: `scripts/install --activate`; powrót:
 `scripts/install --restore --activate`. Instalacja zachowuje pięć buildów

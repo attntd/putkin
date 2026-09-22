@@ -118,6 +118,8 @@ Item {
             verify(!settings.editing); verify(!keyboard.editing);
         }
         function test_duplicate_and_reserved_commands_do_not_write() {
+            compare(backend.applied.find(row => row.action === "messages").shortcut, "");
+            compare(backend.applied.find(row => row.action === "quickSettings").shortcut, "SUPER + Q");
             compare(Actions.shortcut("Super + ;"), "SUPER + semicolon");
             compare(Actions.find("commands").shortcut, "SUPER + semicolon");
             compare(Actions.shortcut("Super + :"), "SUPER + SHIFT + semicolon");

@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "catalogFiles": 173,
+  "protectedFilesUnchanged": 11,
+  "oldFragmentsRemoved": true,
+  "oldServicesMasked": true,
+  "oldAutostartsDisabled": true,
+  "runtimeVerified": true,
+  "backup": "/tmp/putkin-clean-slate-e2e-pi18gkx4/state/putkin/config-backups/20260922-153108-45x34243",
+  "privateFixtureAbsentFromBackup": true,
+  "destination": "/tmp/putkin-clean-slate-e2e-pi18gkx4",
+  "realDesktopActivated": false
+}

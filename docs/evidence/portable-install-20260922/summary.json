@@ -1,0 +1,23 @@
+{
+  "scope": "private destination; no desktop activation",
+  "result": "PASS",
+  "runtimeFiles": 706,
+  "configFiles": 173,
+  "generatedZenProfilesIni": true,
+  "signalTreeSha256": "bcfcebef74761e3c69690d0be6836303c7d7edbd1675395361da765f266f116f",
+  "tests": {
+    "qmlFiles": 272,
+    "installer": 19,
+    "dotfiles": 9,
+    "bootstrap": 5,
+    "nativePreflight": 4,
+    "signalRelease": 11
+  },
+  "notRun": [
+    "package installation on a fresh OS",
+    "activation on the second computer",
+    "reproduction of the reported crash without its log",
+    "phone pairing or message exchange"
+  ],
+  "gpgConfigWithSpaces": "gpg-agent --gpgconf-test: exit 0"
+}

@@ -1,29 +1,20 @@
 #!/usr/bin/env python3
-"""Install the default Putkin, retaining five builds. No system package changes."""
+"""Install Putkin and portable application settings, retaining five runtime builds."""
 import argparse
 import fcntl
-import importlib.util
 import json
+import os
 from pathlib import Path
-import shutil
 import subprocess
 import sys
 
 from _install import (ROOT, Session, atomic_link, configure, current, file_state, paths, prepare,
                       prune, publish, releases, restore_file, source_files, verify)
+from _install import run
 from _signal_install import handoff, inspect, runtime
-
-
-def dependencies():
-    required = ["quickshell", "uwsm", "hyprctl", "busctl", "gdbus", "systemctl", "python3"]
-    missing = [name for name in required if not shutil.which(name)]
-    missing += ["python:" + name for name in ("dbus", "gi") if importlib.util.find_spec(name) is None]
-    if missing:
-        raise RuntimeError("Brak wymaganych zależności: " + ", ".join(missing))
-    optional = [name for name in ("brightnessctl", "hyprsunset", "wl-copy", "wl-paste", "cliphist", "fd", "file")
-                if not shutil.which(name)]
-    return {"quickshell": subprocess.check_output(["quickshell", "--version"], text=True).strip(),
-            "uwsm": subprocess.check_output(["uwsm", "--version"], text=True).strip(), "optional_missing": optional}
+from _preflight import dependencies, install_packages, validate_hyprland
+from _dotfiles import Transaction, plan as config_plan, summary as config_summary
+from _clean_slate import LegacyServices, plan as clean_plan, require_logged_out
 
 
 def main():
@@ -31,6 +22,13 @@ def main():
     parser.add_argument("--destination", type=Path, help="Prywatny prefiks z config/data/state/bin; bez sesji hosta")
     parser.add_argument("--source", type=Path, default=ROOT, help="Źródła runtime; domyślnie to repozytorium")
     parser.add_argument("--signal-runtime", type=Path, help="Przypięty pakiet CLI/JRE z scripts/package-signal-runtime")
+    parser.add_argument("--signal-cache", type=Path, help="Cache pobrań i gotowego runtime Signala")
+    parser.add_argument("--offline", action="store_true", help="Użyj gotowego Signal lub lokalnego cache, bez pobrań")
+    parser.add_argument("--config-source", type=Path, help="Katalog konfiguracji z catalog.json; domyślnie config/ ze źródeł")
+    parser.add_argument("--shell-only", action="store_true", help="Aktualizuj sam runtime, bez dotfiles")
+    parser.add_argument("--replace-config", action="store_true", help="Zastąp lokalne edycje zarządzanych plików, zachowując backup")
+    parser.add_argument("--clean-slate", action="store_true", help="Po wylogowaniu: backup i świeża konfiguracja Putkina, bez starych dotfiles i autostartów shella")
+    parser.add_argument("--install-packages", action="store_true", help="Arch: zainstaluj pakiety z config/packages przez pacman i yay/paru")
     parser.add_argument("--dry-run", action="store_true", help="Pokaż plan bez zmiany celu")
     parser.add_argument("--activate", action="store_true", help="Przełącz odblokowaną sesję przez UWSM")
     parser.add_argument("--no-prune", action="store_true", help="Odrocz retencję do odbioru pierwszej migracji")
@@ -38,6 +36,22 @@ def main():
     args = parser.parse_args()
     if args.destination and args.activate:
         parser.error("--destination izoluje pliki; nie łącz go z --activate")
+    if args.install_packages and (args.destination or args.dry_run):
+        parser.error("--install-packages zmienia system; nie łącz z --destination ani --dry-run")
+    if args.clean_slate and (args.activate or args.shell_only or args.restore or args.replace_config):
+        parser.error("--clean-slate jest osobnym trybem; nie łącz z --activate, --shell-only, --restore ani --replace-config")
+    if args.clean_slate and not args.destination and not args.dry_run:
+        require_logged_out()
+    if args.shell_only and (args.config_source or args.replace_config):
+        parser.error("--shell-only nie łączy się z opcjami konfiguracji")
+    if args.restore and (args.config_source or args.replace_config):
+        parser.error("--restore cofa runtime; kopie konfiguracji opisuje docs/install.md")
+    if args.install_packages:
+        install_packages()
+        # A full Arch upgrade may replace Python/Qt in this very invocation.
+        # Continue with the new interpreter instead of mixing old loaded modules.
+        os.execv(sys.executable, [sys.executable, __file__, *[a for a in sys.argv[1:] if a != "--install-packages"]])
+    dependency_info = dependencies()
     layout = paths(args.destination)
     store = layout["store"]
     builds = releases(store)
@@ -47,12 +61,25 @@ def main():
         if target is None:
             raise ValueError("Brak wskazanego zachowanego buildu.")
         verify(target)
-    bundle, signal_info = runtime(target or args.source, (target / "dependencies/signal") if target and (target / "services/SignalBackend.qml").exists() else args.signal_runtime)
+    bundle, signal_info = runtime(target or args.source, (target / "dependencies/signal") if target and (target / "services/SignalBackend.qml").exists() else args.signal_runtime,
+                                  prepare=not args.dry_run, dry_run=args.dry_run, cache=args.signal_cache,
+                                  offline=args.offline, installed=current(store))
     compatibility = inspect(layout, target or args.source)
+    config_source = args.config_source or args.source / "config"
+    if (args.config_source or args.clean_slate) and not (config_source / "catalog.json").is_file():
+        raise ValueError("Brak catalog.json w źródle konfiguracji.")
+    def configuration():
+        configs = [] if args.shell_only or args.restore else config_plan(config_source, layout, args.replace_config, args.clean_slate)
+        if args.clean_slate:
+            resets, extra, detail = clean_plan(layout, configs, destination=bool(args.destination))
+            return configs + extra, resets, detail
+        return configs, [], None
+    configs, resets, clean_info = configuration()
     plan = {"paths": {k: str(v) for k, v in layout.items()}, "keep": 5,
             "builds": [p.name for p in builds], "restore": str(target) if target else None,
             "runtime_files": len(json.loads((target / ".putkin-build.json").read_text())["files"]) if target else len(source_files(args.source)),
-            "dependencies": dependencies(), "activate": args.activate,
+            "dependencies": dependency_info, "activate": args.activate, "configuration": config_summary(configs),
+            "cleanSlate": clean_info,
             "signalRuntime": signal_info, "signalCompatibility": compatibility}
     if args.dry_run:
         print(json.dumps(plan, indent=2, ensure_ascii=False))
@@ -75,22 +102,45 @@ def main():
         else:
             from _install import validate
             validate(target)
+        validate_hyprland(configs, layout, target)
         # Preparation/check failures above leave both the current runtime and
         # process intact. Only now change launch configuration and stop the shell.
         before = {p: file_state(p) for p in (layout["entry"].parent, layout["launcher"], store / "previous")}
         stopped = False
+        transaction = None
+        legacy = LegacyServices(clean_info["maskedUnits"]) if args.clean_slate and not args.destination else None
+        reload_hypr = any(i["action"] in ("install", "update", "replace-link") and i["path"].suffix == ".lua"
+                          and i["path"].is_relative_to(layout["entry"].parent.parent / "hypr") for i in configs)
         try:
+            if legacy:
+                # Recheck after downloads/validation; no desktop may have started.
+                require_logged_out()
+                legacy.stop()
             if session:
                 session.stop()
                 stopped = True
+            Transaction.recover(layout)
+            configs, resets, clean_info = configuration()
+            transaction = Transaction(layout, configs, resets=resets)
             with handoff(layout, target):
+                transaction.apply()
                 publish(store, target)
                 configure(layout)
+            if legacy:
+                legacy.reload()
+            if session and reload_hypr:
+                run(["hyprctl", "reload"])
+                errors = run(["hyprctl", "configerrors"])
+                if errors:
+                    raise RuntimeError("Hyprland odrzucił konfigurację: " + errors)
             active = session.start() if session else None
+            transaction.commit()
         except BaseException:
             fallback = old or (session.old_build if session else None)
             if stopped and session:
                 session.stop()
+            if transaction:
+                transaction.rollback()
             if fallback:
                 # A failed new process may already have migrated the database.
                 # Never restart an older Signal reader against newer data.
@@ -100,12 +150,19 @@ def main():
                 (store / "current").unlink(missing_ok=True)
             for path, state in before.items():
                 restore_file(path, state)
+            if legacy:
+                legacy.rollback()
+            if session and reload_hypr:
+                run(["hyprctl", "reload"])
             if fallback and stopped and session:
                 session.start(session.old["config_path"] if session.old else None)
             raise
         removed = [] if args.no_prune else prune(layout)
         print(json.dumps({"current": str(target), "active": active, "removed": removed,
-                          "retained": [p.name for p in releases(store)]}, indent=2, ensure_ascii=False))
+                          "retained": [p.name for p in releases(store)], "configuration": config_summary(configs),
+                          "configBackup": str(transaction.backup) if transaction and transaction.backup else None,
+                          "cleanSlate": clean_info,
+                          "optionalMissing": dependency_info.get("optional_missing", [])}, indent=2, ensure_ascii=False))
     return 0
 
 

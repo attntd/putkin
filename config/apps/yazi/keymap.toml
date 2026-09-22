@@ -1,0 +1,54 @@
+# Quick Look: maksymalizuje lub przywraca panel podgladu.
+[[mgr.prepend_keymap]]
+on = "<Space>"
+run = "plugin toggle-pane max-preview"
+desc = "Quick Look: maksymalizuj/przywroc podglad"
+
+# Space domyslnie zaznacza pliki, wiec ta funkcja zostala przeniesiona na V.
+[[mgr.prepend_keymap]]
+on = "V"
+run = ["toggle", "arrow 1"]
+desc = "Zaznacz plik i przejdz nizej"
+
+# Przewijanie podgladu: tekst, Markdown, metadane i strony PDF.
+[[mgr.prepend_keymap]]
+on = "J"
+run = "seek 5"
+desc = "Przewin podglad w dol"
+
+[[mgr.prepend_keymap]]
+on = "K"
+run = "seek -5"
+desc = "Przewin podglad w gore"
+
+# Zoom dotyczy obrazow; wymaga ImageMagick.
+[[mgr.prepend_keymap]]
+on = "+"
+run = "plugin zoom 1"
+desc = "Powieksz obraz"
+
+[[mgr.prepend_keymap]]
+on = "-"
+run = "plugin zoom -1"
+desc = "Pomniejsz obraz"
+
+# Sterowanie iloscia informacji pokazywanych dla audio i wideo.
+[[mgr.prepend_keymap]]
+on = "<F3>"
+run = "plugin mediainfo -- toggle-metadata"
+desc = "Pokaz/ukryj metadane mediow"
+
+[[mgr.prepend_keymap]]
+on = "<F4>"
+run = "plugin mediainfo -- toggle-preview"
+desc = "Pokaz/ukryj okladke lub miniature"
+
+[[mgr.prepend_keymap]]
+on = "O"
+run = "open --interactive"
+desc = "Otworz za pomoca..."
+
+[[mgr.prepend_keymap]]
+on = "<A-h>"
+run = "hidden toggle"
+desc = "Pokaz/ukryj dotfiles"

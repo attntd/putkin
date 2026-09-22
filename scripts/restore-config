@@ -1,0 +1,46 @@
+#!/usr/bin/env python3
+"""Restore one local config backup while the shell is stopped. Never restore account data."""
+import argparse
+import fcntl
+import json
+from pathlib import Path
+import sys
+from _install import atomic_file, instances, paths
+from _dotfiles import Transaction, backup_base, safe_target
+from _clean_slate import LegacyServices, require_logged_out, validate_resets
+
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument("--backup", type=Path, required=True)
+parser.add_argument("--destination", type=Path)
+parser.add_argument("--dry-run", action="store_true")
+args = parser.parse_args()
+try:
+    layout = paths(args.destination)
+    manifest = args.backup.absolute() / "manifest.json"
+    safe_target(manifest, layout["state"] / "config-backups")
+    record = json.loads(manifest.read_text())
+    validate_resets(layout, record.get("resets", []))
+    for item in record["files"]:
+        path = Path(item["path"])
+        safe_target(path, backup_base(layout, path), allow_links=True, allow_directory=item.get("link") is not None)
+        if item["backup"]:
+            safe_target(Path(item["backup"]), args.backup.absolute())
+    if not args.dry_run:
+        layout["store"].mkdir(parents=True, exist_ok=True)
+        with (layout["store"] / ".install.lock").open("w") as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            if record.get("resets") and not args.destination:
+                require_logged_out()
+            if not args.destination and instances():
+                raise ValueError("Przywracaj konfigurację po wyjściu z sesji graficznej; shell nadal działa.")
+            pending = layout["state"] / "config-pending.json"
+            if pending.exists():
+                raise ValueError("Najpierw dokończ przerwaną instalację przez scripts/install.")
+            atomic_file(pending, manifest.read_bytes())
+            Transaction.recover(layout)
+            if record.get("resets") and not args.destination:
+                LegacyServices([]).reload()
+    print(json.dumps({"backup": str(manifest.parent), "paths": [i["path"] for i in record["files"] + record.get("resets", [])],
+                      "restored": not args.dry_run}, indent=2, ensure_ascii=False))
+except (OSError, ValueError, RuntimeError) as error:
+    sys.exit("restore-config: " + str(error))

@@ -11,7 +11,7 @@ return function(bind, shell_path)
         {"SUPER + V", "clipboard"},
         {"SUPER + semicolon", "commands"},
         {"SUPER + B", "bar"},
-        {"SUPER + SHIFT + Q", "quickSettings"},
+        {"SUPER + Q", "quickSettings"},
         {"SUPER + SHIFT + P", "power"},
         {"SUPER + SHIFT + N", "notifications"},
     }

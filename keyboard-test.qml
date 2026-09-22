@@ -8,6 +8,7 @@ import "core"
 import "services"
 import "preview"
 import "modules/settings"
+import "modules/messages"
 import "modules/screenshot"
 import "modules/quicksettings" as Panels
 
@@ -57,11 +58,19 @@ ShellRoot {
         barFocus: barFocus; notificationFocus: notificationFocus; notifications: notifications
         audio: audio; brightness: brightness; sessionService: sessionService
         screenshot: screenshot
+        messages: messagesController
     }
     ActionIpc { controller: actions }
     PanelIpc { coordinator: panels }
     SettingsFocus { coordinator: panels; service: hyprland; processId: Quickshell.processId }
     LauncherIpc { coordinator: panels; service: launcher }
+    MockMessagingBackend { id: messagingBackend; Component.onCompleted: seed() }
+    SignalService { id: messagingService; backend: messagingBackend }
+    SignalMessagingAdapter { id: messagingAdapter; service: messagingService }
+    MessageHub { id: messageHub; adapters: [messagingAdapter] }
+    MessagesController { id: messagesController; hub: messageHub; screens: Quickshell.screens; monitorService: hyprland; loader: messagesLoader }
+    LazyLoader { id: messagesLoader; MessagesWindow { controller: messagesController } }
+    MessagesFocus { controller: messagesController; service: hyprland; processId: Quickshell.processId }
     FloatingWindow {
         id: target
         title: "Putkin keyboard target"
@@ -70,13 +79,22 @@ ShellRoot {
         Text { anchors.centerIn: parent; color: Theme.text; text: "Okno testowe" }
     }
     Timer { interval: 300; running: hyprland.available; onTriggered: target.visible = true }
+    FloatingWindow {
+        id: navigationTarget
+        title: "Putkin navigation target"
+        implicitWidth: 400; implicitHeight: 220; visible: false
+        color: Theme.backgroundStrong
+    }
     IpcHandler {
         target: "probe"
+        function navigationWindow(shown: bool): void { navigationTarget.visible = shown; }
+        function closeMessages(): void { messagesController.close(); }
         function snapshot(): string {
             const page = root.find(host.window ? host.window.contentItem : null, "keyboardSection");
             const search = root.find(host.window ? host.window.contentItem : null, "launcherSearch");
             return JSON.stringify({generation: root.generation, ready: keyboard.ready && settings.ready && hyprland.available,
                 active: panels.activeId, loaded: host.loaded, editing: settings.editing, saving: keyboard.saving,
+                messagesLoaded: messagesController.loaded,
                 keyboardBusy: keyboardBackend.current !== null || keyboardBackend.queue.length > 0,
                 problem: keyboard.problem, actionError: actions.lastError, bindings: keyboard.persisted,
                 color: settings.effective.accent, text: launcher.text, mode: launcher.chipMode,

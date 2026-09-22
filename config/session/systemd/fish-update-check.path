@@ -1,0 +1,9 @@
+[Unit]
+Description=Refresh update counts after installed packages change
+
+[Path]
+PathChanged=/var/lib/pacman/local
+Unit=fish-update-check.service
+
+[Install]
+WantedBy=default.target

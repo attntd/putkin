@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "checks": {
+    "dependencies": {
+      "quickshell": "Quickshell 0.3.1 (revision , distributed by Arch Linux)",
+      "hyprland": "Hyprland 0.56.2 built from branch v0.56.2 at commit efb50993780079460b0cbed1363e2166a2de1d9f clean ([gha] Nix: update inputs).\nDate: Wed Aug 5 14:13:21 2026\nTag: v0.56.2, commits: 7661\n\nLibraries:\nHyprgraphics: built against 0.5.1, system has 0.5.1\nHyprutils: built against 0.14.1, system has 0.14.2\nHyprcursor: built against 0.1.13, system has 0.1.13\nHyprlang: built against 0.6.8, system has 0.6.8\nAquamarine: built against 0.15.0, system has 0.15.1\n\nVersion ABI string: efb50993780079460b0cbed1363e2166a2de1d9f_aq_0.15_hu_0.14_hg_0.5_hc_0.1_hlg_0.6\nno flags were set",
+      "qt": "6.11.2",
+      "uwsm": "uwsm 0.27.0",
+      "optional_missing": []
+    },
+    "qmlImports": "passed",
+    "signal": {
+      "platform": "linux-x86_64",
+      "cliVersion": "0.14.8",
+      "javaVersion": "25.0.4.1+1",
+      "policy": "putkin-retention-2",
+      "treeSha256": "bcfcebef74761e3c69690d0be6836303c7d7edbd1675395361da765f266f116f"
+    }
+  }
+}

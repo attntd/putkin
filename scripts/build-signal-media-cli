@@ -21,8 +21,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ("source", "distribution", "jdk", "output"):
         parser.add_argument("--" + name, type=Path, required=True)
+    parser.add_argument("--policy", type=Path, default=POLICY)
     args = parser.parse_args()
-    recipe = json.loads((POLICY / "recipe.json").read_text())
+    policy = args.policy
+    recipe = json.loads((policy / "recipe.json").read_text())
     library = args.distribution / "lib/libsignal-cli-0.14.8.jar"
     if sha(library) != recipe["originalLibrary"]:
         raise ValueError("Wrong original CLI library")
@@ -38,10 +40,10 @@ def main():
             if sha(source) != digest:
                 raise ValueError("Wrong upstream source: " + name)
             shutil.copyfile(source, work / name)
-            subprocess.run(["patch", "--batch", "--fuzz=0", str(work / name), str(POLICY / (name + ".patch"))], check=True)
+            subprocess.run(["patch", "--batch", "--fuzz=0", str(work / name), str(policy / (name + ".patch"))], check=True)
         classes = work / "classes"
         subprocess.run([str(args.jdk / "bin/javac"), "-proc:none", "-cp", str(args.distribution / "lib/*"), "-d", str(classes),
-                        *map(str, work.glob("*.java")), *map(str, POLICY.glob("*.java"))], check=True)
+                        *map(str, sorted(work.glob("*.java"))), *map(str, sorted(policy.glob("*.java")))], check=True)
         subprocess.run([str(args.jdk / "bin/java"), "-cp", str(classes), "org.asamk.signal.manager.helper.PutkinMediaPolicy"], check=True)
         # Existing entries keep their timestamps; added entries use a constant.
         replacement = {str(f.relative_to(classes)): f.read_bytes() for f in classes.rglob("*.class")}

@@ -39,7 +39,7 @@ Item {
             tryCompare(view, "status", Loader.Ready);
             tryCompare(adapter, "listLoading", false);
         }
-        function cleanup() { scene.eligible = false; backend.release(); wait(150); view.active = false; }
+        function cleanup() { scene.eligible = false; backend.release(); wait(150); view.active = false; wait(100); }
         function test_visible_range_once_and_unread_shared_with_hub() {
             choose();
             compare(calls().length, 0);

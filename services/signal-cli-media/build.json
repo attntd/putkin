@@ -1,0 +1,16 @@
+{
+  "format": 1,
+  "jdkArchive": {
+    "url": "https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.4.1%2B1/OpenJDK25U-jdk_x64_linux_hotspot_25.0.4.1_1.tar.gz",
+    "sha256": "dbb698396d478e7fa2b1e50f4103324b2a99b90569ee27c33f2261f9215cf41e"
+  },
+  "sources": {
+    "IncomingMessageHandler.java": "https://raw.githubusercontent.com/AsamK/signal-cli/v0.14.8/lib/src/main/java/org/asamk/signal/manager/helper/IncomingMessageHandler.java",
+    "AttachmentHelper.java": "https://raw.githubusercontent.com/AsamK/signal-cli/v0.14.8/lib/src/main/java/org/asamk/signal/manager/helper/AttachmentHelper.java",
+    "AttachmentStore.java": "https://raw.githubusercontent.com/AsamK/signal-cli/v0.14.8/lib/src/main/java/org/asamk/signal/manager/storage/AttachmentStore.java",
+    "JsonSyncDataMessage.java": "https://raw.githubusercontent.com/AsamK/signal-cli/v0.14.8/src/main/java/org/asamk/signal/json/JsonSyncDataMessage.java",
+    "SendHelper.java": "https://raw.githubusercontent.com/AsamK/signal-cli/v0.14.8/lib/src/main/java/org/asamk/signal/manager/helper/SendHelper.java",
+    "MessageSendLogStore.java": "https://raw.githubusercontent.com/AsamK/signal-cli/v0.14.8/lib/src/main/java/org/asamk/signal/manager/storage/sendLog/MessageSendLogStore.java",
+    "SendMessageResultUtils.java": "https://raw.githubusercontent.com/AsamK/signal-cli/v0.14.8/src/main/java/org/asamk/signal/util/SendMessageResultUtils.java"
+  }
+}

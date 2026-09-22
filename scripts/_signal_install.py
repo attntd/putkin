@@ -2,7 +2,9 @@
 from contextlib import contextmanager
 import ctypes
 import fcntl
+import json
 import os
+import platform
 from pathlib import Path
 import shutil
 import sqlite3
@@ -12,18 +14,42 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "services"))
 from signal_release import compatibility, release_spec, safe_path, verify_runtime
+from _signal_bootstrap import build, bundle_path
 
 
-def runtime(source, supplied=None):
+def runtime(source, supplied=None, *, prepare=False, dry_run=False, cache=None, offline=False, installed=None):
     if release_spec(source) is None:
         if supplied:
             raise ValueError("Źródła nie zawierają integracji Signala.")
         return None, None
-    bundle = supplied or (source / "dependencies/signal" if (source / "dependencies/signal").exists()
-                          else ROOT / "artifacts/signal-runtime")
-    if not bundle.is_dir():
-        raise ValueError("Brak runtime Signala. Uruchom scripts/package-signal-runtime i podaj --signal-runtime KATALOG.")
-    info = verify_runtime(bundle, source)
+    if platform.system() != "Linux" or platform.machine() != "x86_64":
+        raise ValueError("Runtime Signala wymaga Linux x86_64/glibc.")
+    candidates = [source / "dependencies/signal", bundle_path(source, cache), ROOT / "artifacts/signal-runtime"]
+    if installed:
+        candidates.append(installed / "dependencies/signal")
+    bundle = supplied
+    if bundle is None:
+        for candidate in candidates:
+            if candidate.is_dir():
+                try:
+                    verify_runtime(candidate, source)
+                except ValueError:
+                    if installed and candidate == installed / "dependencies/signal":
+                        continue  # An earlier release can have a different pin.
+                    raise
+                bundle = candidate
+                break
+    pin = json.loads((source / "services/signal-cli-media/distribution.json").read_text())
+    info = {key: pin[key] for key in ("platform", "cliVersion", "javaVersion", "policy", "treeSha256")}
+    if bundle is not None:
+        info = verify_runtime(bundle, source)
+    elif dry_run:
+        info["action"] = "build-from-cache" if offline else "download-patch-build"
+    elif prepare:
+        bundle = build(source, cache, offline)
+        info = verify_runtime(bundle, source)
+    else:
+        raise ValueError("Brak runtime Signala. scripts/install przygotuje go automatycznie; osobno: scripts/prepare-signal.")
     missing = [name for name in ("ffmpeg", "ffprobe", "file") if not shutil.which(name)]
     try:
         ctypes.CDLL("libqrencode.so.4")

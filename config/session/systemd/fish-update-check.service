@@ -1,0 +1,9 @@
+[Unit]
+Description=Check for Arch Linux and AUR updates
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/update-check-cache
+# Package builds/transactions can take a long time; individual network checks
+# have their own timeouts in update-check-cache.
+TimeoutStartSec=infinity

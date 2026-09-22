@@ -1,0 +1,41 @@
+{
+  "build": "20260921-135431-96e7045e65b0",
+  "previous": "20260921-110638-03f24e35e2b4",
+  "actions": {
+    "ready": true,
+    "busy": false,
+    "applied": true,
+    "error": "",
+    "shortcuts": 9,
+    "commands": 12
+  },
+  "signal": {
+    "state": "ready",
+    "accountState": "linked",
+    "schemaVersion": 7,
+    "cliVersion": "0.14.8",
+    "errorCode": "",
+    "linkError": "",
+    "eventErrorLocation": "",
+    "qrVisible": false,
+    "processId": 617919
+  },
+  "bindings": [
+    {
+      "key": "H",
+      "modmask": 64,
+      "description": "Putkin:messages"
+    },
+    {
+      "key": "Q",
+      "modmask": 64,
+      "description": "Putkin:quickSettings"
+    }
+  ],
+  "hashes": {
+    "modules/messages/MessageHistory.qml": "faf72c2cc55fbbdebe5e59ce9796b139dcd83390e133a21394b1e2fee8576ad7",
+    "core/Actions.js": "e06a14b56a2064f823cbcaf3c7a59b9907dc3fe17c2bab63be30b243a0e24914",
+    "config/menu-keybinds.lua": "75e4d603b9bbba860f42db5584a84f409ce1126c7ae5038c6c1bb1a9246971f6"
+  },
+  "hyprlandConfigErrors": []
+}

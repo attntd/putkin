@@ -1,0 +1,36 @@
+Signal: pobieranie cli.tar.gz
+Signal: pobieranie jre.tar.gz
+Signal: pobieranie jdk.tar.gz
+Signal: pobieranie IncomingMessageHandler.java
+Signal: pobieranie AttachmentHelper.java
+Signal: pobieranie AttachmentStore.java
+Signal: pobieranie JsonSyncDataMessage.java
+Signal: pobieranie SendHelper.java
+Signal: pobieranie MessageSendLogStore.java
+Signal: pobieranie SendMessageResultUtils.java
+Signal: nakładanie poprawek i kompilacja
+patching file /tmp/pk-media-build-tbd188y4/IncomingMessageHandler.java
+patching file /tmp/pk-media-build-tbd188y4/AttachmentHelper.java
+patching file /tmp/pk-media-build-tbd188y4/AttachmentStore.java
+patching file /tmp/pk-media-build-tbd188y4/JsonSyncDataMessage.java
+patching file /tmp/pk-media-build-tbd188y4/SendHelper.java
+patching file /tmp/pk-media-build-tbd188y4/MessageSendLogStore.java
+patching file /tmp/pk-media-build-tbd188y4/SendMessageResultUtils.java
+PASS: size boundaries and real cache quota
+{"policy": "putkin-retention-2", "librarySha256": "5551eae0dc4efddf89039b125c20ac8520793141e31c9af4c6dc1d43c9e1db9d", "applicationSha256": "f6c04e0856530875bbb2f1b4f4d2b621408c057b089e2b87567c69d65e2fa502"}
+{
+  "bundle": "/home/attntd/projects/putkin/artifacts/signal-cache/bcfcebef74761e3c69690d0be6836303c7d7edbd1675395361da765f266f116f/.build-8rklic0m/runtime",
+  "platform": "linux-x86_64",
+  "cliVersion": "0.14.8",
+  "javaVersion": "25.0.4.1+1",
+  "policy": "putkin-retention-2",
+  "treeSha256": "bcfcebef74761e3c69690d0be6836303c7d7edbd1675395361da765f266f116f"
+}
+{
+  "bundle": "/home/attntd/projects/putkin/artifacts/signal-cache/bcfcebef74761e3c69690d0be6836303c7d7edbd1675395361da765f266f116f/runtime",
+  "platform": "linux-x86_64",
+  "cliVersion": "0.14.8",
+  "javaVersion": "25.0.4.1+1",
+  "policy": "putkin-retention-2",
+  "treeSha256": "bcfcebef74761e3c69690d0be6836303c7d7edbd1675395361da765f266f116f"
+}

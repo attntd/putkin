@@ -9,6 +9,20 @@ ListView {
     id: root
     FontMetrics { id: bodyMetrics; font.family: Theme.fontFamily; font.pixelSize: Metrics.fontSize }
     FontMetrics { id: footerMetrics; font.family: Theme.fontFamily; font.pixelSize: Metrics.smallFontSize }
+    component BubbleButton: UI.NavigationButton {
+        id: button
+        width: Math.min(implicitWidth, parent.width)
+        implicitHeight: Math.max(Metrics.controlHeight, implicitContentHeight + topPadding + bottomPadding)
+        contentItem: Text {
+            text: button.text
+            font: button.font
+            color: button.foreground
+            wrapMode: Text.Wrap
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            textFormat: Text.PlainText
+        }
+    }
     component MessageButton: UI.NavigationButton {
         id: button
         padding: 0
@@ -39,6 +53,7 @@ ListView {
     property bool restoring: false
     property bool releasing: false
     property bool resetting: false
+    Component.onCompleted: Qt.callLater(settleCallback)
     Component.onDestruction: { releasing = true; readBatch.stop(); }
     // Stable JS closures let callLater coalesce bursts while guarding teardown.
     property var restoreCallback: () => { if (Qt.isQtObject(root) && !root.releasing) root.restore(); }
@@ -86,10 +101,10 @@ ListView {
         }
     }
     onReadingEnabledChanged: scheduleRead()
-    onVisibleChanged: scheduleRead()
+    onVisibleChanged: { scheduleEnd(); scheduleRead(); }
     onContentYChanged: scheduleRead()
-    onHeightChanged: scheduleRead()
-    onWidthChanged: scheduleRead()
+    onHeightChanged: { scheduleEnd(); scheduleRead(); }
+    onWidthChanged: { scheduleEnd(); scheduleRead(); }
     onRestoringChanged: scheduleRead()
     onMovingChanged: scheduleRead()
     function endVisible(): bool {
@@ -126,16 +141,24 @@ ListView {
         restoring = false;
     }
     function settleEnd(): void {
-        if (followEnd && !moving) { forceLayout(); positionViewAtEnd(); }
+        if (followEnd && !moving && visible && width > 0 && height > 0) { forceLayout(); positionViewAtEnd(); }
+    }
+    function scheduleEnd(): void {
+        if (!releasing && followEnd) Qt.callLater(settleCallback);
     }
     onMovementStarted: followEnd = false
     onMovementEnded: followEnd = atYEnd
-    onContentHeightChanged: { if (!releasing && restoring && followEnd) Qt.callLater(settleCallback); scheduleRead(); }
+    onContentHeightChanged: { scheduleEnd(); scheduleRead(); }
     Keys.onPressed: event => {
         root.focusReason = Qt.TabFocusReason;
         if (event.modifiers !== Qt.NoModifier) return;
-        if (event.key === Qt.Key_K || event.key === Qt.Key_Up) contentY = Math.max(originY, contentY - 48);
-        else if (event.key === Qt.Key_J || event.key === Qt.Key_Down) contentY = Math.min(originY + Math.max(0, contentHeight - height), contentY + 48);
+        if (event.key === Qt.Key_K || event.key === Qt.Key_Up) {
+            followEnd = false;
+            contentY = Math.max(originY, contentY - 48);
+        } else if (event.key === Qt.Key_J || event.key === Qt.Key_Down) {
+            contentY = Math.min(originY + Math.max(0, contentHeight - height), contentY + 48);
+            followEnd = atYEnd;
+        }
         else if (event.key === Qt.Key_Escape && actionsMessageId) actionsMessageId = "";
         else if (event.key === Qt.Key_H) root.backRequested();
         else if (event.key === Qt.Key_L || event.key === Qt.Key_Return) root.composeRequested();
@@ -220,7 +243,17 @@ ListView {
         }
         Column {
             id: column
-            width: Math.min(root.width - 12, Math.max(120, root.width * .84))
+            // Natural text widths stay independent of the wrapping width.
+            readonly property real actionsWidth: actionsButton.visible ? actionsButton.width + Metrics.space8 : 0
+            readonly property real textWidth: Math.max(messageBody.implicitWidth,
+                authorLabel.visible ? authorLabel.implicitWidth : 0,
+                quoteButton.visible ? quoteButton.implicitWidth : 0) + actionsWidth
+            width: Math.min(root.width * .5, 2 * padding + Math.max(textWidth,
+                footer.naturalWidth,
+                operationButton.visible ? operationButton.implicitWidth : 0,
+                interactionLabel.visible ? interactionLabel.implicitWidth : 0,
+                interactionButton.visible ? interactionButton.implicitWidth : 0,
+                attachments.count || root.actionsMessageId === row.messageId ? root.width * .5 : 0))
             x: row.system ? (root.width - width) / 2 : row.outgoing ? root.width - width : 0
             y: row.newDay ? 36 : 0
             padding: Metrics.space12
@@ -233,6 +266,7 @@ ListView {
                     width: parent.width - (actionsButton.visible ? actionsButton.width + Metrics.space8 : 0)
                     spacing: Metrics.space4
                     Text {
+                        id: authorLabel
                         width: parent.width
                         text: row.author
                         visible: !row.system && !row.outgoing && root.adapter.selectedConversation !== null && root.adapter.selectedConversation.kind === "group"
@@ -242,7 +276,8 @@ ListView {
                         font.pixelSize: Metrics.smallFontSize
                         textFormat: Text.PlainText
                     }
-                    UI.NavigationButton {
+                    BubbleButton {
+                        id: quoteButton
                         objectName: "messageQuote"
                         width: parent.width
                         visible: !!row.quote
@@ -252,6 +287,7 @@ ListView {
                     }
                     TextEdit {
                         id: messageBody
+                        objectName: "messageBody"
                         width: parent.width
                         text: MessageText.render(row.text, JSON.parse(row.stylesJson), JSON.parse(row.mentionsJson))
                         readOnly: true
@@ -281,6 +317,7 @@ ListView {
                 }
             }
             Repeater {
+                id: attachments
                 model: JSON.parse(row.attachmentsJson)
                 delegate: AttachmentCard {
                     required property var modelData
@@ -292,7 +329,8 @@ ListView {
                     onPreviewRequested: (attachment, reason) => root.previewRequested(attachment, reason)
                 }
             }
-            UI.NavigationButton {
+            BubbleButton {
+                id: operationButton
                 visible: row.operationId !== "" && (row.statusCode === "queued" || (row.statusCode === "failed" && row.safeRetry))
                 text: row.statusCode === "queued" ? qsTr("Anuluj") : qsTr("Ponów")
                 onClicked: root.adapter.changeOperation(row.operationId, row.statusCode !== "queued")
@@ -309,7 +347,7 @@ ListView {
                     Repeater {
                         id: emojiChoices
                         model: ["👍", "❤️", "😂", "😮", "😢", "🙏", "🎉", "👎", "👩‍💻", "👍🏽"]
-                        delegate: UI.NavigationButton {
+                        delegate: BubbleButton {
                             required property string modelData
                             required property int index
                             leftTarget: index > 0 ? emojiChoices.itemAt(index - 1) : actionsButton
@@ -352,7 +390,7 @@ ListView {
                 Flow {
                     width: parent.width
                     spacing: Metrics.space4
-                    UI.NavigationButton {
+                    BubbleButton {
                         id: replyAction
                         objectName: "replyMessage"
                         upTarget: emojiChoices.itemAt(0)
@@ -362,7 +400,7 @@ ListView {
                         enabled: row.canReply
                         onClicked: { root.adapter.replyTo(row.messageId); root.actionsMessageId = ""; }
                     }
-                    UI.NavigationButton {
+                    BubbleButton {
                         id: editAction
                         objectName: "editMessage"
                         leftTarget: replyAction
@@ -373,7 +411,7 @@ ListView {
                         visible: row.canEdit
                         onClicked: { root.adapter.beginEdit(row.messageId); root.actionsMessageId = ""; }
                     }
-                    UI.NavigationButton {
+                    BubbleButton {
                         id: deleteLocalAction
                         objectName: "deleteMessageLocal"
                         text: qsTr("Usuń u mnie")
@@ -383,7 +421,7 @@ ListView {
                         onEnsureVisible: item => root.revealControl(item)
                         onClicked: { root.adapter.deleteMessage(row.messageId, "local"); root.actionsMessageId = ""; root.forceActiveFocus(focusReason); }
                     }
-                    UI.NavigationButton {
+                    BubbleButton {
                         id: deleteRemoteAction
                         objectName: "deleteMessageEveryone"
                         text: qsTr("Usuń u wszystkich")
@@ -393,7 +431,7 @@ ListView {
                         onEnsureVisible: item => root.revealControl(item)
                         onClicked: { root.adapter.deleteMessage(row.messageId, "everyone"); root.actionsMessageId = ""; root.forceActiveFocus(focusReason); }
                     }
-                    UI.NavigationButton {
+                    BubbleButton {
                         id: closeAction
                         text: qsTr("Zamknij")
                         leftTarget: editAction.visible ? editAction : replyAction
@@ -402,7 +440,7 @@ ListView {
                         onClicked: { root.actionsMessageId = ""; root.forceActiveFocus(focusReason); }
                     }
                 }
-                UI.NavigationButton {
+                BubbleButton {
                     objectName: "removeOwnReaction"
                     visible: !!row.ownReaction
                     text: qsTr("Usuń reakcję") + (row.ownReaction ? " " + row.ownReaction.emoji : "")
@@ -415,6 +453,8 @@ ListView {
                     model: row.edited ? JSON.parse(row.versionsJson) : []
                     delegate: Text {
                         required property var modelData
+                        width: column.width - 2 * Metrics.space12
+                        wrapMode: Text.Wrap
                         text: Qt.formatTime(new Date(modelData.timestampMs), "HH:mm:ss") + " · " + (modelData.status === "read" ? qsTr("Przeczytano") : modelData.status === "delivered" ? qsTr("Dostarczono") : modelData.status === "received" ? qsTr("Odebrano") : qsTr("Wysłano"))
                         color: row.mutedForeground
                         font.family: Theme.fontFamily
@@ -424,6 +464,7 @@ ListView {
             }
             }
             Text {
+                id: interactionLabel
                 width: column.width - 24
                 visible: !!row.interaction && row.interaction.state !== "sent" && row.interaction.state !== "cancelled"
                 text: !row.interaction ? "" : row.interaction.state === "unknown" ? qsTr("Zmiana · wynik nieznany") : row.interaction.state === "failed" ? qsTr("Zmiana nie została wysłana") : qsTr("Zmiana w kolejce")
@@ -433,7 +474,8 @@ ListView {
                 font.family: Theme.fontFamily
                 font.pixelSize: Metrics.smallFontSize
             }
-            UI.NavigationButton {
+            BubbleButton {
+                id: interactionButton
                 visible: !!row.interaction && (row.interaction.state === "queued" || (row.interaction.state === "failed" && row.interaction.safe_retry))
                 text: row.interaction && row.interaction.state === "queued" ? qsTr("Anuluj zmianę") : qsTr("Ponów zmianę")
                 onClicked: root.adapter.changeOperation(row.interaction.operation_id, row.interaction.state !== "queued")
@@ -444,6 +486,8 @@ ListView {
                 height: Math.max(reactionChips.height, statusRow.height)
                 readonly property real reactionsWidth: reactionChips.children.reduce((sum, item) =>
                     sum + (item.objectName === "messageReaction" ? item.implicitWidth + Metrics.space4 : 0), 0)
+                readonly property real naturalWidth: statusLabel.implicitWidth + (row.outgoing ? 20 : 0)
+                    + (row.reactions.length ? reactionsWidth + Metrics.space8 : 0)
                 readonly property real statusWidth: Math.min(width - Math.min(width * .38,
                     row.reactions.length ? reactionsWidth + Metrics.space4 : 0), statusLabel.implicitWidth + (row.outgoing ? 20 : 0))
                 Flow {

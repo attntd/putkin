@@ -1,0 +1,11 @@
+[Unit]
+Description=Check for Arch Linux and AUR updates once a day
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+RandomizedDelaySec=15min
+Unit=fish-update-check.service
+
+[Install]
+WantedBy=timers.target

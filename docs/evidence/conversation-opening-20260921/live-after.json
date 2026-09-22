@@ -1,0 +1,44 @@
+{
+  "build": "20260921-141345-67428b3b725f",
+  "previous": "20260921-135431-96e7045e65b0",
+  "actions": {
+    "ready": true,
+    "busy": false,
+    "applied": true,
+    "error": "",
+    "shortcuts": 8,
+    "commands": 12
+  },
+  "signal": {
+    "state": "ready",
+    "accountState": "linked",
+    "schemaVersion": 7,
+    "cliVersion": "0.14.8",
+    "errorCode": "",
+    "linkError": "",
+    "eventErrorLocation": "",
+    "qrVisible": false,
+    "processId": 625271
+  },
+  "bindings": [
+    {
+      "key": "h",
+      "modmask": 64,
+      "description": "[Focus] Left"
+    },
+    {
+      "key": "Q",
+      "modmask": 64,
+      "description": "Putkin:quickSettings"
+    }
+  ],
+  "instances": 1,
+  "qmlWarnings": 0,
+  "hyprlandConfigErrors": [],
+  "hashes": {
+    "modules/messages/MessageHistory.qml": "c4b7348538343c480da7109bbc40207cbd3c5ce53d4ef8624ac3a288f12beeba",
+    "core/Actions.js": "3c66d80dce3002c500f9fef1327611f74fc63b873ce5cf0638825ed2135e40b0",
+    "config/menu-keybinds.lua": "6dc2e73634cbb48fa45f77d42574786b35ce96265ea0766f9f6de10ce62f8e16"
+  },
+  "retained": 5
+}

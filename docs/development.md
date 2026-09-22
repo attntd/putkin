@@ -1,5 +1,46 @@
 # Środowisko i rozwój
 
+## Czysta instalacja — 2026-09-22
+
+Ponownie potwierdzono Python **3.14.7** i systemd **261.3**. Kopie drzew
+używają udokumentowanych `copytree(..., symlinks=True)` i `copy2` z
+[Python 3.14](https://docs.python.org/3.14/library/shutil.html).
+Semantykę masek `/dev/null` i `daemon-reload` sprawdzono w oficjalnych
+lokalnych podręcznikach `systemd.unit(5)` i `systemctl(1)` tej wersji.
+`systemctl --user show` nieistniejącej jednostki zwrócił `inactive`, exit 0;
+wykonano wyłącznie ten odczyt, bez zmian usług hosta.
+Wyłączenie systemowego wpisu autostartu przez użytkownika opiera się na
+[`Hidden=true` w specyfikacji XDG](https://specifications.freedesktop.org/autostart/latest/).
+Realne operacje na plikach testowano w prywatnym prefiksie, a zachowanie
+usług i odmowę przy aktywnym pulpicie przez kontrolowane atrapy poleceń.
+
+## Instalacja na kolejnej maszynie — 2026-09-22
+
+Lokalnie potwierdzono: Python **3.14.7**, Quickshell **0.3.1**, Qt **6.11.2**,
+Hyprland **0.56.2**, UWSM **0.27.0**, bubblewrap **0.12.0**, Yazi **26.9.1**,
+Neovim **0.12.5**, Zen **1.22.2b**, Kitty **0.48.2**, Fish **4.9.3**.
+Instalator wymaga Python ≥3.12, a podane wersje Qt/Quickshell/Hyprlanda
+stanowią sprawdzane minimum. Qt jest wykrywane przez `qmake6`, aby obecność
+Qt 5 w PATH nie dawała fałszywego wyniku. UWSM jest sprawdzany lokalnym CLI.
+
+Sprawdzono oficjalne, zgodne wersjami źródła i dokumentację:
+[Hyprland 0.56.2 — Lua](https://github.com/hyprwm/Hyprland/blob/v0.56.2/example/hyprland.lua),
+[Quickshell 0.3.1 — konfiguracje](https://quickshell.org/docs/v0.3.1/guide/introduction/),
+[Qt 6.11 — tworzenie Component](https://doc.qt.io/qt-6.11/qtqml-javascript-dynamicobjectcreation.html),
+[Python 3.14 — filtr tar](https://docs.python.org/3.14/library/tarfile.html),
+[ConfigParser](https://docs.python.org/3.14/library/configparser.html),
+[XDG](https://specifications.freedesktop.org/basedir/latest/),
+[profile Zen](https://docs.zen-browser.app/guides/manage-profiles).
+Użyto także lokalnych stubs Hyprlanda, `Hyprland --help`, `quickshell --help`
+i dokumentacji/implementacji UWSM 0.27.0 w `/usr/share`.
+
+Signal jest odtwarzany z [upstream 0.14.8](https://raw.githubusercontent.com/AsamK/signal-cli/v0.14.8/README.md)
+i przypiętego Temurina 25.0.4.1+1. Sprawdzono oficjalną sumę JDK,
+sumy źródeł i archiwów, a rzeczywisty build zachował wcześniejszy pin całego
+runtime. Listy pakietów są w `config/packages/`; opcja instalacji pakietów
+jest osobna od zwykłego instalowania plików. Po aktualizacji pakietów
+instalator wznawia pracę w nowym interpreterze Pythona.
+
 ## Wspólny launcher i shell — 2026-09-21
 
 Potwierdzono lokalnie Qt **6.11.2** i Quickshell **0.3.1**. Opisy wyników

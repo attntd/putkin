@@ -29,30 +29,25 @@ a wydanie Putkina także recepturę, poprawki Java i ich sumy.
 
 ## Przygotowanie pakietu
 
-Pobierz dwa archiwa z adresów w `distribution.json` do prywatnego katalogu.
-Następnie użyj odtworzonej dystrybucji z poprawionymi jarami:
+Standardowa instalacja nie wymaga przygotowania patcha ani podania ścieżki CLI:
 
 ```sh
-scripts/package-signal-runtime \
-  --cli-archive artifacts/signal-s12/downloads/signal-cli.tar.gz \
-  --jre-archive artifacts/signal-s12/downloads/jre.tar.gz \
-  --patched-cli artifacts/signal-s09/cli-final \
-  --output artifacts/signal-runtime
-scripts/install --dry-run --destination artifacts/signal-s12/destination
-scripts/install --destination artifacts/signal-s12/destination
+scripts/install
+scripts/test-signal-cli
 ```
 
-Pakowanie sprawdza SHA-256 obu archiwów, wszystkie pliki oryginalnego CLI,
-oba zmienione jary i kompletne drzewo końcowe wraz z prawami wykonania.
-Wewnętrzne dowiązania licencji JRE są rozwiązywane do zwykłych plików.
-Nieznane pliki, w tym konto dodane do dystrybucji, zmieniają sumę i blokują
-pakowanie. Istniejący pakiet jest ponownie sprawdzany, nie nadpisywany.
+`scripts/prepare-signal` pozwala przygotować runtime wcześniej. Pobiera
+przypięte archiwa i siedem źródeł Java, weryfikuje sumy, uruchamia builder
+oraz packager. `build.json` przypina JDK i adresy źródeł, `recipe.json`
+sumy źródeł/originalnych jarów, a `distribution.json` komplet końcowych
+plików i praw wykonania. Sprawdzony wynik musi zachować dotychczasowy pin.
 
-Instalator domyślnie szuka `artifacts/signal-runtime`; inny katalog podaj
-przez `--signal-runtime KATALOG`. Gotowe wydanie może samo dostarczyć
-`dependencies/signal` przez `--source KATALOG_WYDANIA`. Brak lub uszkodzenie
-pakietu kończy preflight przed zatrzymaniem shella. `--destination` nie
-łączy się z `--activate`. Dry-run nie zmienia docelowych plików.
+Cache jest w `~/.cache/putkin/signal`; instalator ma `--signal-cache` oraz
+`--offline`. `--signal-runtime` pozostaje opcjonalną ścieżką do gotowej
+paczki. Ręczne `build-signal-media-cli` i `package-signal-runtime` są
+narzędziami utrzymania receptury, a nie wymaganymi krokami użytkownika.
+Dry-run planuje budowanie bez zapisu i pobrań. Proces startu shella nie
+pobiera narzędzi. [Cała procedura instalacji](../install.md).
 
 Próba z gotowym wydaniem, prawdziwym CLI i pustym kontem, bez sieci:
 

@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "unitTests": 61,
+  "cleanSlateTests": 13,
+  "installerTests": 19,
+  "dotfilesBootstrapReleasePreflightTests": 29,
+  "qmlFiles": 272,
+  "qmlErrors": 0,
+  "catalogFiles": 173,
+  "protectedFilesUnchanged": 11,
+  "cleanInstallRestoreReinstall": "passed",
+  "runtimeVerified": true,
+  "realDesktopActivated": false,
+  "notRun": [
+    "Czysta instalacja na drugim fizycznym komputerze",
+    "Instalacja pakietów systemowych",
+    "Zatrzymywanie i maskowanie prawdziwych usług hosta"
+  ]
+}

@@ -1,0 +1,120 @@
+#!/usr/bin/python3
+"""Check repository/AUR metadata without updating the system pacman database."""
+import fcntl
+import json
+import os
+from pathlib import Path
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+import time
+
+
+def package_state():
+    database = Path("/var/lib/pacman/local").stat()
+    return database.st_mtime_ns, database.st_ctime_ns
+
+
+def wait_for_packages():
+    # Wait for an idle database and coalesce closely spaced transactions.
+    lock = Path("/var/lib/pacman/db.lck")
+    while True:
+        before = package_state()
+        if lock.exists():
+            time.sleep(2)
+            continue
+        time.sleep(2)
+        if not lock.exists() and before == package_state():
+            return before
+
+
+def atomic_write(path, text):
+    fd, temporary = tempfile.mkstemp(prefix=path.name + ".", dir=path.parent)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as output:
+            output.write(text)
+            output.flush()
+            os.fsync(output.fileno())
+        os.replace(temporary, path)
+    finally:
+        if os.path.exists(temporary):
+            os.unlink(temporary)
+
+
+def scan(command, environment, previous, now, repository=False):
+    try:
+        result = subprocess.run(command, stdin=subprocess.DEVNULL,
+                                capture_output=True, text=True, errors="replace",
+                                env=environment, timeout=240)
+        lines = [line.strip() for line in result.stdout.splitlines() if line.strip()]
+        empty_success = not lines and (
+            (repository and result.returncode == 2) or
+            (not repository and result.returncode == 1 and not result.stderr.strip()))
+        if result.returncode != 0 and not empty_success:
+            raise RuntimeError(result.stderr.strip()[-1000:] or
+                               f"exit status {result.returncode}")
+        if any(not re.fullmatch(r"[A-Za-z0-9@._+\-]+\s+\S+\s+->\s+\S+", line)
+               for line in lines):
+            raise RuntimeError("unexpected update-list format")
+        return {"count": len(lines), "updates": lines, "checked_at": now, "error": None}
+    except (OSError, subprocess.TimeoutExpired, RuntimeError) as error:
+        count = previous.get("count", 0)
+        if not isinstance(count, int) or count < 0:
+            count = 0
+        return {"count": count, "updates": previous.get("updates", []),
+                "checked_at": previous.get("checked_at"), "error": str(error)}
+
+
+def main():
+    if os.geteuid() == 0:
+        print("Run update-check-cache as the desktop user, without sudo.", file=sys.stderr)
+        return 1
+    os.umask(0o077)
+    cache = Path(os.environ.get("XDG_CACHE_HOME") or Path.home() / ".cache") / "fish"
+    cache.mkdir(parents=True, exist_ok=True)
+    with (cache / "update-check.lock").open("a") as lock:
+        try:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            return 0
+        try:
+            previous = json.loads((cache / "update-status.json").read_text())
+            if not isinstance(previous, dict):
+                previous = {}
+        except (OSError, ValueError):
+            previous = {}
+        environment = dict(os.environ, LC_ALL="C", NO_COLOR="1",
+                           CHECKUPDATES_DB=str(cache / "checkupdates-db"))
+        while True:
+            before = wait_for_packages()
+            now = int(time.time())
+            results = {}
+            for name, command in (("repo", ["checkupdates", "--nocolor"]),
+                                  ("aur", [shutil.which("paru") or shutil.which("yay") or "paru", "-Qua", "--color", "never"])):
+                old = previous.get(name, {})
+                if not isinstance(old, dict):
+                    old = {}
+                results[name] = scan(command, environment, old, now, repository=name == "repo")
+            # A new transaction may have started during the network requests.
+            if not Path("/var/lib/pacman/db.lck").exists() and before == package_state():
+                break
+        status = "partial" if any(value["error"] for value in results.values()) else "ok"
+        state = {"checked_at": now, "status": status, **results}
+        atomic_write(cache / "update-status.json", json.dumps(state, ensure_ascii=False, indent=2) + "\n")
+        # This file is sourced by Fish: write only integers and fixed status words.
+        atomic_write(cache / "update-status.fish",
+                     f"set -g __update_repo {results['repo']['count']}\n"
+                     f"set -g __update_aur {results['aur']['count']}\n"
+                     f"set -g __update_checked_at {now}\n"
+                     f"set -g __update_status {status}\n")
+        print(f"repo={results['repo']['count']} aur={results['aur']['count']} status={status}")
+        for name, value in results.items():
+            if value["error"]:
+                print(f"{name}: {value['error']}", file=sys.stderr)
+        return 0 if status == "ok" else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

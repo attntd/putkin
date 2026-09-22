@@ -37,7 +37,8 @@ def inside(base):
 hl.config({animations = {enabled = false}, input = {kb_layout = "pl", resolve_binds_by_sym = true}, misc = {disable_hyprland_logo = true, disable_splash_rendering = true}, xwayland = {enabled = false}})
 ''' + f'dofile({json.dumps(str(ROOT/"config/shell-layers.lua"))})\n' +
         f'dofile({json.dumps(str(ROOT/"config/menu-keybinds.lua"))})(hl.bind, {json.dumps(entry)})\n' +
-        'hl.bind("SUPER + ALT + X", function() end, {description = "Foreign test"})\n')
+        'hl.bind("SUPER + ALT + X", function() end, {description = "Foreign test"})\n' +
+        'hl.bind("SUPER + H", hl.dsp.focus({direction = "left"}), {description = "[Focus] Left"})\n')
     env = dict(os.environ)
     processes = []
     with (evidence/'hyprland.log').open('w+') as hypr_log, (evidence/'quickshell.log').open('w+') as app_log:
@@ -126,7 +127,26 @@ local value=hl.get_config(key); assert(value.colors[1] == "{first}" and value.co
             assert len(bindings())==8, bindings()
             assert shortcut('screenshot')==[(0,'print')], bindings()
             assert shortcut('commands')==[(64,'semicolon')], bindings()
-            passed('startup: eight owned bindings including Print, no duplicates or errors')
+            assert shortcut('messages')==[], bindings()
+            assert shortcut('quickSettings')==[(64,'q')], bindings()
+            passed('startup: eight owned bindings including Print and Super+Q; Super+H belongs to navigation')
+            ipc('probe','navigationWindow','true')
+            windows=eventually(clients,lambda cs:any(c['title']=='Putkin navigation target' for c in cs),'navigation window')
+            windows=sorted([c for c in windows if c['title'] in ('Putkin keyboard target','Putkin navigation target')],key=lambda c:c['at'][0])
+            assert len(windows)==2 and windows[0]['at'][0]<windows[1]['at'][0],windows
+            hypr('dispatch',f'hl.dsp.focus({{window="address:{windows[1]["address"]}"}})')
+            keys('-M','logo','-k','h','-m','logo')
+            eventually(lambda:hypr('activewindow',data=True),lambda c:c.get('address')==windows[0]['address'],'Super+H focuses left window')
+            assert not state()['messagesLoaded'],state()
+            ipc('probe','navigationWindow','false')
+            eventually(clients,lambda cs:not any(c['title']=='Putkin navigation target' for c in cs),'navigation window closed')
+            ipc('actions','invoke','messages')
+            eventually(state,lambda s:s.get('messagesLoaded'),'messages action opens window')
+            eventually(clients,lambda cs:any(c['title']=='Wiadomości' for c in cs),'native messages window')
+            ipc('probe','closeMessages')
+            eventually(state,lambda s:not s.get('messagesLoaded'),'messages closed')
+            keys('-M','logo','-k','q','-m','logo'); opened('quickSettings')
+            close(); passed('real Super+H focuses left, messages action works and Super+Q opens Quick Menu')
             border_options('#cba6f7', '#89b4fa')
             border_capture('window-border-default', '#cba6f7', '#89b4fa')
             passed('native square 2px window borders and shared diagonal GPU pixels')
@@ -134,7 +154,8 @@ local value=hl.get_config(key); assert(value.colors[1] == "{first}" and value.co
             assert state()['mode']==''
             close()
             keys('-M','logo','-k','semicolon','-m','logo')
-            result=opened('launcher'); assert result['mode']=='command' and result['text']=='' and result['results']==[], result
+            result=opened('launcher'); assert result['mode']=='command' and result['text']=='', result
+            assert any(row.get('action')=='messages' for row in result['results']), result
             close()
             keys('-M','logo','-k','v','-m','logo'); assert opened('launcher')['mode']=='clipboard'
             close(); passed('real Super+Space / Super+; / Super+V keyboard input')
@@ -202,6 +223,8 @@ local value=hl.get_config(key); assert(value.colors[1] == "{first}" and value.co
             border_options('#fab387', '#89b4fa')
             ipc('probe','reload'); result=stable(); assert not result['problem'],result
             assert len(bindings())==10,bindings()
+            assert shortcut('messages')==[],bindings()
+            assert len([b for b in hypr('binds',data=True) if b['modmask']==64 and b['key'].lower()=='h' and b['description']=='[Focus] Left'])==1
             border_options('#fab387', '#89b4fa')
             passed('Hyprland and Quickshell reload retain settings and do not accumulate bindings')
             for _ in range(10):

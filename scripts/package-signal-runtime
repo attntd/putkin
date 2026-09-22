@@ -27,15 +27,16 @@ def extract(archive, checksum, destination):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--source", type=Path, default=ROOT)
     parser.add_argument("--cli-archive", type=Path, required=True)
     parser.add_argument("--jre-archive", type=Path, required=True)
     parser.add_argument("--patched-cli", type=Path, required=True)
     parser.add_argument("--output", type=Path, default=ROOT / "artifacts/signal-runtime")
     args = parser.parse_args()
-    pin = json.loads((ROOT / "services/signal-cli-media/distribution.json").read_text())
-    policy = json.loads((ROOT / "services/signal-cli-media/runtime.json").read_text())
+    pin = json.loads((args.source / "services/signal-cli-media/distribution.json").read_text())
+    policy = json.loads((args.source / "services/signal-cli-media/runtime.json").read_text())
     if args.output.exists():
-        print(json.dumps(verify_runtime(args.output)))
+        print(json.dumps(verify_runtime(args.output, args.source)))
         return
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix=".signal-package-", dir=args.output.parent) as directory:
@@ -61,7 +62,7 @@ def main():
             if path.is_symlink() and not path.resolve().is_relative_to(jre.resolve()):
                 raise ValueError("Zewnętrzne dowiązanie w JRE.")
         shutil.copytree(jre, output / "jre")
-        metadata = verify_runtime(output)
+        metadata = verify_runtime(output, args.source)
         os.replace(output, args.output)
         print(json.dumps({"bundle": str(args.output), **metadata}, indent=2))
 

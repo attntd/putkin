@@ -1,5 +1,10 @@
 # Putkin retention policy 2 — signal-cli 0.14.8 JVM
 
+Normal installation uses `scripts/install`, which runs `scripts/prepare-signal`
+automatically when needed. `build.json` pins the JDK archive and source URLs;
+no manually patched CLI is required. The low-level commands below are for
+maintaining the recipe.
+
 Pinned patches against [upstream v0.14.8](https://github.com/AsamK/signal-cli/tree/v0.14.8).
 The upstream GPL-3.0 license applies. `recipe.json` verifies original sources
 and both original jars. `runtime.json` verifies **both resulting jars** before

@@ -1,5 +1,59 @@
 # Testowanie Putkin
 
+## Instalator, Signal i dotfiles — 2026-09-22
+
+```sh
+scripts/check
+python3 -m unittest discover -s tests -p test_install.py -v
+python3 -m unittest discover -s tests -p test_dotfiles.py -v
+python3 -m unittest discover -s tests -p test_clean_slate.py -v
+python3 -m unittest discover -s tests -p test_signal_bootstrap.py -v
+python3 -m unittest discover -s tests -p test_install_preflight.py -v
+python3 -m unittest discover -s tests -p test_signal_release.py -v
+```
+
+Dotfiles: świeży cel i aktualizacja, lokalna edycja, `seed`, backup/restore,
+przerwanie procesu między zapisami, odtworzenie dowiązań bez odczytu ich
+zewnętrznych celów, ścieżki ze spacjami/znakami shella, domyślny i nowy profil
+Zen, eksport zmienionych preferencji, canary klucza/tokena/cookies oraz
+odrzucanie niedozwolonych ścieżek. Nie ma skanowania całego HOME ani eksportu
+profilu przeglądarki. Nowe pozycje katalogu wymagają przeglądu treści.
+
+Bootstrap: zweryfikowane pobranie, ponowne użycie offline, zła suma,
+niepełne pobranie, puste cache w dry-run i odrzucenie wskazanego złego runtime.
+Osobny odbiór rzeczywistego buildera odtwarza dokładny pin dystrybucji;
+`scripts/test-signal-cli` wykonuje realne JSON-RPC bez konta/sieci,
+a `scripts/test-signal-release --package KATALOG --output RAPORT` testuje
+bridge/CLI/JRE z zainstalowanego wydania.
+
+Preflight: produkcyjne importy są kompilowane w prawdziwym Quickshellu,
+a nie wyszukiwane w źródłach jako substytut testu. Celowo brakujący moduł
+musi dać błąd. Nie tworzymy PanelWindow ani produkcyjnych adapterów;
+offscreen nie udostępnia backendu natywnych paneli. Pełną strukturę QML
+sprawdza `scripts/check`. Prawdziwy Hyprland sprawdza poprawną i celowo
+błędną konfigurację przez `--verify-config`; nie uruchamia kompozytora.
+Obie próby mają prywatne XDG, przestrzenie PID/montowań/sieci i brak PAM,
+systemowego D-Bus oraz sprzętu hosta. Bubblewrap jest wymagany.
+
+Start: ostrzeżenie traya zostaje zgłoszone bez wycofywania gotowego shella;
+TypeError, utrata procesu, obcy właściciel powiadomień i brak gotowości
+nadal powodują błąd. Testy zachowują blokadę sesji, odtworzenie poprzedniej
+instancji i odmowę downgrade’u zmigrowanej historii Signal.
+Rzeczywistej aktywacji na drugim komputerze nie zastępuje test katalogu `/tmp`.
+[Wyniki](status.md#instalacja-przenośna-i-modułowe-dotfiles--2026-09-22).
+
+`--clean-slate`: rzeczywiste usunięcie dawnych niezarządzanych plików,
+reset lokalnych edycji i `seed`, zachowanie kluczy, tokenów i danych profilu
+również na poziomie inode/mtime; brak sekretów w backupie testowych zakresów.
+Testy obejmują lokalne oraz systemowe wpisy autostartu, maski usług i ich
+powiązania, dowiązania do zewnętrznych danych, nieudany backup, przerwanie
+procesu podczas kasowania i zapisu oraz błąd po publikacji nowego domyślnego
+Quickshella. Osobno sprawdzane są dry-run, sprzeczne flagi, nietypowe nazwy
+w katalogu Zen oraz odmowa przy nakładaniu XDG backup/runtime na czyszczony
+katalog. Pełny prywatny przebieg: clean install → kontrola 173 plików →
+restore całej kopii → kolejny clean install. Żaden test nie czyści konfiguracji
+hosta. [Wyniki](status.md#tryb-clean-slate--2026-09-22).
+
 ## Okna uwierzytelniania — 2026-09-20
 
 `python3 -m unittest discover -s tests -p test_authentication.py -v`

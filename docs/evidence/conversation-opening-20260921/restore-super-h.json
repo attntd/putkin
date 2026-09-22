@@ -1,0 +1,7 @@
+{
+  "backup": "/home/attntd/.local/state/putkin/restore-super-h-20260921",
+  "restored": [
+    "/home/attntd/.config/hypr/modules/system_binds.lua",
+    "/home/attntd/.local/share/chezmoi/dot_config/hypr/modules/system_binds.lua"
+  ]
+}

@@ -1,0 +1,4 @@
+{"scope": "packaged production bridge/CLI/JRE, empty account, network disabled", "states": ["unconfigured idle: schema 7, no CLI", "pinned CLI 0.14.8 checked, empty account, no automatic pairing", "restart and disable preserve configuration, schema and protocol marker"], "cleanup": "no bridge or JVM", "ipc": "native Quickshell: private status, pairing, repeated settings, blocked/linked refusal", "result": "PASS"}
+usal",
+  "result": "PASS"
+}

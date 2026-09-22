@@ -1,0 +1,44 @@
+[mgr]
+ratio = [1, 3, 5]
+sort_by = "natural"
+sort_dir_first = true
+show_hidden = false
+show_symlink = true
+linemode = "size"
+
+[preview]
+wrap = "yes"
+tab_size = 2
+max_width = 4096
+max_height = 4096
+image_delay = 20
+image_filter = "lanczos3"
+image_quality = 90
+
+[opener]
+play_audio = [
+	{ run = "mpv --no-video --force-window=no %s", orphan = true, desc = "Odtworz audio w mpv", for = "unix" },
+]
+play_video = [
+	{ run = "mpv %s", orphan = true, desc = "Odtworz wideo w mpv", for = "unix" },
+]
+
+[open]
+prepend_rules = [
+	{ url = "*.{html,htm,xhtml,HTML,HTM,XHTML}", use = ["open", "edit", "reveal"] },
+	{ mime = "{text/html,application/xhtml+xml}", use = ["open", "edit", "reveal"] },
+	{ mime = "audio/*", use = "play_audio" },
+	{ mime = "video/*", use = "play_video" },
+]
+
+[plugin]
+prepend_preloaders = [
+	{ mime = "{audio,video}/*", run = "mediainfo" },
+]
+prepend_previewers = [
+	{ url = "*.{md,markdown,mdown,mkd}", run = 'piper -- CLICOLOR_FORCE=1 glow -w=$w -s=dark "$1"' },
+	{ mime = "{audio,video}/*", run = "mediainfo" },
+]
+
+[tasks]
+image_alloc = 1073741824

@@ -61,6 +61,10 @@ rekordów. Późniejsze świadome usunięcie lub zmiana przypisania pozostaje
 zachowane. Cudzy Print jest konfliktem, tak jak inne przypisania;
 adapter nie usuwa obcych skrótów.
 
+Super+H pozostaje nawigacją Hyprlanda do okna po lewej. Wiadomości nie
+mają domyślnego skrótu; działa `:messages`. Quick Menu ma `SUPER + Q`.
+Istniejące własne przypisania w `keyboard.json` pozostają zachowane.
+
 `config/menu-keybinds.lua` rejestruje siedem początkowych uchwytów z opisem
 `Putkin:<action>`. Adapter usuwa/odtwarza tylko te uchwyty i zachowuje dane
 do rollbacku nieudanego wywołania Lua. Dodatkowy istniejący Super+Shift+B

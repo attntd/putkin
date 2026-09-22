@@ -1,0 +1,884 @@
+PASS: 167 plików QML, 0 z błędami.
+{
+  "current": "/tmp/putkin-clean-slate-e2e-pi18gkx4/data/putkin/releases/20260922-153051-6b3c39ce5be0",
+  "active": null,
+  "removed": [],
+  "retained": [
+    "20260922-153051-6b3c39ce5be0"
+  ],
+  "configuration": [
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/kitty/kitty.conf",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/kitty/current-theme.conf",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/kitty/ssh.conf",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/fish/config.fish",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/fish/conf.d/aliases.fish",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/fish/conf.d/editor.fish",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/fish/conf.d/ssh-agent.fish",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/fish/conf.d/hyprland_autostart.fish",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/fish/functions/fish_greeting.fish",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/nvim/init.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/nvim/lazy-lock.json",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/nvim/lua/vim-options.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/nvim/lua/plugins.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/nvim/lua/plugins/catppuccin.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/nvim/lua/plugins/codecompanion.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/nvim/lua/plugins/completions.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/nvim/lua/plugins/lsp-config.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/nvim/lua/plugins/none-ls.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/nvim/lua/plugins/nvim-tmux-navigation.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/nvim/lua/plugins/oil.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/nvim/lua/plugins/rails.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/nvim/lua/plugins/render-markdown.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/nvim/lua/plugins/snacks.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/nvim/lua/plugins/swagger-preview.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/nvim/lua/plugins/treesitter.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/nvim/lua/plugins/vim-test.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/yazi/yazi.toml",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/yazi/keymap.toml",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/yazi/theme.toml",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/yazi/package.toml",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/yazi/flavors/catppuccin-mocha.yazi/LICENSE",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/yazi/flavors/catppuccin-mocha.yazi/LICENSE-tmtheme",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/yazi/flavors/catppuccin-mocha.yazi/flavor.toml",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/yazi/flavors/catppuccin-mocha.yazi/tmtheme.xml",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/yazi/plugins/mediainfo.yazi/LICENSE",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/yazi/plugins/mediainfo.yazi/adobe.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/yazi/plugins/mediainfo.yazi/audio.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/yazi/plugins/mediainfo.yazi/const.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/yazi/plugins/mediainfo.yazi/image.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/yazi/plugins/mediainfo.yazi/main.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/yazi/plugins/mediainfo.yazi/none-media-preview.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/yazi/plugins/mediainfo.yazi/utils.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/yazi/plugins/mediainfo.yazi/video.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/yazi/plugins/piper.yazi/LICENSE",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/yazi/plugins/piper.yazi/main.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/yazi/plugins/toggle-pane.yazi/LICENSE",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/yazi/plugins/toggle-pane.yazi/main.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/yazi/plugins/zoom.yazi/LICENSE",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/yazi/plugins/zoom.yazi/main.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/Kvantum/catppuccin-mocha-mauve/catppuccin-mocha-mauve.kvconfig",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/Kvantum/catppuccin-mocha-mauve/catppuccin-mocha-mauve.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/Kvantum/kvantum.kvconfig",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-3.0/settings.ini",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/settings.ini",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/qt5ct/qt5ct.conf",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/qt6ct/qt6ct.conf",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/glow/glow.yml",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/btop/btop.conf",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/voxtype/config.toml",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/starship.toml",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/mimeapps.list",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/xdg-terminals.list",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/uwsm/env",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/home/.tmux.conf",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/putkin/launch.json",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/putkin/settings.json",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/putkin/signal.json",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/hypr/backgrounds/Cloudsnight.jpg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/hypr/backgrounds/Rainnight.jpg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/hypr/backgrounds/forrest.png",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/hypr/backgrounds/lonely-fish.png",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/hypr/backgrounds/shaded_landscape.png",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/zen/existing.default/chrome/userChrome.css",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/zen/existing.default/chrome/userContent.css",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/zen/existing.default/chrome/zen-logo-mocha.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/zen/existing.default/chrome/zen-themes.css",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/zen/existing.default/zen-keyboard-shortcuts.json",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/zen/existing.default/user.js",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/hypr/hyprland.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/hypr/local.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/hypr/environment.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/hypr/permissions.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/hypr/input.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/hypr/appearance.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/hypr/animations.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/hypr/layout.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/hypr/rules.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/hypr/lib/paths.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/hypr/lib/bindings.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/hypr/keybinds/init.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/hypr/keybinds/apps.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/hypr/keybinds/windows.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/hypr/keybinds/workspaces.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/hypr/keybinds/hardware.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/hypr/keybinds/shell.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/hypr/autostart.lua",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/checkbox-checked-symbolic.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/checkbox-checked-symbolic@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/checkbox-mixed-symbolic.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/checkbox-mixed-symbolic@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/close-symbolic.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/close-symbolic@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/cursor-handle-symbolic.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/maximize-symbolic.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/maximize-symbolic@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/menu-radio-symbolic.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/menu-radio-symbolic@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/minimize-symbolic.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/minimize-symbolic@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/radio-checked-symbolic.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/radio-checked-symbolic@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/radio-mixed-symbolic.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/radio-mixed-symbolic@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-horz-marks-after-slider-dark.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-horz-marks-after-slider-dark@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-horz-marks-after-slider-disabled-dark.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-horz-marks-after-slider-disabled-dark@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-horz-marks-after-slider-disabled.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-horz-marks-after-slider-disabled@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-horz-marks-after-slider.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-horz-marks-after-slider@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-horz-marks-before-slider-dark.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-horz-marks-before-slider-dark@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-horz-marks-before-slider-disabled-dark.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-horz-marks-before-slider-disabled-dark@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-horz-marks-before-slider-disabled.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-horz-marks-before-slider-disabled@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-horz-marks-before-slider.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-horz-marks-before-slider@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-vert-marks-after-slider-dark.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-vert-marks-after-slider-dark@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-vert-marks-after-slider-disabled-dark.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-vert-marks-after-slider-disabled-dark@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-vert-marks-after-slider-disabled.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-vert-marks-after-slider-disabled@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-vert-marks-after-slider.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-vert-marks-after-slider@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-vert-marks-before-slider-dark.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-vert-marks-before-slider-dark@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-vert-marks-before-slider-disabled-dark.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-vert-marks-before-slider-disabled-dark@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-vert-marks-before-slider-disabled.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-vert-marks-before-slider-disabled@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-vert-marks-before-slider.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/scale-vert-marks-before-slider@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/selectionmode-checkbox-checked-dark.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/selectionmode-checkbox-checked-dark@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/selectionmode-checkbox-checked.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/selectionmode-checkbox-checked@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/selectionmode-checkbox-unchecked-dark.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/selectionmode-checkbox-unchecked-dark@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/selectionmode-checkbox-unchecked.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/selectionmode-checkbox-unchecked@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/small-checkbox-checked-symbolic.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/small-checkbox-checked-symbolic@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/small-checkbox-mixed-symbolic.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/small-checkbox-mixed-symbolic@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/small-radio-checked-symbolic.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/small-radio-checked-symbolic@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/small-radio-mixed-symbolic.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/small-radio-mixed-symbolic@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/unmaximize-symbolic.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/assets/unmaximize-symbolic@2.svg",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/gtk-dark.css",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/gtk.css",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/bin/update-check-cache",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/fish-update-check.service",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/fish-update-check.timer",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/fish-update-check.path",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0/LICENSE",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/home/.ssh/config",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/home/.gnupg/gpg-agent.conf",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/home/.gitconfig",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/ags.service",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/dms.service",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/dunst.service",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/eww.service",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/hypridle.service",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/hyprlock.service",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/hyprpanel.service",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/hyprpaper.service",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/mako.service",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/noctalia-shell.service",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/old-panel.service",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/putpuccin.service",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/quickshell-de.service",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/quickshell.service",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/swaybg.service",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/swayidle.service",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/swaync.service",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/swww-daemon.service",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/swww.service",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/waybar.service",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/autostart/old-shell.desktop",
+      "action": "install"
+    },
+    {
+      "path": "/tmp/putkin-clean-slate-e2e-pi18gkx4/bin/qs",
+      "action": "install"
+    }
+  ],
+  "configBackup": "/tmp/putkin-clean-slate-e2e-pi18gkx4/state/putkin/config-backups/20260922-153629-ktkdmgxe",
+  "cleanSlate": {
+    "reset": [
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/Kvantum",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/ags",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/btop",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/dms",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/dunst",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/eww",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/glow",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-3.0",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/gtk-4.0",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/hypr",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/hypridle",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/hyprlock",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/hyprpanel",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/hyprpaper",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/kitty",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/mako",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/noctalia",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/nvim",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/putpuccin",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/qt5ct",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/qt6ct",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/quickshell",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/quickshell-de",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/quickshell.previous",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/swaync",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/swww",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/uwsm",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/waybar",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/yazi",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/autostart/old-shell.desktop",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/fish/conf.d",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/fish/functions",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/putkin/old.json",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/putkin/settings.json",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/ags.service",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/dms.service",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/dunst.service",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/eww.service",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/hypridle.service",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/hyprlock.service",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/hyprpanel.service",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/hyprpaper.service",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/mako.service",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/noctalia-shell.service",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/old-panel.service",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/old-panel.service.d",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/putpuccin.service",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/quickshell-de.service",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/quickshell.service",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/swaybg.service",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/swayidle.service",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/swaync.service",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/swww-daemon.service",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/swww.service",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/waybar.service",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/zen/existing.default/chrome",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/systemd/user/graphical-session.target.wants/old-panel.service"
+    ],
+    "preserved": [
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/fish/fish_variables",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/putkin/signal",
+      "/tmp/putkin-clean-slate-e2e-pi18gkx4/config/voxtype/token"
+    ],
+    "maskedUnits": [
+      "ags.service",
+      "dms.service",
+      "dunst.service",
+      "eww.service",
+      "hypridle.service",
+      "hyprlock.service",
+      "hyprpanel.service",
+      "hyprpaper.service",
+      "mako.service",
+      "noctalia-shell.service",
+      "old-panel.service",
+      "putpuccin.service",
+      "quickshell-de.service",
+      "quickshell.service",
+      "swaybg.service",
+      "swayidle.service",
+      "swaync.service",
+      "swww-daemon.service",
+      "swww.service",
+      "waybar.service"
+    ],
+    "disabledAutostarts": [
+      "old-shell.desktop"
+    ]
+  },
+  "optionalMissing": []
+}

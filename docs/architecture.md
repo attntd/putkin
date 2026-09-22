@@ -1,5 +1,43 @@
 # Architektura Putkin
 
+## Przenośna konfiguracja i instalator — 2026-09-22
+
+`config/catalog.json` jest jawną listą zwykłych plików konfiguracji programów.
+`_dotfiles.py` wylicza cele z XDG, rozpoznaje domyślny profil Zen i buduje
+plan bez zapisu. Aktualizacje porównują skróty ostatnio zainstalowanych
+plików z bieżącą wersją, zachowując lokalne edycje. Pliki `seed` są tworzone
+tylko przy braku celu, z wyjątkiem jawnego `--clean-slate`.
+Zastępowanie dowiązań zapisuje samo dowiązanie,
+bez czytania ani modyfikowania zewnętrznego celu. Katalogi SSH/GPG pozostają
+na miejscu; przenoszone są tylko jawne pliki ustawień klientów.
+
+Transakcja zapisuje prywatny backup i dziennik przed pierwszą zmianą,
+cofa pliki przy błędzie i odtwarza przerwaną operację przy następnej instalacji.
+Runtime zachowuje atomowe `current`, pięć buildów i kontrolę zgodności danych
+Signala. Z `config/` do runtime trafiają tylko publiczne integracje i PAM;
+konfiguracje aplikacji mają osobny cykl życia. `--restore` kodu nie cofa
+ustawień ani danych konta. Osobny `restore-config` korzysta z lokalnego backupu.
+
+`_clean_slate.py` wyznacza jawne zakresy czyszczenia; katalog eksportu nie
+rozszerza listy całych drzew do usunięcia. Chronione pliki dzielą drzewo
+na mniejsze zakresy. Transakcja kopiuje wszystkie zastępowane poddrzewa
+przed pierwszym usunięciem i zapisuje je w tym samym dzienniku co zwykłe
+pliki. Odtworzenie przywraca również niezarządzane stare pliki, strukturę
+katalogów i dowiązania. Maski systemd i wyłączenia XDG autostart należą
+do tej transakcji. Żadne dowiązanie nie powoduje kopiowania zewnętrznego
+celu. Nakładające się ścieżki konfiguracji, runtime i backupów są odrzucane.
+Tryb wymaga wylogowania, a `--destination` pomija wszelkie operacje usług
+hosta. Zen zachowuje profil i dane; resetowane są wyłącznie CSS oraz
+zarządzane pliki ustawień. [Zakres](../config/README.md#zakres-clean-slate).
+
+`_signal_bootstrap.py` pobiera przypięte publiczne wejścia do cache,
+weryfikuje sumy i uruchamia istniejący builder/packager. Wynik musi pasować
+do pełnego wcześniejszego pinu. Pobieranie należy do instalacji; bridge
+zawsze wykonuje narzędzia z własnego wydania. `_preflight.py` sprawdza
+rzeczywiste moduły w natywnym Quickshellu bez tworzenia produkcyjnych usług.
+Hyprland sprawdza modułową konfigurację przez `--verify-config` w izolacji.
+Nie jest to próba uruchomienia drugiego pełnego shella.
+
 ## Okna uwierzytelniania — 2026-09-20
 
 AuthenticationService szereguje żądania askpass/Pinentry i zwalnia je po

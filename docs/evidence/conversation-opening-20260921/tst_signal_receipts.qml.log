@@ -1,0 +1,10 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::SignalReceipts::initTestCase()
+PASS   : qmltestrunner::SignalReceipts::test_gate_loss_during_debounce_hidden_detail_and_closed_view()
+PASS   : qmltestrunner::SignalReceipts::test_incoming_outside_scrolled_view_and_stale_route_do_not_read()
+PASS   : qmltestrunner::SignalReceipts::test_status_counts_accessible_and_unknown_not_delivered()
+PASS   : qmltestrunner::SignalReceipts::test_visible_range_once_and_unread_shared_with_hub()
+PASS   : qmltestrunner::SignalReceipts::cleanupTestCase()
+Totals: 6 passed, 0 failed, 0 skipped, 0 blacklisted, 8310ms
+********* Finished testing of qmltestrunner *********

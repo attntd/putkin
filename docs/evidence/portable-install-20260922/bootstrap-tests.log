@@ -1,0 +1,13 @@
+test_all_build_sources_match_the_recipe (test_signal_bootstrap.BootstrapTests.test_all_build_sources_match_the_recipe) ... ok
+test_corrupt_partial_and_missing_offline_downloads_never_publish (test_signal_bootstrap.BootstrapTests.test_corrupt_partial_and_missing_offline_downloads_never_publish) ... Signal: pobieranie archive
+Signal: pobieranie archive
+ok
+test_empty_cache_dry_run_plans_build_without_creating_it (test_signal_bootstrap.BootstrapTests.test_empty_cache_dry_run_plans_build_without_creating_it) ... ok
+test_explicit_wrong_runtime_is_not_silently_replaced (test_signal_bootstrap.BootstrapTests.test_explicit_wrong_runtime_is_not_silently_replaced) ... ok
+test_verified_fetch_is_cached_and_offline_reuses_it (test_signal_bootstrap.BootstrapTests.test_verified_fetch_is_cached_and_offline_reuses_it) ... Signal: pobieranie archive
+ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.030s
+
+OK

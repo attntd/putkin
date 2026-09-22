@@ -1,0 +1,514 @@
+{
+  "checks": [
+    "startup: eight owned bindings including Print and Super+Q; Super+H belongs to navigation",
+    "real Super+H focuses left, messages action works and Super+Q opens Quick Menu",
+    "native square 2px window borders and shared diagonal GPU pixels",
+    "real Super+Space / Super+; / Super+V keyboard input",
+    "appearance preview changes window borders; cancel restores the saved palette",
+    "real floating Settings window, preserved on focus loss, appearance persisted",
+    "save applies changed shortcuts; old shortcut is removed",
+    "configured colon aliases execute on Enter and hand off focus to destination",
+    "configured native window and workspace actions use the captured target",
+    "foreign shortcut conflict blocks write and preserves live bindings",
+    "Hyprland and Quickshell reload retain settings and do not accumulate bindings",
+    "ten native open/close cycles, resources released, no QML/import/config errors"
+  ],
+  "border_pixels": [
+    {
+      "image": "window-border-default.png",
+      "x": 0,
+      "y": 0,
+      "width": 1240,
+      "height": 860,
+      "actual": [
+        202,
+        165,
+        247
+      ],
+      "expected": [
+        202.96750750187547,
+        166.00689234808704,
+        247.00147693173292
+      ]
+    },
+    {
+      "image": "window-border-default.png",
+      "x": 1239,
+      "y": 0,
+      "width": 1240,
+      "height": 860,
+      "actual": [
+        169,
+        172,
+        248
+      ],
+      "expected": [
+        169.99412040510128,
+        173.0012471867967,
+        248.50026725431357
+      ]
+    },
+    {
+      "image": "window-border-default.png",
+      "x": 0,
+      "y": 859,
+      "width": 1240,
+      "height": 860,
+      "actual": [
+        169,
+        172,
+        248
+      ],
+      "expected": [
+        170.00587959489872,
+        172.9987528132033,
+        248.49973274568643
+      ]
+    },
+    {
+      "image": "window-border-default.png",
+      "x": 1239,
+      "y": 859,
+      "width": 1240,
+      "height": 860,
+      "actual": [
+        136,
+        179,
+        250
+      ],
+      "expected": [
+        137.03249249812453,
+        179.99310765191296,
+        249.99852306826708
+      ]
+    },
+    {
+      "image": "window-border-default.png",
+      "x": 620,
+      "y": 0,
+      "width": 1240,
+      "height": 860,
+      "actual": [
+        185,
+        168,
+        248
+      ],
+      "expected": [
+        186.46750750187547,
+        169.50689234808704,
+        247.75147693173292
+      ]
+    },
+    {
+      "image": "window-border-default.png",
+      "x": 0,
+      "y": 430,
+      "width": 1240,
+      "height": 860,
+      "actual": [
+        185,
+        168,
+        248
+      ],
+      "expected": [
+        186.46750750187547,
+        169.50689234808704,
+        247.75147693173292
+      ]
+    },
+    {
+      "image": "window-border-default.png",
+      "x": 1239,
+      "y": 430,
+      "width": 1240,
+      "height": 860,
+      "actual": [
+        152,
+        175,
+        249
+      ],
+      "expected": [
+        153.49412040510128,
+        176.5012471867967,
+        249.25026725431357
+      ]
+    },
+    {
+      "image": "window-border-default.png",
+      "x": 620,
+      "y": 859,
+      "width": 1240,
+      "height": 860,
+      "actual": [
+        152,
+        175,
+        249
+      ],
+      "expected": [
+        153.50587959489872,
+        176.4987528132033,
+        249.24973274568643
+      ]
+    },
+    {
+      "image": "window-border-saved.png",
+      "x": 0,
+      "y": 0,
+      "width": 1240,
+      "height": 860,
+      "actual": [
+        250,
+        178,
+        134
+      ],
+      "expected": [
+        249.9443689047262,
+        179.00049231057764,
+        135.05661571642912
+      ]
+    },
+    {
+      "image": "window-border-saved.png",
+      "x": 1239,
+      "y": 0,
+      "width": 1240,
+      "height": 860,
+      "actual": [
+        192,
+        178,
+        191
+      ],
+      "expected": [
+        193.4899334208552,
+        179.5000890847712,
+        192.51024474868717
+      ]
+    },
+    {
+      "image": "window-border-saved.png",
+      "x": 0,
+      "y": 859,
+      "width": 1240,
+      "height": 860,
+      "actual": [
+        192,
+        178,
+        191
+      ],
+      "expected": [
+        193.5100665791448,
+        179.4999109152288,
+        192.48975525131283
+      ]
+    },
+    {
+      "image": "window-border-saved.png",
+      "x": 1239,
+      "y": 859,
+      "width": 1240,
+      "height": 860,
+      "actual": [
+        136,
+        179,
+        250
+      ],
+      "expected": [
+        137.05563109527384,
+        179.99950768942236,
+        249.94338428357088
+      ]
+    },
+    {
+      "image": "window-border-saved.png",
+      "x": 620,
+      "y": 0,
+      "width": 1240,
+      "height": 860,
+      "actual": [
+        221,
+        178,
+        163
+      ],
+      "expected": [
+        221.6943689047262,
+        179.25049231057764,
+        163.8066157164291
+      ]
+    },
+    {
+      "image": "window-border-saved.png",
+      "x": 0,
+      "y": 430,
+      "width": 1240,
+      "height": 860,
+      "actual": [
+        221,
+        178,
+        163
+      ],
+      "expected": [
+        221.6943689047262,
+        179.25049231057764,
+        163.8066157164291
+      ]
+    },
+    {
+      "image": "window-border-saved.png",
+      "x": 1239,
+      "y": 430,
+      "width": 1240,
+      "height": 860,
+      "actual": [
+        164,
+        179,
+        220
+      ],
+      "expected": [
+        165.2399334208552,
+        179.7500890847712,
+        221.26024474868717
+      ]
+    },
+    {
+      "image": "window-border-saved.png",
+      "x": 620,
+      "y": 859,
+      "width": 1240,
+      "height": 860,
+      "actual": [
+        164,
+        179,
+        220
+      ],
+      "expected": [
+        165.2600665791448,
+        179.7499109152288,
+        221.23975525131283
+      ]
+    }
+  ],
+  "bindings": [
+    {
+      "locked": false,
+      "mouse": false,
+      "release": false,
+      "repeat": false,
+      "longPress": false,
+      "non_consuming": false,
+      "auto_consuming": false,
+      "has_description": true,
+      "modmask": 64,
+      "submap": "",
+      "submap_universal": "false",
+      "key": "SPACE",
+      "keycode": 0,
+      "catch_all": false,
+      "description": "Putkin:launcher",
+      "allow_input_capture": false,
+      "dispatcher": "__lua",
+      "arg": "69"
+    },
+    {
+      "locked": false,
+      "mouse": false,
+      "release": false,
+      "repeat": false,
+      "longPress": false,
+      "non_consuming": false,
+      "auto_consuming": false,
+      "has_description": true,
+      "modmask": 72,
+      "submap": "",
+      "submap_universal": "false",
+      "key": "V",
+      "keycode": 0,
+      "catch_all": false,
+      "description": "Putkin:clipboard",
+      "allow_input_capture": false,
+      "dispatcher": "__lua",
+      "arg": "65"
+    },
+    {
+      "locked": false,
+      "mouse": false,
+      "release": false,
+      "repeat": false,
+      "longPress": false,
+      "non_consuming": false,
+      "auto_consuming": false,
+      "has_description": true,
+      "modmask": 64,
+      "submap": "",
+      "submap_universal": "false",
+      "key": "semicolon",
+      "keycode": 0,
+      "catch_all": false,
+      "description": "Putkin:commands",
+      "allow_input_capture": false,
+      "dispatcher": "__lua",
+      "arg": "28"
+    },
+    {
+      "locked": false,
+      "mouse": false,
+      "release": false,
+      "repeat": false,
+      "longPress": false,
+      "non_consuming": false,
+      "auto_consuming": false,
+      "has_description": true,
+      "modmask": 72,
+      "submap": "",
+      "submap_universal": "false",
+      "key": "U",
+      "keycode": 0,
+      "catch_all": false,
+      "description": "Putkin:settings",
+      "allow_input_capture": false,
+      "dispatcher": "__lua",
+      "arg": "10"
+    },
+    {
+      "locked": false,
+      "mouse": false,
+      "release": false,
+      "repeat": false,
+      "longPress": false,
+      "non_consuming": false,
+      "auto_consuming": false,
+      "has_description": true,
+      "modmask": 64,
+      "submap": "",
+      "submap_universal": "false",
+      "key": "Q",
+      "keycode": 0,
+      "catch_all": false,
+      "description": "Putkin:quickSettings",
+      "allow_input_capture": false,
+      "dispatcher": "__lua",
+      "arg": "43"
+    },
+    {
+      "locked": false,
+      "mouse": false,
+      "release": false,
+      "repeat": false,
+      "longPress": false,
+      "non_consuming": false,
+      "auto_consuming": false,
+      "has_description": true,
+      "modmask": 64,
+      "submap": "",
+      "submap_universal": "false",
+      "key": "B",
+      "keycode": 0,
+      "catch_all": false,
+      "description": "Putkin:bar",
+      "allow_input_capture": false,
+      "dispatcher": "__lua",
+      "arg": "44"
+    },
+    {
+      "locked": false,
+      "mouse": false,
+      "release": false,
+      "repeat": false,
+      "longPress": false,
+      "non_consuming": false,
+      "auto_consuming": false,
+      "has_description": true,
+      "modmask": 65,
+      "submap": "",
+      "submap_universal": "false",
+      "key": "N",
+      "keycode": 0,
+      "catch_all": false,
+      "description": "Putkin:notifications",
+      "allow_input_capture": false,
+      "dispatcher": "__lua",
+      "arg": "9"
+    },
+    {
+      "locked": false,
+      "mouse": false,
+      "release": false,
+      "repeat": false,
+      "longPress": false,
+      "non_consuming": false,
+      "auto_consuming": false,
+      "has_description": true,
+      "modmask": 0,
+      "submap": "",
+      "submap_universal": "false",
+      "key": "Print",
+      "keycode": 0,
+      "catch_all": false,
+      "description": "Putkin:screenshot",
+      "allow_input_capture": false,
+      "dispatcher": "__lua",
+      "arg": "50"
+    },
+    {
+      "locked": false,
+      "mouse": false,
+      "release": false,
+      "repeat": false,
+      "longPress": false,
+      "non_consuming": false,
+      "auto_consuming": false,
+      "has_description": true,
+      "modmask": 65,
+      "submap": "",
+      "submap_universal": "false",
+      "key": "P",
+      "keycode": 0,
+      "catch_all": false,
+      "description": "Putkin:power",
+      "allow_input_capture": false,
+      "dispatcher": "__lua",
+      "arg": "54"
+    },
+    {
+      "locked": false,
+      "mouse": false,
+      "release": false,
+      "repeat": false,
+      "longPress": false,
+      "non_consuming": false,
+      "auto_consuming": false,
+      "has_description": true,
+      "modmask": 72,
+      "submap": "",
+      "submap_universal": "false",
+      "key": "F",
+      "keycode": 0,
+      "catch_all": false,
+      "description": "Putkin:floating",
+      "allow_input_capture": false,
+      "dispatcher": "__lua",
+      "arg": "58"
+    }
+  ],
+  "version": {
+    "branch": "v0.56.2",
+    "commit": "efb50993780079460b0cbed1363e2166a2de1d9f",
+    "version": "0.56.2",
+    "dirty": false,
+    "commit_message": "[gha] Nix: update inputs",
+    "commit_date": "Wed Aug 5 14:13:21 2026",
+    "tag": "v0.56.2",
+    "commits": "7661",
+    "buildAquamarine": "0.15.0",
+    "buildHyprlang": "0.6.8",
+    "buildHyprutils": "0.14.1",
+    "buildHyprcursor": "0.1.13",
+    "buildHyprgraphics": "0.5.1",
+    "systemAquamarine": "0.15.1",
+    "systemHyprlang": "0.6.8",
+    "systemHyprutils": "0.14.2",
+    "systemHyprcursor": "0.1.13",
+    "systemHyprgraphics": "0.5.1",
+    "abiHash": "efb50993780079460b0cbed1363e2166a2de1d9f_aq_0.15_hu_0.14_hg_0.5_hc_0.1_hlg_0.6",
+    "flags": []
+  }
+}

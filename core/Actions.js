@@ -7,7 +7,7 @@ var catalog = [
     {id: "commands", title: "Launcher komend", group: "Shell", shortcut: "SUPER + semicolon"},
     {id: "messages", title: "Wiadomości", group: "Shell", command: ":messages"},
     {id: "settings", title: "Ustawienia", group: "Shell", command: ":settings"},
-    {id: "quickSettings", title: "Szybkie ustawienia", group: "Shell", shortcut: "SUPER + SHIFT + Q"},
+    {id: "quickSettings", title: "Szybkie ustawienia", group: "Shell", shortcut: "SUPER + Q"},
     {id: "audio", title: "Panel dźwięku", group: "Shell"},
     {id: "battery", title: "Panel baterii", group: "Shell"},
     {id: "bar", title: "Nawigacja paskiem", group: "Shell", shortcut: "SUPER + B"},

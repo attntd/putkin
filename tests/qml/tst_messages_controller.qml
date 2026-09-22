@@ -107,6 +107,10 @@ Item {
             compare(parsed.value.find(v => v.action === "settings").command, ":messages");
             compare(parsed.value.find(v => v.action === "messages").command, "");
             compare(parsed.value.find(v => v.action === "messages").shortcut, "");
+            rows.find(v => v.action === "settings").shortcut = "SUPER + H";
+            const collision = Actions.parse(JSON.stringify({schemaVersion: 1, bindings: rows}));
+            verify(!collision.error);
+            compare(collision.value.find(v => v.action === "messages").shortcut, "");
             rows.pop(); verify(Actions.parse(JSON.stringify({schemaVersion: 1, bindings: rows})).error);
         }
     }

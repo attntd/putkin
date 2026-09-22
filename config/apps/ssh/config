@@ -1,0 +1,20 @@
+Host technitium-1
+  HostName 192.168.0.04
+
+Host technitium-2
+  HostName 192.168.0.05
+
+Host radiodev
+  HostName 192.168.0.80
+
+Host radiology
+  HostName 192.168.0.30
+
+Host security
+  HostName 192.168.0.3
+
+Host mediarr
+  HostName 192.168.0.50
+
+Host radiodev radiology technitium-1 technitium-2 security mediarr pve p16 x1
+  User attntd

@@ -1,5 +1,215 @@
 # Status implementacji
 
+## Tryb clean-slate — 2026-09-22
+
+**Zaimplementowany i sprawdzony w prywatnym prefiksie; konfiguracja aktywnego
+pulpitu nie była czyszczona.** Jawna flaga archiwizuje całe zastępowane
+drzewa konfiguracji, usuwa stare pliki także spoza katalogu i instaluje
+wersję z paczki. Resetuje edycje lokalne, `seed` i `hypr/local.lua`, bez
+migracji dawnych monitorów. Rozpoznane jednostki poprzednich shelli są
+maskowane, ich powiązania autostartu usuwane, a wpisy XDG wyłączane.
+Obowiązuje wylogowanie przed wykonaniem; dry-run działa również w sesji.
+
+Klucze, dane kont i profilu przeglądarki pozostają na miejscu. Chronione
+pliki w czyszczonym drzewie dzielą je na mniejsze zakresy. Osadzony sekret
+w zwykłej starej konfiguracji pozostaje w prywatnym lokalnym backupie,
+nie w nowej konfiguracji ani eksporcie. Dowiązania nie powodują odczytu
+zewnętrznych celów. Backup i dziennik powstają przed pierwszym usunięciem;
+`restore-config` oraz odzyskiwanie przerwanej instalacji odtwarzają także
+niezarządzane stare moduły i powiązania usług. Nakładające się katalogi
+XDG runtime/backup i czyszczenia są odrzucane przed zmianami.
+
+| Sprawdzenie | Wynik |
+| --- | --- |
+| `scripts/check` | **PASS**, 272 QML, 0 błędów; [log](evidence/clean-slate-20260922/check.log). |
+| Czysta instalacja | **PASS**, 13 testów: reset, prywatne dane, autostarty lokalne/systemowe, maski, backup/restore, symlinki, błędy backupu i publikacji, śmierć procesu, dry-run, granice XDG i niestandardowy katalog Zen; [log](evidence/clean-slate-20260922/clean-slate-tests.log). |
+| Regresja instalatora | **PASS**, 19 testów; [log](evidence/clean-slate-20260922/install-tests.log). |
+| Dotfiles / bootstrap / zgodność Signal / preflight | **PASS**, 9 + 5 + 11 + 4 testy; [log](evidence/clean-slate-20260922/regression-tests.log), [końcowe dotfiles](evidence/clean-slate-20260922/dotfiles-final-tests.log). Razem **61 różnych testów**. |
+| Pełny prywatny install | **PASS**, stara konfiguracja zastąpiona, 173 pliki zgodne z katalogiem, poprawny runtime/CLI/JRE i natywna walidacja QML/Lua; [wynik](evidence/clean-slate-20260922/acceptance.json), [log](evidence/clean-slate-20260922/install.log). |
+| Dane prywatne | **PASS**, 11 plików testowych zachowało zawartość, inode i mtime; ich canary nie trafiły do backupu konfiguracji. |
+| Cały backup i powtórzenie | **PASS**, 19 oryginalnych plików przywróconych, powiązanie starej usługi odtworzone i 11 prywatnych plików nietkniętych; [restore](evidence/clean-slate-20260922/restore-acceptance.json). Kolejny clean install ponownie dał 173 zgodne pliki; [log](evidence/clean-slate-20260922/reinstall.log), [podsumowanie](evidence/clean-slate-20260922/summary.json). |
+
+Niewykonane: czyszczenie na drugim fizycznym komputerze, instalacja pakietów
+oraz zatrzymywanie/maskowanie rzeczywistych usług hosta. Dla usług sprawdzono
+lokalną dokumentację systemd 261 i odczyt stanu nieistniejącej jednostki;
+sekwencje stop/reload/rollback mają atrapy, a pliki jednostek, masek i
+autostartu są rzeczywiste w `/tmp`. Natywne testy używały prywatnych XDG,
+D-Bus i bubblewrap, bez pełnego shella na aktywnym pulpicie.
+
+[Instrukcja](install.md#świeży-start---clean-slate),
+[zakres i wyjątki](../config/README.md#zakres-clean-slate).
+
+## Instalacja przenośna i modułowe dotfiles — 2026-09-22
+
+**Zaimplementowane i przetestowane w prywatnych celach; aktywny pulpit nie
+był przełączany.** Zakres użytkownika: instalacja na kolejnej maszynie,
+automatyczne przygotowanie Signala oraz własne dotfiles z uporządkowanym
+Hyprlandem, bez sekretów. To rozszerzenie etapu 13, bez nowych funkcji UI.
+
+Poprzedni instalator wymagał nieudokumentowanej na nowej maszynie gotowej
+paczki CLI/JRE. `_signal_bootstrap.py` i `prepare-signal` pobierają przypięte
+wejścia, sprawdzają SHA-256, nakładają istniejące poprawki i odtwarzają
+**ten sam pin całego runtime**. `install` robi to automatycznie, a
+`test-signal-cli` sam wybiera runtime. Pozostają zaawansowane opcje własnej
+paczki/cache i tryb offline. Dry-run nie pobiera i nie zmienia celu.
+
+`config/` ma **173 jawnie wybrane pliki** ustawień: Hyprland, tapety,
+Kitty/Fish/Starship, Neovim, Yazi z pluginami, Zen, GTK/Qt/Kvantum,
+tmux, btop, Glow, Voxtype, Git, klienci SSH/GPG oraz integracja sesji.
+Hyprland ma krótki root, osobne moduły wyglądu, układu, wejścia, reguł,
+autostartu i pięć grup skrótów. Ścieżki wynikają z HOME/XDG. `local.lua`
+zachowuje ustawienia konkretnego komputera; przy migracji przejmuje stare
+`monitors.lua`, a na nowej maszynie obowiązuje automatyczny wybór monitora.
+Skróty nie wskazują już starego `quickshell-de`; warianty Print otwierają
+wspólny wybór screenshota. `Super+h/j/k/l` zachowuje kierunki fokusu.
+
+Instalacja plików ma osobny dziennik, prywatne kopie i odtworzenie po błędzie
+lub przerwaniu procesu. Aktualizacja zachowuje lokalne edycje i wszystkie
+istniejące pliki `seed`. Dowiązania zasobów są zastępowane z backupem samych
+linków, bez odczytywania ani modyfikowania zewnętrznych celów. Eksport czyta
+wyłącznie katalog; Zen przenosi CSS, skróty i wskazane preferencje, bez
+profilu/konta/cookies/historii. Pliki kluczy SSH/GPG, konta Signal/Bitwarden
+oraz token Voxtype nie trafiają do źródeł ani paczki.
+
+`doctor` i instalator sprawdzają wersje i rzeczywiste importy w Quickshellu,
+a Hyprland sprawdza Lua przez `--verify-config`, bez uruchamiania drugiego
+kompozytora. Lista pakietów ma 76 poprawnych nazw z lokalnego repo Arch
+oraz trzy AUR. Instalacja pakietów wymaga jawnej opcji i wznawia proces
+Pythona po aktualizacji. Doprecyzowano nazwę pakietu `qrencode` i wykrywanie
+Qt przez `qmake6`, bez przypadkowego odczytu wersji Qt 5 z PATH.
+
+Stary warunek aktywacji wycofywał gotowy shell przy każdym `WARN`.
+Ostrzeżenia są teraz raportowane, a błędy QML/importów, utrata procesu,
+konflikt powiadomień i brak gotowości nadal zatrzymują start. Błąd aktywacji
+zapisuje prywatne `activation-error.txt` z wynikiem procesu systemd.
+**Nie stwierdzono, że ten warunek był przyczyną wszystkich zgłoszonych crashów.**
+
+| Sprawdzenie | Rzeczywisty wynik |
+| --- | --- |
+| `scripts/check` | **PASS**, 272 QML, 0 błędów; [log](evidence/portable-install-20260922/check.log). |
+| Instalator | **PASS**, 19 testów: kopiowanie/publikacja, rollback, pięć buildów, prywatna instancja Quickshell, ostrzeżenie a błąd/utrata procesu; [log](evidence/portable-install-20260922/install-tests.log). |
+| Dotfiles | **PASS**, 9 testów aktualizacji, lokalnych zmian, przerwania procesu, linków, restore, profili Zen i canary sekretów; [log](evidence/portable-install-20260922/dotfiles-tests.log). |
+| Bootstrap / zgodność danych Signal | **PASS**, 5 + 11 testów; [bootstrap](evidence/portable-install-20260922/bootstrap-tests.log), [zgodność](evidence/portable-install-20260922/release-tests.log). |
+| Natywne bramki preflight | **PASS**, 4 testy, w tym realnie brakujący moduł i błędny Lua; [log](evidence/portable-install-20260922/preflight-tests.log). |
+| Rzeczywiste odtworzenie Signal | **PASS**, oficjalne pobrania, patch, kompilacja i dokładny pin; [build](evidence/portable-install-20260922/signal-build.log). |
+| CLI i zainstalowany bridge/JRE | **PASS**, JSON-RPC i pusty profil bez sieci, restart/disable, brak pozostawionych procesów; [CLI](evidence/portable-install-20260922/signal-cli.json), [końcowe wydanie](evidence/portable-install-20260922/auto-installed-signal.json). |
+| Pełny przebieg instalatora | **PASS**, osobny pusty cel i cache bez gotowego runtime; samodzielne budowanie z zapisanych pobrań, walidacja QML/Lua, 173 konfiguracje + nowy profiles.ini; [log](evidence/portable-install-20260922/auto-build-install.log). |
+| Aktualizacja / eksport / diagnoza | **PASS**, plan ponownej instalacji bez zmian, 173 pliki eksportu, poprawny doctor; [plan](evidence/portable-install-20260922/reinstall-plan.json), [eksport](evidence/portable-install-20260922/config-export.json), [doctor](evidence/portable-install-20260922/doctor.json). |
+| Końcowa zgodność konfiguracji | **PASS**, wszystkie 173 pliki zgodne z renderowanymi źródłami po poprawce pomocnika yay/paru; [wynik](evidence/portable-install-20260922/final-config.json). |
+| Pakiety / GPG | **PASS**, 76 nazw pacman; GPG parsuje ścieżkę ze spacjami (`--gpgconf-test`, exit 0); [pakiety](evidence/portable-install-20260922/packages.json), [zbiorczy zapis](evidence/portable-install-20260922/summary.json). |
+
+Niewykonane: instalacja pakietów na świeżym systemie, aktywacja na drugim
+komputerze, test jego GPU/sterowników i odtworzenie zgłoszonego crasha.
+Nie otrzymano wersji ani logów z tamtej maszyny. Nie parowano prawdziwego
+konta Signal i nie przenoszono żadnych sekretów. Testy używały prywatnych
+XDG/D-Bus oraz bubblewrap bez dostępu do sprzętu i PAM; sandbox narzędzia
+wymagał zezwolenia na samo tworzenie tych przestrzeni. Nie uruchomiono
+pełnego shella na aktywnym pulpicie.
+
+[Instrukcja instalacji](install.md), [układ konfiguracji](../config/README.md).
+Wcześniejsze zmiany użytkownika w QML, skrótach i dokumentacji zachowano.
+
+## Przywrócenie Super+H i otwieranie rozmowy na dole — 2026-09-21
+
+**Wdrożone: `20260921-141345-67428b3b725f`.**
+[Kontrola aktywnego wydania](evidence/conversation-opening-20260921/live-after.json)
+PASS: dokładnie jedno Super+H → fokus w lewo, Super+Q → Quick Menu,
+osiem skrótów Putkina, jedna instancja shella, Signal `ready/linked`,
+brak ostrzeżeń QML i błędów konfiguracji Hyprlanda. Trzy zmienione pliki
+runtime mają sumy zgodne ze źródłami. Zachowano pięć buildów; poprzedni:
+`20260921-135431-96e7045e65b0`.
+
+Przywrócono oryginalną linię nawigacji w
+`~/.config/hypr/modules/system_binds.lua` oraz odpowiadającym źródle chezmoi.
+Kopie sprzed przywrócenia: `~/.local/state/putkin/restore-super-h-20260921/`.
+Instalator kontrolowanie przełączył istniejący shell w odblokowanej sesji.
+
+Super+H ponownie należy do nawigacji Hyprlanda w lewo. Usunięto domyślne
+przypisanie Wiadomości z katalogu działań i początkowych uchwytów Lua;
+Quick Menu zachowuje Super+Q, a Wiadomości komendę `:messages`.
+Poprzednie dopasowanie szerokości dymków pozostaje bez zmian.
+
+Historia przewija się na dół także po utworzeniu widoku z już wczytanym
+modelem i po ustaleniu rozmiaru okna. Dalsze zmiany geometrii śledzą
+koniec tylko do ręcznego przewinięcia. Klawisze k/↑ wyłączają śledzenie;
+paginacja i nowe wiadomości zachowują pozycję podczas czytania historii.
+
+Przed poprawką nowe testy odtworzyły **3 błędy**: ponowne otwarcie
+w szerokim/wąskim oknie oraz wczytanie rozmowy przed utworzeniem widoku.
+Po poprawce sześć zestawów Qt: **84 PASS** (Messages 21, Keyboard 36,
+MessagesController 6, SignalReceipts 6, SignalInteractions 7, SignalMedia 8).
+Testy obejmują także opóźnioną odpowiedź, zmianę rozmowy i rozmiaru.
+`scripts/check`: **272 QML, 0 błędów**; staging w prywatnym `/tmp`
+i aktywacja: **167 QML, 0 błędów**, weryfikacja przypiętego CLI/JRE PASS.
+Prywatny Hyprland: **PASS**, rzeczywiste Super+H przenosi fokus pomiędzy
+dwoma oknami w lewo, nie otwiera Wiadomości; Super+Q otwiera Quick Menu.
+Reload zachowuje jeden skrót nawigacji i osiem uchwytów Putkina.
+Prywatny Wayland Signala: **PASS**, małe/duże okno, skala 1,5,
+załączniki, quick reply, hotplug i reload. Konto i sprzęt na atrapach.
+Obejrzano natywny zrzut małego okna z najnowszą wiadomością przy kompozytorze.
+
+[Logi i raporty](evidence/conversation-opening-20260921/).
+Sprawdzono lokalnie Qt **6.11.2**, Quickshell **0.3.1**, Hyprland **0.56.2**
+oraz oficjalne API Qt 6.11:
+[ListView](https://doc.qt.io/qt-6.11/qml-qtquick-listview.html),
+[Qt.callLater](https://doc.qt.io/qt-6.11/qml-qtqml-qt.html#callLater-method).
+Pełny `scripts/test` i odbiór z fizycznym telefonem nie są częścią tej korekty.
+
+## Dopasowanie dymków i Super+H / Super+Q — 2026-09-21
+
+**Wdrożone: `20260921-135431-96e7045e65b0`.**
+Instalator i [kontrola aktywnego wydania](evidence/message-bubbles-20260921/live-after.json)
+PASS: dziewięć skrótów gotowych, dokładnie jedno Super+H → messages
+i Super+Q → quickSettings, brak starego Super+Shift+Q, Signal `ready/linked`,
+bez błędów konfiguracji Hyprlanda. Sumy trzech zmienionych plików runtime
+zgodne ze źródłami. Zachowano pięć buildów; poprzedni:
+`20260921-110638-03f24e35e2b4`.
+
+Hostowy Super+H był przypisany do fokusu okna w lewo. Zgodnie z nowym
+przypisaniem użytkownika usunięto ten konflikt w
+`~/.config/hypr/modules/system_binds.lua` i odpowiadającym źródle chezmoi.
+Kopie obu plików są w
+`~/.local/state/putkin/message-shortcuts-20260921-155427/`.
+Testy pozostały izolowane; instalator kontrolowanie przełączył jedną
+instancję istniejącego shella w odblokowanej sesji.
+
+Dymki rosną od naturalnej szerokości treści, autora i stopki do maksymalnie
+50% szerokości historii rozmowy. Tekst, cytaty i przyciski akcji zawijają
+się także w małym oknie; załączniki i rozwinięte menu mieszczą się w limicie.
+Wiadomości mają domyślnie Super+H, Quick Menu Super+Q. Zgodne są katalog
+działań i początkowe uchwyty Lua. Migracja katalogu sprzed wiadomości
+zachowuje cudze przypisanie Super+H; zapisane własne skróty nie są nadpisywane.
+
+Weryfikacja na Qt **6.11.2**, Quickshell **0.3.1**, Hyprland **0.56.2**:
+
+- `scripts/check`: **272 QML, 0 błędów**. Instalacja w prywatnym katalogu
+  `/tmp`: **167 QML, 0 błędów**, poprawna weryfikacja przypiętego CLI/JRE.
+- Sześć zestawów Qt: **80 PASS** — Messages 17, Keyboard 36,
+  MessagesController 6, SignalInteractions 7, SignalMedia 8, SignalReceipts 6.
+  Nowe przypadki sprawdzają krótką/długą treść, aktualizację i resize,
+  oba kierunki wiadomości oraz osiem kombinacji szerokości 320–1600 px.
+- Prywatny test klawiatury: **PASS** — rzeczywiste Super+H otwiera natywne
+  Wiadomości, Super+Q otwiera Quick Menu; dziewięć domyślnych uchwytów.
+  Reload nie tworzy duplikatów. Sprawdzone zapisane zmiany i konflikty.
+- Prywatny Wayland Signala: **PASS**, konto i sprzęt na atrapach.
+  Małe/duże okno, skala 1,5, załączniki, reakcje, quick reply, hotplug i reload.
+  Obejrzane [duże okno](evidence/message-bubbles-20260921/messages-empty-composer.png)
+  i [małe okno](evidence/message-bubbles-20260921/messages-small.png).
+
+[Logi i raporty](evidence/message-bubbles-20260921/).
+Pierwsze testy wykryły brak `flatMap` w QML oraz niedokończone sprzątanie
+animacji między przypadkami; fixture używa pętli i czeka po zniszczeniu
+widoku. Nie wyciszono ostrzeżeń. Natywny runner miał też stare oczekiwanie
+pustej listy komend i nieistniejącą metodę zamknięcia w testowym IPC;
+poprawiono fixture, zachowując rzeczywiste zdarzenia klawiatury.
+
+Przed implementacją sprawdzono lokalne pakiety, qmltypes i oficjalne API:
+[Item.implicitWidth](https://doc.qt.io/qt-6/qml-qtquick-item.html#implicitWidth-prop),
+[TextEdit](https://doc.qt.io/qt-6.11/qml-qtquick-textedit.html),
+[Flow](https://doc.qt.io/qt-6.11/qml-qtquick-flow.html).
+Pełny `scripts/test` i odbiór z fizycznym telefonem nie były częścią tej
+korekty; wykonano powyższe regresje zachowania i izolowany odbiór natywny.
+
 ## Signal — scalenie do main — 2026-09-21
 
 Integracja S00–S12 i poprawki interfejsu zapisane w commicie `83a191a`

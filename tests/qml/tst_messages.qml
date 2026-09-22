@@ -41,7 +41,53 @@ Item {
             tryCompare(adapter, "conversations", backend.rows.map(v => Object.assign({}, v, {route: adapter.address(v.conversationId), serviceName: "Signal"})));
             opened.clear();
         }
-        function cleanup() { backend.release(); wait(300); view.active = false; settings.cancelEdit(); }
+        function cleanup() { backend.release(); wait(300); view.active = false; settings.cancelEdit(); wait(100); }
+        function test_bubble_width_data() {
+            const rows = [];
+            for (const width of [320, 640, 980, 1600]) for (const outgoing of [false, true])
+                rows.push({tag: width + (outgoing ? "-outgoing" : "-incoming"), width: width, outgoing: outgoing});
+            return rows;
+        }
+        function test_bubble_width(data) {
+            scene.width = data.width;
+            const message = backend.history["chat-g"][0];
+            message.text = "OK";
+            if (data.outgoing) { message.direction = "outgoing"; message.status = "sent"; }
+            choose("chat-g");
+            const history = control("messageHistory");
+            tryVerify(() => history.itemAtIndex(0) !== null);
+            const row = history.itemAtIndex(0), bubble = row.bubble;
+            const body = findChild(row, "messageBody");
+            wait(100);
+            verify(bubble.width <= history.width / 2);
+            verify(body.contentWidth <= body.width + 1);
+            compare(body.lineCount, 1);
+            const shortWidth = bubble.width;
+            if (data.width >= 980) verify(shortWidth < history.width / 2 - 40);
+            compare(bubble.x, data.outgoing ? history.width - bubble.width : 0);
+            // Model updates and resizing must keep the natural width reactive.
+            adapter.messages.setProperty(0, "text", "日本語 🐈 " + "Dłuższa wiadomość. ".repeat(20));
+            tryCompare(bubble, "width", history.width / 2);
+            verify(bubble.width >= shortWidth);
+            verify(body.lineCount > 1);
+            verify(body.contentWidth <= body.width + 1);
+            adapter.messages.setProperty(0, "text", "OK");
+            tryCompare(bubble, "width", shortWidth);
+            scene.width = 320;
+            tryVerify(() => bubble.width <= history.width / 2);
+            findChild(row, "messageActions").forceActiveFocus(Qt.TabFocusReason);
+            keyClick(Qt.Key_Return);
+            tryCompare(history, "actionsMessageId", row.messageId);
+            tryVerify(() => findChild(row, "deleteMessageLocal") !== null);
+            wait(100);
+            const action = findChild(row, "deleteMessageLocal");
+            const point = action.mapToItem(bubble, 0, 0);
+            verify(point.x >= 0 && point.x + action.width <= bubble.width);
+            verify(action.contentItem.contentWidth <= action.contentItem.width + 1);
+            compare(bubble.width, history.width / 2);
+            keyClick(Qt.Key_Return);
+            tryCompare(history, "actionsMessageId", "");
+        }
         function test_route_scope_and_stale_replies() {
             verify(!messageHub.openConversation({serviceId: "blueferry", accountId: "account-a", conversationId: "chat-a"}));
             verify(!messageHub.openConversation({serviceId: "signal", accountId: "account-b", conversationId: "chat-a"}));
@@ -118,6 +164,54 @@ Item {
             verify(!history.atYEnd);
             history.positionViewAtEnd(); history.forceLayout(); history.positionViewAtEnd(); wait(30); backend.incoming("chat-a");
             tryCompare(history, "count", 102); wait(80); verify(history.atYEnd, JSON.stringify({y: history.contentY, origin: history.originY, height: history.height, total: history.contentHeight, follow: history.followEnd, restoring: history.restoring}));
+        }
+        function verifyLatest() {
+            const history = control("messageHistory");
+            waitForRendering(view.item);
+            tryVerify(() => history.visible && history.count > 0 && !history.restoring && history.atYEnd);
+            tryVerify(() => history.itemAtIndex(history.count - 1) !== null);
+            const last = history.itemAtIndex(history.count - 1);
+            compare(last.messageId, adapter.messages.get(adapter.messages.count - 1).messageId);
+            verify(last.y + last.height > history.contentY);
+            verify(last.y + last.height <= history.contentY + history.height + 2);
+        }
+        function test_open_and_reopen_at_latest_data() {
+            return [{tag: "wide", width: 980}, {tag: "narrow", width: 320}];
+        }
+        function test_open_and_reopen_at_latest(data) {
+            scene.width = data.width;
+            choose();
+            verifyLatest();
+            const history = control("messageHistory");
+            history.forceActiveFocus(Qt.TabFocusReason);
+            for (let i = 0; i < 8; i++) keyClick(Qt.Key_K);
+            verify(!history.atYEnd);
+            verify(!history.followEnd);
+            const before = history.contentY;
+            backend.incoming("chat-a");
+            tryCompare(history, "count", 51); wait(80);
+            verify(Math.abs(history.contentY - before) < 2);
+            // Recreate the window with the conversation already in memory.
+            view.active = false; wait(100);
+            view.active = true; tryCompare(view, "status", Loader.Ready);
+            verifyLatest();
+            choose("chat-g"); choose();
+            verifyLatest();
+        }
+        function test_open_before_view_and_delayed_history_data() {
+            return [{tag: "loaded", delayed: false}, {tag: "delayed", delayed: true}];
+        }
+        function test_open_before_view_and_delayed_history(data) {
+            view.active = false; wait(100);
+            backend.holdResponses = data.delayed;
+            verify(messageHub.openConversation(adapter.address("chat-a")));
+            if (!data.delayed) tryCompare(adapter.messages, "count", 50);
+            view.active = true; tryCompare(view, "status", Loader.Ready);
+            backend.release();
+            tryCompare(adapter.messages, "count", 50);
+            verifyLatest();
+            scene.width = 320; scene.height = 300;
+            verifyLatest();
         }
         function test_new_conversation_small_layout_disabled_send() {
             scene.width = 320; scene.height = 300;

@@ -1,0 +1,69 @@
+{
+  "destination": "/tmp/putkin-clean-slate-e2e-pi18gkx4",
+  "old": {
+    "hypr/hyprland.conf": "exec-once = waybar\n",
+    "hypr/hyprland.lua": "invalid previous Lua",
+    "hypr/monitors.lua": "invalid previous monitors",
+    "hypr/local.lua": "invalid local override",
+    "hypr/old/nested.conf": "old fragment",
+    "nvim/init.lua": "old editor",
+    "nvim/lua/unused.lua": "old plugin",
+    "fish/conf.d/old-desktop.fish": "waybar &\n",
+    "putkin/settings.json": "{\"old\": true}",
+    "putkin/old.json": "{\"obsolete\":true}",
+    "quickshell/shell.qml": "previous shell",
+    "quickshell-de/old.qml": "previous desktop",
+    "systemd/user/old-panel.service": "[Service]\nExecStart=/usr/bin/waybar\n",
+    "systemd/user/old-panel.service.d/override.conf": "[Service]\nRestart=always\n",
+    "autostart/old-shell.desktop": "[Desktop Entry]\nExec=quickshell -c old\n",
+    "zen/profiles.ini": "[Profile0]\nPath=existing.default\nDefault=1\nIsRelative=1\n",
+    "zen/existing.default/chrome/old.css": "old browser theme",
+    "zen/existing.default/user.js": "old browser preferences"
+  },
+  "protected": {
+    "home/.ssh/id_ed25519": {
+      "inode": 13501,
+      "mtime": 1790091035680703103
+    },
+    "home/.gnupg/private-keys-v1.d/fixture.key": {
+      "inode": 13504,
+      "mtime": 1790091035680721156
+    },
+    "config/putkin/signal/private": {
+      "inode": 13506,
+      "mtime": 1790091035680732499
+    },
+    "config/voxtype/token": {
+      "inode": 13508,
+      "mtime": 1790091035680743650
+    },
+    "config/fish/fish_variables": {
+      "inode": 13509,
+      "mtime": 1790091035680755641
+    },
+    "config/Signal/storage/key": {
+      "inode": 13512,
+      "mtime": 1790091035680772365
+    },
+    "config/zen/existing.default/cookies.sqlite": {
+      "inode": 13513,
+      "mtime": 1790091035680784307
+    },
+    "config/zen/existing.default/key4.db": {
+      "inode": 13514,
+      "mtime": 1790091035680796284
+    },
+    "config/zen/existing.default/prefs.js": {
+      "inode": 13515,
+      "mtime": 1790091035680807635
+    },
+    "config/unrelated/config": {
+      "inode": 13517,
+      "mtime": 1790091035680817879
+    },
+    "config/autostart/bitwarden.desktop": {
+      "inode": 13518,
+      "mtime": 1790091035680832118
+    }
+  }
+}

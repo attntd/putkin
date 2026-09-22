@@ -207,7 +207,7 @@ class InstallCompatibilityTests(unittest.TestCase):
         _install.publish(self.store, old)
         _install.publish(self.store, new)
         self.data_version(7)
-        with patch.dict(self.main.__globals__, paths=lambda _: self.layout, dependencies=lambda: {}, runtime=lambda *_: (None, None)), \
+        with patch.dict(self.main.__globals__, paths=lambda _: self.layout, dependencies=lambda: {}, runtime=lambda *_, **__: (None, None)), \
                 patch.object(sys, "argv", ["install", "--restore", "--dry-run"]):
             with self.assertRaisesRegex(ValueError, "Downgrade schematu"):
                 self.main()
@@ -224,7 +224,7 @@ class InstallCompatibilityTests(unittest.TestCase):
             self.data_version(7)
             raise RuntimeError("synthetic failure after migration")
         session.start.side_effect = failed_start
-        with patch.dict(self.main.__globals__, paths=lambda _: self.layout, dependencies=lambda: {}, runtime=lambda *_: (None, None), Session=lambda _: session), \
+        with patch.dict(self.main.__globals__, paths=lambda _: self.layout, dependencies=lambda: {}, runtime=lambda *_, **__: (None, None), Session=lambda _: session), \
                 patch.object(_install, "validate"), \
                 patch.object(sys, "argv", ["install", "--restore", new.name, "--activate"]):
             with self.assertRaisesRegex(ValueError, "Downgrade schematu"):
