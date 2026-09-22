@@ -2,6 +2,8 @@
 
 ## Wybrana korekta — chip i kategorie komend, 2026-09-22
 
+**Wdrożone lokalnie: `20260922-170918-6f7687ca8192`.**
+
 Po otwarciu launchera przez Super+Spacja wpisanie dwukropka i spacji
 tworzy chip „Komenda”, pozostawiając puste pole z fokusem. Komendy mają
 kategorie i ikony zgodne z działaniem, np. profile zasilania → Bateria.

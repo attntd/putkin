@@ -179,9 +179,22 @@ Prywatny cel ma `config/`, `data/`, `state/`, `bin/` i `home/`.
 Nie można łączyć go z `--activate` ani `--install-packages`.
 [Testy i rzeczywiste ograniczenia](status.md#instalacja-przenośna-i-modułowe-dotfiles--2026-09-22).
 
+## Chip i kategorie komend — 2026-09-22
+
+Aktywne wydanie: **`20260922-170918-6f7687ca8192`**, kod z **`959bf95`**.
+`scripts/install --shell-only --activate` wdrożył chip „Komenda” po wpisaniu
+`: ` oraz kategorie i ikony działań. Paczka przeszła walidację 169 QML;
+360 plików runtime jest zgodnych ze źródłami. Trzy odczyty przez 20 s
+potwierdziły jedną stabilną instancję, Signal `ready`, gotowość blokady/idle
+i właściciela powiadomień, bez restartów, błędów oraz ostrzeżeń.
+[Instalacja](evidence/launcher-command-categories-20260922/live-install.log),
+[odbiór](evidence/launcher-command-categories-20260922/live-acceptance.json).
+Dotfiles zachowano; pozostało pięć buildów, a `previous` wskazuje
+`20260922-164237-43dac342d904`. Powrót: `scripts/install --restore --activate`.
+
 ## Pole wyszukiwania i fade launchera — 2026-09-22
 
-Aktywne wydanie: **`20260922-164237-43dac342d904`**, kod z **`9eaa38b`**.
+Wydanie tego odbioru: **`20260922-164237-43dac342d904`**, kod z **`9eaa38b`**.
 Instalacja przez `scripts/install --shell-only --activate` zastąpiła
 poprzednią instancję i zachowała dotfiles. Paczka przeszła walidację
 169 QML, a 360 plików runtime zgadza się ze źródłami. Trzy odczyty przez

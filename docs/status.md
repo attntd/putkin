@@ -2,6 +2,8 @@
 
 ## Chip i kategorie komend — 2026-09-22
 
+**Wdrożone lokalnie: `20260922-170918-6f7687ca8192`, kod z `959bf95`.**
+
 Super+Spacja → `:` → spacja tworzy chip „Komenda” i pozostawia puste pole
 z fokusem. Backspace odtwarza dwukropek, kliknięcie usuwa filtr, a wklejenie
 prefiksu działa również w trybie komend. Wiersze pokazują kategorię i ikonę
@@ -16,11 +18,14 @@ Zachowane są dosłowne filtry, sortowanie i wspólna obsługa działań.
 | Klawiatura i komendy | **PASS**, 49 testów; kategorie i ikony po zmianie aliasu, 3 sposoby wpisania każdego profilu i wykonanie przez atrapę, sortowanie, sesja i zapis przypisań; [log](evidence/launcher-command-categories-20260922/keyboard-qml.log). |
 | Integracja launchera | **PASS**, 8 grup; nowy prefiks w produkcyjnym serwisie, IPC, DesktopEntries, fd i cliphist w prywatnych XDG/D-Bus; [raport](evidence/launcher-command-categories-20260922/integration.json). |
 | Natywny Wayland | **PASS**, 6 scenariuszy; rzeczywiste Super+Spacja, dwukropek i spacja, fokus chipa, kategorie i wektory, centrowanie i limit pięciu; 8 próbek fade przy przejściu do wyniku balanced. Regresja tekstu/obrazu i skali 150%; [raport](evidence/launcher-command-categories-20260922/report.json), [sprzątanie](evidence/launcher-command-categories-20260922/cleanup.json). |
+| Lokalna instalacja | **PASS**, 169 QML w paczce i 360 plików zgodnych z commitem. Trzy odczyty przez 20 s: jedna instancja, stały PID, 0 restartów, Signal `ready`, blokada/idle gotowe, prawidłowy właściciel powiadomień, 0 błędów i ostrzeżeń; [instalacja](evidence/launcher-command-categories-20260922/live-install.log), [odbiór](evidence/launcher-command-categories-20260922/live-acceptance.json). |
 
 Obejrzano natywne zrzuty [listy komend](evidence/launcher-command-categories-20260922/launcher-native-command-categories.png)
 i [profilu zrównoważonego](evidence/launcher-command-categories-20260922/launcher-native-balanced.png).
 Testy korzystały z prywatnych XDG, D-Bus i Waylanda oraz atrap sprzętu
-i sesji. Nie wykonywano odbioru na drugim fizycznym komputerze ani pełnej
+i sesji. Lokalną instancję zastąpiono przez `scripts/install --shell-only --activate`;
+dotfiles zachowano. Pozostało pięć buildów, a `previous` wskazuje
+`20260922-164237-43dac342d904`. Nie wykonywano odbioru na drugim fizycznym komputerze ani pełnej
 regresji wszystkich modułów; dla tej zmiany wykonano powyższe testy launchera
 i współdzielonego katalogu komend. [Kontrakt](launcher.md#chip-i-kategorie-komend--2026-09-22).
 
