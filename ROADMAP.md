@@ -2,6 +2,8 @@
 
 ## Wybrana korekta — położenie i fade launchera, 2026-09-22
 
+**Wdrożone lokalnie: `20260922-164237-43dac342d904`.**
+
 Środek pola wyszukiwania na połowie wysokości aktywnego ekranu, niezależnie
 od wyników i podglądu. Lista mieści najwyżej pięć wierszy i przewija się
 klawiaturą, kółkiem oraz suwakiem w stylu shella. Rozwinięcie listy i zmiana

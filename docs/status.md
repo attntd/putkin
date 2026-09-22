@@ -2,8 +2,8 @@
 
 ## Położenie i fade launchera — 2026-09-22
 
-**Gotowe w źródłach i sprawdzone w izolacji; aktywna instalacja nie była
-przełączana.** Środek pola wyszukiwania pozostaje na połowie wysokości
+**Wdrożone lokalnie: `20260922-164237-43dac342d904`, kod z `9eaa38b`.**
+Środek pola wyszukiwania pozostaje na połowie wysokości
 ekranu. Lista rozwija się poniżej, mieści najwyżej pięć wierszy i przewija
 się klawiaturą, kółkiem oraz kwadratowym suwakiem w kolorach shella.
 Podgląd również ma dopasowany suwak, z miejscem oddzielonym od tekstu.
@@ -25,14 +25,17 @@ przeciąganie suwaków po nawigacji klawiaturą.
 | Integracja launchera | **PASS**, 7 grup przez produkcyjne QML/IPC/Process, rzeczywiste fd/cliphist i prywatne atrapy; [raport](evidence/launcher-centered-20260922/integration.json), [log](evidence/launcher-centered-20260922/integration.log). |
 | Natywny Wayland / GPU | **PASS**, 5 scenariuszy: centrowanie przy skali 1 i 1,5, pięć z 20 wyników, ostatnia pozycja, fade wyników i tekst → obraz, maska wejścia, fokus oraz pojedyncza aktywacja. Zapisano 8 próbek podglądu i 9 próbek listy; [raport](evidence/launcher-centered-20260922/report.json). |
 | Sprzątanie izolacji | **PASS**, brak pozostałych procesów potomnych, prywatny katalog usunięty; [raport](evidence/launcher-centered-20260922/cleanup.json). |
+| Instalacja i aktywacja lokalna | **PASS**, `scripts/install --shell-only --activate`: 169 QML w paczce bez błędów, 360 plików runtime zgodnych ze źródłami. Jedna instancja Putkina, gotowy Signal, poprawny właściciel powiadomień i gotowość blokady/idle. Trzy odczyty przez 20 s: ten sam PID, 0 restartów, błędów i ostrzeżeń; [instalacja](evidence/launcher-centered-20260922/live-install.log), [odbiór](evidence/launcher-centered-20260922/live-acceptance.json). |
 
 Obejrzano natywne zrzuty [pięciu wyników](evidence/launcher-centered-20260922/launcher-native-five-results.png),
 [tekstu](evidence/launcher-centered-20260922/launcher-native-text.png),
 [obrazu](evidence/launcher-centered-20260922/launcher-native-image.png)
 i [skali 150%](evidence/launcher-centered-20260922/launcher-native-scale-1.5.png).
-Testy korzystały z prywatnych XDG, D-Bus, Waylanda i atrap domen sprzętowych.
-Niewykonane: przełączenie aktywnego shella oraz odbiór na drugim fizycznym
-komputerze. [Kontrakt](launcher.md#położenie-lista-i-przejścia--2026-09-22).
+Testy zachowania korzystały z prywatnych XDG, D-Bus, Waylanda i atrap domen
+sprzętowych. Lokalna aktywacja zastąpiła poprzednią instancję przez UWSM;
+dotfiles zachowano, a `previous` wskazuje `20260921-141345-67428b3b725f`.
+Pozostało pięć buildów. Niewykonane: odbiór na drugim fizycznym komputerze.
+[Kontrakt](launcher.md#położenie-lista-i-przejścia--2026-09-22).
 
 ## Tryb clean-slate — 2026-09-22
 

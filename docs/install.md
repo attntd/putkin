@@ -179,6 +179,20 @@ Prywatny cel ma `config/`, `data/`, `state/`, `bin/` i `home/`.
 Nie można łączyć go z `--activate` ani `--install-packages`.
 [Testy i rzeczywiste ograniczenia](status.md#instalacja-przenośna-i-modułowe-dotfiles--2026-09-22).
 
+## Pole wyszukiwania i fade launchera — 2026-09-22
+
+Aktywne wydanie: **`20260922-164237-43dac342d904`**, kod z **`9eaa38b`**.
+Instalacja przez `scripts/install --shell-only --activate` zastąpiła
+poprzednią instancję i zachowała dotfiles. Paczka przeszła walidację
+169 QML, a 360 plików runtime zgadza się ze źródłami. Trzy odczyty przez
+20 s potwierdziły jedną stabilną instancję, Signal `ready`, gotowość
+blokady/idle i właściciela powiadomień, bez błędów oraz ostrzeżeń.
+[Instalacja](evidence/launcher-centered-20260922/live-install.log),
+[odbiór](evidence/launcher-centered-20260922/live-acceptance.json).
+
+Zachowano pięć buildów; `previous` wskazuje `20260921-141345-67428b3b725f`.
+Powrót z odblokowanej sesji: `scripts/install --restore --activate`.
+
 ## Wspólna wersja main — 2026-09-21
 
 Aktywne wydanie: **`20260921-080356-f26716f87551`**, źródła z **`8ba66f1`**
