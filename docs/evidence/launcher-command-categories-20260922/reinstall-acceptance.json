@@ -1,0 +1,90 @@
+{
+  "checkedAt": "2026-09-22T17:24:31.781908+00:00",
+  "build": "20260922-170918-6f7687ca8192",
+  "sourceCommit": "b94d8deff2bdb4399dd75ab688a2341e8725be3e",
+  "matchedRuntimeFiles": 360,
+  "samples": [
+    {
+      "offsetSeconds": 0,
+      "instance": "efucc0slt",
+      "pid": 39434,
+      "service": {
+        "ActiveState": "active",
+        "SubState": "running",
+        "MainPID": "39434",
+        "Result": "success",
+        "NRestarts": "0"
+      },
+      "idleReady": true,
+      "lockAvailable": true,
+      "signal": {
+        "state": "ready",
+        "accountState": "linked",
+        "schemaVersion": 7,
+        "cliVersion": "0.14.8",
+        "errorCode": "",
+        "linkError": "",
+        "eventErrorLocation": "",
+        "qrVisible": false,
+        "processId": 39473
+      },
+      "notificationsOwner": 39434
+    },
+    {
+      "offsetSeconds": 10,
+      "instance": "efucc0slt",
+      "pid": 39434,
+      "service": {
+        "ActiveState": "active",
+        "SubState": "running",
+        "MainPID": "39434",
+        "Result": "success",
+        "NRestarts": "0"
+      },
+      "idleReady": true,
+      "lockAvailable": true,
+      "signal": {
+        "state": "ready",
+        "accountState": "linked",
+        "schemaVersion": 7,
+        "cliVersion": "0.14.8",
+        "errorCode": "",
+        "linkError": "",
+        "eventErrorLocation": "",
+        "qrVisible": false,
+        "processId": 39473
+      },
+      "notificationsOwner": 39434
+    },
+    {
+      "offsetSeconds": 20,
+      "instance": "efucc0slt",
+      "pid": 39434,
+      "service": {
+        "ActiveState": "active",
+        "SubState": "running",
+        "MainPID": "39434",
+        "Result": "success",
+        "NRestarts": "0"
+      },
+      "idleReady": true,
+      "lockAvailable": true,
+      "signal": {
+        "state": "ready",
+        "accountState": "linked",
+        "schemaVersion": 7,
+        "cliVersion": "0.14.8",
+        "errorCode": "",
+        "linkError": "",
+        "eventErrorLocation": "",
+        "qrVisible": false,
+        "processId": 39473
+      },
+      "notificationsOwner": 39434
+    }
+  ],
+  "runtimeErrorCount": 0,
+  "runtimeWarningCount": 0,
+  "previous": "20260922-164237-43dac342d904",
+  "result": "PASS"
+}

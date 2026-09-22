@@ -20,6 +20,15 @@ Zachowane są dosłowne filtry, sortowanie i wspólna obsługa działań.
 | Natywny Wayland | **PASS**, 6 scenariuszy; rzeczywiste Super+Spacja, dwukropek i spacja, fokus chipa, kategorie i wektory, centrowanie i limit pięciu; 8 próbek fade przy przejściu do wyniku balanced. Regresja tekstu/obrazu i skali 150%; [raport](evidence/launcher-command-categories-20260922/report.json), [sprzątanie](evidence/launcher-command-categories-20260922/cleanup.json). |
 | Lokalna instalacja | **PASS**, 169 QML w paczce i 360 plików zgodnych z commitem. Trzy odczyty przez 20 s: jedna instancja, stały PID, 0 restartów, Signal `ready`, blokada/idle gotowe, prawidłowy właściciel powiadomień, 0 błędów i ostrzeżeń; [instalacja](evidence/launcher-command-categories-20260922/live-install.log), [odbiór](evidence/launcher-command-categories-20260922/live-acceptance.json). |
 
+Na ponowne polecenie instalacji uruchomiono `scripts/install --shell-only --activate`.
+O 19:24 CEST instalator ponownie zweryfikował 169 QML i aktywował ten sam,
+aktualny build; zachował konfigurację oraz pięć wydań. Kontrola 360 plików
+i trzy odczyty przez 20 s ponownie zakończyły się **PASS**: stały PID 39434,
+jedna instancja, Signal `ready`, blokada/idle i powiadomienia gotowe,
+0 restartów, błędów i ostrzeżeń.
+[Log](evidence/launcher-command-categories-20260922/reinstall.log),
+[odbiór](evidence/launcher-command-categories-20260922/reinstall-acceptance.json).
+
 Obejrzano natywne zrzuty [listy komend](evidence/launcher-command-categories-20260922/launcher-native-command-categories.png)
 i [profilu zrównoważonego](evidence/launcher-command-categories-20260922/launcher-native-balanced.png).
 Testy korzystały z prywatnych XDG, D-Bus i Waylanda oraz atrap sprzętu
