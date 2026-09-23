@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 596, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 545, in main
+    inside(args.inside, args.smoke, args.idle, args.native_session, args.screenshot, args.launcher_preview, args.signal, args.authentication)
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 159, in inside
+    report['native_session'] = run(env, base, output, first, hypr, launch)
+                               ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/putkin/tests/native_session_wayland.py", line 91, in run
+    assert any(not f['closing'] and any(0 < a < 1 for a in f['opacities']) for f in frames), frames
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [{'closing': True, 'secure': True, 'opacities': [0.9820315, 0.9820315]}, {'closing': True, 'secure': True, 'opacities': [0.9375, 0.9375]}, {'closing': True, 'secure': True, 'opacities': [0.8626874999999999, 0.8626874999999999]}, {'closing': True, 'secure': True, 'opacities': [0.7342795, 0.7342795]}, {'closing': True, 'secure': True, 'opacities': [0.5436635000000001, 0.5436635000000001]}, {'closing': True, 'secure': True, 'opacities': [0.32925150000000014, 0.32925150000000014]}, {'closing': True, 'secure': True, 'opacities': [0.17895550000000005, 0.17895550000000005]}, {'closing': True, 'secure': True, 'opacities': [0.08318749999999997, 0.08318749999999997]}, {'closing': True, 'secure': True, 'opacities': [0.027436000000000016, 0.027436000000000016]}, {'closing': True, 'secure': True, 'opacities': [0.0060835000000000194, 0.0060835000000000194]}, {'closing': True, 'secure': True, 'opacities': [0.0001714999999999911, 0.0001714999999999911]}]

@@ -77,9 +77,9 @@ def run(output):
             ready = eventually(snapshot, lambda v: v.get("state") == "ready")
             assert not ready["loaded"]
             assert ipc("open", target="messages") == "true"
-            eventually(snapshot, lambda v: v.get("loaded"))
+            eventually(snapshot, lambda v: v.get("loaded") and v.get("focus") == "conversationList")
             assert ipc("create", "alice.42") == "true"
-            selected = eventually(snapshot, lambda v: v.get("selected") and v.get("draftReady") and not v.get("loading"))
+            selected = eventually(snapshot, lambda v: v.get("selected") and v.get("draftReady") and not v.get("loading") and v.get("focus") == "messageEditor")
             assert selected["count"] == 0 and not records("send")
             route = selected["selected"]
             report["checks"].append("lazy native window; username resolved without send; empty conversation before first send")
@@ -98,10 +98,12 @@ def run(output):
             assert ipc("openConversation", route["serviceId"], "wrong-account", route["conversationId"], target="messages") == "false"
             assert not snapshot()["loaded"]
             assert ipc("openConversation", route["serviceId"], route["accountId"], route["conversationId"], target="messages") == "true"
-            eventually(snapshot, lambda v: v.get("loaded") and v.get("count") == 50 and not v.get("loading"))
+            eventually(snapshot, lambda v: v.get("loaded") and v.get("count") == 50 and not v.get("loading") and v.get("focus") == "messageEditor")
             windows = snapshot()["windows"]
+            assert ipc("open", target="messages") == "true"
+            eventually(snapshot, lambda v: v.get("focus") == "conversationList")
             assert ipc("select", 0) == "true"
-            eventually(snapshot, lambda v: v.get("draftReady") and not v.get("loading"))
+            eventually(snapshot, lambda v: v.get("draftReady") and not v.get("loading") and v.get("focus") == "messageEditor")
             assert snapshot()["windows"] == windows
             ipc("more")
             eventually(snapshot, lambda v: v.get("count") == 66)
@@ -109,7 +111,7 @@ def run(output):
             ipc("resize", 320, 300)
             eventually(snapshot, lambda v: v.get("width") == 320 and v.get("height") == 300)
             capture("-small")
-            report["checks"].append("closed window receives 65 messages; same process/subscription; scoped IPC and direct routing reuse window; 50+16 history pages")
+            report["checks"].append("closed window receives 65 messages; same process/subscription; ordinary open focuses list, scoped conversation routing focuses editor and reuses window; 50+16 history pages")
             ipc("reload")
             restarted = eventually(snapshot, lambda v: v.get("state") == "ready" and v.get("generation") != ready["generation"])
             assert restarted["accountId"] == route["accountId"]

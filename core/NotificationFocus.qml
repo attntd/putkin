@@ -9,6 +9,10 @@ QtObject {
     property int focusReason: Qt.TabFocusReason
     property int replyHistoryKey: 0
     signal entered(string name)
+    function focus(reason = Qt.TabFocusReason): string {
+        if (!service || service.locked) return "";
+        return enter(reason) || openCenter(reason);
+    }
     function openCenter(reason = Qt.TabFocusReason): string {
         return panels.open("notifications", null, null, reason) ? panels.screenName : "";
     }
@@ -29,11 +33,13 @@ QtObject {
         return true;
     }
     function enter(reason = Qt.TabFocusReason): string {
+        if (!service || service.locked) return "";
         const preferred = service.chooseScreen();
         const entry = preferred && service.visibleOn(preferred.name).length ? service.visibleOn(preferred.name)[0]
             : service.entries.find(value => value.shown);
         if (!entry) return "";
         focusReason = reason;
+        replyHistoryKey = 0;
         panels.close(false);
         barFocus.close();
         screenName = entry.monitorName;

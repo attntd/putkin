@@ -41,6 +41,14 @@ Użytkownik zastępuje Hyprlock i Hypridle jednym procesem Quickshell.
 WlSessionLock rysuje przyciemnioną tapetę, centralny zegar, datę i jedno
 kwadratowe pole hasła. Zachowujemy glif odcisku oraz neutralny/zielony/czerwony
 stan i reset błędu po 2 s. Bez dodatkowych tekstów, tooltipów i podpowiedzi.
+Korekta 2026-09-23: glif znajduje się po prawej stronie pola, z osobnym
+paddingiem także dla długiego hasła. Pole nie rysuje kursora tekstowego.
+Widok używa wspólnego fade 200 ms bezpośrednio na obrazie pulpitu sprzed
+blokady, bez jednobarwnej klatki pośredniej. Ten obraz pozostaje wyłącznie
+w pamięci do końca wyjścia. Protokół blokady pozostaje aktywny do zniknięcia
+wszystkich powierzchni po udanym uwierzytelnieniu. Gdy przechwycenie jest
+niedostępne lub monitor dołączono podczas blokady, powierzchnia pojawia się
+od razu nieprzezroczysta. [Cykl przechwycenia](session.md#uwierzytelnianie-i-wygląd).
 PAM pozostaje systemowym mechanizmem uwierzytelniania; odblokowanie wymaga
 potwierdzonego sukcesu bieżącej próby. Escape czyści pole, Enter wysyła
 hasło, hjkl wpisują litery. Każdy monitor ma powierzchnię natywnej blokady.
@@ -119,8 +127,9 @@ Ustawienie znikania wiadomości znajduje się w Szczegółach.
 Dymek dopasowuje szerokość do treści, autora i stopki, do maksymalnie 50%
 szerokości historii rozmowy. Dłuższy tekst zawija się; załączniki i rozwinięte
 akcje także mieszczą się w tym limicie. Super+H zachowuje nawigację
-do okna po lewej, a Quick Menu otwiera Super+Q. Wiadomości pozostają
-dostępne przez `:messages` i ikonę w pasku.
+do okna po lewej, a Quick Menu otwiera Super+Q. Ctrl+Shift+Super+Enter otwiera hub
+Wiadomości lub przywołuje istniejące okno. Dostępne są też `:messages`
+i ikona w pasku.
 
 Otwarcie rozmowy pokazuje najnowsze wiadomości na dole, także po
 ponownym utworzeniu okna lub opóźnionym wczytaniu historii. Ręczne
@@ -165,8 +174,10 @@ Drobne glify, tekst akcentowy i uchwyty pobierają kolor ze swojego miejsca
 w grupie. Próbki w edytorze nadal przedstawiają dosłowny wybierany kolor;
 kolory ostrzeżeń i błędów zachowują znaczenie.
 
-Otwarty moduł na pasku ma tło akcentu; jego ikona zachowuje kolor daty
-i czasu, zgodnie z korektą topbara z 2026-09-20.
+Od korekty 2026-09-23 otwarcie modułu po prawej stronie paska nie zmienia
+tła, ramki ani koloru ikony. Hover również zachowuje neutralne tło.
+Ramka klawiatury służy wyłącznie wybieraniu przycisku podczas nawigacji
+paskiem; otwarty panel nie pozostawia wyróżnienia na pasku.
 Fokus pola tekstowego podświetla jego własną ramkę 2 px, bez dodatkowego
 zewnętrznego obrysu. Reguła myszy i klawiatury pozostaje wspólna.
 W Quick Menu fokus jasności i temperatury obejmuje całą szerokość wiersza,
@@ -189,11 +200,19 @@ Centrum przechowuje do 100 ostatnich powiadomień w pamięci sesji, także
 wygasłych, wyciszonych przez DND i oznaczonych `transient` (także VoxType).
 Po zamknięciu protokołu zachowuje tylko tekst i bezpieczną ikonę, bez
 akcji i obrazów zależnych od życia natywnego obiektu. Restart czyści historię.
-Karty wybierane przez `j/k` mają własny fokus; `Enter` i kliknięcie treści
+Karty centrum mają pojedynczą szarą ramkę; fokus klawiatury koloruje tę
+samą ramkę bez drugiego obrysu. Karty wybierane przez `j/k` mają własny fokus; `Enter` i kliknięcie treści
 wykonują akcję powiadomienia. `i` oraz strzałka w nagłówku rozwijają skrócony
 tekst, `Escape` zwija go przed zamknięciem panelu. Nawigacja między kartami
 zachowuje rozwinięcie. Centrum przewija całą listę wraz z pełnym tekstem.
 Przycisk × ma grubszy symbol, bez domyślnej ramki i tła.
+`l` z ramki wchodzi do pierwszego przycisku nagłówka. `j` prowadzi z niego
+do akcji dolnego rzędu, `k` wraca, a `h` ze skrajnie lewego przycisku
+wraca na ramkę. `d` usuwa kartę z fokusem, również na jej przycisku.
+Rozwinięcie pokazuje pełny tytuł i treść, także po wygaśnięciu toasta.
+Super+N wybiera widoczne toasty; bez nich otwiera centrum. Toast obsługuje
+Enter bez wstępnego rozwijania, d do usunięcia i q/Escape do archiwizacji.
+[Szczegóły](notifications.md#pasek-toasty-i-centrum--2026-09-23).
 
 Data decyzji: 2026-09-17. Kontrakt uwzględnia korekty użytkownika po obejrzeniu działającego shella, w tym wielkość ikon oraz oznaczenie zajętych workspace’ów. Minimalizm, zgodność z referencjami i przejścia wyłącznie przez opacity są wymaganiami, nie opcjami.
 
@@ -369,6 +388,15 @@ panelem. Nawigacja zapętla dostępne profile; przy braku profili fokus
 pozostaje na panelu, aby nadal obsługiwać Escape.
 
 ### Nawigacja klawiaturą
+
+W Message Hubie zwykłe otwarcie kieruje fokus do listy rozmów, a otwarcie
+z powiadomienia do pola pisania wskazanej rozmowy. Strzałki góra/dół i j/k
+wybierają wiersz; Enter/l otwiera go i przenosi fokus do edytora. Escape
+z rozmowy wraca do listy także w szerokim oknie. Pole wiadomości sięga do
+prawej krawędzi obszaru rozmowy, bez przycisku wysyłania. Enter wysyła,
+Shift+Enter wstawia nowy wiersz; litery pozostają tekstem. Historia i lista
+rozmów kontynuują rozpędzony gest touchpada po oderwaniu palców.
+[Pełny kontrakt](signal/CONTRACTS.md#sterowanie-message-hubem--2026-09-23).
 
 Ustalenie użytkownika z 2026-09-16: **nawigacja Putkin jest vimowa**.
 

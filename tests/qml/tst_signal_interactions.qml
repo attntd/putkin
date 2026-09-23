@@ -77,7 +77,8 @@ Item {
             const editor = control("messageEditor"); editor.forceActiveFocus(Qt.TabFocusReason);
             keyClick(Qt.Key_A); keyClick(Qt.Key_B); keyClick(Qt.Key_C);
             compare(backend.calls.filter(c => c.method === "typing.set" && c.params.active).length, 1);
-            control("sendMessage").forceActiveFocus(Qt.TabFocusReason);
+            keyClick(Qt.Key_Escape);
+            verify(control("conversationList").activeFocus);
             compare(backend.calls.filter(c => c.method === "typing.set" && !c.params.active).length, 1);
             editor.forceActiveFocus(Qt.TabFocusReason); keyClick(Qt.Key_D);
             (view.item as MessagesView).readingEnabled = false;
@@ -107,11 +108,24 @@ Item {
             compare(MessageText.render("tajne", [{start: 0, length: 5, style: "SPOILER"}], []), "•••");
             compare(MessageText.render("tekst", [{start: 0, length: 5, style: "BOLD"}], []), "<b>tekst</b>");
             adapter.beginEdit("own");
+            // Compare colors without the TextArea's blinking caret.
+            control("messageHistory").forceActiveFocus(Qt.TabFocusReason);
+            wait(Metrics.panelFade + 32);
             const editor = control("messageEditor"); waitForRendering(view.item);
             const before = grabImage(view.item);
             settings.beginEdit(); settings.setColor("accent", "#89b4fa"); settings.setColor("accentSecondary", "#f38ba8");
             waitForRendering(view.item); const changed = grabImage(view.item); verify(!before.equals(changed));
-            settings.cancelEdit(); waitForRendering(view.item); verify(before.equals(grabImage(view.item)));
+            settings.cancelEdit(); waitForRendering(view.item);
+            const restored = grabImage(view.item);
+            compare(restored.size, before.size);
+            // Rebuilding the group gradient can round a channel by one byte.
+            // Check every rendered pixel, including the editor and message.
+            for (let y = 0; y < before.height; y++) for (let x = 0; x < before.width; x++) {
+                if (Math.abs(before.red(x, y) - restored.red(x, y)) > 1
+                    || Math.abs(before.green(x, y) - restored.green(x, y)) > 1
+                    || Math.abs(before.blue(x, y) - restored.blue(x, y)) > 1
+                    || before.alpha(x, y) !== restored.alpha(x, y)) fail("Accent restore differs at " + x + "," + y);
+            }
             editor.forceActiveFocus(Qt.TabFocusReason); keyClick(Qt.Key_Escape); verify(!adapter.editingMessage);
         }
     }

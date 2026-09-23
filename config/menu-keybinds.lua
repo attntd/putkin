@@ -10,6 +10,7 @@ return function(bind, shell_path)
         {"SUPER + SPACE", "launcher"},
         {"SUPER + V", "clipboard"},
         {"SUPER + semicolon", "commands"},
+        {"SUPER + CONTROL + SHIFT + Return", "messages"},
         {"SUPER + B", "bar"},
         {"SUPER + Q", "quickSettings"},
         {"SUPER + SHIFT + P", "power"},

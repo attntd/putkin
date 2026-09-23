@@ -1,0 +1,59 @@
+{
+  "build": "20260923-124134-db47c1bd345d",
+  "previous": "20260923-101912-d8c57b61158f",
+  "pid": 30893,
+  "instances": 1,
+  "notification_owner": 30893,
+  "runtime_files_matching_source": 360,
+  "settings_unchanged": true,
+  "session": {
+    "busy": false,
+    "phase": "",
+    "error": "",
+    "result": "Blokada potwierdzona przez kompozytor.",
+    "capabilities": {
+      "reboot": {
+        "available": true,
+        "reason": ""
+      },
+      "poweroff": {
+        "available": true,
+        "reason": ""
+      },
+      "suspend": {
+        "available": true,
+        "reason": ""
+      },
+      "hibernate": {
+        "available": false,
+        "reason": "Operacja nieobsługiwana przez logind."
+      },
+      "idleSuspend": {
+        "available": false,
+        "reason": "Operacja nieobsługiwana przez logind."
+      },
+      "logout": {
+        "available": true,
+        "reason": ""
+      },
+      "lock": {
+        "available": true,
+        "reason": ""
+      }
+    },
+    "lock": {
+      "locked": false,
+      "secure": false
+    },
+    "idle": {
+      "ready": true,
+      "inhibited": false,
+      "sleepInhibited": false,
+      "dimmed": false,
+      "displaysOff": false,
+      "error": ""
+    }
+  },
+  "qml_errors": [],
+  "result": "PASS"
+}

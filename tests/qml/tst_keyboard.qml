@@ -30,6 +30,12 @@ Item {
     AudioService { id: audio; backend: pipewire }
     MockBrightnessBackend { id: backlight }
     BrightnessService { id: brightness; backend: backlight }
+    MockNetworkBackend { id: networkBackend }
+    NetworkService { id: network; backend: networkBackend }
+    MockBluetoothBackend { id: bluetoothBackend }
+    BluetoothService { id: bluetooth; backend: bluetoothBackend }
+    MockBatteryBackend { id: batteryBackend }
+    BatteryService { id: battery; backend: batteryBackend }
     MockPowerProfileBackend { id: profileBackend }
     PowerProfileService { id: powerProfiles; backend: profileBackend }
     MockSessionBackend { id: sessionBackend }
@@ -37,12 +43,19 @@ Item {
     MockNotificationBackend { id: notificationBackend }
     NotificationService { id: notifications; backend: notificationBackend; screens: preview.coordinator.screens; monitorService: preview.backend }
     NotificationFocus { id: notificationFocus; service: notifications; panels: preview.coordinator; barFocus: preview.barController }
+    QtObject {
+        id: messages
+        property bool blocked: false
+        property var calls: []
+        function open(monitor: string): bool { calls = calls.concat([monitor]); return true; }
+    }
     ActionController {
         id: actions
         coordinator: preview.coordinator; launcher: launcher; hyprland: preview.workspaceService; windowActions: windowActions
         barFocus: preview.barController; notificationFocus: notificationFocus; notifications: notifications
         audio: audio; brightness: brightness; sessionService: session
         powerProfiles: powerProfiles
+        messages: messages
     }
     QtObject {
         id: loader
@@ -51,7 +64,8 @@ Item {
         readonly property var item: active ? itemLoader.item : null
         readonly property Loader itemLoader: Loader { active: loader.activeAsync; asynchronous: true; sourceComponent: preview.panelComponent }
     }
-    PanelPreviewScene { id: preview; anchors.fill: parent; panelLoader: loader; settings: settings; launcher: launcher; audio: audio; notifications: notifications; sessionService: session; powerProfiles: powerProfiles }
+    PanelPreviewScene { id: preview; anchors.fill: parent; panelLoader: loader; settings: settings; launcher: launcher; audio: audio; notifications: notifications; sessionService: session; powerProfiles: powerProfiles; network: network; bluetooth: bluetooth; battery: battery }
+    SignalSpy { id: panelPresented; target: preview.coordinator; signalName: "presented" }
     TestCase {
         name: "Keyboard"
         when: windowShown
@@ -63,7 +77,9 @@ Item {
             file.snapshot = Appearance.observation("", true, "");
             backend.autoComplete = true; backend.checkError = ""; backend.lastError = "";
             keyboard.cancelEdit(); windowActions.calls = [];
+            messages.calls = [];
             sessionBackend.reset(); session.lastError = "";
+            networkBackend.reset(); bluetoothBackend.reset();
             profileBackend.available = true; profileBackend.profile = "balanced";
             profileBackend.profiles = ["power-saver", "balanced", "performance"];
             profileBackend.pendingProfile = ""; profileBackend.lastError = "";
@@ -118,7 +134,7 @@ Item {
             verify(!settings.editing); verify(!keyboard.editing);
         }
         function test_duplicate_and_reserved_commands_do_not_write() {
-            compare(backend.applied.find(row => row.action === "messages").shortcut, "");
+            compare(backend.applied.find(row => row.action === "messages").shortcut, "SUPER + CONTROL + SHIFT + Return");
             compare(backend.applied.find(row => row.action === "quickSettings").shortcut, "SUPER + Q");
             compare(Actions.shortcut("Super + ;"), "SUPER + semicolon");
             compare(Actions.find("commands").shortcut, "SUPER + semicolon");
@@ -286,6 +302,164 @@ Item {
             verify(launcher.activate(launcher.results[0]));
             tryCompare(preview.coordinator, "activeId", "settings");
         }
+        function topbarCommands() {
+            return [
+                {action: "network", command: ":wifi", title: "Wi-Fi", category: "Sieć", icon: "network_wifi", focus: "wifiRadio"},
+                {action: "bluetooth", command: ":bluetooth", title: "Bluetooth", category: "Bluetooth", icon: "bluetooth", focus: "bluetoothRadio"},
+                {action: "audio", command: ":volume", title: "Głośność", category: "Dźwięk", icon: "volume_up", focus: "audioVolume"},
+                {action: "battery", command: ":battery", title: "Bateria", category: "Bateria", icon: "battery_android_full", focus: "batteryProfile-balanced"},
+                {action: "notifications", command: ":notifications", title: "Powiadomienia", category: "Powiadomienia", icon: "notifications", focus: "notificationDnd"},
+                {action: "quickSettings", command: ":quickmenu", title: "Quick Menu", category: "Ustawienia", icon: "tune", focus: "audioVolume"}
+            ];
+        }
+        function test_topbar_commands_open_panels_data() {
+            const cases = [];
+            for (const entry of topbarCommands())
+                for (const mode of ["colon", "chip", "colon-space"])
+                    cases.push(Object.assign({}, entry, {tag: entry.action + "-" + mode, mode: mode}));
+            return cases;
+        }
+        function test_topbar_commands_open_panels(data) {
+            const screen = data.mode === "chip" ? preview.secondScreen : preview.firstScreen;
+            const monitor = data.mode === "chip" ? "TEST-2" : "TEST-1";
+            preview.backend.focusedMonitorName = monitor;
+            verify(preview.coordinator.open("launcher", screen, null));
+            tryCompare(loader, "active", true);
+            tryVerify(() => control("launcherSearch") && control("launcherSearch").activeFocus);
+            panelPresented.clear();
+            if (data.mode === "chip") launcher.startMode("commands");
+            type((data.mode === "chip" ? "" : data.mode === "colon-space" ? ": " : ":") + data.command.slice(1, -1));
+            compare(launcher.results.length, 1);
+            compare(launcher.results[0].action, data.action);
+            type(data.command.slice(-1));
+            compare(launcher.results[0].id, data.command);
+            const list = control("launcherResults");
+            tryVerify(() => list.itemAtIndex(0) !== null && list.itemAtIndex(0).modelData.action === data.action);
+            const row = list.itemAtIndex(0);
+            compare(findChild(row, "launcherRowTitle").text, data.title);
+            compare(findChild(row, "launcherRowSubtitle").text, data.category);
+            compare(findChild(row, "launcherApplicationIcon").symbol, data.icon);
+            compare(panelPresented.count, 0);
+            compare(preview.coordinator.activeId, "launcher");
+            keyClick(Qt.Key_Return);
+            tryCompare(preview.coordinator, "activeId", data.action);
+            compare(preview.coordinator.screenName, monitor);
+            tryVerify(() => control(data.focus) && control(data.focus).activeFocus);
+            compare(preview.coordinator.session.focusReason, Qt.TabFocusReason);
+            verify(!launcher.active);
+            compare(panelPresented.count, 1);
+            compare(networkBackend.radioCalls, 0);
+            compare(bluetoothBackend.calls, []);
+            compare(profileBackend.calls, 0);
+            compare(sessionBackend.calls, []);
+            compare(windowActions.calls, []);
+            compare(launcherBackend.activations.length, 0);
+        }
+        function test_messages_command_search_and_open_data() {
+            const cases = [];
+            for (const query of ["messages", "wiadomosci", "Wiadomości"])
+                for (const mode of ["colon", "chip", "colon-space"])
+                    cases.push({tag: query + "-" + mode, query: query, mode: mode});
+            return cases;
+        }
+        function test_messages_command_search_and_open(data) {
+            verify(preview.coordinator.open("launcher", preview.firstScreen, null));
+            tryCompare(loader, "active", true);
+            tryVerify(() => control("launcherSearch") && control("launcherSearch").activeFocus);
+            if (data.mode === "chip") launcher.startMode("commands");
+            else type(data.mode === "colon-space" ? ": " : ":");
+            verify(launcher.results.some(entry => entry.action === "messages"));
+            if (data.query === "Wiadomości") {
+                launcher.edit(launcher.text + data.query);
+            } else type(data.query);
+            compare(launcher.commandText, ":" + data.query);
+            compare(launcher.results.length, 1);
+            compare(launcher.results[0].action, "messages");
+            const list = control("launcherResults");
+            tryVerify(() => list.itemAtIndex(0) !== null && list.itemAtIndex(0).modelData.action === "messages");
+            compare(findChild(list.itemAtIndex(0), "launcherRowTitle").text, "Wiadomości");
+            compare(messages.calls, []);
+            keyClick(Qt.Key_Return);
+            tryCompare(messages, "calls", ["TEST-1"]);
+            tryCompare(preview.coordinator, "activeId", "");
+        }
+        function previousPanelBindings() {
+            return Actions.defaults().filter(row => ["network", "bluetooth"].indexOf(row.action) < 0)
+                .map(row => ["quickSettings", "audio", "battery", "notifications"].indexOf(row.action) >= 0
+                    ? Object.assign({}, row, {command: ""}) : row);
+        }
+        function test_migrate_topbar_commands_data() {
+            return [
+                {tag: "previous", omitted: []},
+                {tag: "pre-messages", omitted: ["messages"]},
+                {tag: "pre-profiles", omitted: ["messages", "powersaver", "balanced", "performance"]},
+                {tag: "oldest", omitted: ["messages", "powersaver", "balanced", "performance", "shutdown", "poweroff", "sleep", "hibernate", "reboot", "screenshot"]}
+            ];
+        }
+        function test_migrate_topbar_commands(data) {
+            const rows = previousPanelBindings().filter(row => data.omitted.indexOf(row.action) < 0);
+            file.external(JSON.stringify({schemaVersion: 1, bindings: rows}));
+            compare(keyboard.readProblem, "");
+            compare(file.writes, 0);
+            for (const entry of topbarCommands())
+                compare(keyboard.command(entry.command).action, entry.action);
+            compare(keyboard.command(":messages").action, "messages");
+            for (const row of rows)
+                compare(keyboard.persisted.find(value => value.action === row.action).shortcut, row.shortcut);
+            compare(keyboard.persisted.find(row => row.action === "network").shortcut, "");
+            compare(keyboard.persisted.find(row => row.action === "bluetooth").shortcut, "");
+            keyboard.beginEdit();
+            verify(keyboard.save()); tryCompare(keyboard, "saving", false);
+            compare(keyboard.problem, ""); compare(file.writes, 1);
+            const saved = Actions.parse(file.snapshot.text);
+            verify(!saved.error); compare(saved.value, keyboard.persisted);
+        }
+        function test_topbar_migration_preserves_aliases_and_conflicts() {
+            const rows = previousPanelBindings();
+            const aliases = {quickSettings: ":menu", audio: ":sound", settings: ":WIFI", lock: ":BLUETOOTH",
+                volumeDown: ":BATTERY", dnd: ":NOTIFICATIONS"};
+            for (const row of rows) if (aliases[row.action]) row.command = aliases[row.action];
+            file.external(JSON.stringify({schemaVersion: 1, bindings: rows}));
+            compare(keyboard.readProblem, ""); compare(file.writes, 0);
+            for (const action of Object.keys(aliases))
+                compare(keyboard.command(aliases[action].toLowerCase()).action, action);
+            for (const action of ["network", "bluetooth", "battery", "notifications"])
+                compare(keyboard.persisted.find(row => row.action === action).command, "");
+            compare(keyboard.command(":quickmenu"), null); compare(keyboard.command(":volume"), null);
+        }
+        function test_topbar_commands_stay_removed_after_save() {
+            keyboard.beginEdit();
+            for (const entry of topbarCommands()) keyboard.setBinding(entry.action, "command", "");
+            verify(keyboard.save()); tryCompare(keyboard, "saving", false);
+            compare(keyboard.problem, "");
+            const saved = Actions.parse(file.snapshot.text);
+            verify(!saved.error);
+            for (const entry of topbarCommands()) {
+                compare(keyboard.command(entry.command), null);
+                compare(saved.value.find(row => row.action === entry.action).command, "");
+            }
+        }
+        function test_command_names_alias_priority_and_disabled_action() {
+            compare(keyboard.commandMatches(":GLOSNOSC").map(entry => entry.action), ["audio"]);
+            compare(keyboard.commandMatches(":glosnosc").map(entry => entry.action), ["audio"]);
+            compare(keyboard.commandMatches(":Wi-Fi").map(entry => entry.action), ["network"]);
+            compare(keyboard.commandMatches(":menu").map(entry => entry.action), ["quickSettings"]);
+            saveAlias("messages", ":chat");
+            compare(keyboard.commandMatches(":wiadomosci").map(entry => entry.action), ["messages"]);
+            compare(keyboard.commandMatches(":chat").map(entry => entry.action), ["messages"]);
+            compare(keyboard.commandMatches(":messages"), []);
+            saveAlias("floating", ":wiadomosci");
+            compare(keyboard.commandMatches(":wiadomosci").map(entry => entry.action), ["floating", "messages"]);
+            saveAlias("messages", "");
+            compare(keyboard.commandMatches(":Wiadomości").map(entry => entry.action), []);
+            compare(keyboard.commandMatches(":wiadomosci").map(entry => entry.action), ["floating"]);
+        }
+        function test_topbar_migration_rejects_incomplete_catalogs() {
+            const previous = previousPanelBindings();
+            const partial = previous.concat([Actions.defaults().find(row => row.action === "network")]);
+            for (const rows of [previous.slice(1), partial, Actions.defaults().filter(row => row.action !== "network")])
+                verify(!!Actions.parse(JSON.stringify({schemaVersion: 1, bindings: rows})).error);
+        }
         function test_session_commands_data() {
             return [
                 {tag: "shutdown", action: "shutdown", requested: "poweroff", confirm: true},
@@ -390,6 +564,9 @@ Item {
                 {tag: "profile", action: "balanced", category: "Bateria", icon: "battery_android_full"},
                 {tag: "audio", action: "volumeDown", category: "Dźwięk", icon: "volume_up"},
                 {tag: "settings", action: "settings", category: "Ustawienia", icon: "settings"},
+                {tag: "quick-menu", action: "quickSettings", category: "Ustawienia", icon: "tune"},
+                {tag: "wifi", action: "network", category: "Sieć", icon: "network_wifi"},
+                {tag: "bluetooth", action: "bluetooth", category: "Bluetooth", icon: "bluetooth"},
                 {tag: "messages", action: "messages", category: "Wiadomości", icon: "chat_bubble"},
                 {tag: "clipboard", action: "clipboard", category: "Schowek", icon: "content_paste"},
                 {tag: "notifications", action: "dnd", category: "Powiadomienia", icon: "notifications"},

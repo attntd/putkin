@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "build": "20260923-101912-d8c57b61158f",
+  "actions": {
+    "ready": true,
+    "busy": false,
+    "applied": true,
+    "error": "",
+    "shortcuts": 9,
+    "commands": 18
+  },
+  "instances": 1,
+  "runtimeFilesMatch": 360,
+  "settingsUnchanged": [
+    "keyboard.json",
+    "settings.json"
+  ],
+  "syntheticInputOnDesktop": false
+}

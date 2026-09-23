@@ -1,0 +1,27 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::SignalMedia::initTestCase()
+PASS   : qmltestrunner::SignalMedia::test_attachment_only_remove_restart_and_keyboard_paste()
+QINFO  : qmltestrunner::SignalMedia::test_image_preview_focus_escape_and_live_preview_save_cancel() qt.multimedia.ffmpeg: Using Qt multimedia with FFmpeg version n9.0.1 GPL version 3 or later
+PASS   : qmltestrunner::SignalMedia::test_image_preview_focus_escape_and_live_preview_save_cancel()
+PASS   : qmltestrunner::SignalMedia::test_preparation_blocks_send_and_stale_selection_does_not_mix_files()
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/home/attntd/projects/putkin/tests/fixtures/signal/media/video.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf63.1.101
+  Duration: 00:00:00.20, start: 0.000000, bitrate: 68 kb/s
+  Stream #0:0[0x1](und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(progressive), 96x64 [SAR 1:1 DAR 3:2], 31 kb/s, 25 fps, 25 tbr, 12800 tbn (default)
+    Metadata:
+      handler_name    : VideoHandler
+      encoder         : Lavc63.1.101 libx264
+Input #0, wav, from '/home/attntd/projects/putkin/tests/fixtures/signal/media/audio.wav':
+  Duration: 00:00:00.10, bitrate: 131 kb/s
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 8000 Hz, 1 channels, s16, 128 kb/s
+PASS   : qmltestrunner::SignalMedia::test_qt_video_decoder_play_pause_and_audio_metadata()
+PASS   : qmltestrunner::SignalMedia::test_thumbnail_click_and_keyboard_open_preview_and_restore_focus(image)
+PASS   : qmltestrunner::SignalMedia::test_thumbnail_click_and_keyboard_open_preview_and_restore_focus(document)
+PASS   : qmltestrunner::SignalMedia::cleanupTestCase()
+Totals: 8 passed, 0 failed, 0 skipped, 0 blacklisted, 8883ms
+********* Finished testing of qmltestrunner *********

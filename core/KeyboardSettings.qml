@@ -65,11 +65,19 @@ QtObject {
     function command(text: string): var {
         return commandMatches(text).find(entry => entry.id === text.trim().toLowerCase()) || null;
     }
+    function searchName(text: string): string {
+        return text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/ł/g, "l").replace(/[-_]/g, "");
+    }
     function commandMatches(text: string): var {
         const query = text.trim().toLowerCase();
         if (!query.startsWith(":")) return [];
+        const nameQuery = searchName(query.slice(1).trim());
         const seen = new Set();
-        return persisted.filter(row => row.command && row.command.startsWith(query))
+        return persisted.filter(row => {
+                if (!row.command) return false;
+                const title = searchName(Actions.find(row.action).title);
+                return row.command.startsWith(query) || title.startsWith(nameQuery) || title.indexOf(" " + nameQuery) >= 0;
+            })
             .sort((a, b) => Number(b.command === query) - Number(a.command === query) || a.command.localeCompare(b.command))
             .filter(row => {
                 // Keep both saved bindings, but show their shared action only once.

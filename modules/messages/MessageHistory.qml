@@ -67,7 +67,8 @@ ListView {
     boundsBehavior: Flickable.StopAtBounds
     cacheBuffer: 400
     keyNavigationEnabled: false
-    Controls.ScrollBar.vertical: Controls.ScrollBar {}
+    UI.KineticScroll { id: scroll; flickable: root }
+    Controls.ScrollBar.vertical: UI.ScrollBar {}
     function revealControl(item: Item): void {
         const top = item.mapToItem(contentItem, 0, 0).y;
         if (top < contentY) { followEnd = false; contentY = top; }
@@ -151,6 +152,8 @@ ListView {
     onContentHeightChanged: { scheduleEnd(); scheduleRead(); }
     Keys.onPressed: event => {
         root.focusReason = Qt.TabFocusReason;
+        scroll.reset();
+        cancelFlick();
         if (event.modifiers !== Qt.NoModifier) return;
         if (event.key === Qt.Key_K || event.key === Qt.Key_Up) {
             followEnd = false;
@@ -159,7 +162,7 @@ ListView {
             contentY = Math.min(originY + Math.max(0, contentHeight - height), contentY + 48);
             followEnd = atYEnd;
         }
-        else if (event.key === Qt.Key_Escape && actionsMessageId) actionsMessageId = "";
+        else if (event.key === Qt.Key_Escape) { actionsMessageId = ""; root.backRequested(); }
         else if (event.key === Qt.Key_H) root.backRequested();
         else if (event.key === Qt.Key_L || event.key === Qt.Key_Return) root.composeRequested();
         else return;
@@ -551,6 +554,8 @@ ListView {
             }
         }
         function onHistoryChanging(reset: bool): void {
+            scroll.reset();
+            root.cancelFlick();
             root.capture(reset);
             // Detach before a full clear while delegates may still be
             // incubating (opening a window and selecting another conversation).

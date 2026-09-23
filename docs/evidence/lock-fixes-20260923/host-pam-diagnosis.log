@@ -1,0 +1,11 @@
+Sep 23 13:58:18 lenovo-x1 env[22721]: quickshell.service.pam.subprocess: Waiting for parent confirmation...
+Sep 23 13:58:18 lenovo-x1 env[22721]: quickshell.service.pam.subprocess: Starting pam session for user "attntd" with config "putkin-fingerprint" in dir "/home/attntd/.config/quickshell/config/pam.d"
+Sep 23 13:58:18 lenovo-x1 quickshell[22721]: PAM _pam_init_handlers: no default config other
+Sep 23 13:58:19 lenovo-x1 env[22721]: quickshell.service.pam.subprocess: Relaying pam message: "Proszę umieścić prawy palec wskazujący na urządzeniu" echo: 1 error: 0 responseRequired: 0
+Sep 23 13:58:49 lenovo-x1 env[22721]: quickshell.service.pam.subprocess: Relaying pam message: "Weryfikacja przekroczyła czas oczekiwania" echo: 1 error: 0 responseRequired: 0
+Sep 23 13:58:49 lenovo-x1 env[22721]: quickshell.service.pam.subprocess: Error while authenticating: "Usługa uwierzytelniania nie może uzyskać informacji o uwierzytelnianiu" (code 9)
+Sep 23 14:14:03 lenovo-x1 env[22884]: quickshell.service.pam.subprocess: Waiting for parent confirmation...
+Sep 23 14:14:03 lenovo-x1 env[22884]: quickshell.service.pam.subprocess: Starting pam session for user "attntd" with config "putkin-password" in dir "/home/attntd/.config/quickshell/config/pam.d"
+Sep 23 14:14:03 lenovo-x1 quickshell[22884]: PAM _pam_init_handlers: no default config other
+Sep 23 14:14:03 lenovo-x1 env[22884]: quickshell.service.pam.subprocess: Relaying pam message: "Hasło: " echo: 0 error: 0 responseRequired: 1
+Sep 23 14:14:03 lenovo-x1 env[22884]: quickshell.service.pam.subprocess: Got response for request.quickshell.service.pam.subprocess: Authenticated successfully.

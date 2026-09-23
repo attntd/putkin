@@ -1,0 +1,8 @@
+FAIL [imports/types, exit=255] /home/attntd/projects/putkin/tests/qml/tst_keyboard.qml
+Warning: /home/attntd/projects/putkin/tests/qml/tst_keyboard.qml:316:57: Member "name" not found on type "QObject" [missing-property]
+            preview.backend.focusedMonitorName = screen.name;
+                                                        ^^^^
+Warning: /home/attntd/projects/putkin/tests/qml/tst_keyboard.qml:337:60: Member "name" not found on type "QObject" [missing-property]
+            compare(preview.coordinator.screenName, screen.name);
+                                                           ^^^^
+FAIL: 274 plików QML, 1 z błędami.

@@ -1,0 +1,10 @@
+  INFO: Launching config: "/home/attntd/projects/putkin/signal-acceptance-test.qml"
+  INFO: Shell ID: "4323d196315a3a0076653d383bedf89a" Path ID "4323d196315a3a0076653d383bedf89a"
+  INFO: Saving logs to "/tmp/pw-o5cwq_93/r/quickshell/by-id/yf3otlt/log.qslog"
+  INFO: Configuration Loaded
+  INFO qt.multimedia.ffmpeg: Using Qt multimedia with FFmpeg version n9.0.1 GPL version 3 or later
+ DEBUG qml: S11_PHASE before-hotplug
+ DEBUG qml: S11_PHASE after-hotplug
+ DEBUG qml: S11_PHASE locked
+  INFO: Reloading configuration...
+  INFO: Configuration Loaded

@@ -1,5 +1,71 @@
 # Roadmapa Putkin
 
+## Wybrana korekta — pasek i sterowanie powiadomieniami, 2026-09-23
+
+**Wdrożone lokalnie: `20260923-155404-94077eef8c74`.**
+
+Moduły po prawej stronie paska bez zmiany wyglądu po otwarciu.
+Super+N wybiera widoczne toasty, a przy ich braku otwiera centrum.
+Enter wykonuje akcję i usuwa wpis, d usuwa wybrane powiadomienie,
+q/Escape odkłada toast do centrum. Centrum ma pojedynczą szarą ramkę,
+pełną rozwiniętą treść i nawigację między kartą oraz rzędami przycisków.
+Zakres obejmuje tę korektę i testy, bez kolejnego etapu roadmapy.
+[Kontrakt](docs/notifications.md#pasek-toasty-i-centrum--2026-09-23),
+[wyniki](docs/status.md#pasek-toasty-i-centrum--2026-09-23).
+
+## Wybrana korekta — sterowanie Message Hubem, 2026-09-23
+
+**Wdrożone lokalnie: `20260923-150615-a7bcf1e31250`.**
+
+Zwykłe otwarcie ustawia fokus na liście rozmów; otwarcie konkretnej
+rozmowy z powiadomienia kieruje do edytora. Strzałki/j/k wybierają wiersz,
+Enter/l otwiera rozmowę, Escape wraca na listę. Pole wiadomości zajmuje
+miejsce przycisku wysyłania. Lista i historia mają bezwładność przewijania
+touchpadem. Zakres obejmuje tę korektę i testy, bez kolejnego etapu.
+[Kontrakt](docs/signal/CONTRACTS.md#sterowanie-message-hubem--2026-09-23),
+[wyniki](docs/status.md#sterowanie-message-hubem--2026-09-23).
+
+## Wybrana korekta — fade blokady na pulpicie, 2026-09-23
+
+**Wdrożone lokalnie: `20260923-130130-d8eb37d26a47`.**
+
+Usunięcie szarej klatki przed animacją: blokada pojawia się i znika przez
+fade na zapamiętanym obrazie pulpitu. Pole hasła bez rysowanego kursora.
+Zakres obejmuje przechwycenie w pamięci, fallback bez kadru oraz testy
+rzeczywistych klatek w prywatnym Waylandzie; bez następnego etapu roadmapy.
+[Kontrakt](docs/session.md), [wyniki](docs/status.md#fade-blokady-bez-szarej-klatki-i-bez-kursora--2026-09-23).
+
+## Wybrana korekta — odcisk i fade blokady, 2026-09-23
+
+**Wdrożone lokalnie: `20260923-124134-db47c1bd345d`.**
+
+Naprawa zgłoszonego zaniku odcisku po 30 s i błędu logind po odblokowaniu.
+Fade 200 ms przy wejściu i wyjściu blokady oraz glif po prawej stronie pola
+hasła. Zakres obejmuje istniejącą blokadę, warunek automatycznego snu
+i testy na prywatnych PAM/D-Bus/Waylandzie, bez kolejnego etapu roadmapy.
+[Kontrakt](docs/session.md), [wyniki](docs/status.md#odcisk-fade-i-glif-blokady--2026-09-23).
+
+## Wybrana korekta — moduły paska w komendach launchera, 2026-09-23
+
+**Wdrożone lokalnie: `20260923-101912-d8c57b61158f`.**
+
+Wi-Fi, Bluetooth, Głośność, Bateria, Powiadomienia i Quick Menu dostępne
+w launcherze komend obok Wiadomości. Zakres obejmuje katalog, otwieranie
+istniejących paneli, zachowanie zapisanych przypisań i testy zachowania.
+Zgłoszona w tej samej sesji korekta wyszukiwania: komendy można znaleźć
+także po polskiej nazwie działania, z diakrytykami lub bez.
+[Kontrakt](docs/launcher.md#moduły-paska-w-komendach--2026-09-23),
+[wyniki](docs/status.md#moduły-paska-w-komendach-launchera--2026-09-23).
+
+## Wybrana korekta — Ctrl+Shift+Super+Enter otwiera Wiadomości, 2026-09-23
+
+**Włączone lokalnie w ustawieniach klawiatury; domyślne przypisanie dodane do źródeł.**
+
+Globalny Ctrl+Shift+Super+Enter otwiera hub Wiadomości lub przywołuje istniejące okno.
+Zakres obejmuje domyślne przypisanie we wspólnym katalogu i konfiguracji
+Hyprlanda oraz testy zachowania skrótu.
+[Wyniki](docs/status.md#ctrlshiftsuperenter-otwiera-wiadomości--2026-09-23).
+
 ## Wybrana korekta — chip i kategorie komend, 2026-09-22
 
 **Wdrożone lokalnie: `20260922-170918-6f7687ca8192`.**

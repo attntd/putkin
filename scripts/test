@@ -52,6 +52,7 @@ def main():
     caffeinate = integration("test-caffeinate-integration")
     signal_integration = integration("test-signal-integration")
     signal_messages = integration("test-signal-messages")
+    messages_input = integration("test-messages-input")
     signal_notifications = integration("test-signal-notifications")
     signal_receipts = integration("test-signal-receipts")
     signal_groups = integration("test-signal-groups")
@@ -64,7 +65,7 @@ def main():
                or launcher.returncode != 0 or native.returncode != 0 or panels.returncode != 0 or settings.returncode != 0 or audio.returncode != 0
                or brightness.returncode != 0 or status.returncode != 0 or network.returncode != 0 or bluetooth.returncode != 0
                or notifications.returncode != 0 or session.returncode != 0 or desktop.returncode != 0 or caffeinate.returncode != 0
-               or signal_integration.returncode != 0 or signal_pairing.returncode != 0 or signal_messages.returncode != 0 or signal_media.returncode != 0
+               or signal_integration.returncode != 0 or signal_pairing.returncode != 0 or signal_messages.returncode != 0 or messages_input.returncode != 0 or signal_media.returncode != 0
                or signal_groups.returncode != 0 or signal_retention.returncode != 0 or signal_interactions.returncode != 0 or signal_notifications.returncode != 0 or signal_receipts.returncode != 0 or validation.returncode != 0)
 
 

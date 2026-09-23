@@ -1,0 +1,14 @@
+bus:
+
+shell:
+  INFO: Launching config: "/home/attntd/projects/putkin/signal-messages-test.qml"
+  INFO: Shell ID: "9c606858100c120256e6b6b929fc94a5" Path ID "9c606858100c120256e6b6b929fc94a5"
+  INFO: Saving logs to "/tmp/pk-s04-um82hug7/runtime/quickshell/by-id/6r118tntlt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  INFO: Reloading configuration...
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks

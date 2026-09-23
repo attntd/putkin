@@ -1,0 +1,20 @@
+{
+  "previous": "/home/attntd/.local/share/putkin/releases/20260923-150615-a7bcf1e31250",
+  "runtime_delta": [
+    "core/NotificationFocus.qml",
+    "modules/bar/BatteryButton.qml",
+    "modules/bar/BarView.qml",
+    "modules/notifications/NotificationCard.qml",
+    "modules/notifications/NotificationCenter.qml",
+    "modules/notifications/NotificationStack.qml",
+    "services/NotificationIpc.qml",
+    "services/NotificationEntry.qml",
+    "services/NotificationService.qml"
+  ],
+  "runtime_files": 362,
+  "tested_file_mismatches": [],
+  "settings": {
+    "settings.json": "5a95c81e25ad1ec3dd57dfa67d5e19f645c0445b553330c72211b8d69b7a84fe",
+    "keyboard.json": "54427f8a8193996e2a6bb0f28f7fc097a23711faaefb49af29ed4fd73c77b540"
+  }
+}

@@ -42,7 +42,7 @@ QtObject {
     }
     function suspend(idle: bool): void {
         if (!idle) { suspendSent = false; return; }
-        if (idleBlocked || sleepBlocked || suspendSent) return;
+        if (idleBlocked || sleepBlocked || suspendSent || !session.capability("idleSuspend").available) return;
         suspendSent = session.request("idleSuspend");
     }
     function resume(): void {

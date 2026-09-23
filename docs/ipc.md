@@ -170,7 +170,7 @@ wznowienia sesji w etapie 10.
 
 | Funkcja | Wynik | Zachowanie |
 | --- | --- | --- |
-| `notifications focus(): string` | Nazwa monitora lub pusty napis | Otwiera centrum na skupionym monitorze, także z pustą historią; zastępuje poprzedni panel i kończy nawigację paska. |
+| `notifications focus(): string` | Nazwa monitora lub pusty napis | Wybiera widoczne toasty na skupionym monitorze, z fallbackiem do ekranu z toastami; bez nich otwiera centrum, także puste. Zastępuje poprzedni panel i kończy nawigację paska. |
 | `notifications leave(): void` | Brak | Zamyka centrum lub nawigację toastów i zwalnia klawiaturę. Nie usuwa historii. |
 | `notifications setDnd(enabled: bool): bool` | `true` po przyjęciu, `false` przy braku serwera | Włącza/wyłącza DND bez zapisu ustawień. |
 | `notifications toggleDnd(): bool` | Nowy stan DND; `false` również przy braku serwera | Przełącza DND. Przełącznik znajduje się w centrum; błąd jest osobnym powiadomieniem. |

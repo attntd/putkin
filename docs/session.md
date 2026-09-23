@@ -37,7 +37,11 @@ Stosy z katalogu `config/pam.d` są częścią wydania i nie zmieniają `/etc/pa
 
 - `putkin-password`: pam_shells, pam_nologin i `auth include /etc/pam.d/system-auth`,
   z zachowaniem systemowej polityki hasła i limitów prób.
-- `putkin-fingerprint`: `auth required pam_fprintd.so max-tries=3 timeout=30`.
+- `putkin-fingerprint`: `auth required pam_fprintd.so max-tries=3 timeout=-1`.
+
+Czytnik czeka także po 30 s bezczynności. Ujemny timeout, obsługiwany przez
+pam_fprintd 1.94.5, wyłącza limit czasu oczekiwania, zachowując trzy błędne
+próby. Hasło, przygotowanie do snu i zakończenie blokady przerywają rozmowę.
 
 Odcisk jest uruchamiany po wykryciu urządzenia i zapisanych odcisków
 bieżącego użytkownika. Lokalny `system-local-login` również zawiera fprintd,
@@ -49,10 +53,35 @@ Zwykła nieudana rozmowa może zostać ponowiona po 2 s; błąd PAM lub limit
 prób pozostawia hasło i czeka z odciskiem na kolejny cykl blokady.
 
 Przyciemniona tapeta pochodzi z `WallpaperService`, akcent z `Theme`.
-Zegar, data i kwadratowe pole są wyśrodkowane. Glif odcisku przy lewym
+Zegar, data i kwadratowe pole są wyśrodkowane. Glif odcisku przy prawym
 brzegu pola ma kolory Mocha: neutralny Subtext0, błąd Red, sukces Green.
-Błąd resetuje się po 2 s. Sukces odblokowuje od razu, bez opóźnienia
-prezentującego kolor. Nie ma dodatkowych etykiet ani podpowiedzi.
+Błąd resetuje się po 2 s. Pole hasła zachowuje standardowe wejście Qt,
+ale pusty `cursorDelegate` nie rysuje kursora tekstowego, także po uzyskaniu
+fokusu. Cały widok pojawia się i znika przez wspólny fade 200 ms.
+
+`LockCapture` pobiera jedną klatkę każdego monitora przed żądaniem natywnej
+blokady. Czeka najwyżej 150 ms; w tym krótkim okresie `locked` oznacza
+wyłącznie żądanie, a `secure` pozostaje fałszywe. PAM i sen nadal wymagają
+rzeczywistego `secure`. `ScreencopyView` ma `live: false`, nie przechwytuje
+kursora myszy, nie zapisuje plików i nie używa schowka. Przezroczyste,
+pasywne okno 1 × 1 inicjalizuje zasoby renderera tylko podczas pobierania.
+
+Klatka pulpitu jest tłem nieprzezroczystej powierzchni session-lock od jej
+pierwszego wyświetlenia. Nad nią pojawia się kompletny widok blokady;
+układ i tapeta są gotowe przed pierwszą widoczną klatką fade. Eliminuje to
+wcześniejszy szary ekran przed animacją. Obraz pozostaje w pamięci przez
+czas blokady i służy także przy wyjściu: na końcu zamrożony kadr ustępuje
+bieżącemu pulpitowi. Bufory są zwalniane po odblokowaniu, odrzuceniu blokady
+lub zakończeniu komponentu. Nie zmieniamy ochrony renderowania kompozytora.
+Brak klatki, przekroczony termin albo nowo podłączony monitor oznaczają
+natychmiastowy nieprzezroczysty widok, bez fade z jednobarwnego tła.
+
+Sukces PAM zatrzymuje rozmowy i czyści hasło;
+`LockService.unlocking` rozpoczyna wyjście. `LockHost` zwalnia protokół
+dopiero po wygaśnięciu wszystkich powierzchni. W trakcie fade powierzchnie
+pozostają nieprzezroczyste dla pulpitu, a nowa blokada lub przygotowanie
+do snu unieważnia odblokowanie. Nie ma dodatkowego opóźnienia na kolor,
+etykiet ani podpowiedzi.
 
 ## Bezczynność
 
@@ -69,6 +98,9 @@ Progi i automatyczne uśpienie z późniejszą hibernacją zachowują dotychczas
 konfigurację użytkownika. Ręczne Uśpij w Power menu nadal wywołuje Suspend.
 Komenda `sleep` launchera również używa Suspend, a `hibernate` wywołuje
 Hibernate po potwierdzeniu blokady; dostępność sprawdza CanHibernate.
+Automatyka sprawdza dostępność `idleSuspend` przed żądaniem: niedostępne
+SuspendThenHibernate jest pomijane bez błędu sesji i powiadomienia po
+odblokowaniu. Nie zastępujemy go samoczynnie innym rodzajem snu.
 Sygnatury metod: [oficjalne API logind](https://github.com/systemd/systemd/blob/main/man/org.freedesktop.login1.xml).
 Aktywność przywraca DPMS i zapamiętaną jasność tego samego urządzenia,
 bez OSD. Nie rozjaśniamy uprzednio ciemniejszego ekranu. Brak backlight

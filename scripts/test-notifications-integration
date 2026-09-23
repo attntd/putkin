@@ -235,6 +235,9 @@ def run(output, idle):
             assert entry(critical)["critical"] and entry(critical)["deadline"] == 0
             assert state()["unread"] == 32 and state()["bell"] == "notifications_off", state()
             assert ipc("notifications", "focus") == "TEST-1"
+            eventually(state, lambda s: s["keyboard"] == "TEST-1" and not s["center"], "visible critical toast gets focus")
+            assert state()["unread"] == 32, "toast focus does not mark unrelated history read"
+            ipc("probe", "openCenter")
             eventually(state, lambda s: s["center"] and len(s["history"]) > 0, "notification center with DND history")
             assert len(state()["history"]) == 32, "ordinary + suppressed + critical in session history"
             assert state()["unread"] == 0, "opening the center marks the complete history read"
@@ -247,6 +250,9 @@ def run(output, idle):
             eventually(lambda: is_closed(critical, 1), bool, "replacement loses critical exemption")
             ipc("notifications", "setDnd", "false")
             eventually(state, lambda s: s["unread"] == 1 and s["bell"] == "notifications_unread", "replacement is unread after leaving the center")
+            clear()
+            assert ipc("notifications", "focus") == "TEST-1"
+            eventually(state, lambda s: s["center"] and not s["keyboard"], "no toasts opens the center")
             clear()
             report["checks"].append("production DND IPC; no replay; critical bypasses DND and never auto-expires; explicit keyboard entry/leave")
 
@@ -285,7 +291,8 @@ def run(output, idle):
             large = notify(api, summary=content_marker + " title " * 200, body=content_marker + "<b>literal hjkl</b>" * 600,
                 extra={"image-data": image}, action_list=["default", "Open"])
             large_value = eventually(lambda: entry(large), bool, "large image notification")
-            assert len(large_value["body"]) == 4096 and len(large_value["summary"]) == 512
+            assert large_value["body"] == content_marker + "<b>literal hjkl</b>" * 600
+            assert large_value["summary"] == content_marker + " title " * 200
             assert large_value["image"].startswith("image://"), large_value["image"]
             eventually(state, lambda s: s.get("loaded"), "native image view loaded")
             pause(.2)
@@ -295,7 +302,7 @@ def run(output, idle):
                 assert content_marker.encode() not in Path(f"/proc/{process['pid']}/cmdline").read_bytes()
             clear()
             assert not any(content_marker.encode() in path.read_bytes() for path in base.rglob("*") if path.is_file()), "notification content persisted"
-            report["checks"].append("8 MiB raw image; bounded title/body and native image provider; no payload in argv, logs, cache or XDG files")
+            report["checks"].append("8 MiB raw image; full title/body and native image provider; no payload in argv, logs, cache or XDG files")
 
             other_bus = dbus.bus.BusConnection(address)
             other_api = client(other_bus)

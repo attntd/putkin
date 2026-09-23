@@ -40,8 +40,85 @@ Item {
             tryCompare(adapter, "listLoading", false);
             tryCompare(adapter, "conversations", backend.rows.map(v => Object.assign({}, v, {route: adapter.address(v.conversationId), serviceName: "Signal"})));
             opened.clear();
+            (view.item as MessagesView).focusInitial();
         }
         function cleanup() { backend.release(); wait(300); view.active = false; settings.cancelEdit(); wait(100); }
+        function test_initial_list_and_conversation_navigation_data() {
+            return [{tag: "wide", width: 980}, {tag: "narrow", width: 320}];
+        }
+        function test_initial_list_and_conversation_navigation(data) {
+            scene.width = data.width;
+            const list = control("conversationList");
+            verify(list.activeFocus);
+            compare(list.currentIndex, 0);
+            for (const key of [Qt.Key_Down, Qt.Key_K, Qt.Key_J, Qt.Key_Up]) keyClick(key);
+            compare(list.currentIndex, 0);
+            compare(adapter.selectedRoute, null);
+            for (const key of [Qt.Key_L, Qt.Key_Return, Qt.Key_Enter, Qt.Key_Right]) {
+                keyClick(Qt.Key_Down);
+                const route = (view.item as MessagesView).filtered[list.currentIndex].route;
+                keyClick(key, key === Qt.Key_Enter ? Qt.KeypadModifier : Qt.NoModifier);
+                const editor = control("messageEditor");
+                tryVerify(() => editor.activeFocus && adapter.draftReady);
+                verify(Route.equal(adapter.selectedRoute, route));
+                const composer = editor.mapToItem(view.item, editor.width, 0);
+                verify(Math.abs(composer.x - (scene.width - Metrics.space12)) < 2);
+                compare(control("sendMessage"), null);
+                keyClick(Qt.Key_Escape);
+                tryVerify(() => list.activeFocus && list.visible);
+                verify(!(view.item as MessagesView).composerFocusPending);
+                keyClick(Qt.Key_Up);
+            }
+        }
+        function test_reopen_defaults_to_list_and_explicit_route_to_editor() {
+            choose("chat-g");
+            view.active = false; wait(50); view.active = true;
+            tryCompare(view, "status", Loader.Ready);
+            (view.item as MessagesView).focusInitial();
+            verify(control("conversationList").activeFocus);
+            compare(control("conversationList").currentIndex, 1);
+            (view.item as MessagesView).focusInitial(true);
+            tryVerify(() => control("messageEditor").activeFocus);
+            keyClick(Qt.Key_Escape);
+            verify(control("conversationList").activeFocus);
+            compare(control("conversationList").currentIndex, 1);
+            (view.item as MessagesView).focusInitial(true);
+            tryVerify(() => control("messageEditor").activeFocus);
+            control("messageHistory").forceActiveFocus(Qt.TabFocusReason);
+            keyClick(Qt.Key_Escape);
+            verify(control("conversationList").activeFocus);
+        }
+        function test_delayed_draft_focus_and_escape_cancels_pending_focus() {
+            backend.holdResponses = true;
+            verify(messageHub.openConversation(adapter.address("chat-a")));
+            (view.item as MessagesView).focusInitial(true);
+            backend.release();
+            tryVerify(() => adapter.draftReady && control("messageEditor").activeFocus);
+            // A delayed draft must not steal focus after Escape.
+            adapter.draftReady = false;
+            (view.item as MessagesView).focusInitial(true);
+            keyClick(Qt.Key_Escape);
+            verify(control("conversationList").activeFocus);
+            adapter.draftReady = true;
+            wait(50);
+            verify(control("conversationList").activeFocus);
+        }
+        function test_pointer_selection_has_no_keyboard_outline() {
+            const list = control("conversationList");
+            tryVerify(() => list.itemAtIndex(0) !== null);
+            keyClick(Qt.Key_J);
+            const entry = list.itemAtIndex(0);
+            mouseClick(entry, entry.width / 2, entry.height / 2);
+            const editor = control("messageEditor");
+            tryVerify(() => editor.activeFocus);
+            compare(editor.focusReason, Qt.MouseFocusReason);
+            verify(!findChild(editor, "focusIndicator").visible);
+            keyClick(Qt.Key_H);
+            compare(editor.text, "h");
+            verify(findChild(editor, "focusIndicator").visible);
+            keyClick(Qt.Key_Escape);
+            verify(list.activeFocus);
+        }
         function test_bubble_width_data() {
             const rows = [];
             for (const width of [320, 640, 980, 1600]) for (const outgoing of [false, true])
@@ -127,6 +204,10 @@ Item {
             tryCompare(editor, "text", "");
             compare(backend.calls.filter(v => v.method === "message.send").length, 1);
             verify(adapter.messages.get(adapter.messages.count - 1).status !== "Dostarczono");
+            tryVerify(() => adapter.canSend);
+            keyClick(Qt.Key_A);
+            keyClick(Qt.Key_Enter, Qt.KeypadModifier);
+            tryCompare(backend, "sentCount", 2);
         }
         function test_draft_pending_switch_and_window_recreation() {
             choose();

@@ -25,6 +25,7 @@ Item {
     BatteryService { id: batteryModel; backend: batteryBackend }
     MockNotificationBackend { id: notificationBackend }
     NotificationService { id: notices; backend: notificationBackend; screens: preview.coordinator.screens; monitorService: preview.backend }
+    QtObject { id: messages; property bool interactive: false; property var hub: ({unreadCount: 0}) }
     QtObject {
         id: panelLoader
         property bool activeAsync: false
@@ -44,6 +45,15 @@ Item {
         name: "VisualContract"
         when: windowShown
         function control(name) { return findChild(preview.panelHost.window, name); }
+        function compareButtonPixels(before, after, button) {
+            const point = button.mapToItem(scene, 0, 0);
+            for (let y = Math.round(point.y); y < point.y + button.height; ++y)
+                for (let x = Math.round(point.x); x < point.x + button.width; ++x) {
+                    compare(after.red(x, y), before.red(x, y));
+                    compare(after.green(x, y), before.green(x, y));
+                    compare(after.blue(x, y), before.blue(x, y));
+                }
+        }
         function open() {
             preview.coordinator.open("quickSettings", preview.firstScreen, null);
             tryCompare(preview.panelHost, "loaded", true);
@@ -63,6 +73,7 @@ Item {
             notificationBackend.available = true;
             notices.dnd = false;
             scene.width = 1366; scene.height = 768;
+            preview.bar.messages = null; messages.interactive = false;
             mouseMove(scene, 100, 700);
         }
         function cleanup() {
@@ -168,6 +179,11 @@ Item {
         }
         function test_active_modules_keep_light_icons(data) {
             const button = findChild(preview.bar, data.name);
+            verify(waitForPolish(scene));
+            const before = grabImage(scene);
+            // Pointer activation must also remove an earlier keyboard outline.
+            button.forceActiveFocus(Qt.TabFocusReason);
+            verify(findChild(button, "focusIndicator").visible);
             mouseClick(button);
             tryCompare(preview.panelHost, "loaded", true);
             const panel = preview.panelHost.window;
@@ -182,13 +198,14 @@ Item {
                 wait(16);
             }
             tryCompare(preview.panelHost.window, "opacity", 1);
-            verify(button.highlighted);
+            verify(!button.highlighted);
             const icon = button.contentItem as UI.Glyph;
             const clockColor = (findChild(preview.bar.clock, "clockLabel") as Text).color;
             compare(icon.color, clockColor);
-            verify(button.background.accentFill);
+            verify(!button.background.accentFill);
             verify(!findChild(button, "focusIndicator").visible);
             verify(waitForPolish(scene));
+            compareButtonPixels(before, grabImage(scene), button);
             const painted = grabImage(scene), origin = button.mapToItem(scene, 0, 0);
             let lightInk = 0;
             for (let y = Math.round(origin.y) + 5; y < origin.y + button.height - 5; ++y)
@@ -201,6 +218,17 @@ Item {
             tryCompare(preview.panelHost, "loaded", false);
             verify(!button.highlighted);
             verify(!button.background.accentFill);
+        }
+        function test_messages_module_keeps_neutral_appearance() {
+            preview.bar.messages = messages;
+            const button = findChild(preview.bar, "barMessages");
+            verify(waitForPolish(scene));
+            const before = grabImage(scene);
+            button.forceActiveFocus(Qt.TabFocusReason);
+            mouseClick(button); messages.interactive = true;
+            verify(waitForPolish(scene));
+            compareButtonPixels(before, grabImage(scene), button);
+            verify(!findChild(button, "focusIndicator").visible);
         }
         function test_one_detail_section_and_keyboard_entry() {
             open();

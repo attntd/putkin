@@ -1,8 +1,8 @@
 # Klawiatura — 2026-09-17
 
 Sekcja Ustawienia → Klawiatura przypisuje skrót i komendę `:` do gotowego
-działania. Katalog `core/Actions.js` obejmuje 58 przypisań: launcher, schowek,
-komendy, ustawienia, panele audio/baterii/Quick Settings, pasek, powiadomienia
+działania. Katalog `core/Actions.js` obejmuje 61 przypisań: launcher, schowek,
+komendy, Wiadomości, ustawienia, panele Wi-Fi/Bluetooth/audio/baterii/Quick Menu, pasek, powiadomienia
 i DND, screenshot, audio/mikrofon, jasność, blokadę/menu sesji, wyłączenie
 (`shutdown` i `poweroff`), trzy profile zasilania, uśpienie, hibernację, restart, fokus/przenoszenie okien,
 pływanie/pełny ekran, workspace 1–10 oraz przeniesienie okna do workspace.
@@ -48,7 +48,8 @@ Restart Quickshella ponownie odczytuje plik.
 
 Launcher komend ma domyślnie `SUPER + semicolon` (Super+; bez Shift).
 Komendy domyślne to `:settings`, `:lock`, `:shutdown`, `:poweroff`, `:sleep`,
-`:hibernate`, `:reboot`, `:screenshot`, `:powersaver`, `:balanced` i `:performance`;
+`:hibernate`, `:reboot`, `:screenshot`, `:powersaver`, `:balanced`, `:performance`,
+`:messages`, `:wifi`, `:bluetooth`, `:volume`, `:battery`, `:notifications` i `:quickmenu`;
 screenshot zachowuje `Print`.
 Odczyt kompletnego poprzedniego katalogu 49/50 działań dodaje nowe rekordy
 w pamięci oraz uzupełnia puste komendy ustawień i blokady. Stary domyślny
@@ -56,23 +57,38 @@ skrót komend zmienia się na Super+;, jeśli nie zajmuje go inne działanie.
 Własne przypisania pozostają; zajęte nazwy nowych komend nie są nadpisywane.
 Kompletny poprzedni katalog 55 przypisań otrzymuje trzy komendy profili
 w pamięci, bez zapisu przy odczycie i bez nadpisywania zajętych nazw.
-Niepełna/uszkodzona lista nadal jest błędem. Zapis z edytora utrwala 58
+Niepełna/uszkodzona lista nadal jest błędem. Zapis z edytora utrwala 61
 rekordów. Późniejsze świadome usunięcie lub zmiana przypisania pozostaje
 zachowane. Cudzy Print jest konfliktem, tak jak inne przypisania;
 adapter nie usuwa obcych skrótów.
 
-Super+H pozostaje nawigacją Hyprlanda do okna po lewej. Wiadomości nie
-mają domyślnego skrótu; działa `:messages`. Quick Menu ma `SUPER + Q`.
+Korekta 2026-09-23: kompletny katalog sprzed dodania Wi-Fi i Bluetooth
+(59 działań, także po wcześniejszych migracjach) dostaje dwa nowe rekordy
+oraz komendy `:volume`, `:battery`, `:notifications` i `:quickmenu` tam,
+gdzie pole było puste. Własne aliasy i wszystkie skróty pozostają zachowane;
+zajęte nazwy blokują tylko dane nowe przypisanie. Nie ma zapisu przy odczycie.
+Kompletny bieżący katalog nie jest ponownie uzupełniany, więc usunięcie
+komendy z edytora jest trwałe. Nowe działania otwierają istniejące panele
+przez wspólny koordynator; [lista komend](launcher.md#moduły-paska-w-komendach--2026-09-23).
+
+Super+H pozostaje nawigacją Hyprlanda do okna po lewej. Wiadomości mają
+domyślny globalny skrót `SUPER + CONTROL + SHIFT + Return`
+(Ctrl+Shift+Super+Enter), który otwiera hub
+lub przywołuje istniejące okno. Działa też `:messages`. Quick Menu ma `SUPER + Q`.
 Istniejące własne przypisania w `keyboard.json` pozostają zachowane.
 
-`config/menu-keybinds.lua` rejestruje siedem początkowych uchwytów z opisem
+`config/menu-keybinds.lua` rejestruje osiem początkowych uchwytów z opisem
 `Putkin:<action>`. Adapter usuwa/odtwarza tylko te uchwyty i zachowuje dane
 do rollbacku nieudanego wywołania Lua. Dodatkowy istniejący Super+Shift+B
 pozostaje skrótem paska w konfiguracji Hyprlanda. Walidacja i aktywacja
 ponownie sprawdzają konflikty, także między zapisaniem pliku a zastosowaniem.
 
 Skróty wywołują `actions invoke <id>`. Launcher dopasowuje zapisane komendy
-po początku nazwy, bez rozróżniania wielkości liter. Sam `:` lub puste pole
+po początku aliasu lub słowa w nazwie działania, bez rozróżniania wielkości
+liter i polskich znaków w nazwach. `:wiadomosci` i `:Wiadomości` wybierają
+Wiadomości z aliasem `:messages`. Dopasowanie nazwy obejmuje tylko działania
+z niepustą komendą; dokładny zapisany alias zachowuje pierwszeństwo.
+Sam `:` lub puste pole
 w trybie „Komenda” pokazuje wszystkie przypisane komendy; dokładne dopasowanie
 jest pierwsze. Enter lub kliknięcie wykonuje wybrany wynik przez ten sam
 `ActionController`, również gdy wpisano tylko część nazwy. Wiersze pokazują

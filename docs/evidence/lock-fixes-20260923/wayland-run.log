@@ -1,0 +1,12 @@
+PASS: native lock covers all outputs; bad password stays locked; hjkl typed literally unlocks via actual fixture PAM
+PASS: all native surfaces fade in/out; compositor secure remains true throughout authenticated fade-out
+PASS: real pam_fprintd reports mismatch/reset and accepts fingerprint after more than 30 seconds waiting
+PASS: password remains usable while the independent fingerprint conversation waits
+PASS: three failed fingerprints still stop scanning and retain password authentication
+PASS: locked hotplug covers new output; reload deferred until unlocked
+PASS: native idle thresholds dim, DPMS off, lock; activity restores DPMS/brightness without unlocking
+PASS: presentation suppresses native idle events; background permits locking but prevents automatic sleep
+PASS: unsupported automatic sleep keeps lock/password working without a session error after unlock
+PASS: native automatic SuspendThenHibernate reaches fake logind only after compositor secure
+PASS: client termination leaves compositor session locked
+PASS: native Quickshell lock, PAM, idle and session integration

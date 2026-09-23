@@ -1,0 +1,17 @@
+{
+  "previous": "/home/attntd/.local/share/putkin/releases/20260923-130130-d8eb37d26a47",
+  "runtime_delta": [
+    "components/qmldir",
+    "components/KineticScroll.qml",
+    "core/MessagesController.qml",
+    "modules/messages/MessageComposer.qml",
+    "modules/messages/MessageHistory.qml",
+    "modules/messages/MessagesView.qml",
+    "modules/messages/MessagesWindow.qml"
+  ],
+  "runtime_files": 362,
+  "settings": {
+    "settings.json": "5a95c81e25ad1ec3dd57dfa67d5e19f645c0445b553330c72211b8d69b7a84fe",
+    "keyboard.json": "54427f8a8193996e2a6bb0f28f7fc097a23711faaefb49af29ed4fd73c77b540"
+  }
+}

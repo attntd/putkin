@@ -1,0 +1,10 @@
+{
+  "current": "20260922-170918-6f7687ca8192",
+  "runtimeFilesChanged": [
+    "config/menu-keybinds.lua",
+    "core/ActionController.qml",
+    "core/Actions.js",
+    "core/Icons.js",
+    "core/KeyboardSettings.qml"
+  ]
+}

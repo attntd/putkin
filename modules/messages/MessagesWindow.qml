@@ -33,8 +33,8 @@ FloatingWindow {
     }
     Connections {
         target: root.controller
-        function onPresented(): void { Qt.callLater(() => view.focusInitial()); }
+        function onPresented(): void { Qt.callLater(() => view.focusInitial(root.controller.focusConversation)); }
     }
-    Component.onCompleted: Qt.callLater(() => view.focusInitial())
+    Component.onCompleted: Qt.callLater(() => view.focusInitial(root.controller.focusConversation))
     onClosed: controller.close()
 }

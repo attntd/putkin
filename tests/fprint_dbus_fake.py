@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Private fprintd/login1 fixture. Does not load libfprint, hardware or PAM."""
+"""Private fprintd fixture. Does not load libfprint, hardware or PAM."""
 import json
 import os
 from pathlib import Path
@@ -19,6 +19,22 @@ class Device(dbus.service.Object):
     def __init__(self, bus):
         super().__init__(bus, "/net/reactivated/Fprint/Device/0")
         self.calls = []
+
+    @dbus.service.method(DEVICE, in_signature="s", out_signature="as")
+    def ListEnrolledFingers(self, username):
+        self.calls.append("ListEnrolledFingers")
+        return ["right-index-finger"]
+
+    @dbus.service.method(PROPERTIES, in_signature="ss", out_signature="v")
+    def Get(self, interface, name):
+        assert interface == DEVICE
+        return self.GetAll(interface)[name]
+
+    @dbus.service.method(PROPERTIES, in_signature="s", out_signature="a{sv}")
+    def GetAll(self, interface):
+        assert interface == DEVICE
+        return {"name": "Fixture reader", "scan-type": "press", "num-enroll-stages": 1,
+                "finger-present": False, "finger-needed": True}
 
     @dbus.service.method(DEVICE, in_signature="s", out_signature="")
     def Claim(self, username):
@@ -52,6 +68,11 @@ class Manager(dbus.service.Object):
         self.bus = bus
         self.device = Device(bus)
 
+    @dbus.service.method(FPRINT + ".Manager", in_signature="", out_signature="ao")
+    def GetDevices(self):
+        self.device.calls.append("GetDevices")
+        return ["/net/reactivated/Fprint/Device/0"]
+
     @dbus.service.method(FPRINT + ".Manager", in_signature="", out_signature="o")
     def GetDefaultDevice(self):
         self.device.calls.append("GetDefaultDevice")
@@ -73,13 +94,6 @@ class Manager(dbus.service.Object):
             self.bus.release_name(FPRINT)
 
 
-class Login(dbus.service.Object):
-    @dbus.service.method(PROPERTIES, in_signature="ss", out_signature="v")
-    def Get(self, interface, name):
-        assert interface == "org.freedesktop.login1.Manager" and name == "PreparingForSleep"
-        return dbus.Boolean(False)
-
-
 if __name__ == "__main__":
     marker = Path(os.environ["PUTKIN_TEST_MARKER"])
     assert marker.is_file() and str(marker).startswith("/tmp/")
@@ -87,8 +101,7 @@ if __name__ == "__main__":
     assert str(marker.parent) in os.environ["DBUS_SYSTEM_BUS_ADDRESS"]
     DBusGMainLoop(set_as_default=True)
     bus = dbus.SessionBus()
-    for name in (FPRINT, CONTROL, "org.freedesktop.login1"):
+    for name in (FPRINT, CONTROL):
         assert bus.request_name(name, dbus.bus.NAME_FLAG_DO_NOT_QUEUE) == dbus.bus.REQUEST_NAME_REPLY_PRIMARY_OWNER
     manager = Manager(bus)
-    login = Login(bus, "/org/freedesktop/login1")
     GLib.MainLoop().run()

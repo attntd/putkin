@@ -11,18 +11,20 @@ QtObject {
     property var barFocus: null
     property bool blocked: false
     property bool interactive: false
+    property bool focusConversation: false
     property var screen: null
     property string lastError: ""
     readonly property bool loaded: loader.active
     readonly property var window: loaded ? loader.item : null
     signal presented()
-    function open(monitor: string): bool {
+    function open(monitor: string, conversation = false): bool {
         if (blocked) return false;
         const target = screens.find(item => item.name === (monitor || monitorService.focusedMonitorName)) || screens[0];
         if (!target) return false;
         if (panels) panels.close(false);
         if (barFocus) barFocus.close();
         release.stop();
+        focusConversation = conversation;
         if (!loaded) screen = target;
         interactive = true;
         loader.activeAsync = true;
@@ -33,7 +35,7 @@ QtObject {
     function openConversation(route: var, monitor = ""): bool {
         if (blocked || !Route.valid(route) || !hub.adapterFor(route) || !screens.length) return false;
         if (!hub.openConversation(route)) return false;
-        return open(monitor);
+        return open(monitor, true);
     }
     function close(): void {
         for (const adapter of hub.adapters) adapter.flushDraft();

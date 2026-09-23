@@ -41,6 +41,14 @@ ShellRoot {
     AudioService { id: audio; backend: pipewire }
     MockBrightnessBackend { id: backlight }
     BrightnessService { id: brightness; backend: backlight }
+    MockNetworkBackend { id: networkBackend }
+    NetworkService { id: network; backend: networkBackend }
+    MockBluetoothBackend { id: bluetoothBackend }
+    BluetoothService { id: bluetooth; backend: bluetoothBackend }
+    MockBatteryBackend { id: batteryBackend }
+    BatteryService { id: battery; backend: batteryBackend }
+    MockPowerProfileBackend { id: profileBackend }
+    PowerProfileService { id: powerProfiles; backend: profileBackend }
     MockSessionBackend { id: sessionBackend }
     SessionService { id: sessionService; backend: sessionBackend }
     MockNotificationBackend { id: notificationBackend }
@@ -48,7 +56,7 @@ ShellRoot {
     BarFocus { id: barFocus; service: hyprland; screenNames: Quickshell.screens.map(screen => screen.name) }
     NotificationFocus { id: notificationFocus; service: notifications; panels: panels; barFocus: barFocus }
     PanelCoordinator { id: panels; screens: Quickshell.screens; monitorService: hyprland; barFocus: barFocus; settings: settings }
-    PanelHost { id: host; coordinator: panels; loader: loader; launcher: launcher; audio: audio; brightness: brightness; notifications: notifications; sessionService: sessionService }
+    PanelHost { id: host; coordinator: panels; loader: loader; launcher: launcher; audio: audio; brightness: brightness; notifications: notifications; sessionService: sessionService; network: network; bluetooth: bluetooth; battery: battery; powerProfiles: powerProfiles }
     LazyLoader { id: loader; component: host.surfaceId === "settings" ? settingsWindow : popupWindow }
     Component { id: settingsWindow; SettingsWindow { host: host } }
     Component { id: popupWindow; Panels.InteractivePanelWindow { host: host } }
@@ -59,6 +67,7 @@ ShellRoot {
         audio: audio; brightness: brightness; sessionService: sessionService
         screenshot: screenshot
         messages: messagesController
+        powerProfiles: powerProfiles
     }
     ActionIpc { controller: actions }
     PanelIpc { coordinator: panels }
@@ -93,7 +102,7 @@ ShellRoot {
             const page = root.find(host.window ? host.window.contentItem : null, "keyboardSection");
             const search = root.find(host.window ? host.window.contentItem : null, "launcherSearch");
             return JSON.stringify({generation: root.generation, ready: keyboard.ready && settings.ready && hyprland.available,
-                active: panels.activeId, loaded: host.loaded, editing: settings.editing, saving: keyboard.saving,
+                active: panels.activeId, panelScreen: panels.screenName, loaded: host.loaded, editing: settings.editing, saving: keyboard.saving,
                 messagesLoaded: messagesController.loaded,
                 keyboardBusy: keyboardBackend.current !== null || keyboardBackend.queue.length > 0,
                 problem: keyboard.problem, actionError: actions.lastError, bindings: keyboard.persisted,
@@ -104,7 +113,8 @@ ShellRoot {
                     selectionReady: screenshotHost.selectionReady, previewReady: screenshotHost.previewReady,
                     height: screenshot.imageHeight, window: screenshot.windowAddress, selection: screenshot.selection,
                     saved: screenshot.savedPath, error: screenshot.lastError, busy: screenshotBackend.busy},
-                settingsPage: !!page, searchFocus: search ? search.activeFocus : false});
+                settingsPage: !!page, searchFocus: search ? search.activeFocus : false,
+                searchWindowActive: search ? search.Window.active : false});
         }
         function keyboardSection(): void { root.find(host.window.contentItem, "keyboardSection").click(); }
         function edit(action: string, shortcut: string, command: string): void {

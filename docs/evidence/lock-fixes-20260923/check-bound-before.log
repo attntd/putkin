@@ -1,0 +1,8 @@
+FAIL [imports/types, exit=255] /home/attntd/projects/putkin/tests/qml/tst_lock_idle.qml
+Warning: /home/attntd/projects/putkin/tests/qml/tst_lock_idle.qml:20:77: Unqualified access [unqualified]
+    Component { id: freshView; LockView { width: 800; height: 600; service: lock } }
+                                                                            ^^^^
+Info: Set "pragma ComponentBehavior: Bound" in order to use IDs from outer components in nested components.
+pragma ComponentBehavior: Bound
+import QtQuick
+FAIL: 274 plików QML, 1 z błędami.

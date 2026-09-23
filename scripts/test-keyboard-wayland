@@ -124,12 +124,12 @@ local value=hl.get_config(key); assert(value.colors[1] == "{first}" and value.co
             eventually(clients,lambda cs:any(c['title']=='Putkin keyboard target' for c in cs),'target mapped')
             hypr('dispatch',f'hl.dsp.focus({{window="address:{target()["address"]}"}})')
             time.sleep(.2)
-            assert len(bindings())==8, bindings()
+            assert len(bindings())==9, bindings()
             assert shortcut('screenshot')==[(0,'print')], bindings()
             assert shortcut('commands')==[(64,'semicolon')], bindings()
-            assert shortcut('messages')==[], bindings()
+            assert shortcut('messages')==[(69,'return')], bindings()
             assert shortcut('quickSettings')==[(64,'q')], bindings()
-            passed('startup: eight owned bindings including Print and Super+Q; Super+H belongs to navigation')
+            passed('startup: nine owned bindings including Ctrl+Shift+Super+Enter, Print and Super+Q; Super+H belongs to navigation')
             ipc('probe','navigationWindow','true')
             windows=eventually(clients,lambda cs:any(c['title']=='Putkin navigation target' for c in cs),'navigation window')
             windows=sorted([c for c in windows if c['title'] in ('Putkin keyboard target','Putkin navigation target')],key=lambda c:c['at'][0])
@@ -140,13 +140,22 @@ local value=hl.get_config(key); assert(value.colors[1] == "{first}" and value.co
             assert not state()['messagesLoaded'],state()
             ipc('probe','navigationWindow','false')
             eventually(clients,lambda cs:not any(c['title']=='Putkin navigation target' for c in cs),'navigation window closed')
-            ipc('actions','invoke','messages')
-            eventually(state,lambda s:s.get('messagesLoaded'),'messages action opens window')
-            eventually(clients,lambda cs:any(c['title']=='Wiadomości' for c in cs),'native messages window')
+            keys('-M','shift','-k','Return','-m','shift')
+            time.sleep(.2)
+            assert not state()['messagesLoaded'],state()
+            keys('-M','ctrl','-M','shift','-M','logo','-k','Return','-m','logo','-m','shift','-m','ctrl')
+            eventually(state,lambda s:s.get('messagesLoaded'),'Ctrl+Shift+Super+Enter opens messages')
+            eventually(lambda:hypr('activewindow',data=True),lambda c:c.get('title')=='Wiadomości','messages focused')
+            messages=next(c for c in clients() if c['title']=='Wiadomości')
+            hypr('dispatch',f'hl.dsp.focus({{window="address:{target()["address"]}"}})')
+            eventually(lambda:hypr('activewindow',data=True),lambda c:c.get('address')==target()['address'],'target focused')
+            keys('-M','ctrl','-M','shift','-M','logo','-k','Return','-m','logo','-m','shift','-m','ctrl')
+            eventually(lambda:hypr('activewindow',data=True),lambda c:c.get('address')==messages['address'],'Ctrl+Shift+Super+Enter refocuses messages')
+            assert len([c for c in clients() if c['title']=='Wiadomości'])==1,clients()
             ipc('probe','closeMessages')
             eventually(state,lambda s:not s.get('messagesLoaded'),'messages closed')
             keys('-M','logo','-k','q','-m','logo'); opened('quickSettings')
-            close(); passed('real Super+H focuses left, messages action works and Super+Q opens Quick Menu')
+            close(); passed('real Ctrl+Shift+Super+Enter opens and refocuses one messages window; Shift+Enter does not open it; Super+H focuses left and Super+Q opens Quick Menu')
             border_options('#cba6f7', '#89b4fa')
             border_capture('window-border-default', '#cba6f7', '#89b4fa')
             passed('native square 2px window borders and shared diagonal GPU pixels')
@@ -159,6 +168,37 @@ local value=hl.get_config(key); assert(value.colors[1] == "{first}" and value.co
             close()
             keys('-M','logo','-k','v','-m','logo'); assert opened('launcher')['mode']=='clipboard'
             close(); passed('real Super+Space / Super+; / Super+V keyboard input')
+            def command_result(query, action, chip=True):
+                keys('-M','logo','-k','semicolon' if chip else 'space','-m','logo')
+                opened('launcher')
+                eventually(state,lambda s:s.get('searchFocus') and s.get('searchWindowActive'),'command search ready')
+                keys('-d','20',query)
+                result = eventually(lambda: ipc_json(ipc('probe','launcherSnapshot')),
+                    lambda s: s.get('resultsCurrent') and s.get('resultsOpacity') == 1
+                        and s.get('resultCount') == 1 and len(s.get('rows', [])) == 1
+                        and s['rows'][0]['action'] == action and s['rows'][0]['iconReady'],
+                    'visible command result ' + query)
+                assert result['focus'] == 'launcherSearch', result
+                keys('-k','Return')
+
+            for query, chip in [(':messages', False), (':wiadomosci', False), (': Wiadomości', False),
+                                ('messages', True), (':messages', True), ('wiadomosci', True), ('Wiadomości', True)]:
+                command_result(query, 'messages', chip)
+                eventually(lambda:hypr('activewindow',data=True),lambda c:c.get('title')=='Wiadomości','messages from ' + query)
+                assert len([c for c in clients() if c['title']=='Wiadomości']) == 1, clients()
+                assert state()['active'] == '', state()
+                ipc('probe','closeMessages')
+                eventually(state,lambda s:not s.get('messagesLoaded'),'messages released after command')
+            passed('typed :messages, :wiadomosci and Wiadomości render a result and Enter opens one native messages window, with and without the command chip')
+            for query, action, focus in [('wifi', 'network', 'wifiRadio'), ('bluetooth', 'bluetooth', 'bluetoothRadio'),
+                                          ('volume', 'audio', 'audioVolume'), ('battery', 'battery', 'batteryProfile-balanced'),
+                                          ('notifications', 'notifications', 'notificationDnd'), ('quickmenu', 'quickSettings', 'audioVolume')]:
+                command_result(query, action)
+                result = opened(action)
+                assert result['panelScreen'] == test_output, result
+                eventually(lambda:ipc_json(ipc('probe','launcherSnapshot')),lambda s:s.get('focus') == focus,'panel focus ' + action)
+                close()
+            passed('six topbar commands open their native panels on the active monitor and transfer keyboard focus')
             ipc('ui','openSettings'); opened('settings')
             window=eventually(clients,lambda cs:any(c['title']=='Ustawienia' for c in cs),'settings toplevel')
             window=next(c for c in window if c['title']=='Ustawienia'); assert window['floating'], window
@@ -195,6 +235,7 @@ local value=hl.get_config(key); assert(value.colors[1] == "{first}" and value.co
             keys('-M','logo','-M','alt','-k','v','-m','alt','-m','logo'); assert opened('launcher')['mode']=='clipboard'
             close(); passed('save applies changed shortcuts; old shortcut is removed')
             ipc('launcher','openCommands'); opened('launcher')
+            eventually(state,lambda s:s.get('searchFocus') and s.get('searchWindowActive'),'command field and native window focused')
             keys('clip'); eventually(state,lambda s:len(s.get('results',[]))==1,'configured command result')
             keys('-k','Return'); result=eventually(state,lambda s:s.get('active')=='launcher' and s.get('mode')=='clipboard','command handoff')
             close()
@@ -219,11 +260,15 @@ local value=hl.get_config(key); assert(value.colors[1] == "{first}" and value.co
             assert hypr('reload')=='ok'
             eventually(lambda:shortcut('clipboard'),lambda rows:rows==[(72,'v')],'compositor reload reapplies custom key')
             result=stable(); assert not result['problem'],result
-            assert len(bindings())==10,bindings()
+            assert len(bindings())==11,bindings()
             border_options('#fab387', '#89b4fa')
             ipc('probe','reload'); result=stable(); assert not result['problem'],result
-            assert len(bindings())==10,bindings()
-            assert shortcut('messages')==[],bindings()
+            assert len(bindings())==11,bindings()
+            assert shortcut('messages')==[(69,'return')],bindings()
+            keys('-M','ctrl','-M','shift','-M','logo','-k','Return','-m','logo','-m','shift','-m','ctrl')
+            eventually(lambda:hypr('activewindow',data=True),lambda c:c.get('title')=='Wiadomości','Ctrl+Shift+Super+Enter after reload')
+            ipc('probe','closeMessages')
+            eventually(state,lambda s:not s.get('messagesLoaded'),'messages closed after reload')
             assert len([b for b in hypr('binds',data=True) if b['modmask']==64 and b['key'].lower()=='h' and b['description']=='[Focus] Left'])==1
             border_options('#fab387', '#89b4fa')
             passed('Hyprland and Quickshell reload retain settings and do not accumulate bindings')

@@ -1,5 +1,40 @@
 # Powiadomienia i DND — etap 09
 
+## Pasek, toasty i centrum — 2026-09-23
+
+Otwarcie modułu na pasku nie zmienia jego tła, ramki ani koloru ikony.
+Super+N / `notifications focus` wybiera pierwszy toast na skupionym
+monitorze, z fallbackiem do innego monitora z toastami. Bez toastów otwiera
+centrum. Dzwonek i komenda `:notifications` nadal otwierają centrum.
+Zwykłe nadejście powiadomienia nie przechwytuje klawiatury; wybrane
+klawiaturą toasty wstrzymują timeout do zakończenia nawigacji.
+
+Na ramce karty `j/k` wybierają powiadomienia. `l` wchodzi do pierwszego
+przycisku nagłówka, `h/l` poruszają się po tym rzędzie. `j` z nagłówka
+przechodzi do pierwszej dolnej akcji, jeżeli istnieje. W siatce akcji
+`h/l` przechodzą po rzędzie, `j/k` między rzędami, z zatrzymaniem na końcach.
+`k` z pierwszego dolnego rzędu wraca do zapamiętanego przycisku nagłówka.
+`h` ze skrajnie lewego przycisku dowolnego rzędu wraca na ramkę karty.
+`d` usuwa powiadomienie i jego historię niezależnie od tego, czy fokus
+ma ramka, przycisk górny czy dolny. Fokus przechodzi na następną dostępną
+kartę. W edytorze odpowiedzi litery pozostają tekstem, a Escape kończy edycję.
+
+Enter na ramce toasta wykonuje domyślną akcję od razu, także przy skróconej
+treści. Udane otwarcie z toasta usuwa również historię i zamyka żywy obiekt,
+także `resident`; dotyczy też otwarcia rozmowy Signal. q/Escape na toastcie
+odkłada tylko wybraną kartę do centrum (reason 1), również rozwiniętą,
+bez wykonania akcji. Usunięcie przez d/× daje reason 2. Znikające karty
+nie biorą udziału w nawigacji podczas fade. Po ostatniej fokus wraca
+do aplikacji. Kliknięcie poza toastem tylko kończy nawigację.
+
+W centrum i toastach ramka jest szara; wspólny FocusIndicator koloruje ją w tym
+samym miejscu, bez dodatkowego obrysu. Fokus przycisku pozostaje na nim.
+Rozwinięcie pokazuje wszystkie linie pełnego tytułu i treści. Usunięto
+obcinanie danych do 512/4096 znaków; archiwum zachowuje cały tekst.
+Limit 100 wpisów historii i limity liczby toastów pozostają bez zmian.
+Rozwinięta karta centrum korzysta z warstwy widocznego panelu, bez
+tworzenia tekstury o wysokości całej długiej wiadomości.
+
 ## Odczyt Signal — S06, 2026-09-20
 
 Własny odczyt wiadomości (aktywne okno lub read sync telefonu) wygasza
@@ -30,11 +65,11 @@ Te zasady zastępują wcześniejszy zakaz reply **dla własnych kart Signala**.
 ## Karty, rozwijanie i przewijanie — 2026-09-20
 
 Zaznaczenie i kliknięcie obejmują całą kartę, w tym ramkę, odstępy, tekst
-i obraz. Gdy treść jest ucięta, pierwsze kliknięcie lub `Enter` rozwija kartę;
+i obraz. Gdy treść jest ucięta, pierwsze kliknięcie lub `Enter` w centrum rozwija kartę;
 kolejne wywołuje akcję. Przy całej widocznej treści wystarcza jedno kliknięcie.
 Żywa karta wywołuje akcję `default`, a przy jej braku pierwszą dostępną akcję.
 Karta archiwalna otwiera rozpoznaną aplikację (opis poniżej).
-W centrum wykonanie akcji lub przyjęcie żądania otwarcia aplikacji usuwa
+W centrum i toastach wykonanie akcji lub przyjęcie żądania otwarcia aplikacji usuwa
 wpis z historii i zamyka jego żywe powiadomienie, także `resident`.
 Samo rozwinięcie tekstu ani nieudane wywołanie nie usuwa wpisu.
 Karta bez akcji i rozpoznanej aplikacji pozostaje dostępna do czytania i usuwania;
@@ -47,8 +82,8 @@ Przycisk × ma grubszy symbol i domyślnie przezroczyste tło bez ramki;
 fokus jest widoczny wyłącznie podczas obsługi klawiaturą.
 
 Gdy tytuł lub treść są skrócone, w nagłówku pojawia się strzałka rozwijania.
-`i` pokazuje wszystkie linie w granicach istniejącego limitu znaków;
-`Escape` lub `q` najpierw zwija wybraną kartę, a kolejne naciśnięcie zamyka panel.
+`i` pokazuje wszystkie linie pełnego tekstu;
+W centrum `Escape` lub `q` najpierw zwija wybraną kartę, a kolejne naciśnięcie zamyka panel.
 `j/k` i strzałki góra/dół przechodzą między kartami niezależnie od rozwinięcia.
 Powrót odsłania początek karty i zachowuje jej rozwinięcie. `l` oraz `Tab`
 udostępniają przyciski rozwijania, zamknięcia i poszczególnych akcji.
@@ -60,8 +95,9 @@ akcji powiadomienia, a kliknięcie biernego toasta nie przejmuje klawiatury.
 
 ## Centrum i historia sesji — 2026-09-19
 
-Dzwonek w pasku oraz dotychczasowy skrót otwierają centrum, także gdy lista
-jest pusta. W jednej linii z nagłówkiem znajdują się ikony dzwonka (DND)
+Dzwonek w pasku otwiera centrum, także gdy lista jest pusta. Super+N od
+2026-09-23 wybiera toasty, a przy ich braku otwiera centrum.
+W jednej linii z nagłówkiem znajdują się ikony dzwonka (DND)
 i kosza (wyczyszczenie historii). Włączenie DND przekreśla dzwonek;
 stan jest zsynchronizowany z kafelkiem w Quick Menu. `h/l` i strzałki lewo/prawo
 przechodzą między ikonami. `j` / dół z każdej ikony wybiera pierwszą kartę,
@@ -77,7 +113,7 @@ Historia mieści do 100 wpisów, od najnowszych, wyłącznie w pamięci procesu.
 Zachowuje zwykłe powiadomienia po timeout, zamknięciu toasta i wyciszeniu
 przez DND; nie odtwarza ich później jako toastów. `transient` również pozostają
 w historii (korekta 2026-09-20, zgodnie z poleceniem użytkownika). Zastąpienie żywego ID aktualizuje ten sam wpis. Każdy rekord
-ma niezależny klucz, ograniczony tekst i bezpieczną ikonę; nie przechowuje
+ma niezależny klucz, pełny tekst i bezpieczną ikonę; nie przechowuje
 obiektów akcji ani obrazów natywnego providera. Zachowuje identyfikator
 rozpoznanej aplikacji. Po zamknięciu protokołu archiwalna karta nie odtwarza
 wygasłej akcji (np. otwarcia konkretnej rozmowy), ale może pokazać aplikację.
@@ -153,15 +189,15 @@ Nowy zwykły nie wypiera kolejki złożonej wyłącznie z krytycznych.
 Widoczny obiekt z timeout 0 nie jest ofiarą zwykłego zalewu, ale krytyczne
 mogą przesunąć go do kolejki. Usunięcie zwalnia slot.
 
-Toast ma nieprzezroczyste tło, kwadratowe rogi, wspólne tokeny i cienką
-ramkę akcentu. Szerokość do 360 px, wysokość do 280 px i do przydzielonego
+Toast ma nieprzezroczyste tło, kwadratowe rogi, wspólne tokeny i szarą
+ramkę kolorowaną akcentem przy fokusie klawiatury. Szerokość do 360 px, wysokość do 280 px i do przydzielonego
 fragmentu ekranu. Nagłówek z ikoną, aplikacją, czasem HH:mm i zamknięciem
 pozostaje widoczny podczas przewijania. Czas pochodzi z nadejścia/aktualizacji;
 nie uruchamia zegara sekundowego.
 
-UI ogranicza aplikację do 128 znaków, tytuł do 512 i trzech linii, treść do
-4096 i sześciu linii w widoku zwiniętym; tekst kończy się wielokropkiem.
-Rozwinięcie usuwa ograniczenie liczby linii. Teksty nadawcy, także
+UI ogranicza nazwę aplikacji do 128 znaków. Zwinięta karta pokazuje do
+trzech linii tytułu i sześciu treści z wielokropkiem; pełne dane pozostają
+w pamięci. Rozwinięcie usuwa ograniczenie liczby linii. Teksty nadawcy, także
 etykiety akcji i tooltipy, są `PlainText`. Nie ma HTML, klikanych linków,
 inline replies, dźwięku ani ikon akcji. Najwyżej osiem pierwszych akcji;
 identyfikator do 256 znaków i etykieta do 128. `inline-reply` jest pomijane.
@@ -191,10 +227,11 @@ i akcji nie włącza klawiatury (`WlrKeyboardFocus.None`, kontrolki `NoFocus`).
 Nie ma animacji zamykania wymagającej przechowywania martwego obiektu:
 `closed` usuwa referencję i widok przed destrukcją natywnego powiadomienia.
 
-Jawne wejście do centrum: dzwonek paska oraz IPC `notifications focus`. DND jest pierwszą kontrolką, następnie
+Jawne wejście do centrum: dzwonek paska i komenda `:notifications` oraz
+IPC `notifications focus`, gdy nie ma toastów. DND jest pierwszą kontrolką, następnie
 „Wyczyść” i karty. h/j/k/l, Enter, Tab/Shift+Tab i Escape nie przechwytują
-liter w polach innych widoków. Wewnętrzny NotificationFocus.enter nadal
-obsługuje bezpośrednią nawigację toastów i jej testy. Usunięcie wybranej
+liter w polach innych widoków. NotificationFocus.focus wybiera toasty
+przed centrum i jest używany przez Super+N. Usunięcie wybranej
 karty lub akcji przywraca poprawny fokus z zachowaniem mysz/klawiatura.
 
 Escape przy zwiniętej karcie, kliknięcie poza grabem, otwarcie panelu, wejście na pasek lub utrata

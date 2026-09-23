@@ -25,9 +25,20 @@ ShellRoot {
     IpcHandler {
         target: "probe"
         function snapshot(): string {
+            const focusItems = [];
+            function inspect(item) {
+                if (item.objectName === "messageEditor" || item.objectName === "conversationList")
+                    focusItems.push({name: item.objectName, focus: item.focus, active: item.activeFocus, enabled: item.enabled, visible: item.visible});
+                for (const child of item.children) inspect(child);
+            }
+            if (controller.window) inspect(controller.window.view);
             return JSON.stringify({state: service.state, pid: backend.processId, generation: backend.generation,
                 accountId: adapter.accountId, conversations: adapter.conversations.map(v => ({route: v.route, title: v.title})),
                 loaded: controller.loaded, windows: root.windowsCreated, interactive: controller.interactive,
+                // ListView is a focus scope; Qt may make its current delegate
+                // the activeFocusItem while the list itself has activeFocus.
+                focus: (focusItems.find(item => item.active) || {}).name || "",
+                focusItems: focusItems, focusPending: controller.window ? controller.window.view.composerFocusPending : false,
                 selected: adapter.selectedRoute, count: adapter.messages.count, draft: adapter.draftText, draftReady: adapter.draftReady,
                 loading: adapter.loading, pending: Object.keys(adapter.requests).length, canSend: adapter.canSend,
                 statuses: Array.from({length: adapter.messages.count}, (_, i) => adapter.messages.get(i).status),

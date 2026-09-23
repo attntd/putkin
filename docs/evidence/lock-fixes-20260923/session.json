@@ -1,0 +1,20 @@
+{
+  "checks": [
+    "native handshake, explicit own session and real delay inhibitor FD",
+    "power confirmation cancellation has no system side effect",
+    "only current compositor secure confirmation permits one Suspend call",
+    "automatic sleep preserves SuspendThenHibernate after secure confirmation",
+    "manual hibernate waits for current secure confirmation and calls Hibernate once",
+    "hibernate timeout and unsupported capability do not dispatch or disable suspend",
+    "timeout and late secure state never send Suspend",
+    "ScreenSaver state and login1 Lock work; SetActive(false) cannot unlock",
+    "external sleep holds FD until secure, spoofed sender ignored, resume rearms and refreshes brightness",
+    "D-Bus inhibitor ownership/disconnect and systemd idle:sleep vs sleep semantics",
+    "denial, timeout, late replies and foreign session remain safe",
+    "logind loss invalidates transactions; unlocked reload replaces bridge without duplicate FD",
+    "20 power menu cycles release their views"
+  ],
+  "isolation": "private system/session D-Bus, XDG; offscreen Qt; explicit mock lock; no PAM or hardware",
+  "passed": true,
+  "remaining_pids": []
+}

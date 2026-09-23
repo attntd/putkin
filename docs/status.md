@@ -1,5 +1,317 @@
 # Status implementacji
 
+## Pasek, toasty i centrum — 2026-09-23
+
+**Wdrożone lokalnie: `20260923-155404-94077eef8c74`.**
+
+Otwarcie modułów po prawej stronie paska zachowuje tło, kolor ikon i brak
+ramki aktywności. Dotyczy również Wiadomości. Fokus klawiatury służy nadal
+wybieraniu przycisku; kliknięcie po nawigacji klawiaturą usuwa jego obrys.
+
+Super+N wybiera widoczne toasty, z fallbackiem do centrum przy ich braku.
+Na ramce j/k wybierają karty. Enter od razu wykonuje akcję, także przy
+długiej treści, i usuwa historię udanego otwarcia (również resident/Signal).
+d usuwa kartę i historię; q/Escape odkłada wybrany toast do centrum.
+Fokus przechodzi na następną kartę, omijając znikające wiersze podczas fade.
+Po ostatniej klawiatura wraca do aplikacji. Naprawiono także zachowanie
+fokusu po zamknięciu wcześniejszej karty przez klienta i styl po kliknięciu.
+
+Karty mają pojedynczą szarą ramkę, kolorowaną w tym samym miejscu dopiero
+przy fokusie klawiatury. l wchodzi do pierwszego przycisku nagłówka,
+j przechodzi do dolnych akcji, k wraca do zapamiętanego przycisku nagłówka.
+h ze skrajnie lewego przycisku wraca na ramkę. d działa również na każdym
+górnym/dolnym przycisku centrum. Edytor odpowiedzi zachowuje litery q/d.
+Rozwinięcie pokazuje pełny tytuł i treść, także po wygaśnięciu; usunięto
+obcinanie danych do 512/4096 znaków. Liczba wpisów nadal jest ograniczona.
+Rozwinięta karta centrum nie tworzy tekstury wysokości całej wiadomości.
+
+Zmiany: BarView/BatteryButton, NotificationFocus i IPC, współdzielona
+karta, stos i centrum, przechowywanie tekstu, testy oraz kontrakty.
+[Kontrakt](notifications.md#pasek-toasty-i-centrum--2026-09-23),
+[API](development.md#pasek-i-karty-powiadomień--2026-09-23).
+
+| Sprawdzenie | Rzeczywisty wynik |
+| --- | --- |
+| `scripts/check` | **PASS**, 277 QML, zero błędów; [log](evidence/toast-keyboard-20260923/check.log). |
+| QtTest powiadomień | **PASS**, 106 wyników, zero błędów/pominięć: oba Entery, kolejka/fade, d/q/Escape, wszystkie przyciski, pełne dane, 301 linii po rozwinięciu przy dwóch szerokościach oraz piksele ramki; [log](evidence/toast-keyboard-20260923/notifications-qml.log). |
+| QtTest Signal | **PASS**, 17 wyników, otwarcie rozmowy bez historii, oba rzędy, d i zachowanie edytora; [log](evidence/toast-keyboard-20260923/signal-qml.log). |
+| Wygląd i wejście | **PASS**, 20 testów wyglądu i 34 fokusu/wskaźnika; porównanie rzeczywistych pikseli przycisków przed/po otwarciu; [wygląd](evidence/toast-keyboard-20260923/visual-qml.log), [fokus](evidence/toast-keyboard-20260923/pointer-qml.log). |
+| Prywatny Wayland | **PASS**, 4 grupy smoke: piksele GPU, rzeczywisty Super+N i wszystkie akcje na toastach, kolejka, centrum oraz powrót tekstu do osobnej aplikacji; [raport](evidence/toast-keyboard-20260923/wayland-final/report.json), [cleanup](evidence/toast-keyboard-20260923/wayland-final/cleanup.json). |
+| Natywny protokół na prywatnym D-Bus | **PASS**, 15 grup i 20 cykli, pełne dane, IPC toast/centrum, resident, akcje, DND, zastąpienia i reload; zero nieoczekiwanych błędów i pozostawionych procesów; [raport](evidence/toast-keyboard-20260923/integration.json). |
+| Instalacja na polecenie użytkownika | **PASS**, `scripts/install --shell-only --offline --activate --no-prune`; dziewięć zmienionych plików runtime zgodnych z przetestowanymi źródłami, walidacja paczki 171 QML, zero błędów; [zakres](evidence/toast-keyboard-20260923/activation-before.json), [log](evidence/toast-keyboard-20260923/install-activation.log). |
+| Aktywna sesja | **PASS**, dwa odczyty w odstępie 10 s: jedna stabilna instancja i jej właściciel powiadomień, Signal `ready`, gotowe idle, zero błędów i ostrzeżeń QML/sesji; 362 pliki zgodne ze źródłami i manifestem, settings/keyboard bez zmian; [raport](evidence/toast-keyboard-20260923/live-activation.json). |
+
+Obejrzano końcowe obrazy [fokusu toastów](evidence/toast-keyboard-20260923/wayland-final/toast-keyboard-focus.png)
+i [centrum](evidence/toast-keyboard-20260923/wayland-final/toast-archived-center.png).
+Próba Qt w sandboxie nie mogła utworzyć socketu D-Bus; testy uruchomiono
+poza tym ograniczeniem z zachowaniem atrap i prywatnych XDG/magistral.
+Wayland używał prywatnych przestrzeni PID/sieci/mount i wyjść HEADLESS.
+Nie uruchamiano drugiego pełnego shella na aktywnym pulpicie.
+
+Początkowe nieudane przebiegi zachowano w katalogu dowodów. Wykryły m.in.
+opóźnione odwołanie do niszczonego stosu, przywracanie slotów podczas fade
+i utratę powodu fokusu przy usuwaniu. Naprawiono je w kodzie. W testach
+obrazu poprawiono oczekiwanie na koniec fade i współrzędne próbek sceny;
+klawiatura wtype wymagała rozpoznawania symboli w prywatnym kompozytorze.
+Końcowe przebiegi nie wyciszają ostrzeżeń QML ani błędów importów.
+
+**Niewykonane:** pełne `scripts/test`, pełna macierz natywnych skal/monitorów
+oraz odbiór interakcji z rzeczywistymi aplikacjami/kontem. Testy zachowania
+używają syntetycznych powiadomień i konta Signal. Po aktywacji sprawdzono
+gotowość rzeczywistych usług, bez wysyłania wiadomości. Zachowano poprzednie
+wydanie `20260923-150615-a7bcf1e31250` do powrotu przez
+`scripts/install --restore --activate`.
+
+## Sterowanie Message Hubem — 2026-09-23
+
+**Wdrożone lokalnie: `20260923-150615-a7bcf1e31250`.**
+
+Zwykłe otwarcie lub przywołanie okna ustawia fokus na liście rozmów.
+Otwarcie z powiadomienia wybiera wskazaną rozmowę i kieruje do edytora,
+również po odtworzeniu okna i opóźnionym wczytaniu szkicu. Góra/dół i j/k
+wybierają wiersz, Enter/l/prawo otwiera rozmowę. Escape z rozmowy wraca
+do jej wiersza na liście, także w szerokim oknie. Kliknięcie nie rysuje
+ramki klawiatury; litery w edytorze są tekstem.
+
+Usunięto przycisk wysyłania i poszerzono edytor do prawej krawędzi.
+Enter (także numeryczny) wysyła, Shift+Enter i IME zachowują swoje działanie.
+Lista rozmów i historia używają wspólnego pasywnego `KineticScroll`:
+natywne przewijanie Qt podczas gestu, następnie bezwładność przez
+`Flickable.flick()`. Nowy gest lub klawisz przerywa ruch; pauza przed
+oderwaniem palców nie przywraca dawnej prędkości.
+
+Zmiany obejmują kontroler/okno/widoki Message Huba, komponent przewijania
+i jego rejestrację, testy oraz kontrakty. Nowy test wejścia jest podpięty
+do `scripts/test`. Nie zmieniano transportu Signala ani danych konta.
+[Kontrakt](signal/CONTRACTS.md#sterowanie-message-hubem--2026-09-23),
+[wersje i API](development.md#sterowanie-message-hubem--2026-09-23).
+
+| Sprawdzenie | Wynik |
+| --- | --- |
+| `scripts/check` | **PASS**, 277 QML, zero błędów; [log](evidence/messages-navigation-20260923/check.log). |
+| QtTest | **PASS**, 83 wyniki, bez błędów/pominięć: 26 Message Hub, 6 kontroler, 7 interakcje, 8 media, 6 receipts, 14 powiadomienia, 8 grupy, 8 retencja; [nawigacja](evidence/messages-navigation-20260923/messages-qml.log), [interakcje](evidence/messages-navigation-20260923/signal_interactions-qml.log), [pozostałe logi](evidence/messages-navigation-20260923/). |
+| Gesty touchpada | **PASS**, rzeczywiste QWheelEvent w obu listach, oba kierunki, urządzenia Mouse/TouchPad, ruch po ScrollEnd, spadek prędkości, pauza, przerwanie, kółko i granice; [log](evidence/messages-navigation-20260923/input.log), [obraz na atrapach](evidence/messages-navigation-20260923/messages.png). |
+| Integracja okna | **PASS**, zwykłe otwarcie → lista, routing → edytor, ponowne utworzenie okna, szkice, paginacja i reload; zero błędów QML i pozostałych procesów; [raport](evidence/messages-navigation-20260923/integration.json). |
+| IME i załączniki | **PASS**, rzeczywisty preedit/commit, Enter bez wysłania podczas kompozycji, Shift+Enter, pojedyncze wysłanie i drop/dialog plików; [log](evidence/messages-navigation-20260923/media-input.log). |
+| Prywatny Wayland | **PASS**, 6 grup: klawisze przez wtype, akcja powiadomienia, podgląd mediów, dwa rozmiary i skala 1,5, monitory/hotplug, atrapa blokady i reload; [raport](evidence/messages-navigation-20260923/wayland/signal-report.json), [sprzątanie](evidence/messages-navigation-20260923/wayland/cleanup.json). Obejrzano [duże](evidence/messages-navigation-20260923/wayland/messages-large.png) i [małe okno](evidence/messages-navigation-20260923/wayland/messages-small.png). |
+| Instalacja na polecenie użytkownika | **PASS**, `scripts/install --shell-only --offline --activate --no-prune`; siedem zmienionych/dodanych plików runtime, walidacja paczki 171 QML, zachowane poprzednie wydanie i dane; [zakres](evidence/messages-navigation-20260923/activation-before.json), [log](evidence/messages-navigation-20260923/install-activation.log). |
+| Aktywna sesja | **PASS**, dwa odczyty w odstępie 10 s: jedna stabilna instancja i jej właściciel powiadomień, Signal `ready`, gotowe idle, zero błędów QML/sesji; 362 pliki zgodne ze źródłami, settings/keyboard bez zmian; [raport](evidence/messages-navigation-20260923/live-activation.json). |
+
+Próba w sandboxie nie mogła utworzyć prywatnego D-Bus; testy wykonano
+z rozszerzonymi uprawnieniami przy zachowaniu izolacji. Natywny test
+używał prywatnych PID/sieci/mount/XDG/D-Bus i syntetycznego konta.
+Nie uruchamiano drugiego pełnego shella na aktywnym pulpicie.
+W teście przywrócenia akcentów potwierdzono różnicę zaokrąglenia do 1/255
+na nielicznych pikselach gradientu; porównanie nadal obejmuje każdy piksel,
+z tolerancją jednego poziomu kanału. Ostrzeżeń QML/importów nie wyciszano.
+Istniejący klient testów mediów ma ostrzeżenie kompilatora z nagłówków Qt;
+oba jego scenariusze przeszły.
+
+**Niewykonane:** pełne `scripts/test`, odbiór na
+fizycznym touchpadzie i prawdziwym koncie/telefonie. Testy potwierdzają
+działanie na zdarzeniach Qt i natywnym Waylandzie; subiektywna płynność
+na sprzęcie użytkownika pozostaje do odbioru. Po instalacji sprawdzono
+gotowość rzeczywistej usługi Signal, bez wysyłania wiadomości ani testu rozmowy.
+
+## Fade blokady bez szarej klatki i bez kursora — 2026-09-23
+
+**Wdrożone lokalnie: `20260923-130130-d8eb37d26a47`.**
+
+Szary błysk pochodził z nieprzezroczystego koloru WlSessionLockSurface,
+widocznego pod animowanym LockView. Same wartości opacity i końcowe zrzuty
+z poprzedniego odbioru nie wykrywały tego problemu. `LockCapture` pobiera
+po jednej klatce monitora przed blokadą, a host umieszcza je pod całym
+widokiem. Fade 200 ms nakłada blokadę bezpośrednio na ten obraz i odsłania
+go po uwierzytelnieniu. Pusty `cursorDelegate` usuwa kursor z pola hasła,
+zachowując standardowe wpisywanie, fokus i Enter.
+
+Przechwytywanie czeka najwyżej 150 ms przed żądaniem protokołu; w tym
+okresie nie ma potwierdzenia secure. Kadr pozostaje wyłącznie w pamięci
+do odblokowania, bez plików i schowka. Przy wyjściu zamrożony obraz ustępuje
+żywemu pulpitowi. Brak kadru lub nowy monitor oznacza natychmiastową
+nieprzezroczystą blokadę. Nie zmieniono ochrony kompozytora.
+[Kontrakt](session.md#uwierzytelnianie-i-wygląd), [wersje i API](development.md#fade-na-obrazie-pulpitu--2026-09-23).
+
+| Sprawdzenie | Wynik |
+| --- | --- |
+| `scripts/check` | **PASS**, 275 QML, zero błędów; [log](evidence/lock-desktop-fade-20260923/check.log). |
+| QtTest blokady/idle | **PASS**, 19 testów, w tym piksele pustego pola przez 1,25 s przy aktywnym fokusie, wpisywanie i natychmiastowa nieprzezroczystość bez kadru; [log](evidence/lock-desktop-fade-20260923/qml-lock.log). |
+| Klatki kompozytora | **PASS**, 90 klatek bezstratnego nagrania, po 5 pośrednich klatek wejścia i wyjścia w zakresie opacity 0,1–0,9; największa odchyłka kanału od mieszania pulpitu i blokady poniżej 1/255. [Nagranie](evidence/lock-desktop-fade-20260923/wayland/desktop-fade.mkv), [piksele](evidence/lock-desktop-fade-20260923/wayland/desktop-fade-pixels.json), [obejrzana klatka przejścia](evidence/lock-desktop-fade-20260923/wayland/desktop-fade-middle.png). |
+| Prywatny Wayland/PAM | **PASS**, 13 grup: dwie powierzchnie i przechwycone kadry, usunięcie buforów po odblokowaniu, brak kadru, hotplug, reload, rzeczywisty pam_fprintd na atrapie, ponad 30 s oczekiwania, hasło, idle i inhibitory; [raport](evidence/lock-desktop-fade-20260923/wayland/report.json), [log](evidence/lock-desktop-fade-20260923/wayland-run.log), [sprzątanie](evidence/lock-desktop-fade-20260923/wayland/cleanup.json). |
+| Instalacja | **PASS**, `scripts/install --shell-only --offline --activate --no-prune`; pięć zmienionych/dodanych plików runtime, poprzednie wydanie zachowane; [zakres](evidence/lock-desktop-fade-20260923/activation-before.json), [log](evidence/lock-desktop-fade-20260923/install-activation.log). |
+| Aktywna sesja — odczyt | **PASS**, jedna instancja i właściciel powiadomień, 361 plików zgodnych ze źródłami, zachowane settings/keyboard, gotowe idle i brak błędów sesji/QML; [raport](evidence/lock-desktop-fade-20260923/live-activation.json), [log](evidence/lock-desktop-fade-20260923/live.log). |
+
+Przy opracowaniu przechwytywania test natywny wykrył niewłaściwego rodzica
+elementu graficznego oraz brak ekranu powierzchni w `Component.onCompleted`.
+Element powstaje teraz w contentItem okna, a przypisanie kadru reaguje na
+`screenChanged`. Początkowy test kursora objął fragment glifu i korzystał
+z nietypowanej właściwości tła; zawężono porównanie do obszaru kursora oraz
+pikseli odniesienia. Końcowa bramka i testy przechodzą bez wyciszania błędów.
+
+Testy używały prywatnych XDG, obu D-Bus, PID i Waylanda oraz maskowanego
+systemowego PAM. Nie uruchamiano drugiego pełnego shella na pulpicie hosta.
+Nie wykonano pełnego `scripts/test`, fizycznego skanu, wpisywania hasła
+użytkownika ani suspend/resume hosta. Ocena płynności na rzeczywistych
+monitorach pozostaje do odbioru użytkownika.
+
+## Odcisk, fade i glif blokady — 2026-09-23
+
+**Wdrożone lokalnie: `20260923-124134-db47c1bd345d`.**
+
+Zdiagnozowano zgłoszenie w dzienniku aktywnej sesji: skanowanie rozpoczęło
+się o 13:58:18 i zakończyło o 13:58:49 komunikatem o przekroczeniu czasu
+oraz PAM code 9. Hasło zostało przyjęte o 14:14:03. Własny stos odcisku
+miał `timeout=30`; wynik błędu nie uruchamiał następnej rozmowy. Zmieniono
+wyłącznie limit oczekiwania na `timeout=-1`; limit trzech błędnych prób
+i systemowy stos hasła pozostają bez zmian.
+[Dziennik zgłoszonej blokady](evidence/lock-fixes-20260923/host-pam-diagnosis.log).
+
+Odczyt logind: CanSuspend=`yes`, CanSuspendThenHibernate=`na`.
+`IdleService` wywoływał niedostępne `idleSuspend`, zapisując błąd sesji
+widoczny po odblokowaniu. Teraz sprawdza capability przed żądaniem.
+Ręczne akcje nadal raportują rzeczywiste błędy; automatyka nie wybiera
+samodzielnie innego rodzaju snu.
+
+Glif jest po prawej stronie pola hasła. `LockView` używa wspólnego fade
+200 ms i czeka na inicjalizację oraz gotowy układ/tapetę. `LockHost` zwalnia
+protokół dopiero po zniknięciu wszystkich powierzchni. Sen lub ponowne
+żądanie blokady podczas fade unieważnia wcześniejszy sukces PAM.
+Nie dodano tekstów pomocniczych ani tooltipów.
+
+| Sprawdzenie | Wynik |
+| --- | --- |
+| `scripts/check` | **PASS**, 274 QML, zero błędów; [końcowy log](evidence/lock-fixes-20260923/check.log). |
+| QtTest | **PASS**, 17 blokady/idle, 13 wspólnego fade i 11 sesji; [blokada](evidence/lock-fixes-20260923/lock_idle-qml.log), [fade](evidence/lock-fixes-20260923/fade-qml.log), [sesja](evidence/lock-fixes-20260923/session-qml.log). |
+| Integracja sesji | **PASS**, 13 grup, 20 cykli, brak pozostałych procesów; [raport](evidence/lock-fixes-20260923/session.json). |
+| Natywny Wayland/PAM | **PASS**, 11 grup: prawdziwy pam_fprintd na atrapie czytnika, ponad 30 s oczekiwania, limit trzech błędnych prób, równoległe hasło, hotplug, reload, idle, inhibitory i brak błędu przy `na`; [raport](evidence/lock-fixes-20260923/wayland/report.json), [log](evidence/lock-fixes-20260923/wayland-run.log), [sprzątanie](evidence/lock-fixes-20260923/wayland/cleanup.json). |
+| Fade i wygląd | **PASS**, 12 pośrednich klatek wejścia i 12 wyjścia na obu ekranach; secure utrzymane podczas wyjścia. [Ślad](evidence/lock-fixes-20260923/wayland/lock-fade-frames.json), [obejrzany zrzut](evidence/lock-fixes-20260923/wayland/native-lock.png). |
+| Instalacja | **PASS**, `scripts/install --shell-only --offline --activate --no-prune`; dokładnie pięć zmienionych plików runtime, kontrola 169 QML, poprzedni build zachowany; [różnica i ustawienia przed](evidence/lock-fixes-20260923/activation-before.json), [log](evidence/lock-fixes-20260923/install-activation.log). |
+| Aktywna sesja — odczyt | **PASS**, jedna instancja i właściciel powiadomień, 360 plików zgodnych ze źródłami, zachowane settings/keyboard, gotowe idle, brak błędu sesji i QML; [raport](evidence/lock-fixes-20260923/live-activation.json), [log](evidence/lock-fixes-20260923/live.log). |
+
+Pierwszy test natywny odtworzył skok 0 → 1 przy tworzeniu powierzchni;
+ten sam błąd potwierdził dodany QtTest nowego widoku. Poprawiono lokalną
+inicjalizację blokady, bez zmiany wspólnego komponentu fade.
+[Test przed naprawą](evidence/lock-fixes-20260923/lock-new-surface-before.log),
+[klatki przed naprawą](evidence/lock-fixes-20260923/lock-fade-before.json).
+Końcowy lint wykrył brak `ComponentBehavior: Bound` dla nowego testu;
+uzupełniono pragmę i powtórzono bramkę oraz testy blokady bez ostrzeżeń.
+Sandbox blokował prywatne gniazda D-Bus; testy ponowiono z rozszerzonymi
+uprawnieniami, zachowując prywatne XDG, D-Bus, PID, Waylanda i maskowanie
+systemowego PAM. Nie wyciszano błędów importów.
+
+Instalator potwierdził odblokowanie przed przełączeniem. Przy pierwszym
+późniejszym odczycie sesja była już secure/locked; nie wykonywano wtedy
+restartu ani działań wejścia. Końcowy odczyt pokazał odblokowanie i brak
+błędu. Sam odczyt nie potwierdza metody uwierzytelnienia ani oceny użytkownika.
+
+Nie wykonano pełnego `scripts/test`, fizycznego skanu, hasła użytkownika
+ani suspend/resume hosta. Odbiór rzeczywistego czytnika po poprawce
+pozostaje do potwierdzenia na sprzęcie. Wersje i dokumentacja API:
+[środowisko](development.md#odcisk-i-przejścia-blokady--2026-09-23).
+
+## Moduły paska w komendach launchera — 2026-09-23
+
+**Wdrożone lokalnie: `20260923-101912-d8c57b61158f`.**
+
+Dodano `:wifi`, `:bluetooth`, `:volume`, `:battery`, `:notifications`
+i `:quickmenu`. Otwierają istniejące panele modułów paska przez
+`ActionController`; Wiadomości nadal używają `:messages`. Wpisy mają nazwy
+Wi-Fi, Bluetooth, Głośność, Bateria, Powiadomienia i Quick Menu oraz
+odpowiednie kategorie i ikony. Migracja kompletnego starszego katalogu
+zachowuje własne aliasy i skróty, nie przejmuje zajętych nazw i nie zapisuje
+pliku przy odczycie. Po zapisaniu nowego katalogu usunięte komendy pozostają puste.
+
+Na dodatkowe zgłoszenie użytkownika rozszerzono wyszukiwanie o początki
+nazw działań i ich słów, bez rozróżniania wielkości liter i polskich znaków.
+`:wiadomosci`, `:Wiadomości` oraz „Wiadomości” w chipie Komenda znajdują hub.
+Dokładny zapisany alias ma pierwszeństwo; wyłączone komendy nie wracają
+przez dopasowanie nazwy. `:messages` z zapisanych ustawień był poprawny
+i przeszedł test przed zmianą wyszukiwania; jego zgłoszonego braku wyników
+nie odtworzono. Końcowy test potwierdza widoczny wynik i otwarcie huba
+także przez tę pisownię, w obu wejściach launchera.
+
+| Sprawdzenie | Wynik |
+| --- | --- |
+| `scripts/check` | **PASS**, 274 QML, 0 błędów; [log](evidence/launcher-topbar-20260923/check.log). |
+| Klawiatura i komendy QML | **PASS**, 87 testów, w tym sześć paneli × trzy wejścia, dwa monitory, fokus, migracje, konflikty i dziewięć wariantów wyszukiwania Wiadomości; [log](evidence/launcher-topbar-20260923/keyboard-search-qml.log). |
+| Regresja launchera QML | **PASS**, 77 testów; [log](evidence/launcher-topbar-20260923/launcher-qml.log). |
+| Kontroler Wiadomości / wcześniejsza migracja screenshot | **PASS**, 6 / 19 testów; [Wiadomości](evidence/launcher-topbar-20260923/messages-controller-qml.log), [screenshot](evidence/launcher-topbar-20260923/screenshot-qml.log). |
+| Prywatny Wayland | **PASS**, 14 grup: rzeczywiste wpisywanie przez wtype, widoczny wiersz po fade, jedno okno Wiadomości po Enter, sześć paneli z fokusem na aktywnym monitorze, zapis, konflikty i reloady; [log](evidence/launcher-topbar-20260923/wayland-run.log), [raport](evidence/launcher-topbar-20260923/wayland/result.json), [sprzątanie](evidence/launcher-topbar-20260923/wayland/cleanup.json). |
+| Aktywacja | **PASS**, `scripts/install --shell-only --offline --activate --no-prune`; kontrola paczki: 169 QML, jedna instancja i zachowane poprzednie wydania; [log](evidence/launcher-topbar-20260923/install-activation.log). |
+| Aktywna sesja — odczyt | **PASS**, 18 komend, 9 skrótów, brak błędu, 360 plików runtime zgodnych ze źródłami; `keyboard.json` i `settings.json` niezmienione; [raport](evidence/launcher-topbar-20260923/live-activation.json). |
+
+Przed naprawą sześć testów odtworzyło brak wyników po polskiej nazwie;
+[log](evidence/launcher-topbar-20260923/messages-search-before.log).
+Początkowa bramka wykryła brak typu `name` w nowym teście dwóch monitorów;
+poprawiono test bez wyciszania ostrzeżeń: [log](evidence/launcher-topbar-20260923/check-initial.log).
+Sandbox nie pozwolił utworzyć prywatnego D-Bus; ponowienie testów
+z zachowaniem izolacji i rozszerzonymi uprawnieniami przeszło.
+
+Potwierdzono lokalne Qt **6.11.2**, Quickshell **0.3.1**, Hyprland **0.56.2**
+i wtype **0.4**. Sprawdzono oficjalne
+[JavaScript QML](https://doc.qt.io/qt-6.11/qtqml-javascript-hostenvironment.html),
+[`String.normalize`](https://doc.qt.io/qt-6.11/qtqml-javascript-functionlist.html),
+[`Qt.callLater`](https://doc.qt.io/qt-6.11/qml-qtqml-qt.html#callLater-method),
+[QtTest](https://doc.qt.io/qt-6.11/qml-qttest-testcase.html) i lokalny man wtype 0.4.
+Testy korzystały z atrap, prywatnych XDG i D-Bus; test natywny także
+z prywatnych PID/Waylanda i wyjścia HEADLESS. Nie wykonano pełnego
+`scripts/test`, operacji sprzętowych ani sztucznego wejścia na pulpicie użytkownika.
+
+## Ctrl+Shift+Super+Enter otwiera Wiadomości — 2026-09-23
+
+Na korektę użytkownika skrót zmieniono na `SUPER + CONTROL + SHIFT + Return`.
+Zastępuje wcześniejszy Shift+Enter w katalogu działań i początkowych uchwytach Lua.
+**Aktywny w bieżącej sesji i zapisany w `~/.config/putkin/keyboard.json`.**
+Zmiana obejmuje tylko przypisanie Wiadomości; runtime nie był restartowany.
+
+| Sprawdzenie | Wynik |
+| --- | --- |
+| `scripts/check` | **PASS**, 274 QML, 0 błędów; [log](evidence/ctrl-shift-super-enter-20260923/check.log). Końcowa sonda testowa: 1 QML bez błędów; [log](evidence/ctrl-shift-super-enter-20260923/probe-check.log). |
+| Klawiatura QML | **PASS**, 49 testów; [log](evidence/ctrl-shift-super-enter-20260923/keyboard-qml.log). |
+| Prywatny Wayland | **PASS**, 12 scenariuszy: nowy skrót otwiera i ponownie skupia jedno okno, działa po reloadach; sam Shift+Enter nie otwiera huba. [Log](evidence/ctrl-shift-super-enter-20260923/wayland-run.log), [raport](evidence/ctrl-shift-super-enter-20260923/wayland/result.json), [sprzątanie](evidence/ctrl-shift-super-enter-20260923/wayland/cleanup.json). |
+| Aktywna sesja | **PASS**, jedno przypisanie `Putkin:messages`, maska `69`, klawisz `Return`; poprzedni skrót usunięty, inne przypisania bez zmian, IPC bez błędów. [Raport](evidence/ctrl-shift-super-enter-20260923/live-activation.json). |
+
+Pierwszy przebieg Waylanda potwierdził nowy skrót, ale zgubił pierwszą literę
+komendy launchera ([log](evidence/ctrl-shift-super-enter-20260923/wayland-initial-run.log)).
+Runner przed wpisywaniem czeka teraz na fokus pola i aktywne okno natywne;
+ponowny pełny przebieg przeszedł. Sonda używa oficjalnego
+[Window.active Qt 6.11](https://doc.qt.io/qt-6.11/qml-qtquick-window.html#active-attached-prop).
+Lokalne wersje API pozostają zgodne z weryfikacją poniżej.
+Testy używały atrap oraz prywatnych XDG, D-Bus i Waylanda. Nie wykonywano
+sztucznego wejścia na aktywnym pulpicie ani pełnej regresji pozostałych modułów.
+
+## Shift+Enter otwiera Wiadomości — 2026-09-23
+
+**Historyczny wariant, zastąpiony tego samego dnia przez Ctrl+Shift+Super+Enter.**
+
+Domyślne `SHIFT + Return` wywołuje wspólną akcję `messages`: otwiera hub
+lub przywołuje istniejące okno. Przypisanie jest też w początkowych uchwytach
+Lua; własne zapisane skróty zachowują pierwszeństwo.
+
+| Sprawdzenie | Wynik |
+| --- | --- |
+| `scripts/check` | **PASS**, 274 QML, 0 błędów; [log](evidence/shift-enter-20260923/check.log). |
+| Klawiatura QML | **PASS**, 49 testów; domyślne przypisanie, zapis, konflikty, komendy i nawigacja; [log](evidence/shift-enter-20260923/keyboard-qml.log). |
+| Kontroler Wiadomości | **PASS**, 6 testów; otwieranie, routing, fokus, blokada i zachowanie zapisanych ustawień; [log](evidence/shift-enter-20260923/messages-controller-qml.log). |
+| Adapter klawiatury | **PASS**, 6 testów; konflikty, transakcje Lua i rollback; [log](evidence/shift-enter-20260923/keyboard-python.log). |
+| Prywatny Wayland | **PASS**, 12 scenariuszy; rzeczywisty Shift+Enter otwiera i ponownie skupia jedno okno, działa po reloadach Hyprlanda i Quickshella. Super+H i Super+Q zachowują działanie; [log](evidence/shift-enter-20260923/wayland-run.log), [raport](evidence/shift-enter-20260923/wayland/result.json), [sprzątanie](evidence/shift-enter-20260923/wayland/cleanup.json). |
+| Aktywne ustawienia | **PASS**, dokładnie jeden `Putkin:messages`, maska Shift `1`, klawisz `Return`; IPC potwierdza 9 skrótów i brak błędu. Pozostałe przypisania bez zmian; [raport](evidence/shift-enter-20260923/live-activation.json). |
+
+Potwierdzono lokalnie Hyprland **0.56.2**, Quickshell **0.3.1** i Qt **6.11.2**.
+Przed zmianą sprawdzono lokalne stubs oraz oficjalne
+[wiązania Lua Hyprlanda 0.56.2](https://github.com/hyprwm/Hyprland/blob/v0.56.2/example/hyprland.lua)
+i [JavaScript w QML 6.11](https://doc.qt.io/qt-6.11/qtqml-javascript-hostenvironment.html).
+Próba testów QML w sandboxie nie mogła utworzyć prywatnego gniazda D-Bus;
+ponowienie z rozszerzonymi uprawnieniami i zachowaną izolacją przeszło.
+Testy korzystały z atrap oraz prywatnych XDG, D-Bus i Waylanda.
+
+Lokalny plik klawiatury wcześniej nie istniał. Zapisano dotychczasowe
+domyślne ustawienia działającego wydania, zmieniając tylko skrót Wiadomości.
+FileView zastosował zmianę bez restartu. Domyślne przypisanie jest także
+w źródłach następnego wydania; nie przeinstalowywano runtime.
+Nie wykonywano sztucznego wejścia klawiatury na aktywnym pulpicie ani
+pełnej regresji pozostałych modułów.
+
 ## Chip i kategorie komend — 2026-09-22
 
 **Wdrożone lokalnie: `20260922-170918-6f7687ca8192`, kod z `959bf95`.**

@@ -90,7 +90,6 @@ Rectangle {
             id: networkButton
             objectName: "barNetwork"
             visible: root.network !== null && root.width >= 480
-            highlighted: root.activeModule === "network"
             symbol: Icons.network(root.network, true)
             text: root.network ? root.network.statusText : ""
             leftTarget: trayStrip.width > 0 ? trayStrip.lastControl : strip.available ? strip.list.currentItem : null
@@ -100,7 +99,6 @@ Rectangle {
             id: bluetoothButton
             objectName: "barBluetooth"
             visible: root.bluetooth !== null && root.bluetooth.adapter !== null && root.width >= 600
-            highlighted: root.activeModule === "bluetooth"
             symbol: root.bluetooth && root.bluetooth.radioEnabled ? "bluetooth" : "bluetooth_disabled"
             text: root.bluetooth ? root.bluetooth.statusText : ""
             leftTarget: networkButton.visible ? networkButton : trayStrip.width > 0 ? trayStrip.lastControl : strip.available ? strip.list.currentItem : null
@@ -112,7 +110,6 @@ Rectangle {
             visible: root.audio !== null && (root.width >= 480 || (!batteryButton.visible && trayStrip.width === 0))
             symbol: root.audio && root.audio.muted ? "volume_off" : "volume_up"
             text: root.audio ? qsTr("Dźwięk · ") + root.audio.statusText : ""
-            highlighted: root.audioPanelActive
             leftTarget: bluetoothButton.visible ? bluetoothButton : networkButton.visible ? networkButton : trayStrip.width > 0 ? trayStrip.lastControl : strip.available ? strip.list.currentItem : null
             rightTarget: batteryButton.visible ? batteryButton : notificationsButton.visible ? notificationsButton : messagesButton.visible ? messagesButton : quickSettings
             MouseArea {
@@ -137,7 +134,6 @@ Rectangle {
             rightTarget: notificationsButton.visible ? notificationsButton : messagesButton.visible ? messagesButton : quickSettings
             KeyNavigation.backtab: leftTarget
             KeyNavigation.tab: rightTarget
-            highlighted: root.batteryPanelActive
             onClicked: root.batteryRequested(batteryButton)
             Keys.onEscapePressed: root.dismissed()
             onVisibleChanged: { if (!visible && activeFocus) root.focusQuickSettings(); }
@@ -148,7 +144,6 @@ Rectangle {
             visible: root.notifications !== null
             symbol: Icons.notifications(root.notifications)
             text: qsTr("Powiadomienia")
-            highlighted: root.activeModule === "notifications"
             leftTarget: batteryButton.visible ? batteryButton : audioButton.visible ? audioButton : bluetoothButton.visible ? bluetoothButton : networkButton.visible ? networkButton : trayStrip.width > 0 ? trayStrip.lastControl : strip.available ? strip.list.currentItem : null
             rightTarget: messagesButton.visible ? messagesButton : quickSettings
         }
@@ -158,7 +153,6 @@ Rectangle {
             visible: root.messages !== null
             text: qsTr("Wiadomości")
             symbol: root.messages && root.messages.hub.unreadCount > 0 ? "chat" : "chat_bubble"
-            highlighted: root.messages !== null && root.messages.interactive
             leftTarget: notificationsButton.visible ? notificationsButton : batteryButton.visible ? batteryButton : audioButton.visible ? audioButton : bluetoothButton.visible ? bluetoothButton : networkButton.visible ? networkButton : trayStrip.width > 0 ? trayStrip.lastControl : strip.available ? strip.list.currentItem : null
             rightTarget: quickSettings
         }
@@ -167,7 +161,6 @@ Rectangle {
             objectName: "quickSettingsButton"
             symbol: "tune"
             text: qsTr("Szybkie ustawienia")
-            highlighted: root.panelActive
             leftTarget: messagesButton.visible ? messagesButton : notificationsButton.visible ? notificationsButton : batteryButton.visible ? batteryButton : audioButton.visible ? audioButton : bluetoothButton.visible ? bluetoothButton : networkButton.visible ? networkButton : trayStrip.width > 0 ? trayStrip.lastControl : strip.available ? strip.list.currentItem : null
             KeyNavigation.tab: strip.available ? strip.list.currentItem : quickSettings
         }
@@ -200,12 +193,10 @@ Rectangle {
         onVisibleChanged: { if (!visible && activeFocus) root.focusQuickSettings(); }
         contentItem: UI.Glyph { section: "bar"; symbol: button.symbol; color: button.foreground }
         background: UI.AccentRectangle {
-            color: button.highlighted ? Theme.accent : button.hovered ? Theme.surface : Theme.background
-            accentFill: button.highlighted
+            color: Theme.background
             UI.FocusIndicator {
                 control: button
                 anchors.margins: Metrics.focusWidth
-                border.color: button.highlighted ? button.accentTextColor : Theme.focus
             }
         }
     }

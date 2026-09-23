@@ -13,7 +13,7 @@ UI.NavigationButton {
     implicitWidth: Math.max(Metrics.barStatusReserve, implicitContentWidth)
     width: implicitWidth
     foreground: Theme.text
-    fillColor: highlighted ? Theme.accent : hovered ? Theme.surface : Theme.background
+    fillColor: Theme.background
     contentItem: UI.Glyph {
         objectName: "batteryIcon"
         section: "bar"
@@ -22,11 +22,9 @@ UI.NavigationButton {
     }
     background: UI.AccentRectangle {
         color: root.fillColor
-        accentFill: root.highlighted
         UI.FocusIndicator {
             control: root
             anchors.margins: Metrics.focusWidth
-            border.color: root.highlighted ? root.accentTextColor : Theme.focus
         }
     }
 }

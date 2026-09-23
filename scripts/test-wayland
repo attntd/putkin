@@ -214,7 +214,7 @@ hl.config({animations = {enabled = false}, input = {resolve_binds_by_sym = true}
                 report['captures'].append({'image': path.name, 'output': monitor, 'pixels': size, 'monitors': monitors, 'command':command})
                 return size
             assert ipc('ui', 'openQuickSettings') == 'ok'
-            opened = eventually(state, lambda s: s.get('loaded') and s['focus'] == 'audioVolume', 'native panel focus')
+            opened = eventually(state, lambda s: s.get('loaded') and s['focus'] == 'audioVolume' and s['opacity'] == 1, 'native panel focus and completed fade')
             report['opened_state'] = opened
             report['layers'] = hypr('layers', data=True)
             assert capture_output('initial-quick') == (1920,1080)
@@ -229,13 +229,13 @@ hl.config({animations = {enabled = false}, input = {resolve_binds_by_sym = true}
             report['gradient_pixels'] = []
             for point in ipc_json(ipc('probe', 'accentSamples'))['samples']:
                 t = (point['localX'] / point['width'] + point['localY'] / point['height']) / 2
-                expected = [a + (b-a) * t for a,b in zip(primary, secondary)]
+                expected = point.get('expected', [a + (b-a) * t for a,b in zip(primary, secondary)])
                 offset = (point['y'] * 1920 + point['x']) * 3
                 actual = list(rgb[offset:offset+3])
                 record = dict(point, expected=expected, actual=actual)
                 report['gradient_pixels'].append(record)
                 assert all(abs(a-b) <= 3 for a,b in zip(actual, expected)), record
-            passed('GPU pixels follow one top-left to bottom-right gradient across the complete bar, panel frame and three tiles')
+            passed('GPU pixels follow the panel gradient; open bar module keeps its neutral background')
             bar_geometry = []
             for charging in ('false', 'true'):
                 geometry = ipc_json(ipc('probe', 'barGeometry', charging))
@@ -268,6 +268,52 @@ hl.config({animations = {enabled = false}, input = {resolve_binds_by_sym = true}
             ipc('probe', 'barGeometry', 'false')
             report['bar_geometry'] = bar_geometry
             passed('GPU clock ink centered; original Material charging icon preserves battery height in a wider frame')
+            # Real global shortcut, layer-shell grab, and application handoff.
+            # Runs in smoke too; the only notifications are synthetic fixtures.
+            ipc('ui', 'closePanels')
+            eventually(state, lambda s: not s['loaded'], 'panel released before toast input')
+            toast_process, toast_log, toast_client = shell('wayland-client-test.qml', 'toast-client')
+            def toast_client_state(): return ipc_json(toast_client('probe', 'snapshot', starting=True))
+            eventually(toast_client_state, lambda s: s.get('focus'), 'toast test application focused')
+            def toast_keys(*args):
+                subprocess.run([tool('wtype'), *args], env=env, check=True, timeout=5, capture_output=True)
+            focus_command = shlex.join([tool('quickshell'), 'ipc', '--path', str(ROOT/'wayland-validation.qml'), 'call', 'notifications', 'focus'])
+            hypr('keyword', 'input:resolve_binds_by_sym', 'true')
+            hypr('keyword', 'bind', 'SUPER,N,exec,' + focus_command)
+            ids = [int(ipc('probe', 'notifyAction', name)) for name in ['Toast A', 'Toast B', 'Toast C', 'Toast D']]
+            toast_keys('hjkl')
+            eventually(toast_client_state, lambda s: s['text'] == 'hjkl' and s['focus'], 'toast arrival stays passive')
+            toast_keys('-M', 'logo', '-k', 'n', '-m', 'logo')
+            eventually(state, lambda s: s['notificationFocus'] == first and not s['surface'], 'Super+N selects visible toast')
+            eventually(toast_client_state, lambda s: not s['windowActive'], 'toast layer takes explicit focus')
+            capture_output('toast-keyboard-focus')
+            toast_keys('-k', 'j', '-k', 'd')
+            result = eventually(state, lambda s: ids[1] not in s['notificationIds'], 'd deletes the selected second toast')
+            assert 'Toast B' not in result['notificationHistory'], result
+            toast_keys('-k', 'k', '-k', 'q')
+            result = eventually(state, lambda s: ids[0] not in s['notificationIds'], 'q archives the first toast')
+            assert 'Toast A' in result['notificationHistory'], result
+            toast_keys('-k', 'Return')
+            result = eventually(state, lambda s: bool(s['notificationActions']), 'Enter invokes the next toast without expanding text')
+            assert result['notificationActions'] == [{'id': ids[2], 'action': 'default'}], result
+            assert result['notificationIds'] == [ids[3]] and 'Toast C' not in result['notificationHistory'], result
+            eventually(toast_client_state, lambda s: s['focus'], 'successful toast action releases grab')
+            toast_keys('-M', 'logo', '-k', 'n', '-m', 'logo')
+            eventually(toast_client_state, lambda s: not s['windowActive'], 'queued toast takes focus')
+            toast_keys('-k', 'Escape')
+            result = eventually(state, lambda s: not s['notificationFocus'] and not s['notificationIds'], 'Escape archives the final toast')
+            assert sorted(result['notificationHistory']) == ['Toast A', 'Toast D'], result
+            toast_keys('qd')
+            eventually(toast_client_state, lambda s: s['focus'] and s['text'] == 'hjklqd', 'last toast returns ordinary text input')
+            toast_keys('-M', 'logo', '-k', 'n', '-m', 'logo')
+            eventually(state, lambda s: s['surface'] == 'notifications' and s['focus'] == 'notificationDnd' and s['opacity'] == 1, 'Super+N without toasts opens center')
+            capture_output('toast-archived-center')
+            toast_keys('-k', 'Escape')
+            eventually(state, lambda s: not s['loaded'], 'center released')
+            ipc('probe', 'clear')
+            stop_process_group(toast_process)
+            assert not qml_errors(runtime_log(toast_log)), runtime_log(toast_log)
+            passed('Super+N uses live toasts then center; j/k navigate; d deletes; q/Escape archive; Enter consumes resident toast; foreign text input returns')
             if not smoke:
                 def press(*keys):
                     command = [tool('wtype')]
@@ -363,7 +409,8 @@ hl.config({animations = {enabled = false}, input = {resolve_binds_by_sym = true}
                 assert ipc('notifications','focus') == first
                 eventually(client_state,lambda s:not s['windowActive'],'explicit notification focus')
                 press('Escape')
-                eventually(state,lambda s:not s['surface'],'Escape releases notification navigation')
+                eventually(state,lambda s:not s['notificationFocus'] and s['notifications']==0,'Escape archives the toast and releases navigation')
+                ipc('probe','notify','false')
                 assert ipc('notifications','focus') == first
                 eventually(client_state,lambda s:not s['windowActive'],'second explicit notification focus')
                 assert hypr('dispatch','movecursor',f"{target['x']+100} {target['y']+100}") == 'ok'

@@ -1,0 +1,22 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::LockIdle::initTestCase()
+PASS   : qmltestrunner::LockIdle::test_background_allows_lock_and_display_but_no_sleep()
+PASS   : qmltestrunner::LockIdle::test_fade_keeps_protocol_locked_until_content_disappears()
+PASS   : qmltestrunner::LockIdle::test_fingerprint_error_resets_without_unlock()
+PASS   : qmltestrunner::LockIdle::test_fingerprint_is_right_of_password_even_with_long_input()
+PASS   : qmltestrunner::LockIdle::test_hold_invalidates_late_authentication()
+PASS   : qmltestrunner::LockIdle::test_idle_threshold_actions_and_restore()
+PASS   : qmltestrunner::LockIdle::test_keyboard_focus_and_pointer_hide_frame()
+PASS   : qmltestrunner::LockIdle::test_missing_or_replaced_backlight_and_resume()
+FAIL!  : qmltestrunner::LockIdle::test_new_surface_fades_in_while_already_locked() 'function returned false' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_lock_idle.qml(102)]
+PASS   : qmltestrunner::LockIdle::test_password_input_hjkl_enter_escape_and_duplicate()
+PASS   : qmltestrunner::LockIdle::test_presentation_restores_and_blocks_automatic_actions()
+PASS   : qmltestrunner::LockIdle::test_protocol_and_authentication_are_both_required()
+PASS   : qmltestrunner::LockIdle::test_sleep_or_new_request_revokes_fading_unlock(sleep)
+PASS   : qmltestrunner::LockIdle::test_sleep_or_new_request_revokes_fading_unlock(new-lock)
+PASS   : qmltestrunner::LockIdle::test_unavailable_automatic_sleep_is_not_requested()
+PASS   : qmltestrunner::LockIdle::cleanupTestCase()
+Totals: 16 passed, 1 failed, 0 skipped, 0 blacklisted, 12353ms
+********* Finished testing of qmltestrunner *********

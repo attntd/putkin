@@ -5,13 +5,15 @@ var catalog = [
     {id: "launcher", title: "Launcher", group: "Shell", shortcut: "SUPER + SPACE"},
     {id: "clipboard", title: "Schowek", group: "Schowek", shortcut: "SUPER + V"},
     {id: "commands", title: "Launcher komend", group: "Shell", shortcut: "SUPER + semicolon"},
-    {id: "messages", title: "Wiadomości", group: "Wiadomości", command: ":messages"},
+    {id: "messages", title: "Wiadomości", group: "Wiadomości", shortcut: "SUPER + CONTROL + SHIFT + Return", command: ":messages"},
     {id: "settings", title: "Ustawienia", group: "Ustawienia", command: ":settings"},
-    {id: "quickSettings", title: "Szybkie ustawienia", group: "Ustawienia", shortcut: "SUPER + Q"},
-    {id: "audio", title: "Panel dźwięku", group: "Dźwięk"},
-    {id: "battery", title: "Panel baterii", group: "Bateria"},
+    {id: "quickSettings", title: "Quick Menu", group: "Ustawienia", shortcut: "SUPER + Q", command: ":quickmenu"},
+    {id: "network", title: "Wi-Fi", group: "Sieć", command: ":wifi"},
+    {id: "bluetooth", title: "Bluetooth", group: "Bluetooth", command: ":bluetooth"},
+    {id: "audio", title: "Głośność", group: "Dźwięk", command: ":volume"},
+    {id: "battery", title: "Bateria", group: "Bateria", command: ":battery"},
     {id: "bar", title: "Nawigacja paskiem", group: "Shell", shortcut: "SUPER + B"},
-    {id: "notifications", title: "Powiadomienia", group: "Powiadomienia", shortcut: "SUPER + SHIFT + N"},
+    {id: "notifications", title: "Powiadomienia", group: "Powiadomienia", shortcut: "SUPER + SHIFT + N", command: ":notifications"},
     {id: "dnd", title: "Nie przeszkadzać", group: "Powiadomienia"},
     {id: "screenshot", title: "Zrzut ekranu", group: "Ekran", shortcut: "Print", command: ":screenshot"},
     {id: "volumeUp", title: "Głośniej", group: "Dźwięk"},
@@ -102,8 +104,11 @@ function parse(text) {
     // Upgrade complete catalogs from before the session commands, with or
     // without screenshot. Never fill arbitrary holes in a damaged catalog.
     // Migrate complete pre-messaging catalogs through the existing steps.
+    const radios = ["network", "bluetooth"];
+    const hasRadios = Array.isArray(value.bindings) && value.bindings.some(row => row && radios.indexOf(row.action) >= 0);
+    const panelCatalog = hasRadios ? catalog : catalog.filter(action => radios.indexOf(action.id) < 0);
     const hasMessages = Array.isArray(value.bindings) && value.bindings.some(row => row && row.action === "messages");
-    const legacyCatalog = hasMessages ? catalog : catalog.filter(action => action.id !== "messages");
+    const legacyCatalog = hasMessages ? panelCatalog : panelCatalog.filter(action => action.id !== "messages");
     const profiles = ["powersaver", "balanced", "performance"];
     const previousCatalog = legacyCatalog.filter(action => profiles.indexOf(action.id) < 0);
     const sessionCatalog = Array.isArray(value.bindings) && value.bindings.some(row => row && profiles.indexOf(row.action) >= 0)
@@ -141,6 +146,18 @@ function parse(text) {
     if (!hasMessages && completeCatalog(value.bindings, legacyCatalog)) {
         const used = value.bindings.some(row => typeof row.command === "string" && row.command.toLowerCase() === ":messages");
         value.bindings = value.bindings.concat([{action: "messages", shortcut: "", command: used ? "" : ":messages"}]);
+    }
+    // Upgrade the complete pre-radio catalog once. Custom aliases win;
+    // later removal of a panel command in the current catalog stays removed.
+    if (!hasRadios && completeCatalog(value.bindings, panelCatalog)) {
+        const panels = ["quickSettings", "audio", "battery", "notifications"];
+        const usedCommands = value.bindings.map(row => typeof row.command === "string" ? row.command.toLowerCase() : "");
+        value.bindings = value.bindings.map(row => {
+            const action = find(row.action);
+            return panels.indexOf(row.action) >= 0 && row.command === "" && usedCommands.indexOf(action.command) < 0
+                ? Object.assign({}, row, {command: action.command}) : row;
+        }).concat(defaults().filter(row => radios.indexOf(row.action) >= 0).map(row =>
+            usedCommands.indexOf(row.command) < 0 ? row : Object.assign({}, row, {command: ""})));
     }
     const error = problem(value.bindings);
     return error ? {error: error} : {value: normalize(value.bindings)};

@@ -27,8 +27,8 @@ QtObject {
     readonly property bool critical: notification !== null && notification.urgency === 2
     readonly property string appName: limit(notification ? notification.appName : "", 128) || qsTr("Aplikacja")
     readonly property string applicationId: notification && service.applicationService ? service.applicationService.identify(notification) : ""
-    readonly property string summary: limit(notification ? notification.summary : "", 512) || qsTr("Powiadomienie")
-    readonly property string body: limit(notification ? notification.body : "", 4096)
+    readonly property string summary: (notification ? notification.summary : "") || qsTr("Powiadomienie")
+    readonly property string body: notification ? notification.body : ""
     readonly property string iconName: Icons.application(notification ? notification.appIcon : "", appName, "", [])
     readonly property string imageSource: {
         const source = notification ? notification.image : "";

@@ -2,15 +2,29 @@ import QtQuick
 import "../../core"
 import "../../components" as UI
 
-Item {
+UI.FadeScope {
     id: root
     required property var service
     property url wallpaper: ""
     property date date: new Date()
+    property bool initialized: false
+    property bool animate: true
+    shown: (initialized || !animate) && service.locked && !service.unlocking
+    opacity: animate ? fadePresentation.opacity : shown ? 1 : 0
+    contentReady: wallpaperImage.status !== Image.Loading
     readonly property bool accentScope: true
     readonly property alias passwordField: password
+    signal hidden()
+    onOpacityChanged: { if (!shown && opacity === 0) Qt.callLater(hidden); }
+    onShownChanged: {
+        if (!shown && opacity === 0) Qt.callLater(hidden);
+        if (shown) Qt.callLater(password.forceActiveFocus, Qt.OtherFocusReason);
+    }
+    // A newly created lock surface must start hidden before starting the
+    // shared presentation, just like an existing panel being opened.
+    Component.onCompleted: Qt.callLater(() => { initialized = true; })
     Rectangle { anchors.fill: parent; color: Theme.background }
-    Image { anchors.fill: parent; source: root.wallpaper; fillMode: Image.PreserveAspectCrop; asynchronous: true }
+    Image { id: wallpaperImage; anchors.fill: parent; source: root.wallpaper; fillMode: Image.PreserveAspectCrop; asynchronous: true }
     Rectangle { anchors.fill: parent; color: "#88181825" }
     Column {
         width: Math.min(360, Math.max(120, root.width - 32))
@@ -37,12 +51,13 @@ Item {
             objectName: "lockPassword"
             width: parent.width
             height: 44
-            leftPadding: 44
+            rightPadding: 44
             echoMode: TextInput.Password
             passwordCharacter: "●"
+            cursorDelegate: Item {}
             inputMethodHints: Qt.ImhHiddenText | Qt.ImhSensitiveData | Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase
             selectByMouse: false
-            readOnly: root.service.passwordBusy || root.service.hold
+            readOnly: root.service.passwordBusy || root.service.hold || root.service.unlocking
             invalid: root.service.passwordFailed
             Accessible.name: qsTr("Hasło")
             Keys.onEscapePressed: event => { clear(); event.accepted = true; }
@@ -57,7 +72,9 @@ Item {
             }
             Text {
                 objectName: "lockFingerprint"
-                x: 2; width: 40; height: parent.height
+                anchors.right: parent.right
+                anchors.rightMargin: 2
+                width: 40; height: parent.height
                 horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter
                 text: "\udb80\ude37"
                 font.family: Theme.fontFamily; font.pixelSize: 22

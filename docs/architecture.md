@@ -1,5 +1,35 @@
 # Architektura Putkin
 
+## Karty powiadomień i fokus — 2026-09-23
+
+`NotificationFocus.focus()` wybiera toasty przed centrum; istniejący IPC
+Super+N wywołuje tę metodę. `openCenter()` pozostaje dla dzwonka i komendy.
+`NotificationStack.navigationCards` obejmuje tylko aktywne karty, bez
+wierszy w trakcie fade. Po usunięciu karty zachowuje pozycję nawigacji;
+po powrocie slotu podczas zmiany geometrii przywraca istniejący wiersz.
+Udane akcje otwarcia używają `invokeHistory()`, więc również resident
+i wewnętrzny Signal są usuwane z historii. Archiwizacja wywołuje expire.
+
+`NotificationCard` współdzieli nawigację centrum i toastów. Kierunki na
+ramce wybierają karty, a wewnątrz karty prowadzą między rzędami przycisków;
+powrót w górę pamięta przycisk nagłówka. Klawisz d dochodzi do karty przez
+propagację Qt i pomija edytory tekstu. FocusIndicator nakłada się na szarą
+ramkę centrum w tych samych współrzędnych. Rozwinięty tekst jest kompletny,
+także w historii; centrum używa warstwy ograniczonego viewportu panelu,
+zamiast osobnej tekstury całej wysokości rozwiniętej wiadomości.
+
+## Fokus i przewijanie Message Huba — 2026-09-23
+
+`MessagesController` przekazuje oknu intencję zwykłego otwarcia lub wejścia
+w konkretną rozmowę (`focusConversation`). `MessagesView` oddziela listę
+od `FocusScope` rozmowy i czeka z fokusem edytora na gotowość szkicu.
+Powrót na listę/utrata fokusu rozmowy unieważnia oczekujący fokus.
+`KineticScroll` jest pasywnym `WheelHandler`: Qt nadal prowadzi przewijanie
+pod palcami i obsługuje kółko, a po zakończeniu gestu komponent przekazuje
+prędkość do `Flickable.flick()`. Animacja, hamowanie i granice należą do Qt.
+Komponent jest używany tylko przez listę rozmów i historię wiadomości.
+Nie dodano natywnego pluginu, usługi ani poleceń w widokach.
+
 ## Przenośna konfiguracja i instalator — 2026-09-22
 
 `config/catalog.json` jest jawną listą zwykłych plików konfiguracji programów.
@@ -99,6 +129,13 @@ zabezpieczenia ekranów. Pomocnik `session_backend.py` obsługuje logind,
 ScreenSaver i deskryptor delay; hasło pozostaje w rozmowie PamContext.
 Pliki PAM należą do wydania. Nie ma zależności Hyprlock/Hypridle ani drugiej
 instancji shella. [Cykl życia i ograniczenia](session.md).
+
+`LockCapture` dostaje ekrany jawnie od `LockHost`. Jednorazowe natywne
+ScreencopyView pobierają kadr przed zabezpieczeniem sesji, z limitem 150 ms.
+Host przenosi gotowe elementy pod widoki blokady. Dzięki temu wspólny fade
+nakłada UI na obraz pulpitu, choć powierzchnia protokołu pozostaje w całości
+nieprzezroczysta. Brak kadru wyłącza fade na danym monitorze. Bufory żyją
+wyłącznie w pamięci do zwolnienia blokady; widoki nie uruchamiają poleceń.
 
 ## Wspólne ikony Material Symbols — 2026-09-20
 
@@ -204,7 +241,7 @@ Skanowanie należy do widocznego NetworkSection; zamknięcie lub zmiana
 panelu zwalnia lease. Kafelki Quick Menu nie tworzą list ani skanowania.
 
 `NotificationService.history` jest ograniczoną do 100 rekordów pamięcią
-sesji. Rekord ma osobny klucz i ograniczoną kopię tekstu, bez natywnych
+sesji. Rekord ma osobny klucz i pełną kopię tekstu, bez natywnych
 obiektów akcji i obrazów. Żywe akcje centrum odwołują się wyłącznie do
 istniejącego NotificationEntry; po zamknięciu protokołu pozostaje tekst.
 Transient także trafiają do historii; wygaśnięcie zwalnia natywny obiekt. `NotificationCenter` współdzieli

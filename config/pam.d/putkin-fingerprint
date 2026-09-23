@@ -1,2 +1,4 @@
 # Separate conversation: scanning never blocks entry of a password.
-auth required pam_fprintd.so max-tries=3 timeout=30
+# A lock can outlive the default 30 seconds. Keep waiting until a scan, the
+# attempt limit, password success or suspend cancels this conversation.
+auth required pam_fprintd.so max-tries=3 timeout=-1

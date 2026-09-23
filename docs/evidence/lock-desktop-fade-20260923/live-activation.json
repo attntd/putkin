@@ -1,0 +1,59 @@
+{
+  "build": "20260923-130130-d8eb37d26a47",
+  "previous": "20260923-124134-db47c1bd345d",
+  "pid": 39979,
+  "instances": 1,
+  "notification_owner": 39979,
+  "runtime_files_matching_source": 361,
+  "settings_unchanged": true,
+  "session": {
+    "busy": false,
+    "phase": "",
+    "error": "",
+    "result": "",
+    "capabilities": {
+      "reboot": {
+        "available": true,
+        "reason": ""
+      },
+      "poweroff": {
+        "available": true,
+        "reason": ""
+      },
+      "suspend": {
+        "available": false,
+        "reason": "Operację wstrzymuje inhibitor aplikacji."
+      },
+      "hibernate": {
+        "available": false,
+        "reason": "Operacja nieobsługiwana przez logind."
+      },
+      "idleSuspend": {
+        "available": false,
+        "reason": "Operacja nieobsługiwana przez logind."
+      },
+      "logout": {
+        "available": true,
+        "reason": ""
+      },
+      "lock": {
+        "available": true,
+        "reason": ""
+      }
+    },
+    "lock": {
+      "locked": false,
+      "secure": false
+    },
+    "idle": {
+      "ready": true,
+      "inhibited": false,
+      "sleepInhibited": true,
+      "dimmed": false,
+      "displaysOff": false,
+      "error": ""
+    }
+  },
+  "qml_errors": [],
+  "result": "PASS"
+}

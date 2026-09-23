@@ -1,5 +1,30 @@
 # Signal — kontrakty po audycie S00
 
+## Sterowanie Message Hubem — 2026-09-23
+
+- Zwykłe otwarcie/przywołanie okna z paska, komendy lub skrótu ustawia
+  fokus na liście rozmów. Pamiętana rozmowa nie zmienia tego wejścia.
+- `openConversation` (w tym akcja „Otwórz” powiadomienia) wybiera dokładny
+  adres usługa/konto/rozmowa i kieruje fokus do edytora, także po utworzeniu
+  nowego okna i opóźnionym wczytaniu szkicu.
+- Góra/dół i j/k zmieniają bieżący wiersz bez otwierania rozmowy.
+  Enter, Enter numeryczny, l lub strzałka w prawo otwierają wybrany wiersz
+  i kierują fokus do pola wiadomości. `/` lub h pozwala wejść w wyszukiwanie.
+- Escape z edytora, historii lub pozostałych kontrolek rozmowy wraca do
+  listy, wskazując otwartą rozmowę. Wąskie okno pokazuje wtedy listę.
+  Escape w trybie edycji anuluje edycję i wraca na listę; osobny podgląd
+  mediów/popup nadal najpierw zamyka swoją warstwę. Escape na liście zamyka okno.
+- Edytor zajmuje całą szerokość po prawej od przycisku załączników.
+  Nie ma przycisku wysyłania: Enter wysyła/zatwierdza edycję, Shift+Enter
+  dodaje wiersz, preedit IME nie wysyła wiadomości. Powtarzany Enter nie
+  ponawia wysyłania. Klawisze h/j/k/l w edytorze wpisują tekst.
+- Kliknięcie rozmowy przenosi kursor do edytora z myszowym powodem fokusu.
+  Obrys listy/edytora jest klawiaturowy, przez wspólne ControlInput i FocusIndicator.
+- Historia i lista rozmów używają natywnego przewijania pikselowego Qt
+  z bezwładnością po zakończeniu rozpędzonego gestu. Przerwa przed końcem
+  gestu nie odtwarza dawnej prędkości; nowy gest i klawiatura zatrzymują
+  bezwładność. Lista nie wyjeżdża poza granice, kółko myszy pozostaje obsługiwane.
+
 ## S12 — kontrakt wydania i danych
 
 Wydanie zawiera przypięte `dependencies/signal/{cli,jre}`. Pełne drzewo

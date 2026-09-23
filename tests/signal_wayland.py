@@ -73,7 +73,23 @@ def run(environment, base, output, first, hypr, launch):
     text('x')
     d.wait(lambda s:s.get('coverText')=='hjklx','focus returned to previous app')
     d.check('native passive toast, actual quick-reply keyboard/Unicode/Shift+Enter/Escape, focus return, two accents preview/cancel/save preserve draft')
-    d.open(monitor=first); focus('Wiadomości')
+    assert d.ipc('openList', first) == 'true'
+    focus('Wiadomości')
+    d.wait(lambda s: s.get('listFocused'), 'ordinary open focuses conversation list')
+    keys('j', 'k', 'Return')
+    d.wait(lambda s: s.get('focus') == 'messageEditor' and s.get('draftReady'), 'Enter opens selected conversation and focuses composer')
+    keys('Escape')
+    d.wait(lambda s: s.get('listFocused') and s.get('loaded'), 'Escape returns to list without closing window')
+    keys('l')
+    d.wait(lambda s: s.get('focus') == 'messageEditor', 'l opens conversation')
+    d.close()
+    # Follow the same Open action used by a notification click.
+    expected = d.state()['history'][0]['messageReference']['conversationId']
+    assert d.ipc('notificationOpen', 0) == 'true'
+    focus('Wiadomości')
+    d.wait(lambda s: s.get('focus') == 'messageEditor' and s.get('selected', {}).get('conversationId') == expected,
+           'notification selects its conversation and focuses composer')
+    d.check('ordinary open focuses list; native j/k/Enter/l/Escape; notification action routes to composer in recreated window')
     # Synthetic content covers outgoing accent, media labels and the shared
     # reaction/time footer without capturing a real user's conversation.
     stamp = seeded['stamp'] + 200

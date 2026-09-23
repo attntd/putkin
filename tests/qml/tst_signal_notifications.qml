@@ -126,20 +126,21 @@ Item {
             tryVerify(() => notifications.history[0].messageReference.messageId !== row.messageReference.messageId);
             compare(notifications.entries.length, 1); compare(notifications.history.length, 1); compare(card(), original);
             verify(desktop.activeFocus);
-            card().actionAt(0).click();
-            compare(windowController.route, {serviceId: "signal", accountId: "account-a", conversationId: "chat-a"});
             notifications.notifyError(notifications.entries[0].summary, "Błąd syntetyczny");
             compare(notifications.entries.length, 2); // same title never conflates errors and messages
+            card().actionAt(0).click();
+            compare(windowController.route, {serviceId: "signal", accountId: "account-a", conversationId: "chat-a"});
+            compare(notifications.entries.length, 1); compare(notifications.history.length, 1);
             verify(!backend.calls.some(call => /receipt|read/i.test(call.method)));
         }
         function test_quick_reply_keyboard_context_double_send_and_ime() {
             backend.storedDrafts["chat-a"] = {text: "Szkic pełnego okna", revision: 1};
             incoming(); const value = reply(), editor = value.replyEditor.editor;
-            for (const letter of "hjkl") keyClick(letter);
+            for (const letter of "hjklqd") keyClick(letter);
             keyClick(Qt.Key_Return, Qt.ShiftModifier);
-            compare(editor.text, "hjkl\n");
+            compare(editor.text, "hjklqd\n");
             value.replySession.edit(editor.text + "Zażółć 🐈");
-            tryCompare(editor, "text", "hjkl\nZażółć 🐈");
+            tryCompare(editor, "text", "hjklqd\nZażółć 🐈");
             const event = {key: Qt.Key_Return, modifiers: Qt.NoModifier, isAutoRepeat: false, accepted: false};
             value.replyEditor.handleReturn(event, true);
             compare(event.accepted, false); compare(backend.sentCount, 0);
@@ -150,6 +151,38 @@ Item {
             compare(backend.calls.filter(call => call.method === "message.send").length, 1);
             compare(backend.storedDrafts["chat-a"].text, "Szkic pełnego okna");
             compare(windowController.route, null);
+        }
+        function test_toast_enter_opens_conversation_and_consumes_history() {
+            const row = incoming(); waitCard();
+            preview.notificationController.focus();
+            tryVerify(() => card().selectionControl.activeFocus);
+            keyClick(Qt.Key_Return);
+            tryVerify(() => windowController.route !== null);
+            compare(windowController.route.conversationId, row.messageReference.conversationId);
+            compare(notifications.entries.length, 0); compare(notifications.history.length, 0);
+            compare(preview.notificationController.screenName, "");
+        }
+        function test_center_message_buttons_return_to_header_and_delete_data() {
+            return [{tag: "mute", bottom: false}, {tag: "reply-action", bottom: true}];
+        }
+        function test_center_message_buttons_return_to_header_and_delete(data) {
+            incoming(); waitCard(); preview.notificationController.openCenter();
+            tryCompare(preview.panelHost, "loaded", true);
+            tryCompare(preview.panelHost.window, "opacity", 1);
+            const item = preview.panelHost.window.page.cardAt(0);
+            const mute = findChild(item, "notificationMute");
+            keyClick(Qt.Key_J); verify(item.selectionControl.activeFocus);
+            keyClick(Qt.Key_L); verify(mute.activeFocus);
+            keyClick(Qt.Key_J); verify(item.actionAt(0).activeFocus);
+            keyClick(Qt.Key_L); verify(item.actionAt(1).activeFocus);
+            keyClick(Qt.Key_K); verify(mute.activeFocus);
+            keyClick(Qt.Key_H); verify(item.selectionControl.activeFocus);
+            keyClick(Qt.Key_L);
+            if (data.bottom) { keyClick(Qt.Key_J); keyClick(Qt.Key_L); }
+            keyClick(Qt.Key_D);
+            compare(notifications.entries.length, 0); compare(notifications.history.length, 0);
+            compare(windowController.route, null);
+            verify(!backend.calls.some(call => call.method === "message.send" || call.method === "messages.read"));
         }
         function test_replacement_during_edit_timeout_other_conversation_and_hotplug() {
             notifications.defaultTimeout = 300;

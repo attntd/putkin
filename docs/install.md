@@ -1,5 +1,35 @@
 # Instalacja Putkina
 
+## Pasek, toasty i centrum — 2026-09-23
+
+Wdrożono **`20260923-155404-94077eef8c74`** na polecenie użytkownika przez
+`scripts/install --shell-only --offline --activate --no-prune`.
+Dziewięć plików runtime zmienia wygląd modułów paska oraz fokus, akcje,
+nawigację i pełną treść powiadomień. Źródła odpowiadają przetestowanym sumom;
+walidacja paczki: 171 QML, zero błędów. Dwa odczyty w odstępie 10 s
+potwierdziły jedną stabilną instancję, jej właściciela powiadomień,
+Signal `ready` i gotowe idle, bez błędów ani ostrzeżeń QML/sesji.
+362 pliki runtime odpowiadają źródłom i manifestowi; settings/keyboard bez zmian.
+[Zakres](evidence/toast-keyboard-20260923/activation-before.json),
+[log instalacji](evidence/toast-keyboard-20260923/install-activation.log),
+[odbiór](evidence/toast-keyboard-20260923/live-activation.json).
+`previous` wskazuje `20260923-150615-a7bcf1e31250`; powrót przez
+`scripts/install --restore --activate`. Nie usuwano starszych wydań.
+
+## Sterowanie Message Hubem — 2026-09-23
+
+Wdrożono **`20260923-150615-a7bcf1e31250`** przez
+`scripts/install --shell-only --offline --activate --no-prune`.
+Zmiana obejmuje siedem plików Message Huba i wspólne przewijanie.
+Walidacja paczki: 171 QML, zero błędów. Dwa odczyty aktywnej sesji
+w odstępie 10 s potwierdziły jedną stabilną instancję, jej właściciela
+powiadomień, Signal `ready` i gotowe idle, bez błędów QML/sesji.
+362 pliki runtime odpowiadają źródłom; ustawienia i skróty zachowano.
+[Log instalacji](evidence/messages-navigation-20260923/install-activation.log),
+[odbiór](evidence/messages-navigation-20260923/live-activation.json).
+`previous` wskazuje `20260923-130130-d8eb37d26a47`; powrót przez
+`scripts/install --restore --activate`. Nie usuwano starszych wydań.
+
 ## Instalacja na kolejnym komputerze — 2026-09-22
 
 Instalator obejmuje shell, przypięty Signal oraz konfigurację programów

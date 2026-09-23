@@ -26,6 +26,37 @@ pozwalają dojść do pierwszej/ostatniej pozycji. `q` zamyka panel z listy lub
 filtra; w polu wyszukiwania pozostaje zwykłą literą, podobnie jak hjkl.
 Wpis schowka jest kopiowany; użytkownik sam wkleja go do wybranej aplikacji.
 
+## Moduły paska w komendach — 2026-09-23
+
+Launcher komend udostępnia wszystkie panele modułów górnego paska:
+
+| Komenda domyślna | Otwierany moduł |
+| --- | --- |
+| `:wifi` | Wi-Fi |
+| `:bluetooth` | Bluetooth |
+| `:volume` | Głośność |
+| `:battery` | Bateria |
+| `:notifications` | Powiadomienia |
+| `:quickmenu` | Quick Menu |
+| `:messages` | Wiadomości |
+
+Działają także bez dwukropka w chipie „Komenda”. Wpisanie wybiera wynik;
+Enter otwiera ten sam panel co przycisk paska, na aktywnym monitorze,
+z fokusem klawiatury. Otwarcie Wi-Fi/Bluetooth nie przełącza radia.
+Kategorie i ikony odpowiadają modułom; Quick Menu używa symbolu `tune`.
+Aliasy można zmienić w Ustawienia → Klawiatura.
+
+Wyszukiwanie dopasowuje także początek nazwy działania lub jej słowa,
+bez rozróżniania wielkości liter i polskich znaków. Wiadomości można
+znaleźć przez `:messages`, `:wiadomosci` albo `:Wiadomości`; w chipie
+Komenda także przez samą nazwę „Wiadomości”. Dokładny zapisany alias
+ma pierwszeństwo. Usunięta komenda nie wraca jako wynik po nazwie.
+
+Odczyt kompletnego starszego katalogu dodaje Wi-Fi i Bluetooth oraz
+uzupełnia puste komendy pozostałych paneli. Zachowuje zapisane skróty
+i własne aliasy; zajęta nazwa nie jest przejmowana. Odczyt nie zapisuje
+pliku. Po zapisaniu nowego katalogu celowo usunięte komendy pozostają puste.
+
 ## Chip i kategorie komend — 2026-09-22
 
 Super+Spacja → `:` → spacja przełącza do tego samego trybu co Super+;.
@@ -41,6 +72,8 @@ Kategorie pochodzą ze wspólnego katalogu działań, także po zmianie aliasu:
 | --- | --- |
 | Profile oszczędny, zrównoważony i wydajności oraz panel baterii | Bateria |
 | Głośność, wyciszenia i panel dźwięku | Dźwięk |
+| Panel Wi-Fi | Sieć |
+| Panel Bluetooth | Bluetooth |
 | Blokada, uśpienie, hibernacja, wyłączenie i restart | Sesja |
 | Jasność i zrzut ekranu | Ekran |
 | Fokus, przenoszenie, zamykanie i tryby okna | Okna |

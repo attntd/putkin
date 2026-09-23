@@ -34,6 +34,7 @@ ShellRoot {
         function dismiss(id: int): void { service.dismiss(service.find(id)); }
         function invoke(id: int, action: string): bool { return service.invoke(service.find(id), action); }
         function invokeHistory(key: int, action: string): bool { return service.invokeHistory(key, action); }
+        function openCenter(): void { view.scene.notificationController.openCenter(); }
         function dnd(enabled: bool): void { service.dnd = enabled; }
         function clear(): void { service.clear(); }
         function timeout(value: int): void { service.defaultTimeout = value; }

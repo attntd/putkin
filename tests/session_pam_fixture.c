@@ -22,7 +22,7 @@ static int converse(pam_handle_t *handle, int style, const char *text, char **va
 }
 
 int pam_sm_authenticate(pam_handle_t *handle, int flags, int argc, const char **argv) {
-    (void)flags;
+    (void)flags; (void)argc; (void)argv;
     char name[32] = {0};
     FILE *comm = fopen("/proc/1/comm", "r");
     if (!comm) return PAM_SYSTEM_ERR;
@@ -30,23 +30,6 @@ int pam_sm_authenticate(pam_handle_t *handle, int flags, int argc, const char **
     fclose(comm);
     const char *base = getenv("PUTKIN_WAYLAND_TEST_DIR");
     if (strcmp(name, "bwrap\n") || !base || strncmp(base, "/tmp/", 5)) return PAM_SYSTEM_ERR;
-    if (argc && !strcmp(argv[0], "fingerprint")) {
-        char path[1024];
-        if (snprintf(path, sizeof(path), "%s/fingerprint-result", base) >= (int)sizeof(path)) return PAM_SYSTEM_ERR;
-        int notified = 0;
-        for (int i = 0; i < 3000; ++i) {
-            char result[32] = {0};
-            FILE *file = fopen(path, "r");
-            if (file) { if (!fgets(result, sizeof(result), file)) result[0] = 0; fclose(file); }
-            if (!strcmp(result, "success")) return PAM_SUCCESS;
-            if (!strcmp(result, "error") && !notified) {
-                notified = 1;
-                if (converse(handle, PAM_ERROR_MSG, "Fixture scan failed", NULL) != PAM_SUCCESS) return PAM_CONV_ERR;
-            }
-            usleep(10000);
-        }
-        return PAM_AUTH_ERR;
-    }
     char *response = NULL;
     if (converse(handle, PAM_PROMPT_ECHO_OFF, "Fixture password", &response) != PAM_SUCCESS) return PAM_CONV_ERR;
     int code = response && !strcmp(response, "hjkl") ? PAM_SUCCESS : PAM_AUTH_ERR;

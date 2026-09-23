@@ -1,0 +1,177 @@
+{
+  "build": "20260923-155404-94077eef8c74",
+  "previous": "20260923-150615-a7bcf1e31250",
+  "runtime_files_matching_source": 362,
+  "runtime_mismatches": [],
+  "manifest_verified": true,
+  "settings_unchanged": true,
+  "samples": [
+    {
+      "utc": "2026-09-23T15:55:14.527633+00:00",
+      "pid": 62651,
+      "instances": 1,
+      "notification_owner": 62651,
+      "service": {
+        "ActiveState": "active",
+        "SubState": "running",
+        "MainPID": "62651",
+        "Result": "success",
+        "NRestarts": "0"
+      },
+      "session": {
+        "busy": false,
+        "phase": "",
+        "error": "",
+        "result": "",
+        "capabilities": {
+          "reboot": {
+            "available": true,
+            "reason": ""
+          },
+          "poweroff": {
+            "available": true,
+            "reason": ""
+          },
+          "suspend": {
+            "available": false,
+            "reason": "Operację wstrzymuje inhibitor aplikacji."
+          },
+          "hibernate": {
+            "available": false,
+            "reason": "Operacja nieobsługiwana przez logind."
+          },
+          "idleSuspend": {
+            "available": false,
+            "reason": "Operacja nieobsługiwana przez logind."
+          },
+          "logout": {
+            "available": true,
+            "reason": ""
+          },
+          "lock": {
+            "available": true,
+            "reason": ""
+          }
+        },
+        "lock": {
+          "locked": false,
+          "secure": false
+        },
+        "idle": {
+          "ready": true,
+          "inhibited": false,
+          "sleepInhibited": true,
+          "dimmed": false,
+          "displaysOff": false,
+          "error": ""
+        }
+      },
+      "signal": {
+        "state": "ready",
+        "accountState": "linked",
+        "schemaVersion": 7,
+        "cliVersion": "0.14.8",
+        "errorCode": "",
+        "linkError": "",
+        "eventErrorLocation": "",
+        "qrVisible": false,
+        "processId": 62701
+      },
+      "caffeinate": {
+        "active": true,
+        "mode": "background",
+        "busy": false,
+        "preventDisplaySleep": false,
+        "preventLock": false,
+        "preventSleep": true,
+        "error": ""
+      },
+      "qml_errors": [],
+      "warnings": []
+    },
+    {
+      "utc": "2026-09-23T15:55:24.651335+00:00",
+      "pid": 62651,
+      "instances": 1,
+      "notification_owner": 62651,
+      "service": {
+        "ActiveState": "active",
+        "SubState": "running",
+        "MainPID": "62651",
+        "Result": "success",
+        "NRestarts": "0"
+      },
+      "session": {
+        "busy": false,
+        "phase": "",
+        "error": "",
+        "result": "",
+        "capabilities": {
+          "reboot": {
+            "available": true,
+            "reason": ""
+          },
+          "poweroff": {
+            "available": true,
+            "reason": ""
+          },
+          "suspend": {
+            "available": false,
+            "reason": "Operację wstrzymuje inhibitor aplikacji."
+          },
+          "hibernate": {
+            "available": false,
+            "reason": "Operacja nieobsługiwana przez logind."
+          },
+          "idleSuspend": {
+            "available": false,
+            "reason": "Operacja nieobsługiwana przez logind."
+          },
+          "logout": {
+            "available": true,
+            "reason": ""
+          },
+          "lock": {
+            "available": true,
+            "reason": ""
+          }
+        },
+        "lock": {
+          "locked": false,
+          "secure": false
+        },
+        "idle": {
+          "ready": true,
+          "inhibited": false,
+          "sleepInhibited": true,
+          "dimmed": false,
+          "displaysOff": false,
+          "error": ""
+        }
+      },
+      "signal": {
+        "state": "ready",
+        "accountState": "linked",
+        "schemaVersion": 7,
+        "cliVersion": "0.14.8",
+        "errorCode": "",
+        "linkError": "",
+        "eventErrorLocation": "",
+        "qrVisible": false,
+        "processId": 62701
+      },
+      "caffeinate": {
+        "active": true,
+        "mode": "background",
+        "busy": false,
+        "preventDisplaySleep": false,
+        "preventLock": false,
+        "preventSleep": true,
+        "error": ""
+      },
+      "qml_errors": [],
+      "warnings": []
+    }
+  ],
+  "result": "PASS"
+}

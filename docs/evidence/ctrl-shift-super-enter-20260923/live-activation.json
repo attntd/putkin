@@ -1,0 +1,38 @@
+{
+  "result": "PASS",
+  "keyboard_path": "/home/attntd/.config/putkin/keyboard.json",
+  "previous_shortcut": "SHIFT + Return",
+  "shortcut": "SUPER + CONTROL + SHIFT + Return",
+  "status": {
+    "ready": true,
+    "busy": false,
+    "applied": true,
+    "error": "",
+    "shortcuts": 9,
+    "commands": 12
+  },
+  "binding": [
+    {
+      "locked": false,
+      "mouse": false,
+      "release": false,
+      "repeat": false,
+      "longPress": false,
+      "non_consuming": false,
+      "auto_consuming": false,
+      "has_description": true,
+      "modmask": 69,
+      "submap": "",
+      "submap_universal": "false",
+      "key": "Return",
+      "keycode": 0,
+      "catch_all": false,
+      "description": "Putkin:messages",
+      "allow_input_capture": false,
+      "dispatcher": "__lua",
+      "arg": "96"
+    }
+  ],
+  "other_bindings_unchanged": true,
+  "shell_restarted": false
+}

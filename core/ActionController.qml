@@ -55,7 +55,7 @@ QtObject {
             else lastError = screenshot.lastError;
             return accepted;
         }
-        const panels = {settings: "settings", quickSettings: "quickSettings", audio: "audio", battery: "battery", power: "power"};
+        const panels = {settings: "settings", quickSettings: "quickSettings", network: "network", bluetooth: "bluetooth", audio: "audio", battery: "battery", power: "power"};
         // Defer focus handoffs until the old launcher's activation has closed it.
         if (panels[id]) {
             Qt.callLater(() => {

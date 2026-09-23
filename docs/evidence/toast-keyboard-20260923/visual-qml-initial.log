@@ -1,0 +1,27 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::VisualContract::initTestCase()
+PASS   : qmltestrunner::VisualContract::test_active_modules_keep_light_icons(wifi)
+PASS   : qmltestrunner::VisualContract::test_active_modules_keep_light_icons(bluetooth)
+PASS   : qmltestrunner::VisualContract::test_active_modules_keep_light_icons(battery)
+PASS   : qmltestrunner::VisualContract::test_active_modules_keep_light_icons(audio)
+PASS   : qmltestrunner::VisualContract::test_active_modules_keep_light_icons(notifications)
+PASS   : qmltestrunner::VisualContract::test_active_modules_keep_light_icons(quickMenu)
+PASS   : qmltestrunner::VisualContract::test_bar_icons_keep_clock_color_across_states()
+PASS   : qmltestrunner::VisualContract::test_compact_layout_font_borders_and_no_hover_popup()
+FAIL!  : qmltestrunner::VisualContract::test_error_is_a_toast_with_panel_open_and_in_dnd() Received a warning that resulted in a failure:
+QQmlVMEMetaObject: Internal error - attempted to evaluate a function in an invalid context
+FAIL!  : qmltestrunner::VisualContract::test_error_is_a_toast_with_panel_open_and_in_dnd() Received a warning that resulted in a failure:
+file:///home/attntd/projects/putkin/modules/notifications/NotificationStack.qml:31: Error: Qt.callLater: first argument not a function or signal (exception occurred during delayed function evaluation)
+   Loc: [file:///home/attntd/projects/putkin/modules/notifications/NotificationStack.qml(31)]
+PASS   : qmltestrunner::VisualContract::test_fade_keeps_geometry_and_legacy_motion_cannot_disable_it()
+PASS   : qmltestrunner::VisualContract::test_network_wifi_family_and_radio_states()
+PASS   : qmltestrunner::VisualContract::test_one_detail_section_and_keyboard_entry()
+PASS   : qmltestrunner::VisualContract::test_osd_horizontal_and_fade_retains_last_monitor()
+PASS   : qmltestrunner::VisualContract::test_surface_fade_geometry(quickSettings)
+PASS   : qmltestrunner::VisualContract::test_surface_fade_geometry(network)
+PASS   : qmltestrunner::VisualContract::test_surface_fade_geometry(bluetooth)
+PASS   : qmltestrunner::VisualContract::test_surface_fade_geometry(battery)
+PASS   : qmltestrunner::VisualContract::cleanupTestCase()
+Totals: 18 passed, 1 failed, 0 skipped, 0 blacklisted, 9299ms
+********* Finished testing of qmltestrunner *********

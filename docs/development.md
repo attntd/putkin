@@ -1,5 +1,70 @@
 # Środowisko i rozwój
 
+## Pasek i karty powiadomień — 2026-09-23
+
+Potwierdzono lokalnie Qt **6.11.2** (`qmake6 -query QT_VERSION`) i Quickshell
+**0.3.1** (`qs --version`). Sprawdzono oficjalne API:
+[Keys i propagacja zdarzeń](https://doc.qt.io/qt-6.11/qml-qtquick-keys.html),
+[Repeater i życie delegatów](https://doc.qt.io/qt-6.11/qml-qtquick-repeater.html),
+[Text: elide i maximumLineCount](https://doc.qt.io/qt-6.11/qml-qtquick-text.html),
+[HyprlandFocusGrab](https://quickshell.org/docs/v0.3.1/types/Quickshell.Hyprland/HyprlandFocusGrab/)
+i [NotificationAction](https://quickshell.org/docs/v0.3.1/types/Quickshell.Services.Notifications/NotificationAction/).
+Testy klawiatury nie interpretują kodu źródłowego: wysyłają zdarzenia Qt
+lub wtype do prywatnego Hyprlanda. W teście wtype `resolve_binds_by_sym`
+musi być włączone tak jak w pozostałych testach natywnej klawiatury.
+
+## Sterowanie Message Hubem — 2026-09-23
+
+Lokalnie ponownie potwierdzono `qmake6 -query QT_VERSION`: **6.11.2**
+i `qs --version`: **0.3.1**. Sprawdzono oficjalne API Qt 6.11:
+[Keys](https://doc.qt.io/qt-6.11/qml-qtquick-keys.html),
+[Flickable](https://doc.qt.io/qt-6.11/qml-qtquick-flickable.html),
+[WheelHandler](https://doc.qt.io/qt-6.11/qml-qtquick-wheelhandler.html),
+[WheelEvent](https://doc.qt.io/qt-6.11/qml-qtquick-wheelevent.html),
+[QWheelEvent](https://doc.qt.io/qt-6.11/qwheelevent.html),
+[ScrollView](https://doc.qt.io/qt-6.11/qml-qtquick-controls-scrollview.html)
+i [QtTest](https://doc.qt.io/qt-6.11/qml-qttest-testcase.html).
+
+Źródło [QQuickFlickable 6.11.2](https://github.com/qt/qtdeclarative/blob/v6.11.2/src/quick/items/qquickflickable.cpp)
+potwierdza, że ScrollEnd kończy gest bez generowania własnej bezwładności.
+QML WheelEvent nie udostępnia fazy; `WheelHandler.active` uwzględnia
+ScrollEnd. Komponent obserwuje gest bez przejmowania zdarzeń i uruchamia
+`flick()` po obsłużeniu końca przez Qt. Prędkość pochodzi z ostatnich
+niezerowych delt pikselowych; zwykłe zdarzenia kółka nie tworzą tej bezwładności.
+Test C++ jest wyłącznie narzędziem wejścia, nie zależnością runtime.
+
+## Fade na obrazie pulpitu — 2026-09-23
+
+Potwierdzono lokalne Quickshell **0.3.1**, Qt **6.11.2** i Hyprland **0.56.2**.
+Sprawdzono metadane zainstalowanego ScreencopyView oraz oficjalne
+[ScreencopyView](https://quickshell.org/docs/v0.3.1/types/Quickshell.Wayland/ScreencopyView/),
+[WlSessionLockSurface](https://quickshell.org/docs/v0.3.1/types/Quickshell.Wayland/WlSessionLockSurface/)
+i [TextInput.cursorDelegate](https://doc.qt.io/qt-6.11/qml-qtquick-textinput.html#cursorDelegate-prop).
+Związek przechwytywania z oknem/scene graph sprawdzono w
+[kodzie 0.3.1](https://github.com/quickshell-mirror/quickshell/blob/v0.3.1/src/wayland/screencopy/view.cpp).
+Hyprland przestaje renderować pulpit po potwierdzeniu blokady; samo
+zmniejszenie opacity widoku odsłania kolor powierzchni. Rozwiązanie używa
+jednej klatki sprzed blokady i nie włącza `session_lock_xray`.
+[Kod renderera 0.56.2](https://github.com/hyprwm/Hyprland/blob/v0.56.2/src/render/Renderer.cpp).
+
+Piksele przejścia sprawdza bezstratne nagranie prywatnego kompozytora przez
+wf-recorder **0.6.0**, dekodowane ffmpeg **9.0.1**. Opcje zweryfikowano
+w lokalnym oficjalnym `wf-recorder(1)`, `--help` i dokumentacji FFmpeg.
+
+## Odcisk i przejścia blokady — 2026-09-23
+
+Ponownie potwierdzono Quickshell **0.3.1**, Qt **6.11.2**, fprintd **1.94.5**,
+Linux-PAM **1.7.2**, systemd **261.3** i Hyprland **0.56.2**. Lokalny oficjalny
+`pam_fprintd(8)` dokumentuje ujemny timeout jako oczekiwanie bez limitu czasu;
+`max-tries=3` pozostaje bez zmian. Interfejs atrapy odpowiada zainstalowanym
+`/usr/share/dbus-1/interfaces/net.reactivated.Fprint.{Manager,Device}.xml`.
+Sprawdzono też [PamContext](https://quickshell.org/docs/v0.3.1/types/Quickshell.Services.Pam/PamContext/),
+[WlSessionLock](https://quickshell.org/docs/v0.3.1/types/Quickshell.Wayland/WlSessionLock/),
+[padding Qt Controls](https://doc.qt.io/qt-6.11/qml-qtquick-controls-control.html),
+[NumberAnimation](https://doc.qt.io/qt-6.11/qml-qtquick-numberanimation.html)
+i [Can* logind 261](https://github.com/systemd/systemd/blob/v261/man/org.freedesktop.login1.xml).
+Odczyt hosta: CanSuspend=`yes`, CanSuspendThenHibernate=`na`; bez wywołania snu.
+
 ## Chip i kategorie komend — 2026-09-22
 
 Potwierdzono Qt **6.11.2** i Quickshell **0.3.1**. Parser i metadane

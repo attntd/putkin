@@ -1,0 +1,58 @@
+  INFO: Launching config: "/home/attntd/projects/putkin/native-session-test.qml"
+  INFO: Shell ID: "310220fc689ba4aec7bb0e34a38ead00" Path ID "310220fc689ba4aec7bb0e34a38ead00"
+  INFO: Saving logs to "/tmp/pw-6hhd_wwm/r/quickshell/by-id/71jritlt/log.qslog"
+  INFO: Configuration Loaded
+quickshell.service.pam.subprocess: Waiting for parent confirmation...
+quickshell.service.pam.subprocess: Starting pam session for user "attntd" with config "putkin-password" in dir "/tmp/pw-6hhd_wwm/pam"
+quickshell.service.pam.subprocess: Relaying pam message: "Fixture password" echo: 0 error: 0 responseRequired: 1
+quickshell.service.pam.subprocess: Got response for request.quickshell.service.pam.subprocess: Failed to authenticate.
+quickshell.service.pam.subprocess: Waiting for parent confirmation...
+quickshell.service.pam.subprocess: Starting pam session for user "attntd" with config "putkin-password" in dir "/tmp/pw-6hhd_wwm/pam"
+quickshell.service.pam.subprocess: Relaying pam message: "Fixture password" echo: 0 error: 0 responseRequired: 1
+quickshell.service.pam.subprocess: Got response for request.quickshell.service.pam.subprocess: Authenticated successfully.
+quickshell.service.pam.subprocess: Waiting for parent confirmation...
+quickshell.service.pam.subprocess: Starting pam session for user "attntd" with config "putkin-password" in dir "/tmp/pw-6hhd_wwm/pam"
+quickshell.service.pam.subprocess: Relaying pam message: "Fixture password" echo: 0 error: 0 responseRequired: 1
+quickshell.service.pam.subprocess: Got response for request.quickshell.service.pam.subprocess: Authenticated successfully.
+quickshell.service.pam.subprocess: Waiting for parent confirmation...
+quickshell.service.pam.subprocess: Starting pam session for user "attntd" with config "putkin-fingerprint" in dir "/tmp/pw-6hhd_wwm/pam"
+quickshell.service.pam.subprocess: Relaying pam message: "Failed to match fingerprint" echo: 1 error: 1 responseRequired: 0
+quickshell.service.pam.subprocess: Authenticated successfully.
+quickshell.service.pam.subprocess: Waiting for parent confirmation...
+quickshell.service.pam.subprocess: Starting pam session for user "attntd" with config "putkin-fingerprint" in dir "/tmp/pw-6hhd_wwm/pam"
+quickshell.service.pam.subprocess: Waiting for parent confirmation...
+quickshell.service.pam.subprocess: Starting pam session for user "attntd" with config "putkin-password" in dir "/tmp/pw-6hhd_wwm/pam"
+quickshell.service.pam.subprocess: Relaying pam message: "Fixture password" echo: 0 error: 0 responseRequired: 1
+quickshell.service.pam.subprocess: Got response for request.quickshell.service.pam.subprocess: Authenticated successfully.
+quickshell.service.pam.subprocess: Waiting for parent confirmation...
+quickshell.service.pam.subprocess: Starting pam session for user "attntd" with config "putkin-fingerprint" in dir "/tmp/pw-6hhd_wwm/pam"
+quickshell.service.pam.subprocess: Relaying pam message: "Failed to match fingerprint" echo: 1 error: 1 responseRequired: 0
+quickshell.service.pam.subprocess: Relaying pam message: "Failed to match fingerprint" echo: 1 error: 1 responseRequired: 0
+quickshell.service.pam.subprocess: Relaying pam message: "Failed to match fingerprint" echo: 1 error: 1 responseRequired: 0
+quickshell.service.pam.subprocess: Failed to authenticate due to hitting max tries.
+quickshell.service.pam.subprocess: Waiting for parent confirmation...
+quickshell.service.pam.subprocess: Starting pam session for user "attntd" with config "putkin-password" in dir "/tmp/pw-6hhd_wwm/pam"
+quickshell.service.pam.subprocess: Relaying pam message: "Fixture password" echo: 0 error: 0 responseRequired: 1
+quickshell.service.pam.subprocess: Got response for request.quickshell.service.pam.subprocess: Authenticated successfully.
+quickshell.service.pam.subprocess: Waiting for parent confirmation...
+quickshell.service.pam.subprocess: Starting pam session for user "attntd" with config "putkin-password" in dir "/tmp/pw-6hhd_wwm/pam"
+quickshell.service.pam.subprocess: Relaying pam message: "Fixture password" echo: 0 error: 0 responseRequired: 1
+quickshell.service.pam.subprocess: Got response for request.quickshell.service.pam.subprocess: Authenticated successfully.
+  INFO: Reloading configuration...
+  INFO: Configuration Loaded
+quickshell.service.pam.subprocess: Waiting for parent confirmation...
+quickshell.service.pam.subprocess: Starting pam session for user "attntd" with config "putkin-password" in dir "/tmp/pw-6hhd_wwm/pam"
+quickshell.service.pam.subprocess: Relaying pam message: "Fixture password" echo: 0 error: 0 responseRequired: 1
+quickshell.service.pam.subprocess: Got response for request.quickshell.service.pam.subprocess: Authenticated successfully.
+quickshell.service.pam.subprocess: Waiting for parent confirmation...
+quickshell.service.pam.subprocess: Starting pam session for user "attntd" with config "putkin-password" in dir "/tmp/pw-6hhd_wwm/pam"
+quickshell.service.pam.subprocess: Relaying pam message: "Fixture password" echo: 0 error: 0 responseRequired: 1
+quickshell.service.pam.subprocess: Got response for request.quickshell.service.pam.subprocess: Authenticated successfully.
+quickshell.service.pam.subprocess: Waiting for parent confirmation...
+quickshell.service.pam.subprocess: Starting pam session for user "attntd" with config "putkin-password" in dir "/tmp/pw-6hhd_wwm/pam"
+quickshell.service.pam.subprocess: Relaying pam message: "Fixture password" echo: 0 error: 0 responseRequired: 1
+quickshell.service.pam.subprocess: Got response for request.quickshell.service.pam.subprocess: Authenticated successfully.
+quickshell.service.pam.subprocess: Waiting for parent confirmation...
+quickshell.service.pam.subprocess: Starting pam session for user "attntd" with config "putkin-password" in dir "/tmp/pw-6hhd_wwm/pam"
+quickshell.service.pam.subprocess: Relaying pam message: "Fixture password" echo: 0 error: 0 responseRequired: 1
+quickshell.service.pam.subprocess: Got response for request.quickshell.service.pam.subprocess: Authenticated successfully.

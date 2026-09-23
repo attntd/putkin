@@ -130,12 +130,13 @@ ShellRoot {
     IpcHandler {
         target: "probe"
         function snapshot(): string {
+            const surface = hostModel.window && hostModel.window.contentItem.children.find(child => child["viewport"] !== undefined);
             return JSON.stringify({
                 screens: Quickshell.screens.map(s => ({name: s.name, width: s.width, height: s.height})),
                 ready: root.fixturesReady && appearanceSettings.ready && hyprland.available, focusedMonitor: hyprland.focusedMonitorName,
                 caffeinate: caffeinateModel.mode,
                 barScreen: barController.screenName, bars: root.barWindows.map(w => ({screen: w.screen ? w.screen.name : "", focus: root.focusName(w)})),
-                loaded: hostModel.loaded, surface: panelCoordinator.activeId, screen: panelCoordinator.screenName,
+                loaded: hostModel.loaded, surface: panelCoordinator.activeId, screen: panelCoordinator.screenName, opacity: surface ? surface.opacity : 0,
                 focus: root.focusName(hostModel.window), created: root.created, destroyed: root.destroyed,
                 editing: appearanceSettings.editing, saving: appearanceSettings.saving, accent: appearanceSettings.effective.accent,
                 secondary: appearanceSettings.effective.accentSecondary, persisted: appearanceSettings.persisted.appearance,
@@ -144,6 +145,8 @@ ShellRoot {
                 volume: audioModel.volume, brightness: brightnessModel.percent, pskCalls: networkBackend.secure.pskCalls,
                 needsPassword: networkModel.needsPassword, keyboardConnected: bluetoothBackend.keyboard.connected,
                 dnd: notificationModel.dnd, notifications: notificationModel.entries.length, notificationFocus: notificationFocus.screenName,
+                notificationIds: notificationModel.entries.map(entry => entry.notificationId),
+                notificationHistory: notificationModel.history.map(entry => entry.summary), notificationActions: notificationBackend.actionEvents,
                 osd: osd.visible, osdScreen: osd.screen ? osd.screen.name : "", osdLoaded: osdHost.loaded,
                 busy: audioModel.busy || brightnessModel.busy || nightModel.busy,
                 brightnessRequests: backlight.requests.length, nightRequests: nightBackend.requests.length,
@@ -177,7 +180,8 @@ ShellRoot {
             const button = root.find(barView, "quickSettingsButton");
             for (const y of [4, barView.height - 5]) {
                 const point = button.mapToItem(barView, 4, y);
-                sample("whole-bar", barView, 0, 0, point.x, point.y);
+                sample("inactive-module", barView, 0, 0, point.x, point.y);
+                samples[samples.length - 1].expected = [Theme.background.r * 255, Theme.background.g * 255, Theme.background.b * 255];
             }
             return JSON.stringify({samples: samples});
         }
@@ -196,6 +200,10 @@ ShellRoot {
         function draft(): void { appearanceSettings.setColor("accent", "#abcdef"); }
         function notify(critical: bool): void {
             notificationBackend.send({summary: "Test Waylanda — długa nazwa powiadomienia", body: "Wyłącznie sztuczna treść. <b>Znaczniki</b> pozostają tekstem. ".repeat(4), urgency: critical ? 2 : 1, expireTimeout: 0});
+        }
+        function notifyAction(summary: string): int {
+            return notificationBackend.send({summary: summary, body: "Pełna treść testowa. ".repeat(200),
+                expireTimeout: 0, resident: true, actions: [["default", "Otwórz"]]});
         }
         function clear(): void { notificationModel.clear(); osd.hide(); }
         function reload(hard: bool): void { Quickshell.reload(hard); }

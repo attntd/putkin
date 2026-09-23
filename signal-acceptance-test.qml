@@ -83,6 +83,9 @@ ShellRoot {
         target: "probe"
         function snapshot(): string {
             const view = controller.window ? controller.window.view : null;
+            let focused = view && view.Window.window ? view.Window.window.activeFocusItem : null;
+            let listFocused = false;
+            for (let item = focused; item; item = item.parent) if (item.objectName === "conversationList") listFocused = true;
             return JSON.stringify({state: service.state, pid: backend.processId, generation: backend.generation, accountId: service.accountId,
                 loaded: controller.loaded, interactive: controller.interactive, selected: adapter.selectedRoute,
                 unread: hub.unreadCount, entries: notifications.entries.length, history: notifications.history,
@@ -101,6 +104,7 @@ ShellRoot {
                 screens: Quickshell.screens.map(s => ({name: s.name, width: s.width, height: s.height})),
                 presentationOpacity: view ? view.parent.opacity : 0, geometry: view ? {width: view.width, height: view.height} : null,
                 focus: view && view.Window.window && view.Window.window.activeFocusItem ? view.Window.window.activeFocusItem.objectName : "",
+                listFocused: listFocused,
                 nextCursor: adapter.nextCursor, delegates: view ? view.historyView.contentItem.children.length : 0,
                 accent: Theme.accent.toString(), secondary: Theme.accentSecondary.toString(), settingsReady: settings.ready,
                 settingsSaving: settings.saving, coverActive: coverItem.Window.active, coverText: coverItem.text,
@@ -147,6 +151,11 @@ ShellRoot {
             return !!controller.window && controller.window.view.grabToImage(result => { root.captured = result.saveToFile(path); });
         }
         function open(index: int, screen: string): bool { return controller.openConversation(adapter.conversations[index].route, screen); }
+        function openList(screen: string): bool { return controller.open(screen); }
+        function notificationOpen(index: int): bool {
+            const row = notifications.history[index];
+            return !!row && notifications.invoke(notifications.historyEntry(row.historyKey), "open");
+        }
         function openRoute(cid: string, screen: string): bool { return controller.openConversation({serviceId: "signal", accountId: service.accountId, conversationId: cid}, screen); }
         function more(): void { adapter.loadMore(); }
         function monitor(name: string): void { monitor.focusedMonitorName = name; }
@@ -170,7 +179,7 @@ ShellRoot {
         function centerWindow(value: bool): void { root.centerShown = value; notifications.centerVisible = value; }
         function clearNotifications(): void { notifications.clearHistory(); }
         function expireToasts(): void { notifications.entries.slice().forEach(row => notifications.expire(row)); }
-        function editorFocus(): void { if (controller.window) controller.window.view.focusInitial(); }
+        function editorFocus(): void { if (controller.window) controller.window.view.focusComposer(); }
         function controlGeometry(name: string): string {
             if (!controller.window) return "null";
             const view = controller.window.view;

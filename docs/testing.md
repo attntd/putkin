@@ -1,5 +1,70 @@
 # Testowanie Putkin
 
+## Pasek, toasty i centrum — 2026-09-23
+
+`tst_notifications.qml` sprawdza pierwszeństwo toastów przed centrum,
+oba Entery przy krótkim/długim tekście i resident, przejścia j/k przez
+znikające karty, q/Escape z zachowaniem historii i d z jej usunięciem.
+Centrum obejmuje wszystkie warianty 0–4 dodatkowych akcji z rozwijaniem
+lub bez: ramka → nagłówek → dolne rzędy → nagłówek → ramka. d jest
+sprawdzane osobno na ramce i każdym przycisku. Test pełnej treści zachowuje
+tytuł >512 i treść >4096 znaków, także po wygaśnięciu, oraz dociera kółkiem
+do ostatniej linii przy dwóch szerokościach. Piksele sprawdzają szarą ramkę
+i jej kolorowanie bez drugiego obrysu.
+
+`tst_signal_notifications.qml` sprawdza otwarcie rozmowy z toasta bez
+historii, powrót do górnego przycisku wyciszenia, d z obu rzędów oraz litery
+q/d w odpowiedzi. `tst_visual_contract.qml` porównuje piksele przycisków
+paska przed i po otwarciu modułu, także po wcześniejszym fokusie klawiatury.
+
+`scripts/test-wayland --nested --smoke` obejmuje rzeczywisty Super+N,
+cztery toasty (w tym kolejkę), j/k/d/q/Enter/Escape, przejście do centrum
+i tekst w osobnej aplikacji po oddaniu fokusu. Porównanie GPU czeka na
+koniec fade i sprawdza neutralne tło otwartego modułu. Wszystko używa
+atrap, prywatnych XDG/D-Bus i prywatnych wyjść. Integracja protokołu
+`scripts/test-notifications-integration` sprawdza także pełne dane oraz
+rozróżnienie fokusu toastów i otwarcia centrum przez IPC.
+
+## Sterowanie Message Hubem — 2026-09-23
+
+`tst_messages.qml` obejmuje początkową listę, góra/dół/j/k, Enter/l/prawo,
+Enter numeryczny, wpisywanie liter, Escape z edytora i historii, powrót
+do wybranego wiersza, odtworzone okno i opóźniony szkic. Sprawdza też
+szerokość edytora i myszowy/klawiaturowy powód fokusu. Regresja obejmuje
+interakcje, powiadomienia, receipts, media, grupy i retencję.
+
+`scripts/test-messages-input` kompiluje mały klient Qt, który wysyła
+QWheelEvent ScrollBegin/Update/End do rzeczywistych list Message Huba.
+Dla obu kierunków i typów urządzenia Mouse/TouchPad mierzy ruch po końcu
+gestu i spadek prędkości; sprawdza pauzę, przerwanie nowym gestem/klawiszem,
+kółko myszy i granice. Korzysta z atrap, offscreen oraz prywatnych XDG/D-Bus.
+Nie symuluje tego przez bezpośrednie wywołanie `flick()`.
+
+`scripts/test-signal-messages` potwierdza fokus listy przy zwykłym otwarciu
+i edytora dla wskazanej rozmowy, także po zniszczeniu/utworzeniu okna.
+`scripts/test-wayland --nested --signal` sprawdza te przejścia przez wtype
+i rzeczywistą akcję powiadomienia w prywatnym kompozytorze. Oddzielny
+`scripts/test-signal-media-input` sprawdza prawdziwy preedit/commit IME.
+
+## Komendy modułów paska — 2026-09-23
+
+`python3 scripts/test-icons --file tst_keyboard.qml` obejmuje sześć paneli
+w trzech wejściach launchera: dwukropek, chip Komenda i dwukropek ze spacją.
+Rzeczywiste zdarzenia Qt sprawdzają etykietę, kategorię i ikonę, pojedyncze
+otwarcie Enterem, fokus kontrolki oraz routing na dwie atrapy monitorów.
+Otwarcie nie przełącza radia ani profilu zasilania i nie wykonuje akcji sesji.
+Osobne przypadki sprawdzają wcześniejsze katalogi, zachowanie własnych
+aliasów i skrótów, konflikty nazw bez rozróżniania wielkości liter, brak
+zapisu przy odczycie, trwałe usunięcie komendy oraz odrzucenie niepełnej listy.
+Całość korzysta z atrap oraz prywatnych XDG i D-Bus, offscreen/software.
+
+Ten sam zestaw sprawdza Wiadomości przez `messages`, `wiadomosci`
+i „Wiadomości”, priorytet dokładnego aliasu oraz wyłączenie wyszukiwania
+po nazwie po usunięciu komendy. `scripts/test-keyboard-wayland` wpisuje
+te zapytania przez wtype, także z polskimi znakami, sprawdza widoczny
+wiersz po fade i jedno natywne okno Wiadomości po Enter. Następnie
+otwiera wszystkie sześć paneli i sprawdza monitor oraz fokus kontrolki.
+
 ## Instalator, Signal i dotfiles — 2026-09-22
 
 ```sh
@@ -244,12 +309,23 @@ rozmową PAM, odrzucenie starego wyniku, wstrzymanie uwierzytelniania przed
 snem, dosłowne hjkl, Enter/Escape, fokus tylko z klawiatury, reset błędu
 po 2 s, dim/restore tego samego urządzenia, brak backlight i oba tryby
 Caffeinate. Wszystkie zdarzenia i urządzenia są atrapami.
+Korekta 2026-09-23 dodaje pozycję glifu i 80 znaków przy dwóch szerokościach,
+fade wejścia/wyjścia i nowej powierzchni, odwołanie wyjścia przez sen lub
+ponowną blokadę oraz pomijanie niedostępnego automatycznego snu.
+Następna korekta sprawdza natychmiastową nieprzezroczystość bez klatki
+pulpitu i piksele pustego pola przez kilka okresów migania: brak kursora
+przy zachowanym fokusie, wpisywaniu `hjkl` i wysłaniu Enterem.
 
 `--native-session` uruchamia prawdziwe WlSessionLock, PamContext i IdleMonitor
 w prywatnym Hyprlandzie. bwrap izoluje PID, oba D-Bus i urządzenia, maskuje
 `/etc/pam.d` oraz `/usr/lib/pam.d`. Kompilowana `session_pam_fixture.c`
 odmawia startu poza tą izolacją. Znane testowe hasło i sterowane wyniki
-odcisku nigdy nie używają konta, PAM ani skanera hosta.
+odcisku nigdy nie używają stosu PAM ani skanera hosta. Odcisk używa teraz
+produkcyjnego `putkin-fingerprint` i rzeczywistego `pam_fprintd.so`,
+połączonego wyłącznie z `tests/fprint_dbus_fake.py` na prywatnym D-Bus.
+Test czeka ponad 30 s przed sukcesem, sprawdza reset po niedopasowaniu,
+limit trzech błędnych prób i anulowanie skanowania po wpisaniu hasła.
+Moduł C jest wyłącznie atrapą hasła.
 
 Test wysyła rzeczywiste klawisze przez wtype, sprawdza odrzucenie złego
 hasła, sukces obu rozmów PAM, reset koloru odcisku, hotplug ekranów,
@@ -258,6 +334,15 @@ progi 2/3/4/8 s sprawdzają prawdziwe zdarzenia idle, dim na atrapie jasności,
 DPMS potwierdzone stanem monitorów kompozytora, blokadę oraz wywołanie snu
 wyłącznie w atrapie logind. Inhibitory powstrzymują właściwe progi.
 Na końcu zakończenie klienta musi pozostawić kompozytor zablokowany.
+Próbki klatek potwierdzają fade na wszystkich ekranach oraz secure podczas
+wyjścia. Bezstratne nagranie wf-recorder obejmuje również klatki sprzed
+utworzenia pierwszej powierzchni. Cztery różnokolorowe obszary atrapowego
+pulpitu pozwalają sprawdzić piksele wejścia/wyjścia i wykryć jednobarwne
+mignięcie niezależnie od wartości opacity w QML. Test potwierdza zwolnienie
+buforów po odblokowaniu, natychmiastową blokadę bez obrazu pulpitu i pełną
+nieprzezroczystość nowego monitora. Wymaga `wf-recorder` i `ffmpeg`.
+Osobny przebieg progu idle z `CanSuspendThenHibernate=na`
+potwierdza brak żądania snu i błędu sesji także po odblokowaniu.
 Zrzuty, raport i kontrola usunięcia procesów są zapisywane w katalogu wyniku.
 
 Dawne testy Hyprlocka i Hypridle oraz opcje `--lock-wallpaper`/
@@ -348,7 +433,7 @@ palety na żywo i kontrast ramki przy obu ciemnych akcentach.
 Wariant 520×32 sprawdza równy udział obu osi; zmiana góra–dół nie może
 zaniknąć na szerokiej grupie. Osie są normalizowane do rozmiaru grupy.
 `tst_visual_contract.qml` klika Wi-Fi, Bluetooth i baterię, sprawdza
-podświetlenie, jasne piksele ikony w kolorze zegara, brak fokusu myszy
+niezmienne tło, jasne piksele ikony w kolorze zegara, brak fokusu myszy
 i zamknięcie; obejmuje również audio, powiadomienia i Quick Menu.
 `tst_launcher.qml` sprawdza rozmiar i położenie pojedynczej ramki pola,
 jej piksele oraz przejście mysz → wpisywanie `hjkl`.
@@ -358,10 +443,9 @@ Piksele zagnieżdżonych kontrolek pobierane są z całej sceny przez
 `scripts/test-wayland --nested` zapisuje także widoki aktywnych modułów
 Wi-Fi, Bluetooth i baterii. Pełna próba używa GPU, prywatnych wyjść,
 atrap usług i istniejącej macierzy rozdzielczości/skali.
-Także wariant `--smoke` porównuje osiem rzeczywistych próbek RGB z
-przekątną całej grupy: cztery narożniki panelu, trzy kafelki i aktywny
-moduł przy prawym brzegu paska. Dodatkowa, dziewiąta próbka tego modułu
-przy dolnej krawędzi sprawdza udział osi pionowej. ImageMagick odczytuje
+Wariant `--smoke` porównuje siedem rzeczywistych próbek RGB z przekątną
+całego panelu: cztery narożniki i trzy kafelki. Dwie próbki tła modułu
+przy prawym brzegu paska potwierdzają jego neutralny kolor po otwarciu. ImageMagick odczytuje
 PNG bez jego zmiany. Pełny Wayland zapisuje także fokus wiersza jasności
 i temperatury; `tst_quick_menu.qml` klika, nawiguje klawiaturą i sprawdza
 jedną ramkę na pełną szerokość każdego z tych wierszy.
@@ -434,6 +518,9 @@ Ustawienia. `wtype` naciska skróty w prywatnym kompozytorze; test potwierdza
 zmianę przypisania, usunięcie starego skrótu, komendy, akcje workspace/okna,
 konflikt z obcym skrótem, zapis kolorów i oba rodzaje reloadu. Kontroluje
 fokus, dziesięć cykli otwierania/zamykania, logi i zwolnienie procesów.
+Ctrl+Shift+Super+Enter otwiera Wiadomości, ponownie skupia to samo okno i działa
+po reloadach Hyprlanda oraz Quickshella. Sam Shift+Enter nie otwiera huba;
+Super+H nadal skupia okno po lewej.
 Sprzęt i sesja mają jawne atrapy. Bubblewrap izoluje XDG, D-Bus, PID-y,
 sieć i `/dev`, udostępniając socket Waylanda rodzica oraz render node GPU.
 Tylko konfiguracja testowa włącza `input.resolve_binds_by_sym`, ponieważ

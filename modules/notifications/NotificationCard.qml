@@ -23,8 +23,12 @@ UI.FadeScope {
         Qt.callLater(() => { if (root.replyEditor) root.replyEditor.focusEditor(reason); });
     }
     property bool navigating: false
+    property bool toast: false
     property bool scrollable: true
     property bool expanded: false
+    // Expanded history can exceed the GPU texture size. The enclosing panel
+    // already composites its visible viewport for the shared fade.
+    layer.enabled: visible && (toast || !expanded)
     readonly property bool textClipped: summary.truncated || body.truncated || (scrollable
         && content.y + (body.visible ? body.y + body.height : summary.y + summary.height) > flick.height + 1)
     readonly property bool expandable: expanded || textClipped
@@ -41,13 +45,23 @@ UI.FadeScope {
     readonly property alias expandControl: expand
     readonly property var actionItems: actions
     readonly property alias viewport: flick
+    readonly property Item firstHeaderControl: mute.visible ? mute : expand.visible ? expand : close
+    property Item lastHeaderControl: null
+    readonly property Item returnHeaderControl: lastHeaderControl && lastHeaderControl.visible ? lastHeaderControl : firstHeaderControl
+    readonly property Item firstActionControl: actionAt(0) || (replyEditor ? replyEditor.editor : null)
     implicitHeight: Math.min(scrollable ? (replyExpanded ? 420 : Metrics.toastMaxHeight) : Infinity, header.height + content.implicitHeight + Metrics.space12 * 3 + Metrics.space8)
     signal dismissRequested()
+    signal archiveRequested()
     signal actionRequested(string identifier)
     signal controlFocused(Item control)
     function actionAt(index: int): Item { return index >= 0 && index < actions.count ? actions.itemAt(index) : null; }
-    function activate(): void {
-        if (!expanded && textClipped) { expanded = true; return; }
+    function actionBelow(index: int): Item {
+        const nextRow = (Math.floor(index / 2) + 1) * 2;
+        return nextRow < actions.count ? actionAt(Math.min(index + 2, actions.count - 1))
+            : replyEditor ? replyEditor.editor : null;
+    }
+    function activate(expandFirst = true): void {
+        if (expandFirst && !expanded && textClipped) { expanded = true; return; }
         if (defaultAction || (entry && entry.applicationId)) actionRequested(defaultAction);
     }
     function activateFromPointer(): void {
@@ -62,6 +76,7 @@ UI.FadeScope {
         Qt.callLater(() => root.reveal(selection));
     }
     function reveal(item: Item): void {
+        if (item === mute || item === expand || item === close) lastHeaderControl = item;
         controlFocused(item);
         if (!scrollable || item === selection || item === close || item === expand || item === mute) return;
         const point = item.mapToItem(flick.contentItem, 0, 0);
@@ -71,7 +86,13 @@ UI.FadeScope {
             flick.contentY = Math.min(Math.max(0, flick.contentHeight - flick.height), point.y + item.height + margin - flick.height);
     }
     Keys.onPressed: event => {
-        if (event.key === Qt.Key_I && event.modifiers === Qt.NoModifier && root.expandable) {
+        if (event.key === Qt.Key_D && event.modifiers === Qt.NoModifier && !DismissKeys.textFocused(root)) {
+            if (!event.isAutoRepeat) root.dismissRequested();
+            event.accepted = true;
+        } else if (root.toast && DismissKeys.matches(event, root) && !DismissKeys.textFocused(root)) {
+            if (!event.isAutoRepeat) root.archiveRequested();
+            event.accepted = true;
+        } else if (event.key === Qt.Key_I && event.modifiers === Qt.NoModifier && root.expandable) {
             if (!event.isAutoRepeat) root.expanded = true;
             event.accepted = true;
         } else if (root.expanded && DismissKeys.matches(event, root)) {
@@ -89,20 +110,19 @@ UI.FadeScope {
         focusPolicy: root.navigating ? Qt.StrongFocus : Qt.NoFocus
         upTarget: root.previousControl
         downTarget: root.nextControl
-        rightTarget: mute.visible ? mute : expand.visible ? expand : close
+        rightTarget: root.firstHeaderControl
         KeyNavigation.tab: rightTarget
         KeyNavigation.backtab: upTarget
         hasDetails: root.expandable
         onDetailsRequested: root.expanded = true
-        onClicked: root.activate()
+        onClicked: root.activate(!root.toast || focusReason === Qt.MouseFocusReason)
         onEnsureVisible: item => root.reveal(item)
         contentItem: Item {}
         background: UI.AccentRectangle {
             color: selection.down ? Theme.surfaceHover : Theme.backgroundStrong
             border.width: Metrics.borderWidth
-            border.color: Theme.accentBorder
-            accentOutline: true
-            UI.FocusIndicator { control: selection; anchors.margins: Metrics.focusOffset }
+            border.color: Theme.border
+            UI.FocusIndicator { control: selection }
         }
     }
     Row {
@@ -149,11 +169,11 @@ UI.FadeScope {
             Accessible.name: text
             contentItem: UI.Glyph { section: "notification"; symbol: mute.muted ? "notifications_off" : "notifications"; color: mute.foreground }
             focusPolicy: root.navigating ? Qt.StrongFocus : Qt.NoFocus
-            rightTarget: close
-            upTarget: root.previousControl
-            downTarget: root.actionAt(0) || root.nextControl
-            KeyNavigation.tab: close
-            KeyNavigation.backtab: root.previousControl
+            leftTarget: selection
+            rightTarget: expand.visible ? expand : close
+            downTarget: root.firstActionControl
+            KeyNavigation.tab: rightTarget
+            KeyNavigation.backtab: selection
             onClicked: root.actionRequested("mute")
             onEnsureVisible: item => root.reveal(item)
         }
@@ -172,17 +192,15 @@ UI.FadeScope {
                 UI.FocusIndicator { control: expand }
             }
             focusPolicy: root.navigating ? Qt.StrongFocus : Qt.NoFocus
-            leftTarget: selection
+            leftTarget: mute.visible ? mute : selection
             rightTarget: close
-            upTarget: root.previousControl
-            downTarget: root.nextControl
+            downTarget: root.firstActionControl
             KeyNavigation.tab: close
-            KeyNavigation.backtab: selection
+            KeyNavigation.backtab: leftTarget
             onClicked: {
                 root.expanded = !root.expanded;
                 flick.contentY = 0;
-                selection.focusReason = focusReason;
-                if (root.navigating) selection.forceActiveFocus(focusReason);
+                Qt.callLater(() => root.reveal(expand));
             }
             onEnsureVisible: item => root.reveal(item)
         }
@@ -202,9 +220,8 @@ UI.FadeScope {
             Accessible.name: tooltip
             focusPolicy: root.navigating ? Qt.StrongFocus : Qt.NoFocus
             leftTarget: expand.visible ? expand : mute.visible ? mute : selection
-            upTarget: root.previousControl
-            downTarget: root.actionAt(0) || root.nextControl
-            KeyNavigation.tab: downTarget
+            downTarget: root.firstActionControl
+            KeyNavigation.tab: downTarget || root.nextControl || selection
             KeyNavigation.backtab: leftTarget
             onClicked: root.dismissRequested()
             onEnsureVisible: item => root.reveal(item)
@@ -257,7 +274,7 @@ UI.FadeScope {
                         textFormat: Text.PlainText
                         font.bold: true
                         maximumLineCount: root.expanded ? 2147483647 : 3
-                        elide: Text.ElideRight
+                        elide: root.expanded ? Text.ElideNone : Text.ElideRight
                         wrapMode: Text.WrapAnywhere
                     }
                     UI.PanelText {
@@ -269,7 +286,7 @@ UI.FadeScope {
                         textFormat: Text.PlainText
                         color: Theme.textMuted
                         maximumLineCount: root.expanded ? 2147483647 : 6
-                        elide: Text.ElideRight
+                        elide: root.expanded ? Text.ElideNone : Text.ElideRight
                         wrapMode: Text.WrapAnywhere
                     }
                     Image {
@@ -310,10 +327,10 @@ UI.FadeScope {
                                 horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter
                                 elide: Text.ElideRight
                             }
-                            leftTarget: index % 2 ? root.actionAt(index - 1) : null
+                            leftTarget: index % 2 ? root.actionAt(index - 1) : selection
                             rightTarget: index % 2 === 0 ? root.actionAt(index + 1) : null
-                            upTarget: index > 1 ? root.actionAt(index - 2) : selection
-                            downTarget: root.actionAt(index + 2) || root.nextControl
+                            upTarget: index > 1 ? root.actionAt(index - 2) : root.returnHeaderControl
+                            downTarget: root.actionBelow(index)
                             KeyNavigation.tab: root.actionAt(index + 1) || (root.replyEditor ? root.replyEditor.editor : root.nextControl) || close
                             KeyNavigation.backtab: index > 0 ? root.actionAt(index - 1) : close
                             onClicked: root.actionRequested(modelData.identifier)

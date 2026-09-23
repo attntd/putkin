@@ -61,7 +61,7 @@ ShellRoot {
     CaffeinateService { id: caffeinateService; backend: caffeinateBackend }
     CaffeinateIpc { service: caffeinateService }
     PamBackend { id: authentication; fingerprintAvailable: sessionBackend.fingerprintAvailable }
-    LockHost { id: lockHost; service: lockService; state: lockState; wallpaper: wallpaperService.source }
+    LockHost { id: lockHost; service: lockService; state: lockState; screens: Quickshell.screens; wallpaper: wallpaperService.source }
     LockService { id: lockService; backend: lockHost; authentication: authentication; hold: sessionBackend.unlockHeld }
     AuthenticationService { id: authorization; blocked: lockService.locked }
     AuthenticationBackend { service: authorization }

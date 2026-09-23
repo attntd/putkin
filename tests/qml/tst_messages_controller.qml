@@ -66,6 +66,7 @@ Item {
         function test_lazy_monitor_focus_same_window_hotplug_and_lock() {
             verify(!controller.loaded);
             verify(controller.open("")); compare(controller.screen.name, "RIGHT");
+            verify(!controller.focusConversation);
             const foreign = {title: "Wiadomości", lastIpcObject: {pid: 99}};
             monitor.windows = [foreign]; compare(monitor.focused, null);
             const own = {title: "Wiadomości", lastIpcObject: {pid: 42}};
@@ -73,11 +74,13 @@ Item {
             verify(controller.open("LEFT")); compare(controller.screen.name, "RIGHT"); // Existing window keeps its monitor.
             const item = controller.window;
             verify(controller.openConversation(adapter.address("chat-a")));
+            verify(controller.focusConversation);
             tryVerify(() => adapter.selectedRoute !== null);
             compare(controller.window, item);
             controller.close(); verify(!controller.interactive); verify(controller.loaded);
             // Reopening during fade cancels destruction.
             verify(controller.open("RIGHT")); wait(300); verify(controller.loaded); compare(controller.window, item);
+            verify(!controller.focusConversation);
             scene.screens = [scene.screens[0]]; compare(controller.screen.name, "LEFT");
             controller.blocked = true; verify(!controller.open("")); verify(!controller.openConversation(adapter.address("chat-a")));
             tryCompare(controller, "loaded", false);

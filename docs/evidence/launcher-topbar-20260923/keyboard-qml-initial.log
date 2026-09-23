@@ -1,0 +1,2 @@
+dbus-daemon[4]: Failed to start message bus: Failed to bind socket "/tmp/dbus-F90XFYiEen": Operation not permitted
+dbus-run-session: EOF reading address from bus daemon

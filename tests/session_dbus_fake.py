@@ -105,7 +105,7 @@ class Fixture(dbus.service.Object):
 
     @dbus.service.method(MANAGER, in_signature="", out_signature="s")
     def CanSuspendThenHibernate(self):
-        return self.can["suspend"]
+        return self.can.get("idleSuspend", self.can["suspend"])
 
     @dbus.service.method(MANAGER, in_signature="b", out_signature="", async_callbacks=("reply", "error"))
     def Reboot(self, interactive, reply, error):

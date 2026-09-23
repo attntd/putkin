@@ -110,9 +110,10 @@ Column {
             nextControl: root.cardAt(index + 1) ? root.cardAt(index + 1).selectionControl : null
             onControlFocused: item => root.reveal(item)
             onDismissRequested: {
-                const reason = closeControl.focusReason;
+                const reason = root.lastFocusReason;
+                const next = nextControl || previousControl || root.headerControl;
                 root.service.dismissHistory(key);
-                root.focusInitial(reason);
+                next.forceActiveFocus(reason);
             }
             onActionRequested: identifier => {
                 const value = entry;

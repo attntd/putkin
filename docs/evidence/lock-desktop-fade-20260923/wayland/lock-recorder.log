@@ -1,0 +1,7 @@
+selected region 2000,0 1920x1080
+Framerate: 60
+Using video filter: fps=60
+Output #0, matroska, to '/tmp/pw-6hhd_wwm/evidence/desktop-fade.mkv':
+  Stream #0:0: Video: ffv1, bgr0(pc), 1920x1080 [SAR 1:1 DAR 16:9], q=2-31, 200 kb/s
+[Source @ 0x7f9bc4009c40] Changing video frame properties on the fly is not supported by all filters.
+[Source @ 0x7f9bc4009c40] filter context - w: 1920 h: 1080 fmt: 121 csp: gbr range: unknown alpha: unspecified, incoming frame - w: 1920 h: 1080 fmt: 121 csp: unknown range: unknown alpha: unspecified pts_time: 0

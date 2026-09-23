@@ -39,8 +39,8 @@ QtObject {
         if (archived && (arrival ? archived.messageTimestamp > timestamp : archived.messageReference.messageId !== ref.messageId)) return;
         if (!arrival && !archived) return;
         const previous = entries.find(row => row.messageReference && Route.equal(row.messageReference, ref));
-        const safeTitle = locked ? "Signal" : title.slice(0, 512);
-        const safeBody = locked ? qsTr("Nowa wiadomość") : body.slice(0, 4096);
+        const safeTitle = locked ? "Signal" : title;
+        const safeBody = locked ? qsTr("Nowa wiadomość") : body;
         const safeImage = !locked && typeof image === "string" ? image : "";
         if (previous) {
             previous.notification.messageReference = Object.assign(Route.copy(ref), {messageId: ref.messageId});

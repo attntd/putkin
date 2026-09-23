@@ -23,7 +23,7 @@ Item {
         if (event.key !== Qt.Key_Return && event.key !== Qt.Key_Enter) return;
         if (composing || (event.modifiers & Qt.ShiftModifier)) return;
         event.accepted = true;
-        if (!event.isAutoRepeat && event.modifiers === Qt.NoModifier && adapter) adapter.sendComposer();
+        if (!event.isAutoRepeat && (event.modifiers === Qt.NoModifier || event.modifiers === Qt.KeypadModifier) && adapter) adapter.sendComposer();
     }
     Row {
         id: modeStrip
@@ -85,7 +85,7 @@ Item {
         }
     }
     Controls.ScrollView {
-        anchors { left: attachButton.right; right: sendButton.left; top: attachmentStrip.bottom; bottom: parent.bottom; leftMargin: Metrics.space8; rightMargin: Metrics.space8 }
+        anchors { left: attachButton.right; right: parent.right; top: attachmentStrip.bottom; bottom: parent.bottom; leftMargin: Metrics.space8 }
         clip: true
         Controls.ScrollBar.horizontal.policy: Controls.ScrollBar.AlwaysOff
         Controls.TextArea {
@@ -109,7 +109,7 @@ Item {
             Accessible.name: qsTr("Wiadomość")
             Keys.forwardTo: [input]
             Keys.onPressed: event => {
-                if (event.key === Qt.Key_Escape && root.editing) { event.accepted = true; root.adapter.cancelEdit(); return; }
+                if (event.key === Qt.Key_Escape && root.editing) { root.adapter.cancelEdit(); return; }
                 if (event.key === Qt.Key_V && (event.modifiers & Qt.ControlModifier) && ((event.modifiers & Qt.ShiftModifier) || !editor.canPaste) && root.adapter) {
                     event.accepted = true; root.adapter.pasteImage();
                 } else root.handleReturn(event, editor.inputMethodComposing || editor.preeditText.length > 0);
@@ -127,19 +127,6 @@ Item {
         }
     }
     FontMetrics { id: fontMetrics; font: editor.font }
-    UI.NavigationButton {
-        id: sendButton
-        objectName: "sendMessage"
-        anchors { right: parent.right; bottom: parent.bottom }
-        width: Metrics.controlHeight
-        height: Metrics.controlHeight
-        text: qsTr("Wyślij")
-        enabled: root.adapter !== null && root.adapter.canSend && (root.value.trim().length > 0 || (!root.editing && (root.adapter.draftAttachments || []).length > 0))
-        highlighted: true
-        leftTarget: editor
-        contentItem: UI.Glyph { symbol: "send"; color: sendButton.foreground }
-        onClicked: root.adapter.sendComposer()
-    }
     UI.NavigationButton {
         id: attachButton
         objectName: "attachFiles"

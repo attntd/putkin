@@ -7,6 +7,7 @@ QtObject {
     property bool hold: false
     property int generation: 0
     property bool authenticating: false
+    property bool unlocking: false
     property string fingerprintState: "idle"
     property bool passwordFailed: false
     property string lastError: ""
@@ -17,17 +18,25 @@ QtObject {
     signal unlocked()
 
     function request(): bool {
-        if (locked) return true;
+        if (locked) {
+            // A fresh lock request revokes an authenticated exit still fading.
+            if (unlocking) { unlocking = false; fingerprintState = "idle"; sync(); }
+            return true;
+        }
         lastError = "";
         fingerprintState = "idle";
         passwordFailed = false;
         return backend.acquire();
     }
     function sync(): void {
-        if (locked && secure && !hold && !authenticating) {
+        if (unlocking && (!locked || !secure || hold)) {
+            unlocking = false;
+            if (hold) fingerprintState = "idle";
+        }
+        if (locked && secure && !hold && !unlocking && !authenticating) {
             authenticating = true;
             authentication.begin(++generation);
-        } else if ((!locked || hold) && authenticating) {
+        } else if ((!locked || !secure || hold || unlocking) && authenticating) {
             authenticating = false;
             ++generation;
             authentication.stop();
@@ -47,8 +56,14 @@ QtObject {
         ++generation;
         authentication.stop();
         clearPassword();
-        // Authentication is the only production path that releases the lock.
+        unlocking = true;
+    }
+    function finishUnlock(): void {
+        // Every surface has faded. Only a still-valid PAM success may release
+        // the compositor lock; sleep or a new lock request revokes that success.
+        if (!unlocking || !locked || !secure || hold) return;
         backend.release();
+        unlocking = false;
         unlocked();
     }
     function rejected(epoch: int, method: string): void {

@@ -1,0 +1,13 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::SignalRetention::initTestCase()
+PASS   : qmltestrunner::SignalRetention::test_expiration_setting_uses_explicit_duration()
+PASS   : qmltestrunner::SignalRetention::test_local_and_everyone_buttons_have_distinct_scope_and_keyboard()
+PASS   : qmltestrunner::SignalRetention::test_redaction_clears_busy_editor_quote_and_late_page()
+QINFO  : qmltestrunner::SignalRetention::test_redaction_closes_media_preview_and_drops_image_reference() qt.multimedia.ffmpeg: Using Qt multimedia with FFmpeg version n9.0.1 GPL version 3 or later
+PASS   : qmltestrunner::SignalRetention::test_redaction_closes_media_preview_and_drops_image_reference()
+PASS   : qmltestrunner::SignalRetention::test_redaction_removes_quote_without_overwriting_draft()
+PASS   : qmltestrunner::SignalRetention::test_remote_button_and_shared_accent_preview()
+PASS   : qmltestrunner::SignalRetention::cleanupTestCase()
+Totals: 8 passed, 0 failed, 0 skipped, 0 blacklisted, 3014ms
+********* Finished testing of qmltestrunner *********

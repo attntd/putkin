@@ -1,0 +1,48 @@
+{
+  "result": "PASS",
+  "keyboard_path": "/home/attntd/.config/putkin/keyboard.json",
+  "previous_file": "missing",
+  "changed_action": "messages",
+  "shortcut": "SHIFT + Return",
+  "status_before": {
+    "ready": true,
+    "busy": false,
+    "applied": true,
+    "error": "",
+    "shortcuts": 8,
+    "commands": 12
+  },
+  "status_after": {
+    "ready": true,
+    "busy": false,
+    "applied": true,
+    "error": "",
+    "shortcuts": 9,
+    "commands": 12
+  },
+  "binding": [
+    {
+      "locked": false,
+      "mouse": false,
+      "release": false,
+      "repeat": false,
+      "longPress": false,
+      "non_consuming": false,
+      "auto_consuming": false,
+      "has_description": true,
+      "modmask": 1,
+      "submap": "",
+      "submap_universal": "false",
+      "key": "Return",
+      "keycode": 0,
+      "catch_all": false,
+      "description": "Putkin:messages",
+      "allow_input_capture": false,
+      "dispatcher": "__lua",
+      "arg": "88"
+    }
+  ],
+  "other_bindings_unchanged": true,
+  "shell_restarted": false,
+  "keyboard_sha256": "b2c81ef41830b8a1d24623b395d2cfa46495794464cbb5a8fa54699f65b72463"
+}
