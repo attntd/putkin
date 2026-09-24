@@ -2,6 +2,12 @@
 
 ## Pasek i karty powiadomień — 2026-09-23
 
+Ponowna weryfikacja korekty dolnych akcji: Qt **6.11.2** i Quickshell
+**0.3.1**. Dokumentacja Repeatera poniżej opisuje różnicę między `count`
+i gotowymi delegatami oraz sygnały `itemAdded`/`itemRemoved`. Sonda testowa
+korzysta z oficjalnego [Variants.instances 0.3.1](https://quickshell.org/docs/v0.3.1/types/Quickshell/Variants/)
+i istniejącego okna powiadomień, bez produkcyjnego interfejsu diagnostycznego.
+
 Potwierdzono lokalnie Qt **6.11.2** (`qmake6 -query QT_VERSION`) i Quickshell
 **0.3.1** (`qs --version`). Sprawdzono oficjalne API:
 [Keys i propagacja zdarzeń](https://doc.qt.io/qt-6.11/qml-qtquick-keys.html),

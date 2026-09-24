@@ -1,5 +1,14 @@
 # Roadmapa Putkin
 
+## Wybrana korekta — dolne akcje Signala, 2026-09-23
+
+**Wdrożone lokalnie: `20260923-161925-3ad24f3592b5`.**
+
+Naprawa nawigacji do Otwórz/Odpowiedz po asynchronicznym utworzeniu
+powiadomienia oraz przezroczysty dzwonek wyciszenia, tak jak ×.
+Zakres obejmuje tę korektę, regresje klawiatury i aktywację po testach.
+[Wyniki](docs/status.md#dolne-akcje-signala--2026-09-23).
+
 ## Wybrana korekta — pasek i sterowanie powiadomieniami, 2026-09-23
 
 **Wdrożone lokalnie: `20260923-155404-94077eef8c74`.**

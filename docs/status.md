@@ -1,5 +1,43 @@
 # Status implementacji
 
+## Dolne akcje Signala — 2026-09-23
+
+**Wdrożone lokalnie: `20260923-161925-3ad24f3592b5`.**
+
+Odtworzono zgłoszenie przy asynchronicznym tworzeniu kart, którego
+poprzedni test podglądu nie obejmował. Liczba elementów Repeatera była
+znana, zanim powstały przyciski; samo `itemAt()` nie odświeżało celów
+fokusu. W natywnym toastcie również lista kart pozostawała pusta mimo
+widocznej karty. `NotificationStack` reaguje teraz na tworzenie/usuwanie
+kart, a `NotificationCard` utrzymuje aktualną listę dolnych przycisków
+przez sygnały ich cyklu życia. Usunięte przyciski nie pozostają celami.
+
+Dzwonek wyciszenia ma takie samo przezroczyste tło i brak zwykłej ramki
+jak ×; wspólny FocusIndicator nadal zaznacza obsługę klawiaturą.
+
+| Sprawdzenie | Rzeczywisty wynik |
+| --- | --- |
+| Odtworzenie przed naprawą | **FAIL zgodny ze zgłoszeniem**, pięć asynchronicznych wariantów toasta/centrum nie przechodziło przez j do Otwórz; [log](evidence/signal-action-focus-20260923/actions-before-qml.log). Wcześniejszy test natywny wykazał widoczny stos bez celów nawigacji: [stan](evidence/signal-action-focus-20260923/wayland-state/notification-last.json). |
+| QtTest Signal | **PASS**, 26 wyników, zero błędów/pominięć. Dziewięć wariantów obejmuje oba nagłówkowe przyciski, tworzenie synchroniczne/asynchroniczne, odświeżenie rozmowy, archiwalną kartę, oba dolne przyciski, powrót i d; [log](evidence/signal-action-focus-20260923/signal-qml.log). |
+| QtTest wspólnych powiadomień | **PASS**, 106 wyników, zero błędów/pominięć ani diagnostyki QML; [log](evidence/signal-action-focus-20260923/notifications-qml.log). |
+| `scripts/check` | **PASS**, 277 QML, zero błędów; [log](evidence/signal-action-focus-20260923/check.log). |
+| Prywatny Wayland | **PASS**, 8 grup, w tym rzeczywiste hjkl w obu rzędach toasta i archiwalnej karty, Enter na Odpowiedz, powrót klawiatury do aplikacji, hotplug i reload; [raport](evidence/signal-action-focus-20260923/wayland-final/signal-report.json), [cleanup](evidence/signal-action-focus-20260923/wayland-final/cleanup.json). |
+| Instalacja i aktywna sesja | **PASS**, dwa zmienione pliki runtime, walidacja paczki 171 QML. Dwa odczyty w odstępie 10 s: jedna stabilna instancja, jej właściciel powiadomień, Signal `ready`, gotowe idle, brak błędów i ostrzeżeń. 362 pliki zgodne ze źródłami i manifestem, settings/keyboard bez zmian; [zakres](evidence/signal-action-focus-20260923/activation-before.json), [log](evidence/signal-action-focus-20260923/install-activation.log), [odbiór](evidence/signal-action-focus-20260923/live-activation.json). |
+
+Obejrzano [toast z fokusem na Otwórz](evidence/signal-action-focus-20260923/wayland-final/notification-action-navigation.png)
+i [kartę centrum](evidence/signal-action-focus-20260923/wayland-final/notification-center-navigation.png):
+dzwonek nie ma własnego tła ani zwykłej ramki. Początkowe przebiegi
+zachowano w dowodach. Pierwsza próba odświeżenia wyciszała rozmowę,
+co prawidłowo usuwało toast; test zmienia teraz tytuł. Test natywny
+czeka na odzyskanie aktywności okna przed kolejnym wpisywaniem tekstu.
+
+Testy używają atrap i prywatnych XDG/D-Bus; natywny odbiór dodatkowo
+prywatnych przestrzeni PID/sieci/montowań i wyjść HEADLESS.
+Nie wykonywano interakcji z rzeczywistym kontem ani pełnego `scripts/test`.
+Aktywacja użyła `scripts/install --shell-only --offline --activate --no-prune`;
+poprzednie wydanie `20260923-155404-94077eef8c74` zachowano. Kontrola hosta
+obejmowała odczyt stanu usług, bez wysyłania wiadomości i powiadomień.
+
 ## Pasek, toasty i centrum — 2026-09-23
 
 **Wdrożone lokalnie: `20260923-155404-94077eef8c74`.**

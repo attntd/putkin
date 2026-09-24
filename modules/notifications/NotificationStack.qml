@@ -110,6 +110,8 @@ UI.FadeScope {
         Repeater {
             id: cards
             model: list
+            onItemAdded: root.rebuildNavigation()
+            onItemRemoved: Qt.callLater(root.rebuildNavigation)
             delegate: NotificationCard {
                 id: card
                 required property int index

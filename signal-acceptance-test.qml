@@ -171,6 +171,36 @@ ShellRoot {
         function replyDraft(text: string): void { if (root.selectedReply) root.selectedReply.edit(text); }
         function replySend(): bool { return !!root.selectedReply && root.selectedReply.send(); }
         function replyClose(): void { notificationFocus.close(); }
+        function toastFocus(): string { return notificationFocus.enter(); }
+        function notificationTimeout(value: int): void { notifications.defaultTimeout = value; }
+        function centerFocus(): void { centerView.focusInitial(); }
+        function notificationSnapshot(): string {
+            function findStack(item) {
+                if (!item) return null;
+                if (typeof item.cardAt === "function") return item;
+                for (const child of item.children || []) { const found = findStack(child); if (found) return found; }
+                return null;
+            }
+            let stack = null;
+            if (root.nativeNotifications) {
+                for (const variant of root.nativeNotifications.instances) {
+                    if (variant.modelData.name === (notificationFocus.screenName || monitor.focusedMonitorName) && variant.loader.item)
+                        stack = findStack(variant.loader.item.contentItem);
+                }
+            }
+            const view = root.centerShown ? centerView : stack;
+            const card = view ? view.cardAt(0) : null;
+            const focused = view && view.Window.window ? view.Window.window.activeFocusItem : null;
+            return JSON.stringify({focus: focused ? focused.objectName : "", center: root.centerShown, screen: notificationFocus.screenName,
+                stackFound: !!stack, stackCount: stack ? stack.count : -1,
+                variants: root.nativeNotifications ? root.nativeNotifications.instances.map(v => ({name: v.modelData.name, loaded: !!v.loader.item,
+                    children: v.loader.item ? v.loader.item.contentItem.children.map(c => ({name: c.objectName, count: c.count === undefined ? -1 : c.count, cardAt: typeof c.cardAt})) : []})) : [],
+                firstAction: card && card.firstActionControl ? card.firstActionControl.objectName : "",
+                actions: card ? Array.from({length: card.actionItems.count}, (_, i) => {
+                    const action = card.actionAt(i);
+                    return action ? {name: action.objectName, visible: action.visible, enabled: action.enabled} : null;
+                }) : []});
+        }
         function appearance(action: string, primary: string, secondary: string): bool {
             if (action === "cancel") { settings.cancelEdit(); return true; }
             settings.beginEdit(); settings.setColor("accent", primary); settings.setColor("accentSecondary", secondary);

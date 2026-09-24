@@ -39,6 +39,7 @@ def run(environment, base, output, first, hypr, launch):
     d.wait(lambda s:s.get('state')=='ready' and s.get('settingsReady') and not s.get('pending'),'native startup')
     hypr('dispatch','hl.dsp.focus({monitor='+json.dumps(first)+'})')
     d.ipc('monitor', first)
+    d.ipc('notificationTimeout', 30000)
     d.receive(event(timestamp=seeded['stamp'],body='S11: tekst <b>dosłownie</b> 🐈'))
     d.wait(lambda s:len(s.get('history',[]))==1 and not s['pending'],'native toast')
     assert not d.state()['loaded']
@@ -46,6 +47,34 @@ def run(environment, base, output, first, hypr, launch):
     focus('Syntetyczne inne okno S11')
     text('hjkl')
     d.wait(lambda s:s.get('coverText')=='hjkl','passive toast does not steal keys')
+    def notice_state():
+        state = json.loads(d.ipc('notificationSnapshot'))
+        (output/'notification-last.json').write_text(json.dumps(state, indent=2)+'\n')
+        return state
+    def notice_focus(name):
+        try:
+            return eventually(notice_state, lambda s: s['focus'] == name, 'notification focus on '+name, 3)
+        except AssertionError:
+            (output/'notification-focus-failure.json').write_text(json.dumps(notice_state(), indent=2)+'\n')
+            capture('notification-focus-failure')
+            raise
+    eventually(notice_state, lambda s: len(s['actions']) == 2, 'native action delegates ready')
+    time.sleep(.25)
+    assert d.ipc('toastFocus') == first
+    notice_focus('notificationSelection')
+    keys('l'); notice_focus('notificationMute')
+    keys('j')
+    (output/'notification-action-before.json').write_text(json.dumps(notice_state(), indent=2)+'\n')
+    capture('notification-action-navigation')
+    notice_focus('notificationAction-0')
+    keys('l'); notice_focus('notificationAction-1')
+    keys('k'); notice_focus('notificationMute')
+    keys('l'); notice_focus('notificationClose')
+    keys('j'); notice_focus('notificationAction-0')
+    keys('k'); notice_focus('notificationClose')
+    keys('h', 'h'); notice_focus('notificationSelection')
+    d.check('native Signal toast navigates frame, both header buttons, Open and Reply with hjkl')
+    keys('l', 'j', 'l', 'Return'); notice_focus('notificationReplyEditor')
     assert d.ipc('replyOpen',0)=='true'
     d.wait(lambda s:s.get('reply') and s['reply']['ready'],'native reply')
     time.sleep(.3)
@@ -70,9 +99,24 @@ def run(environment, base, output, first, hypr, launch):
     d.wait(lambda s:not s['reply']['editing'],'reply escape')
     # Escape collapses editor first, then leaves stack navigation.
     keys('Escape')
+    d.wait(lambda s:s.get('coverActive') and not s['replyScreen'], 'previous app regains native keyboard focus')
     text('x')
     d.wait(lambda s:s.get('coverText')=='hjklx','focus returned to previous app')
     d.check('native passive toast, actual quick-reply keyboard/Unicode/Shift+Enter/Escape, focus return, two accents preview/cancel/save preserve draft')
+    d.ipc('centerWindow', True)
+    focus('Centrum testowe S11')
+    d.ipc('centerFocus')
+    notice_focus('notificationDnd')
+    keys('j', 'l'); notice_focus('notificationMute')
+    keys('j'); notice_focus('notificationAction-0')
+    keys('l'); notice_focus('notificationAction-1')
+    keys('k'); notice_focus('notificationMute')
+    keys('l'); notice_focus('notificationClose')
+    keys('j', 'k'); notice_focus('notificationClose')
+    keys('h', 'h'); notice_focus('notificationSelection')
+    capture('notification-center-navigation')
+    d.ipc('centerWindow', False)
+    d.check('native archived Signal card navigates both button rows and returns to its frame')
     assert d.ipc('openList', first) == 'true'
     focus('Wiadomości')
     d.wait(lambda s: s.get('listFocused'), 'ordinary open focuses conversation list')

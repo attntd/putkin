@@ -1,5 +1,20 @@
 # Instalacja Putkina
 
+## Dolne akcje Signala — 2026-09-23
+
+Aktywne **`20260923-161925-3ad24f3592b5`** po
+`scripts/install --shell-only --offline --activate --no-prune`.
+Dwa pliki naprawiają nawigację po asynchronicznym utworzeniu kart/przycisków
+i ujednolicają wygląd dzwonka wyciszenia z ×. Walidacja paczki: 171 QML,
+zero błędów. Dwa odczyty w odstępie 10 s potwierdzają jedną stabilną
+instancję i jej właściciela powiadomień, Signal `ready`, gotowe idle
+oraz brak błędów i ostrzeżeń. 362 pliki odpowiadają źródłom i manifestowi;
+ustawienia i skróty pozostały bez zmian.
+[Log](evidence/signal-action-focus-20260923/install-activation.log),
+[odbiór](evidence/signal-action-focus-20260923/live-activation.json).
+`previous`: `20260923-155404-94077eef8c74`; powrót przez
+`scripts/install --restore --activate`. Nie usuwano starszych wydań.
+
 ## Pasek, toasty i centrum — 2026-09-23
 
 Wdrożono **`20260923-155404-94077eef8c74`** na polecenie użytkownika przez

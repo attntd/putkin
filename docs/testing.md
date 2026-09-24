@@ -1,5 +1,16 @@
 # Testowanie Putkin
 
+## Dolne akcje Signala — 2026-09-23
+
+`tst_signal_notifications.qml` tworzy karty również przez asynchroniczne
+Loadery, odpowiadające sposobowi otwierania natywnych okien. Sprawdza j
+z dzwonka i × do Otwórz, l do Odpowiedz, k do zapamiętanego nagłówka
+oraz d; powtarza przejścia po odświeżeniu rozmowy i dla wygasłej karty.
+Wcześniejszy wariant synchroniczny sam nie odtwarzał zgłoszonego błędu.
+`tests/signal_wayland.py` wysyła rzeczywiste hjkl do natywnego toasta
+i archiwalnej karty centrum, odczytując fokus gotowych kontrolek.
+[Rzeczywiste wyniki](status.md#dolne-akcje-signala--2026-09-23).
+
 ## Pasek, toasty i centrum — 2026-09-23
 
 `tst_notifications.qml` sprawdza pierwszeństwo toastów przed centrum,

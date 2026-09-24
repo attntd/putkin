@@ -18,6 +18,10 @@ ramkę centrum w tych samych współrzędnych. Rozwinięty tekst jest kompletny,
 także w historii; centrum używa warstwy ograniczonego viewportu panelu,
 zamiast osobnej tekstury całej wysokości rozwiniętej wiadomości.
 
+Listy kart stosu i dolnych przycisków reagują na `Repeater.itemAdded`
+i `itemRemoved`. Cele nawigacji opierają się na gotowych delegatach;
+sam `count` i `itemAt()` nie sygnalizują zakończenia asynchronicznego tworzenia.
+
 ## Fokus i przewijanie Message Huba — 2026-09-23
 
 `MessagesController` przekazuje oknu intencję zwykłego otwarcia lub wejścia

@@ -44,6 +44,7 @@ UI.FadeScope {
     readonly property alias selectionControl: selection
     readonly property alias expandControl: expand
     readonly property var actionItems: actions
+    property var navigationActions: []
     readonly property alias viewport: flick
     readonly property Item firstHeaderControl: mute.visible ? mute : expand.visible ? expand : close
     property Item lastHeaderControl: null
@@ -54,7 +55,14 @@ UI.FadeScope {
     signal archiveRequested()
     signal actionRequested(string identifier)
     signal controlFocused(Item control)
-    function actionAt(index: int): Item { return index >= 0 && index < actions.count ? actions.itemAt(index) : null; }
+    function rebuildActions(): void {
+        // itemAt() is not a notifying binding; asynchronous delegates can
+        // appear after count has already reached the model's final size.
+        const items = [];
+        for (let index = 0; index < actions.count; ++index) items.push(actions.itemAt(index));
+        navigationActions = items;
+    }
+    function actionAt(index: int): Item { return index >= 0 && index < navigationActions.length ? navigationActions[index] : null; }
     function actionBelow(index: int): Item {
         const nextRow = (Math.floor(index / 2) + 1) * 2;
         return nextRow < actions.count ? actionAt(Math.min(index + 2, actions.count - 1))
@@ -166,8 +174,14 @@ UI.FadeScope {
             padding: 0
             readonly property bool muted: visible && root.service.messaging.conversationMuted(root.messageReference)
             text: muted ? qsTr("Włącz powiadomienia") : qsTr("Wycisz")
+            tooltip: ""
             Accessible.name: text
             contentItem: UI.Glyph { section: "notification"; symbol: mute.muted ? "notifications_off" : "notifications"; color: mute.foreground }
+            background: Rectangle {
+                border.width: 0
+                color: mute.down ? Theme.border : mute.hovered ? Theme.surfaceHover : "transparent"
+                UI.FocusIndicator { control: mute }
+            }
             focusPolicy: root.navigating ? Qt.StrongFocus : Qt.NoFocus
             leftTarget: selection
             rightTarget: expand.visible ? expand : close
@@ -311,6 +325,12 @@ UI.FadeScope {
                     spacing: Metrics.space12
                     Repeater {
                         id: actions
+                        onCountChanged: root.rebuildActions()
+                        onItemAdded: root.rebuildActions()
+                        onItemRemoved: (index, item) => {
+                            root.navigationActions = root.navigationActions.filter(value => value !== item);
+                            Qt.callLater(root.rebuildActions);
+                        }
                         // The card invokes default; only additional actions need buttons.
                         model: root.messageReference && root.service ? root.service.messageActions(root.messageReference) : root.entry ? root.entry.actions.filter(action => action.identifier !== "default") : []
                         delegate: UI.NavigationButton {

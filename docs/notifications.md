@@ -29,6 +29,8 @@ do aplikacji. Kliknięcie poza toastem tylko kończy nawigację.
 
 W centrum i toastach ramka jest szara; wspólny FocusIndicator koloruje ją w tym
 samym miejscu, bez dodatkowego obrysu. Fokus przycisku pozostaje na nim.
+Dzwonek wyciszenia rozmowy Signal ma przezroczyste tło bez zwykłej ramki,
+tak jak ×; zaznaczenie klawiatury pozostaje widoczne.
 Rozwinięcie pokazuje wszystkie linie pełnego tytułu i treści. Usunięto
 obcinanie danych do 512/4096 znaków; archiwum zachowuje cały tekst.
 Limit 100 wpisów historii i limity liczby toastów pozostają bez zmian.

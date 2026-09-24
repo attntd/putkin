@@ -42,6 +42,8 @@ Item {
             preview.coordinator.screens = [preview.firstScreen, preview.secondScreen];
             preview.backend.focusedMonitorName = "TEST-1";
             tryCompare(preview, "notificationStack", null);
+            panelLoader.itemLoader.asynchronous = false;
+            preview.notificationLoader.itemLoader.asynchronous = false;
             desktop.text = ""; desktop.forceActiveFocus(Qt.MouseFocusReason); mouseMove(scene, 40, 600);
         }
         function cleanup() {
@@ -183,6 +185,58 @@ Item {
             compare(notifications.entries.length, 0); compare(notifications.history.length, 0);
             compare(windowController.route, null);
             verify(!backend.calls.some(call => call.method === "message.send" || call.method === "messages.read"));
+        }
+        function test_action_navigation_after_conversation_refresh_data() {
+            return [
+                {tag: "toast-mute", center: false, close: false},
+                {tag: "toast-close", center: false, close: true},
+                {tag: "center-mute", center: true, close: false},
+                {tag: "center-close", center: true, close: true},
+                {tag: "async-toast-mute", center: false, close: false, async: true},
+                {tag: "async-toast-close", center: false, close: true, async: true},
+                {tag: "async-center-mute", center: true, close: false, async: true},
+                {tag: "async-center-close", center: true, close: true, async: true},
+                {tag: "expired-center", center: true, close: false, expired: true, async: true}
+            ];
+        }
+        function test_action_navigation_after_conversation_refresh(data) {
+            panelLoader.itemLoader.asynchronous = !!data.async;
+            preview.notificationLoader.itemLoader.asynchronous = !!data.async;
+            incoming(); waitCard();
+            if (data.expired) {
+                notifications.expire(notifications.entries[0]);
+                tryCompare(preview, "notificationStack", null);
+            }
+            let item;
+            if (data.center) {
+                preview.notificationController.openCenter();
+                tryCompare(preview.panelHost, "loaded", true);
+                tryCompare(preview.panelHost.window, "opacity", 1);
+                item = preview.panelHost.window.page.cardAt(0);
+                keyClick(Qt.Key_J);
+            } else {
+                preview.notificationController.focus();
+                item = card();
+            }
+            tryVerify(() => item.selectionControl.activeFocus);
+            const mute = findChild(item, "notificationMute");
+            keyClick(Qt.Key_L); verify(mute.activeFocus);
+            if (data.close) { keyClick(Qt.Key_L); verify(item.closeControl.activeFocus); }
+            const header = data.close ? item.closeControl : mute;
+            keyClick(Qt.Key_J); verify(item.actionAt(0).activeFocus, "j reaches Open before Signal refresh");
+            keyClick(Qt.Key_L); verify(item.actionAt(1).activeFocus);
+            keyClick(Qt.Key_K); verify(header.activeFocus);
+            backend.rows[0].title = "Odświeżona rozmowa";
+            backend.event("conversation.changed", {accountId: "account-a", conversationId: "chat-a"});
+            tryVerify(() => item.presentation.summary === "Odświeżona rozmowa");
+            wait(200);
+            verify(header.activeFocus);
+            keyClick(Qt.Key_J); verify(item.actionAt(0).activeFocus, "j reaches Open after Signal refresh");
+            keyClick(Qt.Key_L); verify(item.actionAt(1).activeFocus);
+            keyClick(Qt.Key_K); verify(header.activeFocus);
+            keyClick(Qt.Key_D);
+            compare(notifications.history.length, 0);
+            compare(notifications.entries.length, 0);
         }
         function test_replacement_during_edit_timeout_other_conversation_and_hotplug() {
             notifications.defaultTimeout = 300;
