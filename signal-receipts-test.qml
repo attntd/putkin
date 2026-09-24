@@ -49,7 +49,13 @@ ShellRoot {
         function activate(): void { if (controller.window) controller.window.view.Window.window.requestActivate(); }
         function coverMessages(): void { coverItem.Window.window.requestActivate(); }
         function minimize(value: bool): void { if (controller.window) controller.window.minimized = value; }
-        function scroll(index: int): void { if (controller.window) controller.window.view.historyView.positionViewAtIndex(index, ListView.Beginning); }
+        function scroll(index: int): void {
+            if (controller.window) {
+                const history = controller.window.view.historyView;
+                history.followEnd = false;
+                history.positionViewAtIndex(index, ListView.Beginning);
+            }
+        }
         function close(): void { controller.close(); }
         function center(value: bool): void { notifications.centerVisible = value; }
         function locked(value: bool): void { notifications.locked = value; }

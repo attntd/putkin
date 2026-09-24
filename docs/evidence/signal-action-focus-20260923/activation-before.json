@@ -1,0 +1,12 @@
+{
+  "previous": "/home/attntd/.local/share/putkin/releases/20260923-155404-94077eef8c74",
+  "runtime_delta": [
+    "modules/notifications/NotificationCard.qml",
+    "modules/notifications/NotificationStack.qml"
+  ],
+  "runtime_files": 362,
+  "settings": {
+    "settings.json": "e1424ff3ff0403d6236cf59a77c90db1c387f5aee4d4548909a6284cc1431c3e",
+    "keyboard.json": "54427f8a8193996e2a6bb0f28f7fc097a23711faaefb49af29ed4fd73c77b540"
+  }
+}

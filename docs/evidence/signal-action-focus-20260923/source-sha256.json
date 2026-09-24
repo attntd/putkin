@@ -1,0 +1,7 @@
+{
+  "modules/notifications/NotificationCard.qml": "a1989e51287ea1565cfeb592f648fa1d597ac180790cbe5b508352f66c42afe9",
+  "modules/notifications/NotificationStack.qml": "d818752e6b2a05c89b991148fc87f7846a5134a0aa99efba3df7988a24589f8c",
+  "signal-acceptance-test.qml": "75c4bf77c10864b5ce8c4b6194349e4932496e889b480cff6486bd8e7ca6f39b",
+  "tests/qml/tst_signal_notifications.qml": "1d6697459c217617195a78ee08b6774d410352724746e53b47299111f0af68c1",
+  "tests/signal_wayland.py": "1995385ccc1453065fb194f0fb787d29b6561130ad721f0954c8c92d408fc6b6"
+}

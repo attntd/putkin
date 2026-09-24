@@ -93,15 +93,81 @@ Item {
         function test_picker_and_saved_composition_survive_adapter_recreation() {
             const editor = control("messageEditor"); editor.forceActiveFocus(Qt.TabFocusReason);
             adapter.editComposer("👩‍💻 "); editor.cursorPosition = 6;
-            control("mentionMember").click();
+            keyClick(Qt.Key_At);
+            tryCompare(control("mentionPicker"), "opened", true);
+            verify(editor.activeFocus);
+            keyClick(Qt.Key_A);
             tryVerify(() => control("mentionChoice") !== null);
-            control("mentionChoice").forceActiveFocus(Qt.TabFocusReason); keyClick(Qt.Key_Return);
+            keyClick(Qt.Key_Return);
             compare(adapter.composerText, "👩‍💻 @Alicja ");
+            compare(backend.sentCount, 0);
+            compare(editor.cursorPosition, 14);
             adapter.replyTo("own");
             tryVerify(() => !adapter.drafts["chat-g"].pending && !adapter.drafts["chat-g"].dirty);
             adapter.clear(); hub.openConversation(adapter.address("chat-g"));
             tryVerify(() => adapter.draftReady && adapter.quotedMessage !== null);
             compare(adapter.composeMentions[0].start, 6); compare(adapter.quotedMessage.messageId, "own");
+        }
+        function test_inline_mentions_filter_keyboard_menu_and_pointer_focus() {
+            backend.directory = {contacts: [{serviceId: "aci:peer", name: "Alicja"}, {serviceId: "aci:other", name: "Barbara"}],
+                groups: [{groupId: "group", members: [{serviceId: "aci:peer"}, {serviceId: "aci:other"}]}]};
+            adapter.refresh(); tryCompare(adapter, "mentionMembers", [{serviceId: "aci:peer", name: "Alicja"}, {serviceId: "aci:other", name: "Barbara"}]);
+            const editor = control("messageEditor"); editor.forceActiveFocus(Qt.TabFocusReason);
+            compare(findChild(view.item, "mentionMember"), null);
+            keyClick(Qt.Key_At); tryCompare(control("mentionPicker"), "opened", true);
+            keyClick(Qt.Key_Tab);
+            let list = control("mentionList");
+            verify(list.currentItem.activeFocus);
+            keyClick(Qt.Key_J); compare(list.currentIndex, 1);
+            keyClick(Qt.Key_K); compare(list.currentIndex, 0);
+            keyClick(Qt.Key_J); keyClick(Qt.Key_Return);
+            compare(editor.text, "@Barbara "); compare(adapter.composeMentions[0].serviceId, "aci:other");
+            compare(backend.sentCount, 0); verify(editor.activeFocus);
+            keyClick(Qt.Key_At); keyClick(Qt.Key_A); keyClick(Qt.Key_L);
+            compare(editor.text, "@Barbara @al");
+            tryCompare(list, "count", 1);
+            mouseClick(list.currentItem, 20, 18);
+            compare(editor.text, "@Barbara @Alicja ");
+            compare(adapter.composeMentions.length, 2);
+            compare(editor.focusReason, Qt.MouseFocusReason);
+            verify(!findChild(editor, "focusIndicator").visible);
+            compare(editor.cursorPosition, editor.text.length);
+        }
+        function test_inline_mentions_escape_shift_enter_email_and_route_change() {
+            const editor = control("messageEditor"); editor.forceActiveFocus(Qt.TabFocusReason);
+            keyClick(Qt.Key_At); tryCompare(control("mentionPicker"), "opened", true);
+            keyClick(Qt.Key_Escape); tryCompare(control("mentionPicker"), "visible", false);
+            verify(editor.activeFocus); compare(editor.text, "@");
+            keyClick(Qt.Key_Backspace); keyClick(Qt.Key_A); keyClick(Qt.Key_At);
+            compare(control("mentionPicker").visible, false);
+            editor.selectAll(); keyClick(Qt.Key_At);
+            tryCompare(control("mentionPicker"), "opened", true);
+            keyClick(Qt.Key_Return, Qt.ShiftModifier);
+            compare(editor.text, "@\n"); compare(control("mentionPicker").visible, false);
+            compare(backend.sentCount, 0);
+            keyClick(Qt.Key_At); tryCompare(control("mentionPicker"), "opened", true);
+            hub.openConversation(adapter.address("chat-a"));
+            tryVerify(() => adapter.draftReady && !adapter.loading && adapter.selectedRoute.conversationId === "chat-a");
+            tryCompare(control("mentionPicker"), "visible", false);
+            editor.forceActiveFocus(Qt.TabFocusReason); keyClick(Qt.Key_At);
+            compare(control("mentionPicker").visible, false);
+        }
+        function test_inline_mention_replaces_token_at_cursor_in_edit_and_shifts_utf16_ranges() {
+            const editor = control("messageEditor");
+            verify(adapter.beginEdit("own"));
+            adapter.editComposer("👩‍💻 @Al tekst");
+            editor.forceActiveFocus(Qt.TabFocusReason);
+            editor.cursorPosition = 9;
+            tryCompare(control("mentionPicker"), "opened", true);
+            keyClick(Qt.Key_Return);
+            compare(editor.text, "👩‍💻 @Alicja tekst");
+            compare(adapter.editMentions[0].start, 6);
+            compare(adapter.editMentions[0].length, 7);
+            compare(editor.cursorPosition, 14);
+            compare(backend.sentCount, 0);
+            editor.cursorPosition = 0; keyClick(Qt.Key_X);
+            compare(adapter.editMentions[0].start, 7);
+            adapter.cancelEdit(); compare(adapter.composeMentions.length, 0);
         }
         function test_safe_styles_and_live_accents() {
             compare(MessageText.render("<img src=x> &", [], []), "&lt;img src=x&gt; &amp;");

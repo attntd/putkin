@@ -103,6 +103,9 @@ QtObject {
     property bool listDirty: false
     property var listBuild: []
     property var readRequests: ({})
+    property string readThroughRequest: ""
+    property string readThroughId: ""
+    signal readBatchCompleted()
     property var editingMessage: null
     property string editText: ""
     property bool editBusy: false
@@ -188,9 +191,10 @@ QtObject {
         }
         typingActivity();
     }
-    function addMention(member: var, position: int): void {
+    function addMention(member: var, position: int, replaceLength = 0): void {
         const old = composerText, label = "@" + member.name;
-        const value = old.slice(0, position) + label + " " + old.slice(position);
+        const after = position + replaceLength;
+        const value = old.slice(0, position) + label + " " + old.slice(after + (old[after] === " " ? 1 : 0));
         editComposer(value);
         const mention = {serviceId: member.serviceId, start: position, length: label.length};
         if (editingMessage) editMentions = editMentions.concat([mention]);
@@ -294,6 +298,7 @@ QtObject {
         stopTyping(); flushDraft();
         editingMessage = null; editText = ""; editBusy = false; quotedMessage = null; composeMentions = []; typingAuthors = []; jumpMessageId = "";
         selection++;
+        readThroughRequest = ""; readThroughId = "";
         selectedRoute = null; selectedConversation = null; draftReady = false; draftText = ""; draftAttachments = [];
         historyChanging(true); messages.clear(); historyChanged(true);
         refreshIds = ({}); messageRequest = "";
@@ -365,6 +370,13 @@ QtObject {
         if (!mids.length) return;
         const id = request("messages.read", {conversationId: route.conversationId, messageIds: mids}, {kind: "read", mids: mids});
         if (id) mids.forEach(mid => { readRequests[mid] = id; });
+    }
+    function markThrough(route: var, mid: string): void {
+        if (!Route.equal(route, selectedRoute) || !available || !selectedConversation || selectedConversation.canRead === false
+                || !selectedConversation.unreadCount || readThroughRequest || readThroughId === mid
+                || service.capabilities.indexOf("messages.read") < 0) return;
+        readThroughRequest = request("messages.read", {conversationId: route.conversationId, throughMessageId: mid},
+            {kind: "read", mids: [], through: mid});
     }
     function merge(items: var, reset: bool): void {
         historyChanging(reset);
@@ -469,11 +481,16 @@ QtObject {
         }
         if (context.kind === "read") {
             context.mids.forEach(mid => { if (readRequests[mid] === id) delete readRequests[mid]; });
+            if (readThroughRequest === id) readThroughRequest = "";
             if (error) { lastError = errorText(error.code); return; }
             // This response follows COMMIT. Do not wait for another page to
             // suppress duplicate visibility requests for the same message.
             if (current) for (let i = 0; i < messages.count; i++) {
                 if ((result.messageIds || []).includes(messages.get(i).messageId)) messages.setProperty(i, "unread", false);
+            }
+            if (current && context.through) {
+                if (!result.hasMore) readThroughId = context.through;
+                else readBatchCompleted();
             }
             return;
         }
@@ -537,7 +554,13 @@ QtObject {
             if (redactedIds[result.messageId] || !result.canReply) return;
             quotedMessage = {messageId: result.messageId, text: result.text || qsTr("Wiadomość niedostępna"), author: normalized(result).author};
         }
-        else if (context.kind === "message") merge([result], false);
+        else if (context.kind === "message") {
+            const first = messages.count ? messages.get(0) : null;
+            // Read-through also updates unloaded pages. Keep this window's
+            // contiguous page range instead of importing isolated older rows.
+            if (!first || nextCursor === null || result.sortTimestampMs > first.timestamp
+                    || (result.sortTimestampMs === first.timestamp && result.messageId >= first.messageId)) merge([result], false);
+        }
         else if (context.kind === "jump" && result.conversationId === selectedRoute.conversationId) {
             // Load the contiguous older pages; inserting only the target would
             // introduce a hidden gap in pagination.
@@ -555,6 +578,7 @@ QtObject {
         draftAttachments = []; mediaRequests = ({}); mediaBusy = 0;
         redactedIds = ({}); groupDetails = null; profileDetails = null; groupOperations = []; directoryBusy = 0;
         selection++; requests = ({}); readRequests = ({}); drafts = ({}); conversations = []; contacts = [];
+        readThroughRequest = ""; readThroughId = "";
         selectedRoute = null; selectedConversation = null; messages.clear(); refreshIds = ({}); messageRequest = "";
         draftText = ""; draftReady = false; sending = false; loading = false; resolving = false; listLoading = false; listDirty = false;
         refresh();
@@ -633,6 +657,8 @@ QtObject {
                 draft.revision = Math.max(draft.revision, data.revision);
             }
             if (!root.selectedRoute || data.conversationId !== root.selectedRoute.conversationId) return;
+            if (name === "message.received") root.readThroughId = "";
+            if (name === "message.read" && !root.rowById(data.messageId)) delete root.refreshIds[data.messageId];
             if (name === "typing.changed") root.typingAuthors = root.typingEnabled ? data.authors.map(sid => {
                 const contact = root.directory.contacts.find(c => c.serviceId === sid);
                 return contact ? contact.name || contact.profileName || contact.number || sid : sid;

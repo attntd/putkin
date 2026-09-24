@@ -1,6 +1,7 @@
 MessagesView 1.0 MessagesView.qml
 MessagesWindow 1.0 MessagesWindow.qml
 MessageComposer 1.0 MessageComposer.qml
+MentionPicker 1.0 MentionPicker.qml
 MessageHistory 1.0 MessageHistory.qml
 AttachmentCard 1.0 AttachmentCard.qml
 MediaPreview 1.0 MediaPreview.qml

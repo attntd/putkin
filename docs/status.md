@@ -1,5 +1,65 @@
 # Status implementacji
 
+## Odczyt, przewijanie i wzmianki — 2026-09-24
+
+**Wdrożone lokalnie: `20260924-082540-076b1e15099c`.**
+
+Odczyt samych metadanych rzeczywistej bazy potwierdził cztery nieprzeczytane
+teksty w grupie, z 30–33 nowszymi wpisami nad każdym. Dotychczasowy widok
+czytał wyłącznie dymki mieszczące się w ekranie, więc ponowne otwieranie
+na dole ich nie obejmowało. Nie odczytywano treści ani nie edytowano bazy.
+
+Widoczny koniec aktywnej rozmowy oznacza teraz odczyt wcześniejszych
+tekstów/mediów, również ze starszych stron. Bridge przetwarza po 100 ID,
+z zachowaniem transakcji, receipts, retencji i synchronizacji powiadomień.
+Starsza przewinięta historia czyta tylko widoczne wpisy. Utrata aktywności,
+minimalizacja, blokada i ukrycie przerywają dalsze porcje. Załadowana strona
+nie rośnie przez odczyt tła; granica nie obejmuje nowszych wiadomości.
+
+Wspólny ScrollBar znika po 250 ms bez ruchu przez fade 200 ms, także gdy
+kursor pozostaje nad nim. W grupach `@` w edytorze otwiera filtrowaną
+listę uczestników. Enter wstawia wzmiankę bez wysyłania, Tab daje hjkl
+w liście, kliknięcie wraca bez ramki klawiatury. Usunięto osobny przycisk
+i pusty wiersz. Zachowano UTF-16, szkice, cytaty, edycję oraz wejście IME.
+
+| Sprawdzenie | Rzeczywisty wynik |
+| --- | --- |
+| Odtworzenie przed zmianą | **FAIL zgodny ze zgłoszeniem**: licznik pozostał dodatni, `@` nie otwierało listy, pasek był widoczny w spoczynku; [logi](evidence/messages-read-mentions-20260924/before/). |
+| `scripts/check` | **PASS**, 278 QML, zero błędów; [log](evidence/messages-read-mentions-20260924/check-final.log). |
+| QtTest zmian | **PASS**, 45 wyników: 27 Messages, 10 interakcje, 8 receipts; zero błędów/pominięć; [logi](evidence/messages-read-mentions-20260924/third/), [odczyt ze spóźnioną odpowiedzią](evidence/messages-read-mentions-20260924/final/signal_receipts-qml.log). |
+| QtTest regresji | **PASS**, 174 wyniki: kontroler, powiadomienia Signal, grupy, retencja, media, launcher, fokus i gradient; [logi](evidence/messages-read-mentions-20260924/regression/). |
+| SQLite i receipts Python | **PASS**, 18 testów, w tym porcje 100+4, restart, granice konta/rozmowy i wykluczenie nowszej wiadomości; [log](evidence/messages-read-mentions-20260924/receipts-python.log). |
+| Integracja odczytu | **PASS**, 7 grup przez produkcyjne QML/SQLite/bridge i atrapę CLI, rzeczywisty fokus/minimalizacja, blokada, kolejka i reload; zero błędów QML i pozostawionych procesów; [raport](evidence/messages-read-mentions-20260924/receipts-integration.json). |
+| Touchpad i kółko | **PASS**, oba kierunki w dwóch listach, bezwładność i zanik paska po ruchu; [log](evidence/messages-read-mentions-20260924/input/input.log). |
+| IME i załączniki | **PASS**, rzeczywisty preedit/commit, Enter, Shift+Enter, drop i dialog plików; [log](evidence/messages-read-mentions-20260924/media-input.log). |
+| Prywatny Wayland | **PASS**, 9 grup, w tym wpisanie `@Al` i wybór osoby bez wysyłki, natywna klawiatura, oba rozmiary, skala 1,5, hotplug i reload; [raport](evidence/messages-read-mentions-20260924/wayland/signal-report.json), [cleanup](evidence/messages-read-mentions-20260924/wayland/cleanup.json). |
+| Instalacja i aktywna sesja | **PASS**, siedem zmienionych plików runtime, walidacja paczki 172 QML. 363 pliki zgodne z przetestowanymi źródłami; ustawienia i skróty zachowane. Dwa odczyty w odstępie 10 s potwierdzają jedną stabilną instancję, jej właściciela powiadomień, Signal `ready` i gotowe idle; [log](evidence/messages-read-mentions-20260924/install-activation.log), [raport](evidence/messages-read-mentions-20260924/live-activation.json). |
+
+Obejrzano [listę osób](evidence/messages-read-mentions-20260924/wayland/messages-mention-picker.png)
+i [wstawioną wzmiankę](evidence/messages-read-mentions-20260924/wayland/messages-inline-mention.png).
+Testy używają atrap i prywatnych XDG/D-Bus, a Wayland także przestrzeni
+PID/sieci/montowań i prywatnych wyjść. Sandbox blokował socket D-Bus;
+testy wykonano poza tym ograniczeniem, zachowując izolację. Początkowe
+przebiegi wykryły hover suwaka i powrót fokusu klawiatury po kliknięciu;
+poprawiono oba przypadki. Ostrzeżeń/importów QML nie wyciszano.
+Klient testów mediów nadal zgłasza wcześniejsze ostrzeżenie z nagłówków Qt.
+
+**Niewykonane:** pełne `scripts/test`, wysyłka na rzeczywistym koncie,
+potwierdzenie odczytu na telefonie i odbiór na fizycznym touchpadzie/IME.
+Plan instalacji zachowuje SQLite v7 i przypięte CLI, bez migracji danych:
+[dry-run](evidence/messages-read-mentions-20260924/install-plan.json).
+
+Aktywacja użyła `scripts/install --shell-only --offline --activate --no-prune`.
+Zachowano poprzednią wersję `20260923-161925-3ad24f3592b5` oraz pozostałe
+wydania. Startowy log zawiera dwa ostrzeżenia natywnego Quickshell/Hyprland:
+zamknięcie nieśledzonego okna i usunięcie nieśledzonego workspace
+`special:magic`. Zapisano je w raporcie, bez wyciszania. Między dwoma
+odczytami nie przybyło diagnostyki; brak błędów importów i runtime QML.
+Nie otwierano rzeczywistej rozmowy ani nie wysyłano wiadomości podczas
+odbioru instalacji. Cztery wpisy obejmie odczyt przy następnym pokazaniu
+końca rozmowy przez użytkownika.
+
+
 ## Dolne akcje Signala — 2026-09-23
 
 **Wdrożone lokalnie: `20260923-161925-3ad24f3592b5`.**

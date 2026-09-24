@@ -1,5 +1,24 @@
 # Wygląd i zakres Putkin
 
+## Odczyt, przewijanie i wzmianki — 2026-09-24
+
+Po pokazaniu końca aktywnej rozmowy wcześniejsze wiadomości tekstowe
+i zwykłe media stają się przeczytane, także poza załadowaną stroną.
+Przewijanie starszej historii zachowuje odczyt tylko widocznych wpisów.
+Nieaktywne, zminimalizowane i zablokowane okno nie oznacza odczytu.
+
+Wspólny pasek przewijania pojawia się przy zmianie pozycji lub przeciąganiu.
+Po ostatnim ruchu czeka 250 ms i znika przez wspólny fade 200 ms.
+Samo najechanie myszą go nie pokazuje. Dotyczy listy, historii, edytora
+wiadomości oraz pozostałych widoków używających wspólnego ScrollBar.
+
+W grupie `@` na początku słowa otwiera listę osób nad edytorem. Kolejne
+litery filtrują nazwy. Fokus pozostaje w tekście; góra/dół wybierają osobę,
+Enter wstawia wzmiankę, Escape zamyka listę, Shift+Enter dodaje nowy wiersz.
+Tab przenosi fokus na listę, gdzie działają h/j/k/l i Enter.
+Kliknięcie osoby przywraca edytor bez ramki klawiatury. Adres e-mail
+nie otwiera listy. Osobny przycisk `@` i jego pusty wiersz są usunięte.
+
 ## Okna uwierzytelniania — 2026-09-20
 
 Zatwierdzone teksty i minimalistyczny układ opisuje

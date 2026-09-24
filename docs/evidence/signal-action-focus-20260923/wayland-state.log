@@ -1,0 +1,18 @@
+dbus-daemon[3]: [session uid=1000 pid=3 pidfd=5] Connection :1.2 (uid=1000 pid=57 comm="/usr/bin/python3 -B /home/attntd/projects/putkin/s") became a monitor.
+dbus-daemon[3]: [session uid=1000 pid=3 pidfd=5] Monitoring connection :1.2 closed.
+Traceback (most recent call last):
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 643, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 592, in main
+    inside(args.inside, args.smoke, args.idle, args.native_session, args.screenshot, args.launcher_preview, args.signal, args.authentication)
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 145, in inside
+    report['signal'] = run(env, base, output, first, hypr, launch)
+                       ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/putkin/tests/signal_wayland.py", line 61, in run
+    eventually(notice_state, lambda s: len(s['actions']) == 2, 'native action delegates ready')
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/putkin/tests/signal_acceptance.py", line 40, in eventually
+    raise AssertionError('Deadline: ' + description)
+AssertionError: Deadline: native action delegates ready

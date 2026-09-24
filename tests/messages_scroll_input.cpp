@@ -31,6 +31,10 @@ int main(int argc, char **argv) {
     for (const auto name : {"conversationList", "messageHistory"}) {
         auto list = view.rootObject()->findChild<QQuickItem *>(name);
         require(list, "list exists");
+        auto bar = list->findChild<QQuickItem *>("scrollBar");
+        require(bar, "scrollbar exists");
+        auto thumb = bar->property("contentItem").value<QQuickItem *>();
+        require(thumb, "scrollbar thumb exists");
         auto y = [&] { return list->property("contentY").toReal(); };
         auto moving = [&] { return list->property("moving").toBool(); };
         auto wheel = [&](Qt::ScrollPhase phase, int pixels, int angle = 0,
@@ -66,6 +70,7 @@ int main(int argc, char **argv) {
                 const auto released = y();
                 QTest::qWait(80);
                 require(direction * (released - y()) > 15, "scroll continues after finger release");
+                require(thumb->opacity() > .5, "scrollbar is visible during momentum");
                 const auto first = y();
                 const auto velocity = std::abs(list->property("verticalVelocity").toReal());
                 QTest::qWait(80);
@@ -75,6 +80,7 @@ int main(int argc, char **argv) {
                     << std::abs(list->property("verticalVelocity").toReal()) << std::endl;
                 require(std::abs(list->property("verticalVelocity").toReal()) < velocity, "momentum decelerates");
                 require(QTest::qWaitFor([&] { return !moving(); }, 3000), "momentum settles");
+                require(QTest::qWaitFor([&] { return thumb->opacity() == 0; }, 1500), "scrollbar fades after momentum");
             }
         }
         center(); gesture(-28);
@@ -100,6 +106,7 @@ int main(int argc, char **argv) {
         wheel(Qt::NoScrollPhase, 0, -120);
         require(QTest::qWaitFor([&] { return y() > beforeWheel + 5; }, 1000), "ordinary mouse wheel still scrolls");
         require(QTest::qWaitFor([&] { return !moving(); }, 3000), "mouse wheel settles");
+        require(QTest::qWaitFor([&] { return thumb->opacity() == 0; }, 1500), "scrollbar fades after mouse wheel");
         // Scroll against the top and bottom: no overshoot or wrong-direction coast.
         for (int direction : {-1, 1}) {
             QMetaObject::invokeMethod(list, direction > 0 ? "positionViewAtBeginning" : "positionViewAtEnd");

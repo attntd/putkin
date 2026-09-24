@@ -5,7 +5,7 @@ import subprocess
 import time
 from signal_acceptance import Driver, eventually, prepare, event, tool, ROOT
 from _common import qml_errors, runtime_log
-from test_signal_history import OWN
+from test_signal_history import OWN, GROUP
 from test_signal_interactions import reaction, edit
 from test_signal_receipts import receipt
 from test_signal_media import png, attachment_event
@@ -235,6 +235,20 @@ def run(environment, base, output, first, hypr, launch):
     target = next(m for m in hypr('monitors', data=True) if m['name'] == first)
     assert next(c for c in hypr('clients', data=True) if c['title'] == 'Wiadomości')['monitor'] == target['id']
     capture('messages-after-reload')
+    d.receive(event(timestamp=seeded['stamp']+2000, group=GROUP, body='Rozmowa grupowa na potrzeby testu wzmianek'))
+    d.wait(lambda s: not s.get('pending'), 'group available')
+    assert d.ipc('select', 0) == 'true'
+    d.wait(lambda s: (s.get('selectedConversation') or {}).get('target') == GROUP and s.get('draftReady') and s.get('focus') == 'messageEditor', 'group composer focused')
+    focus('Wiadomości')
+    sends = len(d.records('send'))
+    text('@Al')
+    d.wait(lambda s: s.get('draftText') == '@Al', 'inline mention query')
+    capture('messages-mention-picker')
+    keys('Return')
+    d.wait(lambda s: s.get('draftText') == '@Alicja ', 'Enter inserts inline mention')
+    assert len(d.records('send')) == sends
+    capture('messages-inline-mention')
+    d.check('native group @ query filters members; Enter inserts a mention without sending or adding a separate button')
     d.close()
     d.check('native reload preserves committed accents/history/draft with one new receiver')
     result={'passed':True,'checks':d.checks,'captures':captures,'livePhone':False,

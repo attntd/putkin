@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "scope": "production QML windows/SQLite/bridge; synthetic CLI; offscreen/private XDG/D-Bus; no phone/compositor",
+  "checks": [
+    "closed window and notification center never read; phone read sync updates shared unread and expires the exact toast",
+    "actual Qt window focus gates reads; visible IDs produce one grouped sendReceipt; empty privacy-off CLI result accepted without changing settings",
+    "minimized, unfocused and locked states receive into SQLite without producing reads",
+    "scrolling reads only the visible range; a new message outside it stays unread",
+    "native rows show sent/delivered/read/viewed monotonically with Material icon and accessible label",
+    "reaching the latest message clears older unread entries; SQLite and shared unread agree",
+    "hard reload preserves unread/read markers and does not repeat submitted read RPCs"
+  ],
+  "focusReadProbe": {
+    "visibleBefore": 8,
+    "viewport": {
+      "y": 34,
+      "height": 608,
+      "width": 467,
+      "restoring": false,
+      "followEnd": false,
+      "opacity": 1
+    }
+  },
+  "qmlErrors": [],
+  "remainingOwnedProcesses": []
+}

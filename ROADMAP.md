@@ -1,5 +1,15 @@
 # Roadmapa Putkin
 
+## Wybrana korekta — odczyt, przewijanie i wzmianki, 2026-09-24
+
+**Wdrożone lokalnie: `20260924-082540-076b1e15099c`.**
+
+Koniec aktywnej rozmowy oznacza wcześniejsze wiadomości jako przeczytane,
+także poza załadowaną stroną. Pasek przewijania znika w spoczynku.
+Wpisanie `@` otwiera filtrowany wybór uczestnika bez osobnego przycisku.
+Zakres obejmuje tę korektę i testy, bez następnego etapu roadmapy.
+[Wyniki](docs/status.md#odczyt-przewijanie-i-wzmianki--2026-09-24).
+
 ## Wybrana korekta — dolne akcje Signala, 2026-09-23
 
 **Wdrożone lokalnie: `20260923-161925-3ad24f3592b5`.**

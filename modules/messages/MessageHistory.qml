@@ -97,8 +97,13 @@ ListView {
         interval: 250
         onTriggered: {
             if (!root.readingEnabled || !root.visible || root.restoring || root.moving || !root.adapter) return;
-            const ids = root.visibleUnread();
-            if (ids.length) root.adapter.markVisible(root.adapter.selectedRoute, ids);
+            const last = root.count ? root.itemAtIndex(root.count - 1) : null;
+            if (last && root.endVisible() && last.y + last.height <= root.contentY + root.height + .5)
+                root.adapter.markThrough(root.adapter.selectedRoute, root.adapter.messages.get(root.count - 1).messageId);
+            else {
+                const ids = root.visibleUnread();
+                if (ids.length) root.adapter.markVisible(root.adapter.selectedRoute, ids);
+            }
         }
     }
     onReadingEnabledChanged: scheduleRead()
@@ -546,6 +551,8 @@ ListView {
     }
     Connections {
         target: root.adapter
+        function onReadBatchCompleted(): void { root.scheduleRead(); }
+        function onSelectedConversationChanged(): void { root.scheduleRead(); }
         function onJumpRequested(mid: string): void {
             root.followEnd = false;
             for (let i = 0; i < root.count; i++) if (root.adapter.messages.get(i).messageId === mid) {

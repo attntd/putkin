@@ -1,0 +1,202 @@
+{
+  "timestamp_utc": "2026-09-24T08:19:36.978691+00:00",
+  "checks": [
+    "Signal native acceptance on private Wayland"
+  ],
+  "captures": [],
+  "mode": "native nested Hyprland, private HEADLESS outputs, GPU renderer, explicit domain mocks",
+  "isolation": "private PID/network/mount namespaces, XDG and session D-Bus; only parent Wayland socket and GPU render node shared",
+  "version": {
+    "branch": "v0.56.2",
+    "commit": "efb50993780079460b0cbed1363e2166a2de1d9f",
+    "version": "0.56.2",
+    "dirty": false,
+    "commit_message": "[gha] Nix: update inputs",
+    "commit_date": "Wed Aug 5 14:13:21 2026",
+    "tag": "v0.56.2",
+    "commits": "7661",
+    "buildAquamarine": "0.15.0",
+    "buildHyprlang": "0.6.8",
+    "buildHyprutils": "0.14.1",
+    "buildHyprcursor": "0.1.13",
+    "buildHyprgraphics": "0.5.1",
+    "systemAquamarine": "0.15.1",
+    "systemHyprlang": "0.6.8",
+    "systemHyprutils": "0.14.2",
+    "systemHyprcursor": "0.1.13",
+    "systemHyprgraphics": "0.5.1",
+    "abiHash": "efb50993780079460b0cbed1363e2166a2de1d9f_aq_0.15_hu_0.14_hg_0.5_hc_0.1_hlg_0.6",
+    "flags": []
+  },
+  "initial_monitors": [
+    {
+      "id": 0,
+      "name": "WAYLAND-1",
+      "description": "",
+      "make": "",
+      "model": "",
+      "serial": "",
+      "width": 1920,
+      "height": 1080,
+      "physicalWidth": 0,
+      "physicalHeight": 0,
+      "refreshRate": 60.0,
+      "x": 3920,
+      "y": 0,
+      "activeWorkspace": {
+        "id": 1,
+        "name": "1"
+      },
+      "specialWorkspace": {
+        "id": 0,
+        "name": ""
+      },
+      "reserved": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "scale": 1,
+      "transform": 0,
+      "focused": false,
+      "dpmsStatus": true,
+      "vrr": false,
+      "solitary": "0",
+      "solitaryBlockedBy": [
+        "NOTIFICATION",
+        "WINDOWED",
+        "CANDIDATE"
+      ],
+      "activelyTearing": false,
+      "tearingBlockedBy": [
+        "NOT_TORN",
+        "USER",
+        "SUPPORT",
+        "CANDIDATE",
+        "HW_CURSOR"
+      ],
+      "directScanoutTo": "0",
+      "directScanoutBlockedBy": [
+        "USER",
+        "CANDIDATE"
+      ],
+      "disabled": false,
+      "currentFormat": "XRGB8888",
+      "mirrorOf": "none",
+      "availableModes": [],
+      "colorManagementPreset": "srgb",
+      "sdrBrightness": 1,
+      "sdrSaturation": 1,
+      "sdrMinLuminance": 0.2,
+      "sdrMaxLuminance": 80,
+      "hardwareCursorsInUse": true
+    },
+    {
+      "id": 1,
+      "name": "HEADLESS-1",
+      "description": "",
+      "make": "",
+      "model": "",
+      "serial": "",
+      "width": 1920,
+      "height": 1080,
+      "physicalWidth": 0,
+      "physicalHeight": 0,
+      "refreshRate": 60.0,
+      "x": 2000,
+      "y": 0,
+      "activeWorkspace": {
+        "id": 2,
+        "name": "2"
+      },
+      "specialWorkspace": {
+        "id": 0,
+        "name": ""
+      },
+      "reserved": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "scale": 1,
+      "transform": 0,
+      "focused": true,
+      "dpmsStatus": true,
+      "vrr": false,
+      "solitary": "0",
+      "solitaryBlockedBy": [
+        "NOTIFICATION",
+        "WINDOWED",
+        "CANDIDATE"
+      ],
+      "activelyTearing": false,
+      "tearingBlockedBy": [
+        "NOT_TORN",
+        "USER",
+        "SUPPORT",
+        "CANDIDATE"
+      ],
+      "directScanoutTo": "0",
+      "directScanoutBlockedBy": [
+        "USER",
+        "SW",
+        "CANDIDATE"
+      ],
+      "disabled": false,
+      "currentFormat": "XRGB8888",
+      "mirrorOf": "none",
+      "availableModes": [
+        "1920x1080@60.00Hz"
+      ],
+      "colorManagementPreset": "srgb",
+      "sdrBrightness": 1,
+      "sdrSaturation": 1,
+      "sdrMinLuminance": 0.2,
+      "sdrMaxLuminance": 80,
+      "hardwareCursorsInUse": true
+    }
+  ],
+  "signal": {
+    "passed": true,
+    "checks": [
+      "native Signal toast navigates frame, both header buttons, Open and Reply with hjkl",
+      "native passive toast, actual quick-reply keyboard/Unicode/Shift+Enter/Escape, focus return, two accents preview/cancel/save preserve draft",
+      "native archived Signal card navigates both button rows and returns to its frame",
+      "ordinary open focuses list; native j/k/Enter/l/Escape; notification action routes to composer in recreated window",
+      "native thumbnail click opens media with details/actions; Escape returns focus to thumbnail",
+      "real large/small native window and scale 1.5 render correctly; hjkl remains text",
+      "second monitor routing, mixed scales and hotplug preserve draft; lock closes conversation and redacts new notification",
+      "native group @ query filters members; Enter inserts a mention without sending or adding a separate button",
+      "native reload preserves committed accents/history/draft with one new receiver"
+    ],
+    "captures": [
+      "notification-action-navigation.png",
+      "reply-preview.png",
+      "reply-saved.png",
+      "notification-center-navigation.png",
+      "messages-empty-composer.png",
+      "attachment-preview.png",
+      "messages-large.png",
+      "messages-multiline.png",
+      "conversation-details.png",
+      "messages-small.png",
+      "messages-scale-1.5.png",
+      "messages-second-output.png",
+      "locked-redacted.png",
+      "messages-after-reload.png",
+      "messages-mention-picker.png",
+      "messages-inline-mention.png"
+    ],
+    "livePhone": false,
+    "ime": "Unicode via wtype; preedit contract tested in Qt separately; physical IME engine remains S12"
+  },
+  "result": "PASS",
+  "process_exit_codes": [
+    0,
+    0
+  ],
+  "remaining_child_pids": [],
+  "elapsed_s": 16.433747759001562
+}

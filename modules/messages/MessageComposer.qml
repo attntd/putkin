@@ -29,10 +29,10 @@ Item {
         id: modeStrip
         width: parent.width
         height: visible ? 40 : 0
-        visible: root.editing || (root.adapter && !!root.adapter.quotedMessage) || (root.adapter && root.adapter.mentionMembers.length > 0)
+        visible: root.editing || (root.adapter && !!root.adapter.quotedMessage)
         spacing: Metrics.space8
         Text {
-            width: Math.max(0, parent.width - cancelMode.width - mentionButton.width - 16)
+            width: Math.max(0, parent.width - cancelMode.width - Metrics.space8)
             height: parent.height
             verticalAlignment: Text.AlignVCenter
             text: root.editing ? qsTr("Edycja wiadomości") : root.adapter && root.adapter.quotedMessage ? root.adapter.quotedMessage.author + ": " + root.adapter.quotedMessage.text : ""
@@ -51,43 +51,17 @@ Item {
             enabled: !root.adapter || !root.adapter.editBusy
             onClicked: { if (root.editing) root.adapter.cancelEdit(); else root.adapter.cancelQuote(); editor.forceActiveFocus(focusReason); }
         }
-        UI.NavigationButton {
-            id: mentionButton
-            objectName: "mentionMember"
-            visible: root.adapter && root.adapter.mentionMembers.length > 0
-            width: visible ? implicitWidth : 0
-            text: "@"
-            onClicked: members.open()
-        }
     }
-    Controls.Popup {
+    MentionPicker {
         id: members
-        objectName: "mentionPicker"
-        y: -Math.min(240, memberList.contentHeight)
-        width: Math.min(root.width, 320)
-        height: Math.min(240, memberList.contentHeight + 16)
-        padding: Metrics.space8
-        modal: true
-        focus: true
-        closePolicy: Controls.Popup.CloseOnEscape | Controls.Popup.CloseOnPressOutside
-        background: UI.PanelFrame {}
-        contentItem: ListView {
-            id: memberList
-            clip: true
-            model: root.adapter ? root.adapter.mentionMembers : []
-            delegate: UI.NavigationButton {
-                required property var modelData
-                objectName: "mentionChoice"
-                width: memberList.width
-                text: modelData.name
-                onClicked: { root.adapter.addMention(modelData, editor.cursorPosition); members.close(); editor.forceActiveFocus(focusReason); }
-            }
-        }
+        adapter: root.adapter
+        editor: root.editor
     }
     Controls.ScrollView {
         anchors { left: attachButton.right; right: parent.right; top: attachmentStrip.bottom; bottom: parent.bottom; leftMargin: Metrics.space8 }
         clip: true
         Controls.ScrollBar.horizontal.policy: Controls.ScrollBar.AlwaysOff
+        Controls.ScrollBar.vertical: UI.ScrollBar {}
         Controls.TextArea {
             id: editor
             objectName: "messageEditor"
@@ -109,6 +83,7 @@ Item {
             Accessible.name: qsTr("Wiadomość")
             Keys.forwardTo: [input]
             Keys.onPressed: event => {
+                if (members.handleKey(event)) return;
                 if (event.key === Qt.Key_Escape && root.editing) { root.adapter.cancelEdit(); return; }
                 if (event.key === Qt.Key_V && (event.modifiers & Qt.ControlModifier) && ((event.modifiers & Qt.ShiftModifier) || !editor.canPaste) && root.adapter) {
                     event.accepted = true; root.adapter.pasteImage();

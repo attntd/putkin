@@ -1,4 +1,4 @@
-"""Receipt reducer and durable local reads; no body copies or inferred reads."""
+"""Receipt reducer and durable, conversation-scoped local reads."""
 from signal_events import identifier, integer, service_id
 from signal_transport import Failure
 import signal_retention
@@ -114,16 +114,36 @@ def mark_visible(store, account, params):
     if not store.conversation_item(account, cid)["canRead"]:
         return {"messageIds": []}
     ids = params.get("messageIds")
-    if not isinstance(ids, list) or not 1 <= len(ids) <= 100:
-        raise Failure("invalid_request")
-    ids = list(dict.fromkeys(identifier(mid) for mid in ids))
+    through = params.get("throughMessageId")
+    if through is not None:
+        through = identifier(through)
+        if ids is not None:
+            raise Failure("invalid_request")
+    else:
+        if not isinstance(ids, list) or not 1 <= len(ids) <= 100:
+            raise Failure("invalid_request")
+        ids = list(dict.fromkeys(identifier(mid) for mid in ids))
     with store.transaction():
         rows = []
-        for mid in ids:
-            row = store.db.execute("SELECT * FROM messages WHERE message_id=? AND conversation_id=?", (mid, cid)).fetchone()
-            if not row:
+        more = False
+        if through is not None:
+            anchor = store.db.execute("SELECT sort_ms,message_id FROM messages WHERE message_id=? AND conversation_id=?", (through, cid)).fetchone()
+            if not anchor:
                 raise Failure("not_found")
-            rows.append(row)
+            # Bound each transaction/response; the active view requests the next
+            # batch using the same observed endpoint, never a moving timestamp.
+            rows = store.db.execute("""SELECT * FROM messages WHERE conversation_id=?
+                AND direction='incoming' AND read_at_ms IS NULL AND kind IN ('text','media')
+                AND (sort_ms,message_id)<=(?,?) ORDER BY sort_ms,message_id LIMIT 101""",
+                                    (cid, anchor["sort_ms"], anchor["message_id"])).fetchall()
+            more = len(rows) > 100
+            rows = rows[:100]
+        else:
+            for mid in ids:
+                row = store.db.execute("SELECT * FROM messages WHERE message_id=? AND conversation_id=?", (mid, cid)).fetchone()
+                if not row:
+                    raise Failure("not_found")
+                rows.append(row)
         marked = []
         for row in rows:
             if row["direction"] != "incoming" or row["read_at_ms"] is not None or row["kind"] not in ("text", "media"):
@@ -142,7 +162,7 @@ def mark_visible(store, account, params):
             store.changed("message.read", accountId=account, conversationId=cid, messageId=row["message_id"])
         if marked:
             store.changed("conversation.changed", accountId=account, conversationId=cid)
-    return {"messageIds": marked}
+    return {"messageIds": marked, **({"hasMore": more} if through is not None else {})}
 
 
 def next_batch(store, account):

@@ -1,0 +1,17 @@
+bus:
+dbus-daemon[91223]: [session uid=1000 pid=91223 pidfd=4] Connection :1.1 (uid=1000 pid=91233 comm="/usr/bin/python3 -B /home/attntd/projects/putkin/s") became a monitor.
+dbus-daemon[91223]: [session uid=1000 pid=91223 pidfd=4] Monitoring connection :1.1 closed.
+dbus-daemon[91223]: [session uid=1000 pid=91223 pidfd=4] Connection :1.7 (uid=1000 pid=91475 comm="/usr/bin/python3 -B /home/attntd/projects/putkin/s") became a monitor.
+dbus-daemon[91223]: [session uid=1000 pid=91223 pidfd=4] Monitoring connection :1.7 closed.
+
+shell:
+  INFO: Launching config: "/home/attntd/projects/putkin/signal-receipts-test.qml"
+  INFO: Shell ID: "d12771680dc951be46a1486b465354db" Path ID "d12771680dc951be46a1486b465354db"
+  INFO: Saving logs to "/tmp/pk-s06-_zjwoofo/runtime/quickshell/by-id/0ey18f0vlt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  INFO: Reloading configuration...
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks

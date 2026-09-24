@@ -1,0 +1,10 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::SignalNotifications::initTestCase()
+PASS   : qmltestrunner::SignalNotifications::test_action_navigation_after_conversation_refresh(toast-mute)
+PASS   : qmltestrunner::SignalNotifications::test_action_navigation_after_conversation_refresh(toast-close)
+PASS   : qmltestrunner::SignalNotifications::test_action_navigation_after_conversation_refresh(center-mute)
+PASS   : qmltestrunner::SignalNotifications::test_action_navigation_after_conversation_refresh(center-close)
+PASS   : qmltestrunner::SignalNotifications::cleanupTestCase()
+Totals: 6 passed, 0 failed, 0 skipped, 0 blacklisted, 5635ms
+********* Finished testing of qmltestrunner *********

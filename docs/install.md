@@ -1,5 +1,19 @@
 # Instalacja Putkina
 
+## Odczyt, przewijanie i wzmianki — 2026-09-24
+
+Aktywne **`20260924-082540-076b1e15099c`** po
+`scripts/install --shell-only --offline --activate --no-prune`.
+Siedem zmienionych plików runtime, walidacja 172 QML, 363 pliki zgodne
+ze źródłami. Ustawienia, skróty, SQLite v7 i dane konta zachowane.
+Dwa odczyty w odstępie 10 s: jedna stabilna instancja i jej właściciel
+powiadomień, Signal `ready`, gotowe idle. Dwa startowe ostrzeżenia
+Quickshell/Hyprland o nieśledzonym oknie/workspace nie powtarzały się;
+brak błędów QML. [Log](evidence/messages-read-mentions-20260924/install-activation.log),
+[odbiór](evidence/messages-read-mentions-20260924/live-activation.json).
+Poprzednie `20260923-161925-3ad24f3592b5` zachowano; powrót przez
+`scripts/install --restore --activate`. Nie usuwano starszych wydań.
+
 ## Dolne akcje Signala — 2026-09-23
 
 Aktywne **`20260923-161925-3ad24f3592b5`** po

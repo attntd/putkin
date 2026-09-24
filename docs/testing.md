@@ -1,5 +1,24 @@
 # Testowanie Putkin
 
+## Odczyt, przewijanie i wzmianki — 2026-09-24
+
+`tst_signal_receipts.qml` obejmuje odczyt starszych stron przy końcu,
+ponowne otwarcie, przerwanie porcjowania po ukryciu oraz zachowanie
+50-elementowej strony. Python `test_signal_receipts.py` sprawdza granicę,
+porcje 100+4, restart, idempotencję, obcą rozmowę i wykluczenie nowszego
+wpisu. `scripts/test-signal-receipts` sprawdza też prawdziwą aktywność Qt,
+minimalizację, blokadę, SQLite, CLI i reload na prywatnym koncie testowym.
+
+`tst_signal_interactions.qml` wpisuje `@`, filtruje osoby, wybiera przez
+Enter/hjkl lub kliknięcie i sprawdza fokus, UTF-16, pozycję kursora,
+szkic po odtworzeniu, edycję, Escape, Shift+Enter, e-mail i zmianę rozmowy.
+`tst_messages.qml` sprawdza zanik suwaka przy bezruchu/hover oraz pokazanie
+po klawiszu. `scripts/test-messages-input` sprawdza widoczność podczas
+rzeczywistych zdarzeń touchpada i zanik po bezwładności/kółku.
+Prywatny `scripts/test-wayland --nested --signal` obejmuje natywne `@Al`
+i Enter oraz zrzuty listy osób i wstawionej wzmianki. Wszystkie wysyłki
+w testach trafiają wyłącznie do atrap.
+
 ## Dolne akcje Signala — 2026-09-23
 
 `tst_signal_notifications.qml` tworzy karty również przez asynchroniczne

@@ -1,0 +1,43 @@
+{
+  "focus": "notificationAction-0",
+  "center": false,
+  "screen": "HEADLESS-1",
+  "stackFound": true,
+  "stackCount": 1,
+  "variants": [
+    {
+      "name": "WAYLAND-1",
+      "loaded": false,
+      "children": []
+    },
+    {
+      "name": "HEADLESS-1",
+      "loaded": true,
+      "children": [
+        {
+          "name": "",
+          "count": 1,
+          "cardAt": "function"
+        },
+        {
+          "name": "",
+          "count": -1,
+          "cardAt": "undefined"
+        }
+      ]
+    }
+  ],
+  "firstAction": "notificationAction-0",
+  "actions": [
+    {
+      "name": "notificationAction-0",
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "name": "notificationAction-1",
+      "visible": true,
+      "enabled": true
+    }
+  ]
+}

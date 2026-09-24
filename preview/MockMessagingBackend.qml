@@ -128,7 +128,10 @@ MockSignalBackend {
             result = {items: values.slice(start, end).reverse(), nextCursor: start ? String(start) : null};
         } else if (method === "messages.read") {
             const values = history[cid] || [];
-            const marked = values.filter(v => params.messageIds.includes(v.messageId) && v.direction === "incoming" && v.unread);
+            const end = params.throughMessageId ? values.findIndex(v => v.messageId === params.throughMessageId) : -1;
+            const candidates = values.filter((v, i) => (params.throughMessageId ? i <= end : params.messageIds.includes(v.messageId))
+                && v.direction === "incoming" && v.unread && ["text", "media"].includes(v.kind));
+            const marked = candidates.slice(0, 100);
             marked.forEach(v => {
                 v.unread = false;
                 Qt.callLater(() => {
@@ -138,6 +141,7 @@ MockSignalBackend {
             });
             rows.find(v => v.conversationId === cid).unreadCount = values.filter(v => v.direction === "incoming" && v.unread).length;
             result = {messageIds: marked.map(v => v.messageId)};
+            if (params.throughMessageId) result.hasMore = candidates.length > 100;
             Qt.callLater(() => root.event("conversation.changed", {accountId: root.accountId, conversationId: cid}));
         } else if (method === "message.get") {
             result = Object.values(history).reduce((all, items) => all.concat(items), []).find(v => v.messageId === params.messageId);

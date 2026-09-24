@@ -1,0 +1,11 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::AccentGroups::initTestCase()
+PASS   : qmltestrunner::AccentGroups::test_each_group_has_its_own_origin()
+PASS   : qmltestrunner::AccentGroups::test_live_palette_change_and_outline_contrast()
+PASS   : qmltestrunner::AccentGroups::test_one_diagonal_field_across_controls_and_frame()
+PASS   : qmltestrunner::AccentGroups::test_resize_move_and_scroll_update_shared_coordinates()
+PASS   : qmltestrunner::AccentGroups::test_wide_group_keeps_vertical_color_progression()
+PASS   : qmltestrunner::AccentGroups::cleanupTestCase()
+Totals: 7 passed, 0 failed, 0 skipped, 0 blacklisted, 72ms
+********* Finished testing of qmltestrunner *********

@@ -1,0 +1,32 @@
+{
+  "focus": "",
+  "center": false,
+  "screen": "",
+  "stackFound": true,
+  "stackCount": 0,
+  "variants": [
+    {
+      "name": "WAYLAND-1",
+      "loaded": false,
+      "children": []
+    },
+    {
+      "name": "HEADLESS-1",
+      "loaded": true,
+      "children": [
+        {
+          "name": "",
+          "count": 0,
+          "cardAt": "function"
+        },
+        {
+          "name": "",
+          "count": -1,
+          "cardAt": "undefined"
+        }
+      ]
+    }
+  ],
+  "firstAction": "",
+  "actions": []
+}

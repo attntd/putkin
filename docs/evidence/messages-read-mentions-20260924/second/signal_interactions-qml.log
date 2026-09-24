@@ -1,0 +1,17 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::SignalInteractions::initTestCase()
+PASS   : qmltestrunner::SignalInteractions::test_edit_cancel_and_error_keep_normal_draft_and_keyboard_semantics()
+PASS   : qmltestrunner::SignalInteractions::test_inline_mention_replaces_token_at_cursor_in_edit_and_shifts_utf16_ranges()
+PASS   : qmltestrunner::SignalInteractions::test_inline_mentions_escape_shift_enter_email_and_route_change()
+FAIL!  : qmltestrunner::SignalInteractions::test_inline_mentions_filter_keyboard_menu_and_pointer_focus() Compared values are not the same
+   Actual   (): 1
+   Expected (): 0
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_signal_interactions.qml(132)]
+PASS   : qmltestrunner::SignalInteractions::test_picker_and_saved_composition_survive_adapter_recreation()
+PASS   : qmltestrunner::SignalInteractions::test_react_replace_remove_quote_and_unicode_mention()
+PASS   : qmltestrunner::SignalInteractions::test_safe_styles_and_live_accents()
+PASS   : qmltestrunner::SignalInteractions::test_typing_only_focused_editor_rate_limited_and_stops_on_blur_lock_send()
+PASS   : qmltestrunner::SignalInteractions::cleanupTestCase()
+Totals: 9 passed, 1 failed, 0 skipped, 0 blacklisted, 4804ms
+********* Finished testing of qmltestrunner *********

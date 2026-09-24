@@ -1,5 +1,22 @@
 # Architektura Putkin
 
+## Odczyt i wzmianki Message Huba — 2026-09-24
+
+`MessageHistory` zachowuje bramkę aktywnego okna i 250 ms stabilnego widoku.
+Przy widocznym końcu przekazuje adapterowi ostatnie pokazane ID.
+`messages.read` z `throughMessageId` zapisuje po 100 starszych rekordów
+w SQLite; granica jest sprawdzana w obrębie konta i rozmowy. Następna
+porcja wymaga nadal aktywnego widoku. Starsze zmienione rekordy nie
+powiększają załadowanego zakresu historii ani nie tworzą dziur w paginacji.
+Read receipts, własna synchronizacja, retencja i powiadomienia korzystają
+z dotychczasowej transakcji/kolejki, bez nowego licznika lub migracji bazy.
+
+`MentionPicker` obserwuje tekst i kursor standardowego TextArea.
+Niemodalny Popup pozwala filtrować osoby bez utraty fokusu edytora;
+wybrana osoba zastępuje wpisany token. Adapter utrzymuje zakresy UTF-16
+szkicu i edycji. Przyciski korzystają z ControlInput/FocusIndicator
+i wspólnego gradientu listy. Widoki nie uruchamiają poleceń.
+
 ## Karty powiadomień i fokus — 2026-09-23
 
 `NotificationFocus.focus()` wybiera toasty przed centrum; istniejący IPC

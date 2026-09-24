@@ -1,5 +1,18 @@
 # Środowisko i rozwój
 
+## Odczyt, przewijanie i wzmianki — 2026-09-24
+
+Ponownie sprawdzono `qmake6 -query QT_VERSION`: **6.11.2** oraz
+`qs --version`: **0.3.1**. Zweryfikowano oficjalną dokumentację Qt 6.11:
+[ScrollBar](https://doc.qt.io/qt-6.11/qml-qtquick-controls-scrollbar.html),
+[Popup](https://doc.qt.io/qt-6.11/qml-qtquick-controls-popup.html),
+[TextEdit](https://doc.qt.io/qt-6.11/qml-qtquick-textedit.html)
+i [ListView](https://doc.qt.io/qt-6.11/qml-qtquick-listview.html).
+Popup zachowuje fokus edytora; lista korzysta z currentIndex i
+positionViewAtIndex. Widoczność suwaka reaguje na position/pressed,
+ponieważ lokalny Qt ustawia active także przy hover. Signal zachowuje
+dotychczasowe API sendReceipt; rozszerzenie dotyczy prywatnego bridge.
+
 ## Pasek i karty powiadomień — 2026-09-23
 
 Ponowna weryfikacja korekty dolnych akcji: Qt **6.11.2** i Quickshell

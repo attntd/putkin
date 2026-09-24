@@ -205,6 +205,27 @@ class ReceiptTests(unittest.TestCase):
             reads.finish_batch(self.store, self.account, batch, {"timestamp": self.now, "results": []}, None)
         self.assertIsNone(reads.next_batch(self.store, self.account))
 
+    def test_read_through_is_bounded_scoped_persistent_and_excludes_newer_arrivals(self):
+        cid = self.conversation("group", GROUP)
+        for i in range(105):
+            self.store.receive(self.account, event(timestamp=1790000002000 + i, group=GROUP))
+        ids = [r[0] for r in self.store.db.execute("SELECT message_id FROM messages ORDER BY sort_ms,message_id")]
+        params = {"conversationId": cid, "throughMessageId": ids[103]}
+        first = reads.mark_visible(self.store, self.account, params)
+        self.assertEqual(len(first["messageIds"]), 100)
+        self.assertTrue(first["hasMore"])
+        second = reads.mark_visible(self.store, self.account, params)
+        self.assertEqual(len(second["messageIds"]), 4)
+        self.assertFalse(second["hasMore"])
+        self.reopen()
+        self.assertEqual(self.store.conversation_item(self.account, cid)["unreadCount"], 1)
+        self.assertTrue(self.message(ids[104])["unread"])
+        self.assertEqual(reads.mark_visible(self.store, self.account, params)["messageIds"], [])
+        with self.assertRaisesRegex(Failure, "not_found"):
+            reads.mark_visible(self.store, self.account, {**params, "conversationId": self.conversation()})
+        with self.assertRaisesRegex(Failure, "invalid_request"):
+            reads.mark_visible(self.store, self.account, {**params, "messageIds": ids[:1]})
+
     def test_invalid_receipt_flags_and_wrong_submission_result_never_claim_success(self):
         wire = receipt("delivery", [1790000002000])
         wire["params"]["result"]["envelope"]["receiptMessage"]["isDelivery"] = False

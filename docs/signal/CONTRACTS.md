@@ -320,6 +320,24 @@ Dowody lokalne i granice odbioru: [S09](../evidence/signal/S09/README.md).
   brak fałszywych procentów. Ctrl+Shift+V wkleja obraz; zwykłe Ctrl+V
   zachowuje tekst, a przy braku tekstu korzysta z obrazu.
 
+### Korekta odczytu i wzmianek — 2026-09-24
+
+Na polecenie użytkownika widoczny koniec aktywnej rozmowy oznacza odczyt
+wszystkich wcześniejszych tekstów i zwykłych mediów, także poza pamięcią
+ListView. Pozostają bramki aktywności, odblokowania, widoczności i 250 ms
+bez przewijania. Starsza, przewinięta historia nadal zgłasza dokładne
+widoczne ID. Granica wskazuje ostatnią pokazaną wiadomość; nowsze wpisy
+nie zostają objęte starszym żądaniem. Porcje po 100 wymagają aktywnego
+widoku, a zatwierdzony odczyt jest trwały i idempotentny.
+To zmienia wcześniejszy warunek S06 o odczycie wyłącznie pojedynczych
+widocznych dymków. Odczyt centrum i quick reply nadal są odrębne.
+
+Wzmianki wybiera się po wpisaniu `@` w edytorze grupy, bez osobnego
+przycisku. Filtrowanie zachowuje wpisywanie liter; Enter zatwierdza osobę,
+nie wysyła wiadomości. Lista obsługuje mysz, strzałki oraz po Tab h/j/k/l.
+Escape anuluje wybór, Shift+Enter i IME zachowują edycję. Zastąpienie
+tokenu utrzymuje poprawne zakresy UTF-16 w szkicu, cytacie i edycji.
+
 ### Raporty i odczyt — S06
 
 - `signal_receipts.py` redukuje delivery/read/viewed i własne read sync
@@ -347,7 +365,8 @@ Dowody lokalne i granice odbioru: [S09](../evidence/signal/S09/README.md).
   sesja i zakończony fade. `MessageHistory` sprawdza rzeczywiste pozycje
   delegatów, pomija cache poza viewportem, listę na wąskim ekranie,
   tworzenie rozmowy i czas przewijania/przywracania kotwicy. Po 250 ms
-  stabilnego widoku przesyła dokładne ID, nie zakres timestampów.
+  stabilnego widoku przesyła dokładne ID. Korekta 2026-09-24 dodaje
+  odczyt wcześniejszej historii na podstawie ID widocznego końca rozmowy.
   Zwykły bąbelek musi mieścić się w pionie; większy niż viewport kwalifikuje
   się przy widocznym końcu. Nie jest to pomiar uwagi ani dowód przeczytania.
 - Czytane są tekst i zwykłe media; placeholdery retencji/view-once nie
@@ -810,9 +829,10 @@ Enter wysyła, Shift+Enter nowa linia; Enter podczas preedit IME zatwierdza
 IME. hjkl są literami w edytorze. Brak tooltipów i instruktażowych tekstów.
 
 Odczyt centrum jest lokalnym stanem powiadomień. Odczyt Signal następuje
-dopiero, gdy konkretne wiadomości są widoczne w aktywnym, odblokowanym
-oknie rozmowy; sama selekcja rozmowy, otwarcie centrum ani quick reply
-nie oznaczają całej rozmowy jako przeczytanej. Telefonowe read sync
+dopiero w aktywnym, odblokowanym oknie rozmowy. Widoczny koniec rozmowy
+obejmuje wcześniejszą historię; poza końcem czytane są widoczne wpisy.
+Sama selekcja, otwarcie centrum ani quick reply nie oznaczają odczytu.
+Telefonowe read sync
 aktualizuje odpowiednie rekordy i unread bez toasta. Sent sync telefonu
 także nie tworzy toasta.
 

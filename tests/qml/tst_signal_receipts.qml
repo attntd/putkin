@@ -42,6 +42,9 @@ Item {
         function cleanup() { scene.eligible = false; backend.release(); wait(150); view.active = false; wait(100); }
         function test_visible_range_once_and_unread_shared_with_hub() {
             choose();
+            history().followEnd = false;
+            history().positionViewAtIndex(10, ListView.Beginning);
+            wait(100);
             compare(calls().length, 0);
             const visible = history().visibleUnread(); verify(visible.length > 0); verify(visible.length < adapter.messages.count);
             scene.eligible = true;
@@ -51,10 +54,40 @@ Item {
             wait(650); compare(calls().length, 1);
             scene.eligible = false; scene.eligible = true; wait(350); compare(calls().length, 1);
             history().followEnd = false;
-            history().positionViewAtIndex(10, ListView.Beginning);
+            history().positionViewAtIndex(20, ListView.Beginning);
             tryVerify(() => calls().length === 2);
             const all = calls().reduce((ids, call) => ids.concat(call.params.messageIds), []);
             compare(new Set(all).size, all.length);
+        }
+        function test_open_at_end_reads_older_pages_and_reopening_stays_read() {
+            choose();
+            verify(adapter.nextCursor !== null);
+            scene.eligible = true;
+            tryCompare(messageHub, "unreadCount", 1);
+            verify(backend.history["chat-a"].every(m => !m.unread));
+            compare(adapter.messages.count, 50);
+            verify(calls().length > 0);
+            const count = calls().length;
+            choose(); wait(450);
+            compare(calls().length, count);
+            backend.incoming("chat-a");
+            tryCompare(messageHub, "unreadCount", 1);
+        }
+        function test_pending_read_batch_stops_on_hide_and_stale_reply_does_not_touch_other_chat() {
+            choose(); backend.holdResponses = true;
+            scene.eligible = true;
+            tryCompare(backend, "holdResponses", true);
+            tryVerify(() => calls().length === 1);
+            scene.eligible = false;
+            verify(messageHub.openConversation(adapter.address("chat-g")));
+            backend.release(); wait(500);
+            tryVerify(() => adapter.draftReady && !adapter.loading && adapter.selectedRoute.conversationId === "chat-g");
+            compare(calls().length, 1);
+            compare(backend.history["chat-a"].filter(m => m.unread).length, 80);
+            verify(adapter.messages.get(0).unread);
+            scene.eligible = true;
+            tryVerify(() => !adapter.messages.get(0).unread);
+            compare(backend.history["chat-a"].filter(m => m.unread).length, 80);
         }
         function test_gate_loss_during_debounce_hidden_detail_and_closed_view() {
             choose(); scene.eligible = true; wait(70); scene.eligible = false; wait(350);

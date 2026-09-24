@@ -275,6 +275,7 @@ Ponowny audyt źródeł 0.14.8: [adresy i SHA-256](../evidence/signal/S06/api-pr
 | Interfejs | Dane | Znaczenie |
 | --- | --- | --- |
 | `messages.read` | accountId, conversationId, messageIds:[UUID] (1–100) | Zapis tylko podanych incoming text/media; wynik messageIds zawiera nowo odczytane ID. Duplikat zwraca pustą listę. |
+| `messages.read` — koniec rozmowy, 2026-09-24 | accountId, conversationId, throughMessageId:UUID (zamiast messageIds) | Czyta maks. 100 starszych incoming text/media według `(sort_ms,message_id)`, łącznie z granicą. ID granicy musi należeć do konta/rozmowy. Wynik `messageIds` i `hasMore`; kolejne żądanie powtarza tę samą granicę. Nowsze wpisy i placeholdery pozostają bez zmian. |
 | `message.get`, `messages.page` | readAtMs, unread | Odczyt lokalny/własnych urządzeń, odrębny od statusu wysyłki. |
 | Te same rekordy | status: sent/delivered/read/viewed lub dotychczasowe queued/sending/failed/unknown/cancelled | Status potwierdzony; nie regreduje od spóźnionego receipt. Incoming zachowuje status received. |
 | Te same rekordy | receiptSummary:{total,delivered,read,viewed}, receipts:[{serviceId,deliveryTimestampMs,readTimestampMs,viewedTimestampMs}] | Osobno każdy odbiorca. total=null przy nieznanej grupowej liście wysyłki; null timestamp to brak konkretnego raportu, nie brak odczytu. |

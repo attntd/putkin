@@ -1,5 +1,6 @@
 pragma ComponentBehavior: Bound
 import QtQuick
+import QtQuick.Controls.Basic
 import QtTest
 import "../../core"
 import "../../core/ConversationRoute.js" as Route
@@ -43,6 +44,20 @@ Item {
             (view.item as MessagesView).focusInitial();
         }
         function cleanup() { backend.release(); wait(300); view.active = false; settings.cancelEdit(); wait(100); }
+        function test_scrollbar_hides_at_rest_and_hover_and_shows_for_keyboard() {
+            choose();
+            const history = control("messageHistory");
+            const bar = history.ScrollBar.vertical;
+            verify(bar !== null);
+            wait(800);
+            compare(bar.contentItem.opacity, 0);
+            mouseMove(bar, bar.width / 2, bar.height / 2);
+            wait(300); compare(bar.contentItem.opacity, 0);
+            history.forceActiveFocus(Qt.TabFocusReason);
+            keyClick(Qt.Key_K);
+            tryVerify(() => bar.contentItem.opacity > .5);
+            tryCompare(bar.contentItem, "opacity", 0, 1800);
+        }
         function test_initial_list_and_conversation_navigation_data() {
             return [{tag: "wide", width: 980}, {tag: "narrow", width: 320}];
         }
