@@ -49,8 +49,14 @@ więc stos hasła omija go i bezpośrednio włącza system-auth. Ścieżka inclu
 jest absolutna: Linux-PAM przy configDirectory nie szuka względnych include
 w systemowym katalogu. Brak fprintd nie blokuje hasła. Jego zwykłe wyjście
 po bezczynności nie powoduje ciągłego uruchamiania usługi na nowo.
-Zwykła nieudana rozmowa może zostać ponowiona po 2 s; błąd PAM lub limit
-prób pozostawia hasło i czeka z odciskiem na kolejny cykl blokady.
+Zwykła nieudana rozmowa może zostać ponowiona po 2 s. Błąd dostępności
+`PamError.TryAuthFailed` (m.in. PAM_AUTHINFO_UNAVAIL po wznowieniu) ponawia
+rozmowę najwyżej pięć razy, po 0,5/1/2/4/8 s. Sam ten wynik nie oznacza
+niedopasowania i nie barwi glifu na czerwono. Błąd konfiguracji/interfejsu
+PAM, wyczerpanie ponowień oraz `MaxTries` zatrzymują odcisk do kolejnego
+cyklu blokady; samo ponowne wykrycie urządzenia nie omija tego stanu.
+Hasło pozostaje dostępne. Stop, sen i udane uwierzytelnienie anulują timer.
+Nowy cykl usuwa stary kolor błędu oraz stan błędnego hasła.
 
 Przyciemniona tapeta pochodzi z `WallpaperService`, akcent z `Theme`.
 Zegar, data i kwadratowe pole są wyśrodkowane. Glif odcisku przy prawym
@@ -134,9 +140,17 @@ nie ponawiamy jej automatycznie.
 Pomocnik trzyma rzeczywisty deskryptor inhibitora `sleep/delay`.
 `PrepareForSleep(true)` od właściwego logind wstrzymuje uwierzytelnianie
 i żąda blokady; deskryptor jest zwalniany po secure. `false` kończy tę parę,
-odnawia inhibitor i wznawia uwierzytelnianie. Powtórzone/obce sygnały są
+odświeża zegar, odnawia inhibitor i wykrywanie czytnika, a potem wznawia
+uwierzytelnianie. Zdarzenie wznowienia jest wysyłane przed synchronicznymi
+odczytami D-Bus, więc odpowiedź urządzenia nie opóźnia zegara. Powtórzone/obce sygnały są
 odrzucane. Dla snu inicjowanego z zewnątrz logind ogranicza czas delay
 przez InhibitDelayMaxSec — nie jest to bezterminowa gwarancja oczekiwania.
+
+Pasek i wszystkie powierzchnie blokady dostają tę samą datę z jednego
+`SessionClock`. Używa on `SystemClock.Minutes`; wznowienie natychmiast
+odczytuje czas systemowy i ustawia następny termin minutowy przez
+wyłączenie/włączenie zegara. `SessionController` robi to przed DPMS on
+i odświeżeniem jasności. Nie ma dodatkowego pollingu co sekundę.
 
 Pomocnik posiada ScreenSaver na obu standardowych ścieżkach obiektu.
 `Lock`, `SetActive(true)` i sygnał Lock własnej sesji proszą o tę samą

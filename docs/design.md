@@ -1,5 +1,44 @@
 # Wygląd i zakres Putkin
 
+## Fokus, załączniki i lista reakcji — 2026-09-26
+
+Escape na listę rozmów rysuje jedną ramkę wewnątrz wybranego kafelka.
+Sąsiednie kafelki nie dostają obrysu. Ikony reakcji, odpowiedzi i menu
+są wyśrodkowane względem całego dymka.
+
+Zdjęcia i miniatury filmów wypełniają dymek bez etykiety „Załącznik”.
+Pojedyncze zdjęcie zachowuje proporcje w granicach podglądu, kilka zdjęć
+tworzy mozaikę; każdy plik pozostaje dostępny. Podpis jest pod mediami.
+Wiadomość z samym zdjęciem ma HH:mm na obrazie. Film ma ikonę odtwarzania,
+plik — ikonę, nazwę i rozmiar, audio — play/pause, pozycję i przewijanie.
+Stany przygotowania i niedostępności pozostają widoczne.
+
+Kliknięcie dodanej reakcji pokazuje osobny popup z samymi osobami,
+które dodały wskazane emoji. Daty, godziny i raporty pozostają w akcji
+Informacje. Bez dodatkowych tekstów pomocniczych i tooltipów.
+
+## Kolejność i akcje wiadomości — 2026-09-26
+
+Historia pokazuje HH:mm, a kolejność bierze z przyjęcia wiadomości, bez
+przestawiania po ACK. Obok dymka, po stronie środka okna, pojawiają się
+ikony Signal Desktop 8.27.0: serce z plusem, odpowiedź i trzy kropki.
+Są dostępne przez wskaźnik i klawiaturę. Menu i reakcje są popupami
+na Overlay, nie powiększają dymka. Menu ma kolejność Przekaż, Edytuj,
+Zaznacz, Skopiuj tekst, Przypnij/Odepnij, Informacje, Usuń, zgodnie
+z uprawnieniami wiadomości. Reakcje mają sześć emoji i pełny wybór.
+Fokus i kolory korzystają ze wspólnych kontrolek; bez tooltipów.
+[Pełny zakres](signal/MESSAGE_ACTIONS.md).
+
+## Rozmowy głosowe Signal — 2026-09-26
+
+Słuchawka w nagłówku dostępnej rozmowy 1:1 rozpoczyna połączenie. Pasek
+nad listą i historią pokazuje rozmówcę, stan/czas oraz Odbierz, Odrzuć,
+Rozłącz i mikrofon. Jest niezależny od wybranej rozmowy i szerokości okna.
+Incoming nie przejmuje fokusu. Klawiatura używa h/j/k/l i Enter oraz
+wspólnego FocusIndicator; kliknięcia nie zostawiają ramki. DND usuwa toast,
+a blokada dane rozmówcy z powiadomień. Bez tooltipów i tekstów pomocniczych.
+[Pełny kontrakt](signal/CALLS.md).
+
 ## Odczyt, przewijanie i wzmianki — 2026-09-24
 
 Po pokazaniu końca aktywnej rozmowy wcześniejsze wiadomości tekstowe

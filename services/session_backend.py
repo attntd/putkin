@@ -269,9 +269,11 @@ class SessionBackend:
                 self.release_delay()
         elif not sleeping and self.sleeping:
             self.sleeping = False
-            self.emit({"hold": False})
-            self.refresh()
+            # Refresh visible time before any synchronous D-Bus discovery.
+            # Keep PAM paused until reader discovery and the delay lease settle.
             self.emit({"resumed": True})
+            self.refresh()
+            self.emit({"hold": False})
 
     def ask_lock(self, reason):
         self.token += 1

@@ -10,6 +10,9 @@ QtObject {
     property bool enabled: false
     property string secret: ""
     property bool delivered: false
+    property int fingerprintError: -1
+    property int recoveryAttempts: 0
+    property bool fingerprintBlocked: false
     readonly property bool passwordBusy: password.active
     signal succeeded(int epoch, string method)
     signal failed(int epoch, string method)
@@ -17,8 +20,10 @@ QtObject {
     function begin(value: int): void {
         stop();
         epoch = value;
+        recoveryAttempts = 0;
+        fingerprintBlocked = false;
         enabled = true;
-        if (fingerprintAvailable) finger.start();
+        startFingerprint();
     }
     function stop(): void {
         enabled = false;
@@ -26,6 +31,11 @@ QtObject {
         retry.stop();
         password.abort();
         finger.abort();
+    }
+    function startFingerprint(): void {
+        if (!enabled || !fingerprintAvailable || fingerprintBlocked || finger.active) return;
+        fingerprintError = -1;
+        finger.start();
     }
     function submit(value: int, text: string): bool {
         if (!enabled || value !== epoch || password.active) return false;
@@ -61,27 +71,38 @@ QtObject {
     readonly property PamContext finger: PamContext {
         configDirectory: root.configDirectory
         config: "putkin-fingerprint"
+        onError: error => { root.fingerprintError = error; }
         onPamMessage: {
-            if (responseRequired) { abort(); root.failed(root.epoch, "fingerprint"); }
+            if (!root.enabled) return;
+            if (responseRequired) { root.fingerprintBlocked = true; abort(); root.failed(root.epoch, "fingerprint"); }
             else if (messageIsError && root.enabled) root.failed(root.epoch, "fingerprint");
         }
         onCompleted: result => {
             if (!root.enabled) return;
             if (result === PamResult.Success) root.succeeded(root.epoch, "fingerprint");
+            else if (result === PamResult.Error) {
+                // A reader still waking up can return PAM_AUTHINFO_UNAVAIL
+                // before a scan. This is not a rejected fingerprint.
+                if (root.fingerprintError === PamError.TryAuthFailed && root.recoveryAttempts < 5) {
+                    root.retry.interval = 500 * Math.pow(2, root.recoveryAttempts++);
+                    root.retry.restart();
+                } else root.fingerprintBlocked = true;
+            }
             else {
                 root.failed(root.epoch, "fingerprint");
-                // Retry an ordinary failed scan. Errors/MaxTries wait for the
-                // next lock, leaving password authentication available.
-                if (result === PamResult.Failed) root.retry.restart();
+                if (result === PamResult.Failed) {
+                    root.retry.interval = 2000;
+                    root.retry.restart();
+                } else root.fingerprintBlocked = true;
             }
         }
     }
     readonly property Timer retry: Timer {
         interval: 2000
-        onTriggered: { if (root.enabled && root.fingerprintAvailable) root.finger.start(); }
+        onTriggered: root.startFingerprint()
     }
     onFingerprintAvailableChanged: {
         if (!fingerprintAvailable) { retry.stop(); finger.abort(); }
-        else if (enabled && !finger.active) finger.start();
+        else if (!retry.running) startFingerprint();
     }
 }

@@ -34,10 +34,6 @@
       "target": "config:fish/conf.d/hyprland_autostart.fish"
     },
     {
-      "source": "apps/fish/functions/fish_greeting.fish",
-      "target": "config:fish/functions/fish_greeting.fish"
-    },
-    {
       "source": "apps/nvim/init.lua",
       "target": "config:nvim/init.lua"
     },

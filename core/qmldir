@@ -18,4 +18,5 @@ ErrorNotifications 1.0 ErrorNotifications.qml
 MessageHub 1.0 MessageHub.qml
 MessagesController 1.0 MessagesController.qml
 SignalNotifications 1.0 SignalNotifications.qml
+SignalCallNotifications 1.0 SignalCallNotifications.qml
 MessagesFocus 1.0 MessagesFocus.qml

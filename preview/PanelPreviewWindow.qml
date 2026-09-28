@@ -30,9 +30,11 @@ FloatingWindow {
     property var bluetooth: Quickshell.env("PUTKIN_BLUETOOTH") === "1" ? mockBluetooth : null
     property var notifications: Quickshell.env("PUTKIN_NOTIFICATIONS") === "1" ? mockNotifications : null
     property var sessionService: Quickshell.env("PUTKIN_SESSION") === "1" ? mockSession : null
+    property var sessionClock: null
+    property var idle: null
     MockSessionBackend { id: mockSessionBackend }
     SessionService { id: mockSession; backend: mockSessionBackend }
-    SessionController { service: root.sessionService; coordinator: scene.coordinator; brightness: root.brightness || mockBrightness }
+    SessionController { service: root.sessionService; coordinator: scene.coordinator; brightness: root.brightness || mockBrightness; clock: root.sessionClock; idle: root.idle }
     MockNotificationBackend { id: mockNotificationBackend }
     NotificationService { id: mockNotifications; backend: mockNotificationBackend; screens: scene.coordinator.screens; monitorService: scene.backend }
     MockBluetoothBackend { id: mockBluetoothBackend }
@@ -83,7 +85,7 @@ FloatingWindow {
         notificationLoader: notificationLoader
         trayMenuComponent: root.trayMenuComponent
         settings: root.settings
-        date: clock.enabled ? clock.date : new Date(2026, 8, 16, 22, 57)
+        date: root.sessionClock ? root.sessionClock.date : clock.enabled ? clock.date : new Date(2026, 8, 16, 22, 57)
         Component.onCompleted: { if (clock.enabled) backend.many(); }
     }
     PanelIpc { coordinator: scene.coordinator }

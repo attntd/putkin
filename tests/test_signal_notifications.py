@@ -123,18 +123,22 @@ class NotificationTests(unittest.TestCase):
         self.store.close(); self.store = None
         path = self.lease.data / "history.sqlite3"
         with closing(sqlite3.connect(path)) as db:
-            for table in ("directory_operations", "directory_avatars", "conversation_preferences", "version_recipients", "interaction_outbox", "message_reactions", "message_versions", "message_metadata", "media_cli_gc", "draft_attachments", "media_files", "read_queue", "read_markers", "receipt_reports", "message_recipients"):
+            for table in ("message_pins", "forward_sources", "directory_operations", "directory_avatars", "conversation_preferences", "version_recipients", "interaction_outbox", "message_reactions", "message_versions", "message_metadata", "media_cli_gc", "draft_attachments", "media_files", "read_queue", "read_markers", "receipt_reports", "message_recipients"):
                 db.execute("DROP TABLE " + table)
             db.execute("DROP TRIGGER attachment_cli_gc")
             db.execute("ALTER TABLE drafts DROP COLUMN composition")
             db.execute("DROP INDEX messages_unread")
             db.execute("DROP INDEX messages_receipt_target")
+            db.execute("DROP INDEX messages_order")
+            db.execute("ALTER TABLE messages DROP COLUMN order_sequence")
+            db.execute("DELETE FROM store_metadata WHERE key='message-order'")
             db.execute("ALTER TABLE messages DROP COLUMN read_at_ms")
             for column in ("expiration_seconds", "expiration_start_ms", "hidden_local"):
                 db.execute("ALTER TABLE messages DROP COLUMN " + column)
             db.execute("DROP TABLE reply_drafts")
             db.execute("DROP TABLE conversation_notifications")
             db.execute("PRAGMA user_version=1")
+            db.commit()
         connect = sqlite3.connect
         def deny(*args, **kwargs):
             db = connect(*args, **kwargs)
@@ -147,7 +151,7 @@ class NotificationTests(unittest.TestCase):
             self.assertEqual(db.execute("PRAGMA user_version").fetchone()[0], 1)
             self.assertFalse(db.execute("SELECT 1 FROM sqlite_master WHERE name='reply_drafts'").fetchone())
         self.store = Store(self.lease)
-        self.assertEqual(self.store.db.execute("PRAGMA user_version").fetchone()[0], 7)
+        self.assertEqual(self.store.db.execute("PRAGMA user_version").fetchone()[0], 8)
         self.assertEqual(self.messages(cid)[0]["messageId"], mid)
 
 

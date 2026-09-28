@@ -1,5 +1,11 @@
 # Signal — kontrakty po audycie S00
 
+## Rozmowy głosowe 1:1 — 2026-09-26
+
+[CALLS.md](CALLS.md) opisuje nowe IPC, interfejs, pin tunelu RingRTC,
+poprawki urządzeń połączonych, budowanie oraz testy i ograniczenia.
+Schemat SQLite v7, polityka retencji 2 i IPC v1 pozostają zgodne.
+
 ## Sterowanie Message Hubem — 2026-09-23
 
 - Zwykłe otwarcie/przywołanie okna z paska, komendy lub skrótu ustawia

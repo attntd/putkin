@@ -3,7 +3,7 @@ return function(bindings)
     dofile(paths.shell .. "/config/menu-keybinds.lua")(bindings.bind, paths.shell .. "/shell.qml")
     local actions = {
         { "SUPER + TAB", "bar focus" },
-        { "SUPER + N", "notifications focus" },
+        { "SUPER + N", "notifications toggle" },
         { "SUPER + SHIFT + L", "session lock" },
         { "SHIFT + PRINT", "actions invoke screenshot" },
         { "SUPER + PRINT", "actions invoke screenshot" },

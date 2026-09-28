@@ -1,5 +1,29 @@
 # Signal — status i przekazanie prac
 
+## Wskaźnik pisania — 2026-09-26
+
+Zgłoszone po wdrożeniu `invalid_config` odtworzono i poprawiono:
+domyślne `signal-cli` wybiera pakiet, a przełącznik nie restartuje usługi.
+53 testy Python, 12 wyników QtTest, 7 grup integracji i 282 QML PASS.
+**Aktywne `20260926-102323-837f360c2241`.** Po odblokowaniu sesji przez
+użytkownika wdrożono poprawkę: dwa odczyty potwierdzają `ready/linked`,
+brak błędów/ostrzeżeń i zachowane ustawienia z włączonym wskaźnikiem.
+[Wyniki i bieżący odbiór](../status.md#wskaźnik-pisania-signal--2026-09-26).
+
+## Rozmowy głosowe 1:1 — 2026-09-26
+
+Zaimplementowane lokalnie: start, odbiór, odrzucenie, rozłączenie,
+mute mikrofonu, pasek poza cyklem życia okna oraz powiadomienia.
+Przypięty tunel RingRTC jest częścią instalacji. Poprawiono device ID
+urządzenia połączonego i ICE, sprzątanie procesów/modułów i spóźnione
+odpowiedzi poprzedniej rozmowy. CLI nadal 0.14.8, retencja 2, SQLite v7.
+**Aktywne `20260926-095602-1adc1e9c40ed`.** Testy izolowane, pakiet
+i aktywacja na pulpicie PASS. Signal `ready/linked`, przypięty tunel
+w środowisku JVM, zachowane ustawienia i Caffeinate `background`.
+Nie wykonano połączenia z rzeczywistym rozmówcą.
+[Pełne wyniki i otwarte kryteria](../status.md#rozmowy-głosowe-signal--2026-09-26),
+[kontrakt i polecenia](CALLS.md).
+
 ## Scalenie do main — 2026-09-21
 
 Commit integracji i poprawek UI: `83a191a`; scalenie zachowuje historię

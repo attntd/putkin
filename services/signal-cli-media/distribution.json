@@ -12,5 +12,5 @@
     "url": "https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.4.1%2B1/OpenJDK25U-jre_x64_linux_hotspot_25.0.4.1_1.tar.gz",
     "sha256": "1731a34baadec5479258ea0202e4d5d865d2efeee60cb0c7d7eb056fe96ca219"
   },
-  "treeSha256": "bcfcebef74761e3c69690d0be6836303c7d7edbd1675395361da765f266f116f"
+  "treeSha256": "4555d3e63fd7ba8e00f719d7983d28b7cecb9c2862167b8912c5e7a139962e40"
 }

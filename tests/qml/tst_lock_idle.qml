@@ -83,6 +83,17 @@ Item {
             pam.succeeded(pam.epoch, "fingerprint"); compare(lock.fingerprintState, "success");
             tryCompare(protocol, "locked", false);
         }
+        function test_resume_discards_old_failure_feedback() {
+            secure();
+            const old = pam.epoch;
+            pam.failed(old, "fingerprint"); pam.failed(old, "password");
+            compare(lock.fingerprintState, "error"); verify(lock.passwordFailed);
+            lock.hold = true;
+            lock.hold = false;
+            compare(lock.fingerprintState, "idle"); verify(!lock.passwordFailed);
+            pam.failed(old, "fingerprint");
+            compare(lock.fingerprintState, "idle"); verify(protocol.secure);
+        }
         function test_fade_keeps_protocol_locked_until_content_disappears() {
             verify(lock.request()); protocol.secure = true;
             tryVerify(() => view.opacity > 0 && view.opacity < 1);

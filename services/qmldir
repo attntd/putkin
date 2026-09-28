@@ -38,6 +38,7 @@ PolkitRequest 1.0 PolkitRequest.qml
 IdleService 1.0 IdleService.qml
 IdleBackend 1.0 IdleBackend.qml
 SessionService 1.0 SessionService.qml
+SessionClock 1.0 SessionClock.qml
 SessionIpc 1.0 SessionIpc.qml
 NightLightBackend 1.0 NightLightBackend.qml
 NightLightService 1.0 NightLightService.qml
@@ -56,6 +57,7 @@ PipewireChannel 1.0 PipewireChannel.qml
 SignalBackend 1.0 SignalBackend.qml
 SignalIpc 1.0 SignalIpc.qml
 SignalService 1.0 SignalService.qml
+SignalCallService 1.0 SignalCallService.qml
 SignalMessagingAdapter 1.0 SignalMessagingAdapter.qml
 SignalReplySession 1.0 SignalReplySession.qml
 MessagesIpc 1.0 MessagesIpc.qml

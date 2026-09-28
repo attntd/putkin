@@ -155,6 +155,17 @@ def _normalize(wire, own_service_id):
                        "body": body, "hidden": hidden, "metadata": {} if hidden else metadata(data, body),
                        "attachment_ids": [text(a["id"], 256) for a in data.get("attachments") or []]})
         return output
+    if data.get("pinMessage") or data.get("unpinMessage"):
+        pin = data.get("pinMessage") or data["unpinMessage"]
+        target_author = pin.get("targetAuthorUuid")
+        if target_author:
+            duration = integer(pin.get("pinDurationSeconds", -1), minimum=-1)
+            if duration == 0 or duration > 2147483647:
+                raise Failure("invalid_event")
+            output.append({**common, "kind": "pin" if data.get("pinMessage") else "unpin", "actor": author,
+                           "author": service_id(target_author), "target_ms": integer(pin["targetSentTimestamp"]),
+                           "duration": duration})
+        return output
     if data.get("remoteDelete"):
         output.append({**common, "kind": "delete", "target_ms": integer(data["remoteDelete"]["timestamp"])})
         return output

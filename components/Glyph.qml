@@ -9,6 +9,7 @@ Item {
     property string section: "list"
     property color color: Theme.text
     property real strokeWidth: 0
+    property var iconCatalog: Paths.icons
     readonly property var metrics: Metrics.iconSections[section] || Metrics.iconSections.list
     readonly property real iconSize: metrics.size
     readonly property real iconPadding: metrics.padding
@@ -17,8 +18,8 @@ Item {
     readonly property real slotSize: canvasWidth + 2 * iconPadding
     readonly property real slotHeight: iconSize + 2 * iconVerticalPadding
     readonly property real pixelRatio: Screen.devicePixelRatio
-    readonly property string renderedSymbol: Paths.icons[symbol] ? symbol : "apps"
-    readonly property var vector: Paths.icons[renderedSymbol]
+    readonly property string renderedSymbol: iconCatalog[symbol] ? symbol : "apps"
+    readonly property var vector: iconCatalog[renderedSymbol] || Paths.icons.apps
     readonly property var viewBox: vector.viewport || vector.box
     readonly property bool ready: shape.status === Shape.Ready
     readonly property color accentColor: accent.color

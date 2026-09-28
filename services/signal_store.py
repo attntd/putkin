@@ -12,19 +12,20 @@ import signal_receipts
 import signal_interactions
 import signal_retention
 import signal_directory
+import signal_pins
 from signal_media import Media, MEDIA_CAPABILITIES, filename
 
 from signal_events import digest, group_id, identifier, integer, message_fingerprint, normalize, service_id, text
 from signal_paths import private_file
 from signal_transport import Failure
 
-SCHEMA_VERSION = 7
+SCHEMA_VERSION = 8
 PENDING_TTL = 7 * 86400 * 1000
 OUTBOX_TTL = 86400 * 1000  # Unconfirmed content is staging, not an eternal archive.
 PAGE_BYTES = 512 * 1024
 CAPABILITIES = ["conversations.page", "messages.page", "message.get", "conversation.open",
                 "conversation.get", "conversation.preferences", "message.send", "draft.get", "draft.set", "operation.status",
-                "operation.cancel", "operation.retry", "reply.draft.get", "reply.draft.set", "conversation.notifications", "messages.read", "message.edit", "message.react", "message.delete", "conversation.expiration", "typing.set"] + MEDIA_CAPABILITIES
+                "operation.cancel", "operation.retry", "reply.draft.get", "reply.draft.set", "conversation.notifications", "messages.read", "message.edit", "message.react", "message.pin", "message.forward", "message.delete", "conversation.expiration", "typing.set"] + MEDIA_CAPABILITIES
 
 
 def new_id():
@@ -123,6 +124,14 @@ class Store:
                             self.db.execute(statement)
                             statement = ""
                     self.db.execute("INSERT OR IGNORE INTO conversation_preferences(conversation_id,initiated) SELECT DISTINCT conversation_id,1 FROM messages WHERE direction='outgoing'")
+            if schema <= 7:
+                with self.transaction():
+                    statement = ""
+                    for line in Path(__file__).with_name("signal_schema_v8.sql").read_text().splitlines(keepends=True):
+                        statement += line
+                        if sqlite3.complete_statement(statement):
+                            self.db.execute(statement)
+                            statement = ""
             if schema <= 4:
                 with self.transaction():
                     for row in self.db.execute("SELECT m.message_id,c.account_id FROM messages m JOIN conversations c USING(conversation_id)").fetchall():
@@ -282,7 +291,7 @@ class Store:
                 "title": title or row["title"] or ("Notatka" if row["kind"] == "note" else row["target"]),
                 "searchText": " ".join(str(contact.get(k) or "") for k in ("name", "profileName", "number")),
                 "activityTimestampMs": row["activity_ms"], "expirationSeconds": row["expiration_seconds"],
-                "muted": signal_replies.muted(self, cid),
+                "muted": signal_replies.muted(self, cid), "pinnedMessages": signal_pins.listed(self, cid),
                 "unreadCount": unread, **signal_directory.access(self, account, row, contact, group)}
 
     def touch(self, account, cid, timestamp):
@@ -308,6 +317,7 @@ class Store:
             stamps = signal_retention.aliases(self, row["conversation_id"], row["author"], row["sent_ms"], reason)
             signal_retention.purge_copies(self, account, row["conversation_id"], row["author"], stamps)
         signal_interactions.purge(self, mid)
+        self.db.execute("DELETE FROM message_pins WHERE message_id=?", (mid,))
         self.db.execute("UPDATE messages SET body=NULL,fingerprint=NULL,kind=?,expires_at_ms=NULL WHERE message_id=?", (reason, mid))
         aids = [r[0] for r in self.db.execute("SELECT attachment_id FROM attachment_refs WHERE message_id=?", (mid,))]
         self.db.execute("DELETE FROM attachment_refs WHERE message_id=?", (mid,))
@@ -326,6 +336,7 @@ class Store:
 
     def cleanup(self):
         now = integer(self.clock())
+        signal_pins.expire(self)
         for table in ("message_versions", "message_reactions"):
             if self.db.execute("DELETE FROM " + table + " WHERE expires_at_ms<=?", (now,)).rowcount:
                 self.purged = True
@@ -368,12 +379,14 @@ class Store:
                 if not event["author"]:
                     _, event["author"] = self.recipient(account, None, event["author_number"])
                 else:
-                    identity = event.get("actor") if event["kind"] == "reaction" else event["author"]
+                    identity = event.get("actor") if event["kind"] in ("reaction", "pin", "unpin") else event["author"]
                     if identity and identity != own["service_id"]:
                         self.recipient(account, identity, event.get("author_number"))
                 kind = event["kind"]
                 if kind == "delete":
                     self.redact(account, cid, event["author"], event["target_ms"], "deleted")
+                elif kind in ("pin", "unpin"):
+                    signal_pins.receive(self, account, cid, event)
                 elif kind in ("edit", "reaction"):
                     signal_interactions.receive(self, account, cid, event)
                 else:
@@ -381,6 +394,12 @@ class Store:
                         signal_retention.configure(self, account, cid, event["expiration_seconds"], event["event_ms"])
                     if kind == "message":
                         self.insert_message(account, cid, event)
+
+    def next_message_order(self):
+        previous = self.db.execute("SELECT value FROM store_metadata WHERE key='message-order'").fetchone()
+        value = int(previous[0]) + 1 if previous else 1
+        self.db.execute("INSERT INTO store_metadata VALUES('message-order',?) ON CONFLICT(key) DO UPDATE SET value=excluded.value", (str(value),))
+        return value
 
     def insert_message(self, account, cid, event):
         key = (cid, event["author"], event["event_ms"])
@@ -412,6 +431,7 @@ class Store:
                          event["direction"], event["origin"], kind, body, fingerprint,
                          "sent" if event["direction"] == "outgoing" else "received"))
         self.db.execute("UPDATE messages SET expiration_seconds=? WHERE message_id=?", (event.get("expiration_seconds", 0), mid))
+        self.db.execute("UPDATE messages SET order_sequence=? WHERE message_id=?", (self.next_message_order(), mid))
         for item in attachments:
             aid = new_id()
             self.db.execute("INSERT OR IGNORE INTO attachments VALUES(?,?,?,?,?)",
@@ -475,14 +495,16 @@ class Store:
         operation = self.db.execute("SELECT operation_id,safe_retry FROM outbox WHERE message_id=?", (mid,)).fetchone()
         metadata = self.db.execute("SELECT payload FROM message_metadata WHERE message_id=?", (mid,)).fetchone()
         return {"systemChanges": json.loads(metadata[0]).get("systemChanges", []) if metadata else [], "messageId": mid, "conversationId": row["conversation_id"], "authorServiceId": row["author"],
-                "sentTimestampMs": row["sent_ms"], "sortTimestampMs": row["sort_ms"], "direction": row["direction"],
+                "sentTimestampMs": row["sent_ms"], "sortTimestampMs": row["sort_ms"], "orderSequence": row["order_sequence"], "direction": row["direction"],
                 "origin": row["origin"], "kind": row["kind"], "text": row["body"], **signal_receipts.summary(self, account, row),
                 "operationId": operation[0] if operation else "", "safeRetry": bool(operation and operation[1]),
                 "readAtMs": row["read_at_ms"], "unread": row["direction"] == "incoming" and row["read_at_ms"] is None and row["kind"] not in ("deleted", "expired"),
                 "hiddenLocal": bool(row["hidden_local"]), "expirationSeconds": row["expiration_seconds"], "expirationStartMs": row["expiration_start_ms"],
                 "canDeleteLocal": not row["hidden_local"], "canDeleteRemote": signal_retention.can_remote_delete(self, account, row),
                 "conflict": bool(row["conflict"]), "expiresAtMs": row["expires_at_ms"], "attachments": media,
-                **signal_interactions.summary(self, account, row)}
+                **signal_interactions.summary(self, account, row),
+                "canForward": row["kind"] in ("text", "media") and row["sent_ms"] is not None and not row["hidden_local"]
+                    and all(a["state"] == "ready" for a in media) and (row["kind"] != "media" or bool(media))}
 
     def page(self, account, params, *, messages=False):
         self.account(account)
@@ -492,7 +514,7 @@ class Store:
         cid = params.get("conversationId") if messages else None
         if messages:
             self.conversation(account, cid)
-        scope = [account, "messages" if messages else "conversations", cid]
+        scope = [account, "messages-order-2" if messages else "conversations", cid]
         cursor = params.get("before")
         position = None
         if cursor is not None:
@@ -503,7 +525,7 @@ class Store:
                 position = (integer(decoded[3]), identifier(decoded[4]))
             except (ValueError, TypeError, Failure):
                 raise Failure("invalid_cursor") from None
-        table, sort, pk, field, value = ("messages", "sort_ms", "message_id", "conversation_id", cid) if messages else (
+        table, sort, pk, field, value = ("messages", "order_sequence", "message_id", "conversation_id", cid) if messages else (
             "conversations", "activity_ms", "conversation_id", "account_id", account)
         # Table/column names are exclusively the constants above, never IPC input.
         sql = f"SELECT * FROM {table} WHERE {field}=?"

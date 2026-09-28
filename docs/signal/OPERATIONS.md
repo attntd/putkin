@@ -1,5 +1,11 @@
 # Signal — instalacja i utrzymanie
 
+## Rozmowy głosowe 1:1 — 2026-09-26
+
+[CALLS.md](CALLS.md) opisuje nowe IPC, interfejs, pin tunelu RingRTC,
+poprawki urządzeń połączonych, budowanie oraz testy i ograniczenia.
+Schemat SQLite v7, polityka retencji 2 i IPC v1 pozostają zgodne.
+
 S12, Linux x86_64/glibc. Kod, CLI i JRE stanowią jedno wydanie Putkina.
 Historia i klucze nie należą do wydania. Wynik bieżącego wdrożenia oraz
 prób z telefonem jest w [STATUS.md](STATUS.md) i [ACCEPTANCE.md](ACCEPTANCE.md).
@@ -37,7 +43,7 @@ scripts/test-signal-cli
 ```
 
 `scripts/prepare-signal` pozwala przygotować runtime wcześniej. Pobiera
-przypięte archiwa i siedem źródeł Java, weryfikuje sumy, uruchamia builder
+przypięte archiwa i osiem źródeł Java, weryfikuje sumy, uruchamia builder
 oraz packager. `build.json` przypina JDK i adresy źródeł, `recipe.json`
 sumy źródeł/originalnych jarów, a `distribution.json` komplet końcowych
 plików i praw wykonania. Sprawdzony wynik musi zachować dotychczasowy pin.

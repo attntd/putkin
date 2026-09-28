@@ -12,6 +12,7 @@ from _install import (ROOT, Session, atomic_link, configure, current, file_state
                       prune, publish, releases, restore_file, source_files, verify)
 from _install import run
 from _signal_install import handoff, inspect, runtime
+from _signal_calls import runtime as call_runtime
 from _preflight import dependencies, install_packages, validate_hyprland
 from _dotfiles import Transaction, plan as config_plan, summary as config_summary
 from _clean_slate import LegacyServices, plan as clean_plan, require_logged_out
@@ -65,6 +66,8 @@ def main():
                                   prepare=not args.dry_run, dry_run=args.dry_run, cache=args.signal_cache,
                                   offline=args.offline, installed=current(store))
     compatibility = inspect(layout, target or args.source)
+    calls_bundle, calls_info = call_runtime(target or args.source, prepare=not args.dry_run, dry_run=args.dry_run,
+                                          cache=args.signal_cache, offline=args.offline, installed=current(store))
     config_source = args.config_source or args.source / "config"
     if (args.config_source or args.clean_slate) and not (config_source / "catalog.json").is_file():
         raise ValueError("Brak catalog.json w źródle konfiguracji.")
@@ -80,7 +83,7 @@ def main():
             "runtime_files": len(json.loads((target / ".putkin-build.json").read_text())["files"]) if target else len(source_files(args.source)),
             "dependencies": dependency_info, "activate": args.activate, "configuration": config_summary(configs),
             "cleanSlate": clean_info,
-            "signalRuntime": signal_info, "signalCompatibility": compatibility}
+            "signalRuntime": signal_info, "signalCalls": calls_info, "signalCompatibility": compatibility}
     if args.dry_run:
         print(json.dumps(plan, indent=2, ensure_ascii=False))
         return 0
@@ -98,7 +101,7 @@ def main():
             if instances():
                 raise RuntimeError("Putkin działa; użyj scripts/install --activate.")
         if target is None:
-            target = prepare(store, args.source, bundle)
+            target = prepare(store, args.source, bundle, calls_bundle)
         else:
             from _install import validate
             validate(target)

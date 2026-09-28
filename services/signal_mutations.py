@@ -2,6 +2,7 @@
 import json
 import uuid
 import signal_retention
+import signal_pins
 from signal_content import emoji, send_fields
 from signal_events import identifier, integer, service_id, text
 import signal_interactions as interactions
@@ -27,7 +28,10 @@ class Mutations:
             raise Failure('message_unavailable')
         if not self.store.conversation_item(account, row['conversation_id'])['canSend']:
             raise Failure('send_unavailable')
-        if kind == 'delete':
+        if kind in ('pin', 'unpin'):
+            if not signal_pins.allowed(self.store, account, row):
+                raise Failure('pin_unavailable')
+        elif kind == 'delete':
             if not signal_retention.can_remote_delete(self.store, account, row):
                 raise Failure('delete_unavailable')
         elif kind == 'edit':
@@ -60,6 +64,11 @@ class Mutations:
                 payload['metadata']['quote'] = quote
         elif kind == 'reaction':
             payload.update(emoji=emoji(params.get('emoji')), removed=params.get('remove') is True)
+        elif kind == 'pin':
+            duration = integer(params.get('durationSeconds'), minimum=-1)
+            if duration not in (-1, 86400, 604800, 2592000):
+                raise Failure('invalid_request')
+            payload['duration'] = duration
         encoded = interactions.encoded(payload)
         with self.store.transaction():
             self.store.cleanup()
@@ -106,6 +115,10 @@ class Mutations:
                     params['attachment'] = self.store.media.send_paths(account, mid)
                     if not params['attachment']:
                         raise Failure('attachment_unavailable')
+            elif row['kind'] in ('pin', 'unpin'):
+                params.update(targetAuthor=payload['author'].removeprefix('aci:'), targetTimestamp=payload['targetMs'])
+                if row['kind'] == 'pin':
+                    params['pinDuration'] = payload['duration']
             elif row['kind'] == 'delete':
                 params['targetTimestamp'] = payload['targetMs']
             else:
@@ -156,6 +169,11 @@ class Mutations:
             if row['kind'] == 'delete':
                 self.store.redact(row['account_id'], row['conversation_id'], payload.get('author', self.store.account(row['account_id'])['service_id']),
                     payload.get('targetMs', self.db.execute('SELECT sent_ms FROM messages WHERE message_id=?', (row['message_id'],)).fetchone()[0]), 'deleted')
+            elif row['kind'] in ('pin', 'unpin') and payload:
+                signal_pins.receive(self.store, row['account_id'], row['conversation_id'], {
+                    'kind': row['kind'], 'author': payload['author'], 'target_ms': payload['targetMs'],
+                    'event_ms': timestamp, 'actor': self.store.account(row['account_id'])['service_id'],
+                    'duration': payload.get('duration', -1)})
             elif payload:  # Retention can have removed content while RPC was inflight.
                 event = {'kind': row['kind'], 'author': payload['author'], 'target_ms': payload['targetMs'], 'event_ms': timestamp}
                 if row['kind'] == 'edit':

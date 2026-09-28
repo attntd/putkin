@@ -1,5 +1,14 @@
 # Signal w Putkinie — roadmapa wdrożenia
 
+## Wybrany zakres — rozmowy głosowe 1:1, 2026-09-26
+
+Na polecenie użytkownika rozszerzamy dotychczasowy zakres o eksperymentalne
+rozmowy dostępne w przypiętym signal-cli 0.14.8: start, incoming, odbiór,
+odrzucenie, hangup, mute oraz pakowanie tunelu i testy. Ten wybór zastępuje
+wcześniejsze wyłączenie wszystkich rozmów głosowych. Grupy, wideo i voice
+notes pozostają poza zakresem. [Kontrakt i źródła API](CALLS.md),
+[wyniki](../status.md#rozmowy-głosowe-signal--2026-09-26).
+
 Przygotowano 2026-09-20 na podstawie rozmowy z użytkownikiem i odczytu
 źródeł `/home/attntd/projects/putkin`. **S00–S11 ukończone lokalnie
 2026-09-20–21 w checkoutcie `/home/attntd/projects/signal`. S12 wdrożony 2026-09-21; podstawowy odbiór telefonu PASS.**
@@ -243,7 +252,7 @@ Te warunki są wymaganiami projektu, a nie twierdzeniem, że obecny kod
 już je spełnia. S00 ma zweryfikować możliwości wybranej wersji.
 
 Poza obowiązkową wersją: import starej historii, wiele kont, rozmowy
-głosowe/wideo, nagrywanie voice notes, Stories, płatności i pełne
+głosowe w grupach, rozmowy wideo, nagrywanie voice notes, Stories, płatności i pełne
 odtworzenie wszystkich ustawień oficjalnego klienta. Przesyłanie plików
 audio/wideo jest częścią S07. Cytaty, wzmianki i wskaźnik pisania
 są uwzględnione w S08. Brak pełnego wsparcia view-once ma być jawny.

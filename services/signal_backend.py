@@ -14,6 +14,7 @@ import signal_receipts
 import signal_retention
 import signal_directory
 from signal_groups import Groups, CAPABILITIES as GROUP_CAPABILITIES
+from signal_calls import Calls, CAPABILITIES as CALL_CAPABILITIES
 
 from signal_paths import StoreLease, directory
 from signal_account import Account, CAPABILITIES as ACCOUNT_CAPABILITIES, DEFAULT_CONFIG
@@ -93,6 +94,12 @@ class Bridge:
         self.typing = Typing(self)
         self.mutation_lock = asyncio.Lock()
         self.groups = Groups(self)
+        self.calls = Calls(self)
+        if args.test_scenario:
+            # Explicit hardware-free fixture mode, absent from installed builds.
+            sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tests"))
+            from signal_call_audio_fake import FakeCallAudio
+            self.calls = Calls(self, lambda: FakeCallAudio(args.test_scenario))
 
     def snapshot(self):
         return {"ipcVersion": 1, "schemaVersion": SCHEMA_VERSION if self.store else 0, "cliVersion": self.cli_version,
@@ -105,6 +112,7 @@ class Bridge:
                 + (["recipient.resolve"] if self.state == "ready" and self.account_id else [])
                 + (GROUP_CAPABILITIES if self.store and self.store.healthy and self.account_id else [])
                 + (CAPABILITIES if self.store and self.store.healthy and self.account_id else [])
+                + (CALL_CAPABILITIES if self.store and self.store.healthy and self.account_id else [])
                 + (["test.echo", "test.mutate", "test.receive", "test.metrics"] if self.args.test_scenario else [])}
 
     def emit(self, kind, **values):
@@ -121,6 +129,9 @@ class Bridge:
         self.event("service.changed", self.snapshot())
 
     def incoming(self, value):
+        if value["method"] == "callEvent":
+            self.calls.receive(value["params"])
+            return
         if value["method"] == "receive":
             if not self.store or not self.account_id:
                 raise Failure("storage_not_ready")
@@ -269,6 +280,7 @@ class Bridge:
             SELECT MIN(expires_at_ms) deadline FROM read_markers UNION ALL
             SELECT MIN(expires_at_ms) deadline FROM message_versions UNION ALL
             SELECT MIN(expires_at_ms) deadline FROM message_reactions UNION ALL
+            SELECT MIN(expires_at_ms) deadline FROM message_pins WHERE active=1 UNION ALL
             SELECT MIN(expires_at_ms) deadline FROM interaction_outbox WHERE payload!='{}')""").fetchone()[0]
         if due is not None:
             self.retention_timer = signal_retention.Deadline(due, self.expire)
@@ -323,13 +335,17 @@ class Bridge:
             return result
         if method == "message.delete" and params.get("scope") == "local":
             return signal_retention.local_delete(self.store, account, params)
-        if method in ("message.send", "message.edit", "message.react", "message.delete", "operation.retry"):
+        if method in ("message.send", "message.edit", "message.react", "message.pin", "message.delete", "operation.retry"):
             if self.account_state != "linked" or self.state not in ("ready", "reconnecting"):
                 raise Failure("account_unlinked")
         if method == "message.send":
             if not self.store.conversation_item(account, params.get("conversationId"))["canSend"]:
                 raise Failure("send_unavailable")
             result = self.outbox.enqueue(account, params)
+        elif method == "message.pin":
+            if type(params.get("remove", False)) is not bool:
+                raise Failure("invalid_request")
+            result = self.outbox.mutations.enqueue(account, params, "unpin" if params.get("remove") else "pin")
         elif method in ("message.edit", "message.react", "message.delete"):
             if method == "message.delete" and params.get("scope") != "everyone":
                 raise Failure("invalid_request")
@@ -569,10 +585,15 @@ class Bridge:
                 if task and target != request_id:
                     task.cancel()
                 result = {"accepted": bool(task) and target != request_id}
+            elif method == "message.forward":
+                from signal_forward import forward
+                result = await forward(self, params)
             elif method == "conversation.expiration":
                 result = await self.set_expiration(params)
             elif method == "typing.set":
                 result = await self.typing.set(params)
+            elif method in CALL_CAPABILITIES:
+                result = await self.calls.request(method, params)
             elif method in GROUP_CAPABILITIES:
                 result = await self.groups.request(method, params)
             elif method == "recipient.resolve":
@@ -677,6 +698,8 @@ class Bridge:
                         from signal_release import command as release_command
                         command, env = await self.media_worker(release_command, config)
                     self.status("starting")
+                    from signal_call_runtime import configure as configure_calls
+                    calls_available = bool(self.args.test_scenario) or await self.media_worker(configure_calls, env)
                     await version(command, lease.lock_fd, env)
                     if not self.args.test_scenario:
                         from signal_media import verify_cli
@@ -723,6 +746,7 @@ class Bridge:
                         except Failure:
                             self.account.link_error = "directory_sync_failed"
                     await self.account.directory_refresh()
+                    await self.calls.subscribe(calls_available)
                     self.status("ready", self.account.link_error)
                     self.wake_outbox.set()
                     self.sender = asyncio.create_task(self.send_queued())
@@ -737,6 +761,7 @@ class Bridge:
                         raise asyncio.CancelledError
                     await self.stop_sender()
                     await self.settle_requests()
+                    await self.calls.close()
                     if self.transport:
                         await self.transport.close()
                         self.transport = None
@@ -772,6 +797,7 @@ class Bridge:
                 self.retention_timer = None
             await self.stop_sender()
             await self.settle_requests()
+            await self.calls.close()
             if self.transport:
                 await self.transport.close()
                 self.transport = None

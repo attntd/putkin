@@ -105,6 +105,17 @@ def run(output):
             assert connected["qrSize"] == 0 and not connected["linking"]
             assert len(records("subscribe")) == 1
             report["checks"].append("new attempt succeeds; exactly one receiver after durable identity, QR removed")
+            starts = records("start")
+            for enabled in (True, False, True):
+                assert ipc("activate", "signalTyping") == "true"
+                changed = eventually(snapshot, lambda v: v.get("typingIndicators") == enabled)
+                assert changed["state"] == "ready" and not changed["error"] and not changed["actionError"]
+                assert changed["generation"] == connected["generation"]
+                assert changed["pid"] == connected["pid"]
+                assert records("start") == starts and len(records("subscribe")) == 1
+                config = json.loads((Path(env["XDG_CONFIG_HOME"]) / "putkin/signal.json").read_text())
+                assert config["typingIndicators"] == enabled
+            report["checks"].append("typing button updates and persists both values without restarting the receiver or reporting a connection error")
             ipc("close")
             eventually(snapshot, lambda v: not v.get("loaded"))
             assert snapshot()["pid"] == connected["pid"]
@@ -112,6 +123,7 @@ def run(output):
             ipc("reload")
             restarted = eventually(snapshot, lambda v: v.get("state") == "ready" and v.get("generation") != connected["generation"])
             assert restarted["accountId"] == connected["accountId"]
+            assert restarted["typingIndicators"]
             assert len(records("link-start")) == 3
             report["checks"].append("window closure keeps linked receiver; hard reload restores identity without pairing")
             open_settings()

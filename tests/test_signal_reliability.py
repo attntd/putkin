@@ -66,16 +66,18 @@ class ReliabilityTests(unittest.TestCase):
         client = self.start(receiveEvents=list(reversed(events))+events)
         client.state('ready', seconds=25)
         cid = self.request(client, 'conversation.open', {'kind': 'direct', 'serviceId': history.PEER})['conversationId']
-        cursor, mids, stamps = None, set(), []
+        cursor, mids, stamps, orders = None, set(), [], []
         for _ in range(8):
             page = self.request(client, 'messages.page', {'conversationId': cid, 'before': cursor, 'limit': 50})
             self.assertEqual(len(page['items']), 50)
             for row in page['items']:
                 self.assertNotIn(row['messageId'], mids)
-                mids.add(row['messageId']); stamps.append(row['sentTimestampMs'])
+                mids.add(row['messageId']); stamps.append(row['sentTimestampMs']); orders.append(row['orderSequence'])
             cursor = page['nextCursor']
         self.assertIsNone(cursor)
-        self.assertEqual(stamps, sorted(set(stamps), reverse=True))
+        # The first burst arrives in reverse sender-clock order. Replays do not move it.
+        self.assertEqual(stamps, sorted(set(stamps)))
+        self.assertEqual(orders, sorted(set(orders), reverse=True))
         self.assertEqual(len(self.records('subscribe')), 1)
         metrics = self.request(client, 'test.metrics')
         self.assertLessEqual(metrics['rpcPending'], 8)

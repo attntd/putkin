@@ -124,6 +124,8 @@ def verify(build):
     if (build / "services/SignalBackend.qml").exists():
         from _signal_install import runtime
         runtime(build, build / "dependencies/signal")
+        from _signal_calls import runtime as call_runtime
+        call_runtime(build)
 
 
 def validate(stage):
@@ -134,7 +136,7 @@ def validate(stage):
     compile_runtime(stage)
 
 
-def prepare(store, source=ROOT, signal_runtime=None):
+def prepare(store, source=ROOT, signal_runtime=None, calls_runtime=None):
     expected = source_files(source)
     origins = {name: source / name for name in expected}
     if (source / "services/SignalBackend.qml").exists():
@@ -144,6 +146,16 @@ def prepare(store, source=ROOT, signal_runtime=None):
             relative = "dependencies/signal/" + name
             expected[relative] = checksum
             origins[relative] = signal_runtime / name
+        from _signal_calls import runtime as call_runtime
+        if calls_runtime is None:
+            calls_runtime, _ = call_runtime(source)
+        if calls_runtime:
+            from signal_call_runtime import verify as verify_calls
+            verify_calls(calls_runtime, source)
+            for name, checksum in manifest(calls_runtime).items():
+                relative = "dependencies/signal-calls/" + name
+                expected[relative] = checksum
+                origins[relative] = calls_runtime / name
     for build in releases(store):
         if manifest(build) == expected:
             validate(build)

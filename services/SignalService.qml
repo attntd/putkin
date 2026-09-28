@@ -3,6 +3,7 @@ import QtQuick
 QtObject {
     id: root
     required property var backend
+    readonly property SignalCallService calls: SignalCallService { service: root }
     readonly property string state: backend.serviceState
     readonly property string accountState: backend.accountState
     readonly property string accountId: backend.accountId

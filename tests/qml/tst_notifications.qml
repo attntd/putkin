@@ -156,13 +156,38 @@ Item {
             mouseClick(clear);
             compare(notifications.history.length, 0);
             compare(notifications.entries.length, 0);
-            tryVerify(() => dnd.activeFocus);
-            keyClick(Qt.Key_J); verify(dnd.activeFocus);
+            compare(preview.coordinator.activeId, "");
+            tryCompare(preview.panelHost, "loaded", false);
             send();
-            keyClick(Qt.Key_L); verify(clear.activeFocus);
+            const reopened = openCenter().page;
+            keyClick(Qt.Key_L); verify(findChild(reopened, "notificationClear").activeFocus);
             keyClick(Qt.Key_Return);
             compare(notifications.history.length, 0);
             compare(notifications.entries.length, 0);
+            compare(preview.coordinator.activeId, "");
+            tryCompare(preview.panelHost, "loaded", false);
+        }
+        function test_toggle_notifications_data() {
+            return [{tag: "empty", toast: false}, {tag: "visible-toast", toast: true}];
+        }
+        function test_toggle_notifications(data) {
+            if (data.toast) { send(); waitCard(); }
+            compare(preview.notificationController.toggle(), "TEST-1");
+            if (data.toast) compare(preview.notificationController.screenName, "TEST-1");
+            else compare(preview.coordinator.activeId, "notifications");
+            compare(preview.notificationController.toggle(), "");
+            compare(preview.notificationController.screenName, "");
+            compare(preview.coordinator.activeId, "");
+            if (data.toast) compare(notifications.history.length, 1);
+            else tryCompare(preview.panelHost, "loaded", false);
+            openCenter();
+            preview.backend.focusedMonitorName = "TEST-2";
+            compare(preview.notificationController.toggle(), "");
+            compare(preview.coordinator.activeId, "");
+            tryCompare(preview.panelHost, "loaded", false);
+            notifications.locked = true;
+            compare(preview.notificationController.toggle(), "");
+            compare(preview.coordinator.activeId, "");
         }
         function test_card_activation_data() {
             return [

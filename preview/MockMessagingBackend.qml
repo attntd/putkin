@@ -3,6 +3,12 @@ import QtQuick
 MockSignalBackend {
     id: root
     property bool groupsEnabled: false
+    property bool callsEnabled: false
+    property var voiceCall: null
+    function updateCall(value: var): void {
+        voiceCall = value;
+        event("call.changed", {accountId: accountId, available: callsEnabled, call: value});
+    }
     property var groupOps: []
     property string groupResult: "succeeded"
     property var rows: []
@@ -21,11 +27,13 @@ MockSignalBackend {
     ], groups: [{groupId: "group", name: "Projekt"}]})
     function seed(): void {
         calls = []; held = []; holdResponses = false; sentCount = 0;
+        voiceCall = null;
         replyDrafts = ({}); operations = ({}); replyResult = "sent"; interactionError = "";
         accountState = "linked"; accountId = "account-a"; serviceState = "ready";
         configuration = ({enabled: true});
-        capabilities = ["account.directory", "conversations.page", "conversation.get", "conversation.open", "messages.page", "message.get", "draft.get", "draft.set", "message.send", "recipient.resolve", "reply.draft.get", "reply.draft.set", "conversation.notifications", "operation.retry", "messages.read", "message.delete", "conversation.expiration"];
+        capabilities = ["account.directory", "conversations.page", "conversation.get", "conversation.open", "messages.page", "message.get", "draft.get", "draft.set", "message.send", "recipient.resolve", "reply.draft.get", "reply.draft.set", "conversation.notifications", "operation.retry", "messages.read", "message.delete", "conversation.expiration", "message.pin", "message.forward"];
         groupOps = []; groupResult = "succeeded";
+        if (callsEnabled) capabilities = capabilities.concat(["call.status", "call.start", "call.accept", "call.reject", "call.hangup", "call.mute", "call.dismiss"]);
         if (groupsEnabled) capabilities = capabilities.concat(["group.create", "group.operations", "group.get", "group.update", "group.join", "group.quit", "group.reconcile", "directory.refresh", "directory.profile", "directory.avatar", "conversation.accept", "conversation.block", "conversation.preferences"]);
         rows = [
             {conversationId: "chat-a", title: "Alicja", searchText: "+12025550101", kind: "direct", target: "aci:peer", activityTimestampMs: 1790000000000, unreadCount: 180, canSend: true},
@@ -52,6 +60,15 @@ MockSignalBackend {
         let error = null;
         const cid = params.conversationId;
         if (params.accountId !== accountId) error = {code: "account_mismatch"};
+        else if (method.startsWith("call.")) {
+            if (method === "call.start") voiceCall = {accountId: accountId, conversationId: cid, title: "Alicja", callId: "-9223372036854775807", state: "RINGING_OUTGOING", isOutgoing: true, muted: false, connectedAtMs: 0, errorCode: ""};
+            else if (method === "call.accept") voiceCall = Object.assign({}, voiceCall, {state: "CONNECTED", connectedAtMs: Date.now()});
+            else if (method === "call.mute") voiceCall = Object.assign({}, voiceCall, {muted: params.muted});
+            else if (method === "call.reject" || method === "call.hangup") voiceCall = Object.assign({}, voiceCall, {state: "ENDED"});
+            else if (method === "call.dismiss") voiceCall = null;
+            result = {accountId: accountId, available: callsEnabled, call: voiceCall};
+            if (method !== "call.status") Qt.callLater(() => root.event("call.changed", result));
+        }
         else if (method === "typing.set") result = {accepted: true};
         else if (method === "message.delete") {
             const message = (history[cid] || []).find(v => v.messageId === params.messageId);
@@ -67,13 +84,34 @@ MockSignalBackend {
             row.expirationSeconds = params.seconds; result = row;
             Qt.callLater(() => root.event("conversation.changed", {accountId: root.accountId, conversationId: cid}));
         }
-        else if (method === "message.edit" || method === "message.react") {
+        else if (method === "message.forward") {
+            if (interactionError) error = {code: interactionError};
+            else {
+                for (const value of params.messages) {
+                    const original = (history[cid] || []).find(v => v.messageId === value.messageId);
+                    if (!original) { error = {code: "not_found"}; break; }
+                    history[params.targetConversationId].push(Object.assign({}, original, {
+                        messageId: value.operationId, conversationId: params.targetConversationId, direction: "outgoing", status: "queued"}));
+                    sentCount++;
+                }
+                result = {operations: params.messages.map(v => ({operationId: v.operationId, state: "queued"}))};
+            }
+        }
+        else if (method === "message.edit" || method === "message.react" || method === "message.pin") {
             const message = (history[cid] || []).find(v => v.messageId === params.messageId);
             if (interactionError) error = {code: interactionError};
             else if (!message) error = {code: "not_found"};
             else {
                 if (method === "message.edit") { message.text = params.text; message.editedTimestampMs = message.versionTimestampMs + 1; message.versionTimestampMs++; }
-                else message.reactions = params.remove ? [] : [{emoji: params.emoji, count: 1, mine: true, people: [{serviceId: "aci:self", name: "Ty"}]}];
+                else if (method === "message.react") message.reactions = params.remove ? [] : [{emoji: params.emoji, count: 1, mine: true, people: [{serviceId: "aci:self", name: "Ty"}]}];
+                else {
+                    message.pinned = !params.remove;
+                    const conversation = rows.find(c => c.conversationId === cid);
+                    conversation.pinnedMessages = (conversation.pinnedMessages || []).filter(m => m.messageId !== message.messageId);
+                    if (message.pinned) conversation.pinnedMessages.push({messageId: message.messageId, text: message.text});
+                    conversation.pinnedMessages = conversation.pinnedMessages.slice(-3);
+                    Qt.callLater(() => root.event("conversation.changed", {accountId: root.accountId, conversationId: cid}));
+                }
                 result = {operationId: params.operationId, state: "sent"};
                 Qt.callLater(() => root.event("message.changed", {accountId: root.accountId, conversationId: cid, messageId: message.messageId}));
             }

@@ -34,6 +34,9 @@ QtObject {
             if (hold) fingerprintState = "idle";
         }
         if (locked && secure && !hold && !unlocking && !authenticating) {
+            reset.stop();
+            fingerprintState = "idle";
+            passwordFailed = false;
             authenticating = true;
             authentication.begin(++generation);
         } else if ((!locked || !secure || hold || unlocking) && authenticating) {

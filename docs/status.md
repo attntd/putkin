@@ -1,5 +1,429 @@
 # Status implementacji
 
+## Powiadomienia o aktualizacjach i zamykanie panelu — 2026-09-27
+
+`Super+N` używa `notifications toggle`: ponowne wywołanie zwalnia fokus
+toastów albo zamyka centrum, także po zmianie aktywnego monitora.
+Dotychczasowe `notifications focus` zachowuje jawne ustawianie fokusu.
+Q nadal zamyka centrum; akcja czyszczenia usuwa historię i zamyka panel
+zarówno po kliknięciu, jak i po Enter. Usunięto skrypt powitania Fish
+z konfiguracji dystrybucji; terminal ma puste `fish_greeting`.
+
+Walidacja: **294 QML PASS**, **108 testów powiadomień PASS**.
+Prywatny Hyprland: rzeczywisty Super+N otwiera i zamyka toasty/centrum,
+Q zamyka centrum, a Enter na czyszczeniu usuwa historię i zamyka panel.
+Testy korzystały z prywatnych XDG/D-Bus i syntetycznych powiadomień.
+Lokalny `update-notifier`: **8 testów PASS** dla repo/AUR, braku aktualizacji,
+duplikatów, instalacji części pakietów, nowej wersji przy tej samej liczbie,
+błędu sieci, ponawiania nieudanej dostawy i usuwania tymczasowej bazy.
+[Logi i test lokalnego pomocnika](evidence/notification-updates-20260927/).
+
+Wdrożono `20260927-171612-49a8dde683d4` przez instalator `--shell-only
+--offline --no-prune --activate`; działający shell bez ostrzeżeń, konfiguracja
+Hyprlanda bez błędów. Lokalny Super+N przełączono na nowy endpoint.
+Usunięto `update-check-cache`, powitanie Fish, trzy jednostki
+`fish-update-check.*`, pliki `update-status.*`, blokadę i `checkupdates-db`.
+Włączono lokalne `update-notifier.timer/.path`: po logowaniu, co godzinę
+i po zmianach pakietów. Pomocnik zapisuje wyłącznie stan dostawy poza Fishem,
+a bazę sprawdzania usuwa po przebiegu. Pierwszy przebieg: **repo=5, AUR=1,
+status=ok**, powiadomienie dostarczone; stare jednostki `not-found/inactive`.
+Testy katalogu konfiguracji: **9 PASS**; interaktywny Fish bez powitania.
+
+API sprawdzono dla lokalnych Qt 6.11.2 i Quickshell 0.3.1:
+[IpcHandler](https://quickshell.org/docs/v0.3.1/types/Quickshell.Io/IpcHandler/)
+i [AbstractButton.clicked](https://doc.qt.io/qt-6.11/qml-qtquick-controls-abstractbutton.html#clicked-signal).
+
+## Migający pasek przy nieaktywnej ramce — 2026-09-27
+
+**Obejście cofnięte na polecenie użytkownika; trwa obserwacja przywróconego
+`damage_tracking=2`. Przyczyna pozostaje niepotwierdzona.**
+Użytkownik opisuje pojawiający się i znikający kolorowy poziomy pasek
+na wysokości górnej krawędzi nieaktywnego okna, wychodzący poza jego
+szerokość. Potwierdził dwa terminale kitty; okna pozostają nieruchome.
+
+Prywatny Hyprland 0.56.2 z produkcyjnym adapterem ramek, rozmyciem,
+cieniami i syntetycznymi klientami nie odtworzył usterki. Nowy
+`scripts/test-window-borders` sprawdza rzeczywiste piksele górnej ramki
+aktywnej/nieaktywnej i obszaru poza oknami, jedno/dwa okna, obie strony
+fokusu oraz odświeżanie zawartości bez ruchu okien. **36 klatek PASS**
+przy skalach 1 i 1,5 oraz `damage_tracking` 2 i 1;
+[raport](evidence/window-border-glitch-20260927/regression/report.json),
+[log](evidence/window-border-glitch-20260927/regression.log).
+To kontrola obrazu kompozytora, nie transmisji do fizycznej matrycy.
+
+`scripts/check`: **PASS**, 294 QML, zero błędów;
+[log](evidence/window-border-glitch-20260927/check.log).
+`tst_window_appearance.qml`: **7 PASS**, podgląd/anulowanie/zapis palety,
+kontrast, scalanie zmian i reload na atrapach, prywatne XDG/D-Bus;
+[log](evidence/window-border-glitch-20260927/window-appearance-qml.log).
+Próba wstępna wymagała zastąpienia niedostępnego PIL zainstalowanym
+ImageMagickiem. Oba zakończone przebiegi sprzątnęły własne procesy
+i katalogi. Nie uruchomiono drugiego pełnego shella na pulpicie.
+
+Host ma Intel Panther Lake (`xe`), Samsung ATNA40HQ09-0 i skalę 1,5;
+[odczyt](evidence/window-border-glitch-20260927/diagnosis.json).
+Istnieje [zgłoszenie Panel Replay dla tego panelu](https://bugs.launchpad.net/bugs/2163125),
+ale jego objawy i kernel różnią się od tej sesji. Błąd
+`Selective fetch area calculation failed in pipe A` w dzienniku startu
+sam nie dowodzi przyczyny — występuje także w sprawnej konfiguracji
+autora zgłoszenia. Nie zmieniono parametrów kernela ani sterownika.
+
+Do próby na żywo ustawiono `debug.damage_tracking=1` zamiast 2:
+cały zmieniony monitor jest przerysowywany, natomiast nieruchomy pulpit
+nadal nie wymusza klatek. Potwierdza to
+[renderer Hyprlanda 0.56.2](https://github.com/hyprwm/Hyprland/blob/v0.56.2/src/render/Renderer.cpp).
+To może zwiększyć pracę GPU podczas zmian obrazu. Pierwsza próba była
+wyłącznie tymczasowa;
+[stan próby](evidence/window-border-glitch-20260927/live-damage-trial.json).
+
+Użytkownik po obserwacji odpowiedział: **„na ten moment nie widze paska”**.
+Następnie zapytał, na czym polega obejście; wyjaśniono tryb odświeżania,
+możliwy koszt GPU/baterii i brak ustalonej przyczyny. Zapisano ustawienie
+na końcu `/home/attntd/.config/hypr/hyprland.lua`. Kopia całej konfiguracji
+z dopisanym ustawieniem przeszła `Hyprland --verify-config` w prywatnym
+bubblewrap/XDG/D-Bus, bez urządzeń i socketów sesji: **config ok**;
+[log](evidence/window-border-glitch-20260927/persistence-check.log),
+[dokładny dodatek i sumy](evidence/window-border-glitch-20260927/persistence-plan.json).
+Po zapisie i `hyprctl reload`: **PASS**, brak błędów konfiguracji,
+efektywna wartość 1; [raport](evidence/window-border-glitch-20260927/persistence.json).
+Nie restartowano shella. Domyślne ustawienia innych komputerów pozostały
+bez zmian; na czas wdrożenia dodano zakomentowany przykład do
+`config/hypr/local.lua`, usunięty przy cofnięciu obejścia.
+
+Kopia sprzed zapisu:
+`~/.local/state/putkin/fixes/window-border-20260927/hyprland.lua.before`.
+Wycofanie bez utraty późniejszych zmian: usunąć dopisany blok zaczynający
+się od `-- Putkin: whole-monitor damage` i wykonać `hyprctl reload`.
+Samo `hyprctl eval 'hl.config({debug={damage_tracking=2}})'` przywracałoby
+wcześniejszy tryb tylko do następnego przeładowania konfiguracji.
+
+Na kolejne polecenie użytkownika usunięto dokładnie dopisany blok
+z konfiguracji i wykonano `hyprctl reload`: **PASS**, brak błędów,
+efektywne `damage_tracking=2`, plik zgodny z kopią sprzed obejścia;
+[wynik cofnięcia](evidence/window-border-glitch-20260927/rollback.json).
+Ponowne `scripts/check`: **PASS**, 294 QML, zero błędów;
+[log](evidence/window-border-glitch-20260927/rollback-check.log).
+Weryfikacją zachowania cofnięcia jest odczyt rzeczywistego trybu po reloadzie;
+nie powtarzano prywatnej regresji ramek po zmianie wyłącznie konfiguracji.
+Użytkownik obserwuje, czy pasek wróci; brak jeszcze wyniku tej próby.
+
+**Niewykonane:** dłuższa obserwacja fizycznego ekranu, ustalenie
+przyczyny, pomiar poboru energii i pełne `scripts/test`. Krótkie
+potwierdzenie użytkownika zalicza jedynie wstępny odbiór obejścia.
+
+## Odcisk i zegar po wznowieniu — 2026-09-27
+
+**Wdrożone na pulpicie: `20260927-093540-8d0a4069d380`; Signal `ready/linked`.**
+
+Odczyt dziennika hosta potwierdził resume o 09:04:10 i 10:01:33 CEST.
+W obu momentach rozmowa odcisku zakończyła się PAM_AUTHINFO_UNAVAIL (9)
+bez komunikatu o wykonanym skanie. Kod traktował to jako błędny odcisk,
+resetował czerwony glif po 2 s i nie ponawiał rozmowy. Log nie rozstrzyga,
+dlaczego czytnik nie był dostępny; wcześniejszy dziennik fprintd zawiera
+błąd zamykania urządzenia. Odczyt GetDefaultDevice potwierdził obecność
+czytnika, bez Claim ani uruchamiania weryfikacji na sprzęcie.
+
+`PamBackend` rozdziela błąd próby uwierzytelnienia od odrzuconego skanu:
+ma najwyżej pięć ponowień po 0,5/1/2/4/8 s, bez fałszywego czerwonego
+glifu dla tego wyniku. MaxTries, błąd konfiguracji oraz wyczerpanie
+ponowień pozostają terminalne w danym cyklu, również po zmianie dostępności.
+Sen i hasło anulują ponowienia. Nowy cykl usuwa stary stan błędu.
+
+Jeden minutowy `SessionClock` obsługuje pasek i wszystkie ekrany blokady.
+Resume wymusza natychmiastowy odczyt czasu przed DPMS on; zdarzenie trafia
+do QML przed potencjalnie wolnymi odczytami D-Bus. Nie ma pollingu sekundowego.
+Wykrywanie urządzeń kończy się przed ponownym uruchomieniem PAM.
+
+| Sprawdzenie | Wynik |
+| --- | --- |
+| Składnia/importy | **PASS**, `scripts/check`, 293 QML; [log](evidence/resume-20260927/check.log). |
+| Logika resume | **2 PASS Python**, kolejność zdarzeń i obcy/powtórzony sygnał; [log](evidence/resume-20260927/python.log). |
+| Qt Quick | **46 PASS**: [blokada/idle — 20](evidence/resume-20260927/lock_idle.log), [sesja — 11](evidence/resume-20260927/session-qml.log), [pasek — 15](evidence/resume-20260927/bar.log). |
+| D-Bus i rzeczywisty zegar | **14 PASS grup integracji sesji**, zatrzymany SystemClock odświeża pasek przed wznowieniem ekranu, ponownie tyka, zachowuje precyzję minutową i secure; [raport](evidence/resume-20260927/session.json). |
+| Natywne zachowanie blokady/PAM | **17 PASS grup**, w tym błędy Claim → rzeczywisty kod PAM 9 → odzyskanie skanu bez czerwonego glifu, dwie powierzchnie zegara, hasło/sen podczas ponowień, limit ponowień, MaxTries, idle, hotplug i secure po zakończeniu klienta; [wyniki](evidence/resume-20260927/wayland-final/native-checks.json). |
+| Pełny runner Waylanda | **FAIL wyłącznie na końcowej analizie nagrania fade**: nagranie z wymuszonym FPS zawiera ten sam kadr, `norm=0`; [log](evidence/resume-20260927/wayland-final.log). Kopia wcześniejszego kodu z Git daje ten sam błąd przed zmianą; [baseline](evidence/resume-20260927/wayland-baseline.log). Nie zaliczono odbioru pikseli animacji i nie wyciszono jego asercji. |
+| Plan instalacji | 399 plików runtime; względem poprzedniego aktywnego wydania różni się tylko osiem plików tej poprawki. Pozostałe pliki runtime były identyczne. Te same CLI/JRE/tunel, baza v8 bez migracji; [plan](evidence/resume-20260927/install-plan.json). |
+| Instalacja i działający pulpit | **PASS**, 184 QML przy pakowaniu, 399 plików zgodnych ze źródłami. Dwa odczyty co 10 s: stabilny PID 142307, właściwy właściciel powiadomień, Signal `ready/linked`, gotowe idle/lock i brak ostrzeżeń/błędów w dzienniku nowej instancji. Zachowany tryb Caffeinate `presentation`; [instalacja](evidence/resume-20260927/install.log), [odbiór](evidence/resume-20260927/activation.json). |
+
+Pierwsza próba testu zegara w qmltestrunner ujawniła brak wtyczki Quickshell;
+przeniesiono test do właściwego runtime bez wyciszania importów.
+Sandbox blokował prywatne sockety; testy uruchomiono poza nim, zachowując
+prywatne XDG i D-Bus oraz atrapy. Diagnostyczna próba nagrania bez wymuszonego
+FPS zachowała wejście, ale nie zarejestrowała wyjścia; wrócono do dotychczasowej
+komendy i przeniesiono kontrolę nagrania na koniec. Baseline wymagał przeniesienia
+kopii z ukrywanego przez bwrap `/tmp` i dołączenia atrap `preview`.
+
+**Niewykonane w pierwotnym odbiorze:** fizyczne zamknięcie/otwarcie klapy
+i odcisk użytkownika po wdrożeniu (późniejszy wynik poniżej), odbiór nagrania
+fade i pełne `scripts/test`.
+Testy nie uruchamiają PAM hosta ani nie usypiają laptopa.
+
+Instalacja: `scripts/install --activate --shell-only --offline --no-prune`.
+`previous` zachowuje `20260926-154449-281bca0c1223`; starszych wydań nie usuwano.
+Pierwotna instalacja nie zmieniała systemowej konfiguracji PAM ani nie
+restartowała fprintd.
+
+### Ponowny test sprzętowy i naprawa stanu fprintd — 2026-09-27
+
+**FAIL po wdrożeniu poprawki Putkina:** użytkownik uśpił laptop i zamknął/otworzył
+klapę. Po resume o 11:45:23 CEST pięć rozpoczętych prób odcisku zakończyło się
+PAM_AUTHINFO_UNAVAIL (9); o 11:45:38 użyto hasła, które anulowało dalsze
+ponowienia. Wcześniejsze testy z atrapą potwierdziły obsługę przejściowej
+niedostępności, ale nie usunięcie tej awarii urządzenia.
+
+Bezpośrednie `Claim("")` na odblokowanej, niezajętej sesji zwróciło
+`net.reactivated.Fprint.Error.Internal` z komunikatem
+`Open failed with error: Device 06cb:019f is already open`.
+Nie uruchamiano VerifyStart ani PAM. fprintd działał od 26 września 13:41,
+a jego dziennik zawiera błąd zamykania urządzenia po rozłączeniu klienta
+z 20:59:04: `endpoint stalled or request not supported`. Potwierdzono
+zawieszony stan otwarcia urządzenia; nie dowiedziono przyczyny jego powstania.
+[Diagnoza](evidence/resume-20260927/followup-diagnosis.json).
+
+Pierwszy restart bez interaktywnej autoryzacji został odrzucony przez politykę
+systemową. Restart przez standardową autoryzację zakończył się **PASS**
+o 11:51:52 (nowy PID 144184); [wynik](evidence/resume-20260927/fprintd-restart-interactive.json).
+Po nim dwa kolejne cykle `Claim`/`Release` zakończyły się **PASS**;
+[raport](evidence/resume-20260927/fprintd-after-restart.json).
+Zapisany odcisk pozostał dostępny. Nie zmieniono kodu runtime, konfiguracji
+systemowego PAM ani zapisanych odcisków.
+
+**PASS po restarcie usługi:** użytkownik powtórzył uśpienie i zamknięcie/otwarcie
+klapy, następnie potwierdził: „Odcisk odblokował ekran”. Dostęp do urządzenia
+i odblokowanie po wybudzeniu zostały przywrócone. Dziennik potwierdza sen
+o 11:53:52, resume i rozpoczęcie skanu o 11:54:12 oraz sukces PAM odcisku
+o 11:54:14; [cykl snu](evidence/resume-20260927/physical-retest-system.log),
+[wynik](evidence/resume-20260927/followup-diagnosis.json). Jeden udany cykl
+nie rozstrzyga, czy błąd sterownika/usługi może powrócić.
+Ponowne `scripts/check`: **PASS**, 293 QML, zero błędów;
+[log](evidence/resume-20260927/followup-check.log).
+
+## Fokus, media i lista reakcji — 2026-09-26
+
+**Wdrożone na pulpicie: `20260926-154449-281bca0c1223`; Signal `ready/linked`.**
+
+Odtworzono podwójny fokus po Escape: delegat miał jednocześnie własny
+zewnętrzny obrys przycisku i obrys wyboru listy. Pozostała pojedyncza ramka
+wewnątrz kafelka. Test porównuje również piksele sąsiadów.
+Ikony akcji są na środku wysokości dymka. Kliknięta reakcja otwiera
+osobną listę osób dla tego emoji, bez dat, godzin i raportów.
+
+Adapter nie dopisuje „Załącznik” do pustej treści rzeczywistych mediów.
+Zdjęcia i miniatury filmów wypełniają dymek, pojedynczy obraz zachowuje
+proporcje, kilka tworzy mozaikę. Podpis pozostaje pod obrazem, a HH:mm
+samodzielnego zdjęcia jest na nim. Dokumenty pokazują nazwę i rozmiar,
+filmy ikonę play, audio ma odtwarzanie/pauzę i przewijanie w dymku.
+Przygotowanie/niedostępność nadal ma własny stan. Audio nie uruchamia się
+automatycznie; może grać jeden załącznik, ukrycie/blokada je zatrzymuje.
+Kolory, gradient i wejście są zgodne z Putkinem.
+
+| Sprawdzenie | Wynik |
+| --- | --- |
+| Odtworzenie fokusu | **FAIL przed poprawką**: po dwa obrysy w obu szerokościach; [log](evidence/signal-message-polish-20260926/focus-before.log), [zrzut](evidence/signal-message-polish-20260926/focus-wide-before.png). |
+| Typy/importy | **PASS**, pełne `scripts/check`, 292 QML; [log](evidence/signal-message-polish-20260926/check-final.log). |
+| Wiadomości i fokus | **29 PASS**, oba rozmiary, klawiatura/mysz, piksele sąsiadów, historia i szkice; [log](evidence/signal-message-polish-20260926/messages-first.log). |
+| Akcje i popup osób | **12 PASS**, również skala 1,5: centrowanie ikon, zawartość/aktualizacja popupu, fokus i akcje; [log](evidence/signal-message-polish-20260926/actions-final-1.5.log). |
+| Nowe widoki mediów | **15 PASS**, zdjęcia, dosłowny podpis, mozaiki 2/3/4/5/7, dokument, film, audio, stany i wyłączność odtwarzania; [log](evidence/signal-message-polish-20260926/media-final.log). |
+| Regresja mediów | **8 PASS**, otwieranie i zamykanie podglądu, dekoder, zapis/otwarcie, kompozycja i focus; [log](evidence/signal-message-polish-20260926/media-first.log). |
+| Retencja, interakcje, odczyt | **26 PASS**: [retencja](evidence/signal-message-polish-20260926/retention.log), [interakcje](evidence/signal-message-polish-20260926/interactions.log), [odczyt](evidence/signal-message-polish-20260926/receipts.log). |
+| Ikony | **103 PASS**, w tym cztery nowe symbole; [log](evidence/signal-message-polish-20260926/icons.log). |
+| Okno, baza, przeładowanie | **PASS**, cztery grupy z produkcyjnymi QML/SQLite i atrapą CLI; bez błędów QML i procesów pozostałych po teście; [raport](evidence/signal-message-polish-20260926/messages-integration.json). |
+| Plan instalacji | Gotowe 398 plików runtime, schemat v8 bez migracji, te same CLI/JRE i tunel; [plan](evidence/signal-message-polish-20260926/install-plan.json). |
+| Instalacja i odbiór pulpitu | **PASS**, 183 QML przy pakowaniu i 398 plików zgodnych ze źródłami. Dwa odczyty co 10 s: jedna stabilna instancja shella i CLI, Signal `ready/linked`, bez błędów i ostrzeżeń, poprawny właściciel powiadomień, gotowe idle/lock. Zachowane ustawienia, skróty, konfiguracja Signal oraz Caffeinate `background`; [log](evidence/signal-message-polish-20260926/live-install.log), [raport](evidence/signal-message-polish-20260926/live-activation.json). |
+
+Łącznie **193 PASS** w ośmiu końcowych zestawach QML, w tym 103 dla ikon.
+Wcześniejsza suma 185 nie uwzględniała ostatnich ośmiu wyników odczytu.
+Obejrzano syntetyczne zrzuty:
+[fokus](evidence/signal-message-polish-20260926/focus-wide.png),
+[osoby](evidence/signal-message-polish-20260926/reaction-people.png),
+[zdjęcie](evidence/signal-message-polish-20260926/photo-wide-incoming.png),
+[podpis](evidence/signal-message-polish-20260926/photo-caption.png),
+[mozaika](evidence/signal-message-polish-20260926/photos-3.png),
+[dokument](evidence/signal-message-polish-20260926/document.png),
+[audio](evidence/signal-message-polish-20260926/audio.png).
+
+Pierwszy przebieg nowych testów wykrył niewłaściwe oczekiwanie na fokus
+podglądu, a oględziny i test proporcji wykryły użycie żądanego `sourceSize`
+zamiast rzeczywistych wymiarów obrazu; oba poprawiono. Pełny lint wykrył
+brak jawnego typu `MessagesView` w nowym teście; po poprawce 292 PASS.
+Pierwszy proces `scripts/check` zakończył się sygnałem 143 przed wynikiem;
+końcowy pełny przebieg dokończono. Importów i ostrzeżeń nie wyciszano.
+Log mediów zawiera informację Qt/FFmpeg o dekoderze.
+
+Testy używały prywatnych XDG/D-Bus, atrap i syntetycznych plików. Audio
+dekodowano i przewijano bez tworzenia wyjścia dźwięku lub otwierania
+urządzeń hosta. **Niewykonane:** odsłuch sprzętowy, natywny Wayland,
+wysyłka na rzeczywistym koncie i pełne `scripts/test`. Trzy wcześniejsze
+błędy innych paneli opisane w sekcji o kolejności wiadomości pozostają poza zakresem.
+
+Pierwszą próbę aktywacji zatrzymał warunek odblokowanej sesji w
+`scripts/_install.py:307`; [log](evidence/signal-message-polish-20260926/live-install-locked.log).
+Po odblokowaniu potwierdzonym przez użytkownika dokończono instalację
+przez `scripts/install --activate --shell-only --offline --no-prune`.
+`previous` zachowuje sprawne `20260926-114434-3d56b47505d0` zgodne
+z bazą v8; starszych wydań nie usuwano. [Stan przed](evidence/signal-message-polish-20260926/live-before.json).
+Aktywacja nie wysyłała wiadomości ani nie zmieniała danych rozmów.
+
+## Kolejność i akcje wiadomości — 2026-09-26
+
+**Wdrożone na pulpicie: `20260926-114434-3d56b47505d0`; Signal `ready/linked`.**
+Odczyt samych metadanych żywej historii potwierdził 14 par, w których
+wiadomość przyjęta po lokalnej odpowiedzi miała wcześniejszy znacznik
+nadawcy. UI porównywało pełne milisekundy, nie napis HH:mm; przyczyną
+było użycie zegara nadawcy i zmiana czasu lokalnej wysyłki po ACK.
+[Metadane bez treści/identyfikatorów](evidence/signal-message-actions-20260926/ordering-metadata.json).
+
+SQLite v8 przechowuje osobną kolejność przyjęcia, odtworzoną dla historii
+z kolejności zapisu. ACK, ponowny odbiór, edycja i receipts jej nie zmieniają.
+Paginacja, model QML i odczyt do wskazanej wiadomości używają tego samego
+porządku. Data/godzina pozostają z protokołu, w formacie HH:mm.
+
+Trzy oryginalne wektory Signal Desktop 8.27.0 stoją obok dymka: reakcja,
+odpowiedź, więcej. Reakcje i menu są osobnymi popupami na Overlay,
+z klawiaturą, wspólnymi tokenami/fokusem i bez tooltipów. Menu udostępnia
+przekazanie, edycję, zaznaczenie, kopiowanie tekstu, przypięcie, informacje
+i usuwanie zgodnie z uprawnieniami. Przekazanie zachowuje szkic celu
+i własne kopie mediów; pin/unpin idzie przez trwałą kolejkę CLI, z wyborem
+czasu i limitem trzech. [Kontrakt i źródła](signal/MESSAGE_ACTIONS.md).
+
+| Sprawdzenie | Rzeczywisty wynik |
+| --- | --- |
+| Odtworzenie kolejności | **FAIL przed poprawką**, późniejszy odbiór lądował przed odpowiedzią; [log](evidence/signal-message-actions-20260926/ordering-before.log). |
+| Python | **PASS**, pełna regresja 187 testów; [log](evidence/signal-message-actions-20260926/python-all.log). Po końcowej poprawce kolejki **75 PASS**: historia, interakcje, receipts, akcje i migracja, w tym sync przed ACK, uprawnienia oraz wysyłka wielu wiadomości z tym samym czasem enqueue; [log](evidence/signal-message-actions-20260926/final-python.log). |
+| Migracja | **PASS**, rzeczywisty schemat v7, wymuszony błąd w środku migracji, rollback do v7, następnie v8 z zachowaniem historii, szkicu i kolejki. Starsze migracje v1/v2 również przechodzą. Dwa ostrzeżenia o niezamkniętych połączeniach w nowym teście usunięto; końcowy przebieg z ResourceWarning jako błędem jest czysty. |
+| QML | **56 PASS** w końcowym odbiorze akcji, historii, retencji i rozmów po dostosowaniu starych testów do osobnego popupu. [Akcje](evidence/signal-message-actions-20260926/final-signal_message_actions.log), [historia](evidence/signal-message-actions-20260926/final-messages.log), [retencja](evidence/signal-message-actions-20260926/final-signal_retention.log), [rozmowy](evidence/signal-message-actions-20260926/final-signal_calls.log). |
+| Typy/importy | **PASS**, pełny `scripts/check`: 289 QML; [log](evidence/signal-message-actions-20260926/check.log). Zmienione później pliki sprawdzono ponownie: [log](evidence/signal-message-actions-20260926/check-final.log). |
+| Wygląd | Syntetyczne zrzuty: [menu 980 px](evidence/signal-message-actions-20260926/menu-wide-outgoing.png), [menu 320 px](evidence/signal-message-actions-20260926/menu-narrow-incoming.png), [reakcje](evidence/signal-message-actions-20260926/reactions.png). Otwarcie nie zmienia rozmiaru dymka. |
+| Instalacja i odbiór pulpitu | **PASS**, 181 QML przy pakowaniu, 392 pliki runtime zgodne ze źródłami; [log](evidence/signal-message-actions-20260926/live-install.log). Dwa odczyty co 10 s: jeden stabilny shell/bridge/JVM, Signal `ready/linked`, schema v8, zero błędów i ostrzeżeń, sprawne idle/lock i powiadomienia. Zachowane ustawienia, skróty, konfiguracja Signal i Caffeinate `background`; [raport](evidence/signal-message-actions-20260926/live-activation.json). |
+| Żywa historia | **PASS**, 468 rekordów i 468 unikalnych kolejności, brak pustej kolejności, quick_check `ok`, zero błędów kluczy obcych. Wyłącznie odczyt metadanych; [raport](evidence/signal-message-actions-20260926/live-history-metadata.json). |
+
+Pełna regresja QML miała **942 PASS / 14 FAIL** przed końcowymi poprawkami
+testów; [log](evidence/signal-message-actions-20260926/qml-all.log).
+Poza zakresem pozostają trzy wcześniejsze błędy zaznaczenia przycisków
+Audio/Panels/Settings — każdy odtworzony również w osobnej kopii
+niezmienionego HEAD: [Audio](evidence/signal-message-actions-20260926/baseline-audio.log),
+[Panels](evidence/signal-message-actions-20260926/baseline-panels.log),
+[Settings](evidence/signal-message-actions-20260926/baseline-settings.log).
+Nie wyciszano błędów; atrapa monitora w teście rozmów stała się obiektem Qt
+z rzeczywistymi sygnałami wymiarów. Testy używają prywatnych XDG/D-Bus
+i syntetycznego CLI. Nie wykonano natywnych testów wejścia Wayland ani wysyłki,
+przypięcia czy usuwania na rzeczywistym koncie. Po migracji v8 runtime
+obsługujący wyłącznie v7 nie jest zgodnym rollbackiem.
+
+Pierwszy odbiór pakietu wykrył brak v8 w walidatorze `SignalBackend.qml`:
+QML odrzucało hello i zamykało stdin, a końcowy EOF dawał `transport_lost`.
+Instalator prawidłowo nie uruchomił starszego czytnika po migracji.
+Poprawiono walidator i uruchomiono `scripts/test-signal-messages`:
+**PASS**, cztery grupy z produkcyjnym QML, SQLite i syntetycznym CLI,
+w tym wysyłka, 66 wiadomości, paginacja, draft i hard reload, bez błędów
+QML i pozostawionych procesów; [raport](evidence/signal-message-actions-20260926/messages-integration.json).
+Końcowe sprawdzenie kolejki obejmuje też kolejność przekazania wielu
+wiadomości utworzonych w tej samej milisekundzie, bez sortowania ich po UUID.
+Po ponownej instalacji zakończono odbiór bez błędów. `previous` wskazuje
+ostatnie sprawne wydanie `20260926-102323-837f360c2241`, którego uruchomienie
+na bazie v8 blokuje kontrola zgodności. Nie usuwano starszych wydań.
+
+## Wskaźnik pisania Signal — 2026-09-26
+
+**Wdrożone lokalnie: `20260926-102323-837f360c2241`; Signal ponownie `ready/linked`.** Po zgłoszeniu użytkownika
+odczyt usługi potwierdził `failed/linked`, `invalid_config`; powiązanie
+konta pozostało zachowane. [Stan](evidence/signal-typing-20260926/live-before.json).
+Zapisane `executable: "signal-cli"` (domyślna wartość formularza) było
+odrzucane przez wydanie z własnym CLI. Przełącznik wskaźnika uruchamiał
+ponownie transport, co ujawniało błąd i przerywało połączenie.
+
+Domyślna nazwa oznacza teraz zweryfikowany CLI z pakietu, bez szukania
+w PATH i bez zgody na obce ścieżki CLI/JRE. Sama zmiana `typingIndicators`
+zapisuje i publikuje konfigurację bez restartu; wyłączenie wysyła STOP
+dla własnych wskaźników i czyści otrzymane wskaźniki oraz ich timery.
+Jawne włączenie/wyłączenie usługi i ustawienia narzędzi zachowują restart.
+Zapisy preferencji są serializowane również podczas oczekiwania na STOP.
+
+| Sprawdzenie | Rzeczywisty wynik |
+| --- | --- |
+| Odtworzenie | **FAIL zgodny ze zgłoszeniem**, domyślny CLI daje `invalid_config`, zmiana wskaźnika przerywa stan `ready`; [log](evidence/signal-typing-20260926/before.log). |
+| Python | **PASS**, 53 testy konta, runtime, interakcji i rozmów; [log](evidence/signal-typing-20260926/python.log). Nowy test zachowuje tę samą rozmowę, audio i odbiornik przy trzech zmianach, sprawdza STOP, usunięcie otrzymanych wskaźników oraz zapis po restarcie. |
+| QtTest ustawień | **PASS**, 12 wyników, mysz i Enter, bez ostrzeżeń; [log](evidence/signal-typing-20260926/settings-qml.log). |
+| Rzeczywiste okno ustawień i bridge | **PASS**, 7 grup z atrapą CLI, w tym oba stany przełącznika, brak restartu/błędu oraz reload z zachowaniem wyboru. Bez błędów QML i pozostawionych procesów; [raport](evidence/signal-typing-20260926/settings-integration.json). |
+| `scripts/check` | **PASS**, 282 QML, zero błędów; [log](evidence/signal-typing-20260926/check.log). |
+| Gotowy pakiet w prywatnym prefiksie | **PASS**, `20260926-101600-837f360c2241`, 175 QML i 375 plików runtime zgodnych ze źródłami. Domyślne `signal-cli` uruchamia rzeczywiste przypięte CLI/JRE z wynikiem `signal-cli 0.14.8`; [instalacja](evidence/signal-typing-20260926/private-install.log), [sprawdzenie](evidence/signal-typing-20260926/packaged-runtime.json). |
+| Aktywacja na pulpicie | **PASS**, 175 QML przy pakowaniu, 375 plików zgodnych ze źródłami. Dwa odczyty w odstępie 10 s: jedna stabilna instancja, Signal `ready/linked`, zero błędów/ostrzeżeń, gotowe idle/lock i poprawny właściciel powiadomień. Zachowane ustawienia, skróty, konfiguracja Signala, włączony wskaźnik i Caffeinate `background`; [log](evidence/signal-typing-20260926/live-install.log), [odbiór](evidence/signal-typing-20260926/live-activation.json). |
+
+Pierwszą aktywację zatrzymał warunek odblokowanej sesji w instalatorze;
+po odblokowaniu potwierdzonym przez użytkownika dokończono instalację
+przez `scripts/install --activate --shell-only --offline --no-prune`.
+`previous` zachowuje `20260926-095602-1adc1e9c40ed`; starszych wydań
+nie usuwano. Odbiór nie wykonywał wysyłki ani rozmowy na rzeczywistym koncie.
+
+Testy używały prywatnych XDG/D-Bus i syntetycznego konta/audio. Pierwsza
+regresja wykryła utratę jawnego wyłączenia przy niezmienionej preferencji;
+zachowano dotychczasowy restart pozostałych ustawień i powtórzono 53 testy.
+Nie wykonano rozmowy ani wysyłki na rzeczywistym koncie; pełny
+`scripts/test` i natywny Wayland pozostają niewykonane w tym przebiegu.
+
+## Rozmowy głosowe Signal — 2026-09-26
+
+**Wdrożone lokalnie: `20260926-095602-1adc1e9c40ed`; próba rozmowy
+z rzeczywistym rozmówcą pozostaje niewykonana.** Użytkownik wybrał ten zakres po wskazaniu
+PR #1932. Poprzednie stwierdzenie o braku obsługi voice calls w signal-cli
+było nieaktualne. Przypięta wersja 0.14.8 zawiera eksperymentalne API.
+[Kontrakt, źródła i obsługa](signal/CALLS.md).
+
+Dodano start rozmowy 1:1, incoming, odbiór, odrzucenie, rozłączenie,
+mute mikrofonu, pasek rozmowy i powiadomienia. Stan żyje poza oknem.
+DND, blokada, duże identyfikatory, brak replay oraz oddzielne audio
+kolejnych rozmów mają testy zachowania. Widoki korzystają ze wspólnych
+kontrolek, gradientu i fokusu klawiatury, bez podpowiedzi i tooltipów.
+Nie dodano rozmów grupowych, wideo, voice notes ani migracji SQLite.
+
+Tunel RingRTC jest budowany z przypiętych commitów i dołączany przez
+instalator. Poprawki przekazują rzeczywisty numer połączonego urządzenia
+i nadawcy ICE oraz sprzątają dokładnie własne moduły audio. CLI/JRE ma
+nowy pin drzewa `4555d3e63fd7ba8e00f719d7983d28b7cecb9c2862167b8912c5e7a139962e40`;
+wersja CLI, retencja 2 i SQLite v7 pozostają zgodne.
+
+| Sprawdzenie | Wynik i dowód |
+| --- | --- |
+| `scripts/check` | **PASS**, 282 QML, zero błędów; [log](evidence/signal-calls-20260926/check-final.log). |
+| Regresja Signala w Pythonie | **PASS**, 173 testy historii, konta, transportu, grup, mediów, retencji i rozmów; [log](evidence/signal-calls-20260926/signal-regression-final.log). Po ostatniej korekcie lifecycle ponowiono celowane testy rozmów poniżej. |
+| Połączenia przez produkcyjny bridge | **PASS**, 10 testów z prywatnym SQLite oraz jawną atrapą CLI/audio, w tym spóźniony hangup i kolejne incoming; [log](evidence/signal-calls-20260926/python.log). |
+| Qt i klawiatura | **PASS**, 105 wyników: 10 rozmów i 95 regresji wiadomości, powiadomień, receipts, grup, retencji, interakcji i mediów; [rozmowy](evidence/signal-calls-20260926/qml.log), [Message Hub](evidence/signal-calls-20260926/qml-messages.log), pozostałe logi w [katalogu dowodów](evidence/signal-calls-20260926/README.md). |
+| Rzeczywiste okno i bridge | **PASS**, 4 grupy: lazy window, outbox, odbiór przy zamkniętym oknie i reload. Brak błędów QML i pozostawionych procesów; [raport](evidence/signal-calls-20260926/messages-integration.json). |
+| Kod poprawionego CLI | **PASS**, rzeczywiste serializery i polityki: device ID 1/2/7, unsigned call ID, retencja, media, typing; [log](evidence/signal-calls-20260926/java-contract.log). |
+| Tunel Rust | **PASS**, 28 testów, w tym ICE z device ID 7; [log](evidence/signal-calls-20260926/rust-tests.log). |
+| RingRTC i strumienie PCM | **PASS**, prawdziwe procesy i wirtualne urządzenia: mute kończy tylko mikrofon, close oba kierunki, EOF/SIGTERM usuwają trzy własne moduły; [raport](evidence/signal-calls-20260926/native-audio.json). Bez sprzętu, sieci tunelu i konta. |
+| Budowanie offline | **PASS**, odtworzony pin CLI/JRE i kompilacja tunelu z cache, także nested Cargo oraz zweryfikowane WebRTC; [CLI](evidence/signal-calls-20260926/reproducible-cli.log), [tunel](evidence/signal-calls-20260926/reproducible-tunnel-offline.log). |
+| Pakowanie i instalator | **PASS**, 23 testy instalatora, test odrzucania uszkodzonego tunelu oraz instalacja do prywatnego prefiksu z walidacją 175 QML; [testy](evidence/signal-calls-20260926/install-tests.log), [walidacja tunelu](evidence/signal-calls-20260926/runtime-verification.log), [instalacja](evidence/signal-calls-20260926/install-final.log), [zgodność źródeł](evidence/signal-calls-20260926/package-verification.json). |
+| Aktywacja na działającym pulpicie | **PASS**, 175 QML przy pakowaniu i 375 plików runtime zgodnych ze źródłami. Dwa odczyty w odstępie 10 s: jedna stabilna instancja, jej właściciel powiadomień, Signal `ready/linked`, gotowe idle/lock i JVM z przypiętym tunelem. Brak błędów/ostrzeżeń; zachowane ustawienia, skróty, konfiguracja Signala i Caffeinate `background`; [log](evidence/signal-calls-20260926/live-install.log), [odbiór](evidence/signal-calls-20260926/live-activation.json). |
+
+Aktywacja na wyraźne polecenie użytkownika przez `scripts/install
+--activate --shell-only --offline --no-prune`, z przygotowanym CLI/JRE
+i tunelem. Dotychczasowe `20260924-082540-076b1e15099c` jest zachowane
+jako `previous`; rollback: `scripts/install --restore --activate`.
+Nie usuwano starszych wydań ani nie wykonywano połączenia lub wysyłki.
+[Plan](evidence/signal-calls-20260926/live-install-plan.json),
+[stan przed przełączeniem](evidence/signal-calls-20260926/live-before.json).
+
+Obejrzano syntetyczne zrzuty [incoming przy 320 px](evidence/signal-calls-20260926/incoming-320.png)
+i [połączenia przy 980 px](evidence/signal-calls-20260926/connected-980.png).
+Testy używają prywatnych XDG/D-Bus; native także serwera PipeWire bez
+monitorów sprzętu oraz bwrap bez sieci i urządzeń audio hosta. Początkowe
+przebiegi w sandboxie miały sześć timeoutów istniejących testów i odmowę
+socketu NETLINK przy walidacji paczki. Powtórzenia poza tym ograniczeniem,
+z zachowaniem izolacji, przeszły. Błąd względnego CARGO_HOME w nested
+buildzie poprawiono, a kompilację offline powtórzono. Test klawiatury
+czeka na zakończenie ładowania historii. Importów/błędów QML nie wyciszano.
+Rust zgłasza trzy nieużywane funkcje/stałą ścieżki innych platform;
+test istniejącej polityki Java zgłasza ostrzeżenie native access SQLite.
+
+**Niewykonane:** rozmowa z drugim urządzeniem, transmisja i pomiar próbek
+dźwięku, jakość mikrofonu/głośników,
+echo, Bluetooth/hotplug, sieciowy reconnect, suspend i natywny Wayland
+nowych kontrolek. Nie uruchamiano pełnego `scripts/test`. Próba procesów
+PCM nie potwierdza dźwięku przez Signal; obsługa nadal opiera się na
+eksperymentalnym API upstream. Następny odbiór: wskazana przez użytkownika
+rozmowa testowa w obie strony.
+
 ## Odczyt, przewijanie i wzmianki — 2026-09-24
 
 **Wdrożone lokalnie: `20260924-082540-076b1e15099c`.**

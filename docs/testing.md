@@ -1,5 +1,107 @@
 # Testowanie Putkin
 
+## Migający pasek ramki — 2026-09-27
+
+`scripts/test-window-borders --output artifacts/window-borders` uruchamia
+prywatny Hyprland i `window-borders-test.qml`: produkcyjny adapter ramek,
+syntetyczną tapetę oraz jedno/dwa okna z okresowo zmienianą zawartością.
+Sprawdza 36 klatek: skale 1/1,5, `debug.damage_tracking` 2/1, obie strony
+fokusu. Wymaga widocznego akcentu aktywnej ramki, braku akcentu na górnej
+ramce nieaktywnego okna oraz poza geometrią obu okien. Używa grim
+i ImageMagicka, nie porównuje tekstu źródeł.
+
+Runner izoluje PID, sieć, XDG i oba D-Bus w bubblewrap. Udostępnia
+wyłącznie socket rodzica i renderD128; okna testowe i zrzuty powstają
+na prywatnym HEADLESS. Kończy własne procesy i usuwa katalog próby.
+Nie uruchamia produkcyjnego shella ani integracji sprzętowych/PAM.
+Zrzut kompozytora nie wykrywa uszkodzeń obrazu powstających dopiero
+podczas przesyłania go do fizycznego panelu; to osobny odbiór użytkownika.
+
+## Odcisk i zegar po wznowieniu — 2026-09-27
+
+`test_session_resume.py` sprawdza kolejność resume → wykrycie urządzeń →
+zwolnienie hold oraz odrzucenie obcego/powtórzonego sygnału, bez połączeń
+D-Bus. `tst_lock_idle.qml` sprawdza też odrzucenie błędu starej generacji
+i reset koloru oraz stanu hasła na początku nowego cyklu.
+
+`scripts/test-session-integration` zatrzymuje rzeczywisty `SystemClock`,
+czeka na rozjazd z czasem systemowym i emituje parę PrepareForSleep
+na prywatnym login1. Sprawdza natychmiastowy odczyt przed wznowieniem
+ekranów, datę renderowanego paska, działający timer i powrót do precyzji
+minutowej. Nie zmienia czasu hosta. Quickshell jest wymagany dla tego
+testu, ponieważ wtyczka SystemClock nie ładuje się w qmltestrunner.
+
+`scripts/test-wayland --nested --native-session` używa rzeczywistego
+pam_fprintd i błędu Claim atrapy, który daje PAM_AUTHINFO_UNAVAIL (9).
+Dwa błędy po resume muszą odzyskać skanowanie bez czerwonego glifu;
+poprawny skan odblokowuje. Test obejmuje zgodną datę na wszystkich
+powierzchniach blokady, anulowanie ponowień przez sen i hasło, limit
+pięciu ponowień trwałego błędu oraz brak obejścia MaxTries po ponownym
+wykryciu czytnika. Zachowuje pozostałe testy PAM, idle, hotplug i secure.
+Kontrola nagrania fade odbywa się na końcu; jej błąd nadal kończy runner
+błędem. Każdy wcześniejszy wynik jest zapisany w `native-checks.json`.
+
+## Fokus, media i lista reakcji — 2026-09-26
+
+`tst_messages.qml` odtwarza kliknięcie, przejście klawiaturą do następnej
+rozmowy i Escape. Sprawdza jeden obrys wewnątrz wybranego kafelka oraz
+identyczne piksele sąsiadów. `tst_signal_message_actions.qml` sprawdza
+środek ikon i popup wybranego emoji zawierający tylko osoby, aktualizację
+listy, zamknięcie po usunięciu reakcji i powrót fokusu.
+
+`tst_signal_message_media.qml` renderuje zdjęcie bez tekstu, dosłowny
+podpis „Załącznik…”, mozaiki 2/3/4/5/7 obrazów, dokument, film i audio.
+Sprawdza proporcje, brak nakładania elementów, wejście myszy/klawiatury,
+stan niedostępności oraz odtwarzanie, pauzę, seek i wyłączność audio.
+Odtwarzanie używa prawdziwego dekodera i zegara Qt z jawnym brakiem
+wyjścia audio, bez otwierania urządzeń hosta. Blokada i ukrycie zatrzymują
+odtwarzacz. Fixture zawiera wyłącznie syntetyczne media, w tym osiem
+sekund ciszy. Testy pracują na atrapach z prywatnymi XDG/D-Bus.
+
+## Kolejność i akcje wiadomości — 2026-09-26
+
+`test_signal_ordering.py` odtwarza późniejszy odbiór z wcześniejszym zegarem
+nadawcy, ACK, duplikaty, odczyt do ID, paginację i rzeczywistą migrację v7
+z wymuszoną awarią/rollbackiem. `test_signal_message_actions.py` sprawdza
+pin/unpin, czas i limit przypięć, uprawnienia, niezależne pliki przekazania,
+atomowość zestawu i idempotencję. Test bridge uruchamia produkcyjną kolejkę
+z syntetycznym CLI; nie wysyła do rzeczywistego konta.
+
+`tst_signal_message_actions.qml` używa myszy i klawiatury w popupach,
+schowka Qt, pełnego wyboru emoji, zaznaczenia/przekazania, przypięć,
+informacji, usuwania i unieważniania po zmianie rozmowy/blokadzie.
+Sprawdza niezmienione HH:mm, geometrię dymków i przycisków przy 320/980 px;
+zapisuje syntetyczne zrzuty do `docs/evidence/signal-message-actions-20260926`.
+
+```sh
+PYTHONPATH=tests:services python3 -B -m unittest -v test_signal_ordering test_signal_message_actions
+scripts/test-icons --file tst_signal_message_actions.qml
+scripts/check
+```
+
+## Wskaźnik pisania Signal — 2026-09-26
+
+`test_signal_release.py` sprawdza domyślną nazwę CLI w wydaniu z własnym
+runtime: poprawny pakiet bez PATH, zachowanie preferencji oraz odrzucenie
+obcego CLI/JRE. `test_signal_calls.py` przełącza preferencję podczas
+syntetycznej rozmowy i sprawdza ciągłość odbiornika/audio, STOP, usunięcie
+otrzymanych wskaźników i odtworzenie preferencji z dysku.
+`tst_signal_settings.qml` używa myszy oraz Enter. `scripts/test-signal-pairing`
+wykonuje też przełączenia przez prawdziwe okno i bridge z atrapą CLI;
+obserwuje błędy, procesy, zapis konfiguracji i reload.
+
+## Rozmowy głosowe Signal — 2026-09-26
+
+`scripts/test-signal-calls` uruchamia testy bridge/SQLite/JSON-RPC oraz Qt.
+`--native` sprawdza dodatkowo prawdziwy tunel i procesy PCM na prywatnym
+PipeWire: start, mute/unmute, EOF/SIGTERM i usunięcie własnych modułów.
+Brak urządzeń hosta, sieci tunelu i prawdziwego konta. Nie jest to dowód
+rozmowy z telefonem ani jakości audio. `test_signal_call_runtime.py`
+sprawdza odrzucenie zmienionej binarki/manifestu. `SignalCallContractTest`
+uruchamia serializer poprawionego CLI dla numerów urządzenia i dużych ID.
+[Pełny kontrakt](signal/CALLS.md),
+[wyniki i niewykonane próby](status.md#rozmowy-głosowe-signal--2026-09-26).
+
 ## Odczyt, przewijanie i wzmianki — 2026-09-24
 
 `tst_signal_receipts.qml` obejmuje odczyt starszych stron przy końcu,

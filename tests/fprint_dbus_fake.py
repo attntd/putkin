@@ -19,6 +19,7 @@ class Device(dbus.service.Object):
     def __init__(self, bus):
         super().__init__(bus, "/net/reactivated/Fprint/Device/0")
         self.calls = []
+        self.claim_failures = 0
 
     @dbus.service.method(DEVICE, in_signature="s", out_signature="as")
     def ListEnrolledFingers(self, username):
@@ -39,6 +40,12 @@ class Device(dbus.service.Object):
     @dbus.service.method(DEVICE, in_signature="s", out_signature="")
     def Claim(self, username):
         self.calls.append("Claim")
+        if self.claim_failures:
+            if self.claim_failures > 0:
+                self.claim_failures -= 1
+            self.calls.append("ClaimUnavailable")
+            raise dbus.exceptions.DBusException("Fixture reader is waking up",
+                name=FPRINT + ".Error.Internal")
 
     @dbus.service.method(DEVICE, in_signature="s", out_signature="")
     def VerifyStart(self, finger):
@@ -85,6 +92,11 @@ class Manager(dbus.service.Object):
     @dbus.service.method(CONTROL, in_signature="", out_signature="s")
     def Snapshot(self):
         return json.dumps(self.device.calls)
+
+    @dbus.service.method(CONTROL, in_signature="i", out_signature="")
+    def FailClaims(self, count):
+        assert count >= -1
+        self.device.claim_failures = int(count)
 
     @dbus.service.method(CONTROL, in_signature="b", out_signature="")
     def Own(self, own):

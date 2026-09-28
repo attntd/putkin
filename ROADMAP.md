@@ -1,5 +1,65 @@
 # Roadmapa Putkin
 
+## Wybrana korekta — migający pasek przy ramce, 2026-09-27
+
+**Obejście cofnięte na polecenie użytkownika; trwa obserwacja poprzedniego trybu.**
+
+Diagnoza poziomego paska przy nieaktywnym oknie i testy dwóch klientów
+w prywatnym Hyprlandzie. Po krótkiej obserwacji bez paska użytkownik
+zlecił przywrócenie `damage_tracking=2`, aby sprawdzić powrót objawu.
+Przyczyna i wynik porównania pozostają otwarte.
+Zakres obejmuje tę usterkę; bez następnego etapu roadmapy.
+[Wyniki](docs/status.md#migający-pasek-przy-nieaktywnej-ramce--2026-09-27).
+
+## Wybrana korekta — odcisk i zegar po wznowieniu, 2026-09-27
+
+**Wdrożone lokalnie: `20260927-093540-8d0a4069d380`.**
+
+Naprawa przerwanego nasłuchu odcisku i nieaktualnej godziny po otwarciu
+klapy. Zakres: odzyskanie po błędzie dostępności PAM, wspólny zegar
+paska i blokady odświeżany przy resume oraz regresje na prywatnych
+PAM/D-Bus/Waylandzie. Bez następnego etapu roadmapy.
+[Wyniki](docs/status.md#odcisk-i-zegar-po-wznowieniu--2026-09-27).
+
+## Wybrana korekta — fokus, załączniki i reakcje, 2026-09-26
+
+**Wdrożone lokalnie: `20260926-154449-281bca0c1223`.**
+
+Powrót Escape na listę bez ramek na sąsiednich rozmowach, ikony akcji
+na środku wysokości dymka, prezentacja mediów i plików jak w Signal
+oraz osobny popup pokazujący tylko osoby, które dodały reakcję.
+Zakres obejmuje poprawki, testy i aktualizację działającego pulpitu.
+[Wyniki](docs/status.md#fokus-media-i-lista-reakcji--2026-09-26).
+
+## Wybrany zakres — kolejność i akcje wiadomości, 2026-09-26
+
+**Wdrożone lokalnie: `20260926-114434-3d56b47505d0`.**
+
+Naprawa kolejności bez pokazywania sekund; trzy ikony obok dymka
+i popupy wskazanych akcji jak w Signal Desktop. Zakres obejmuje
+implementację, testy i odbiór. [Kontrakt](docs/signal/MESSAGE_ACTIONS.md).
+[Wyniki](docs/status.md#kolejność-i-akcje-wiadomości--2026-09-26).
+
+## Wybrana korekta — wskaźnik pisania Signal, 2026-09-26
+
+**Wdrożone lokalnie: `20260926-102323-837f360c2241`.**
+
+Naprawa utraty połączenia po przełączeniu wskaźnika pisania: lokalna
+preferencja bez restartu odbiornika i rozmowy oraz poprawne rozwiązywanie
+domyślnego `signal-cli` w zainstalowanym pakiecie. Zakres obejmuje regresję
+i aktualizację działającego pulpitu, bez kolejnego etapu roadmapy.
+[Wyniki](docs/status.md#wskaźnik-pisania-signal--2026-09-26).
+
+## Wybrany zakres — rozmowy głosowe Signal, 2026-09-26
+
+**Wdrożone lokalnie: `20260926-095602-1adc1e9c40ed`.**
+
+Użytkownik wybrał rozmowy głosowe po wskazaniu obsługi w signal-cli PR #1932.
+Zakres: połączenia 1:1, odbieranie/odrzucanie, rozłączenie, mute mikrofonu,
+stan w Message Hubie, powiadomienia i przypięty tunel RingRTC.
+Bez rozmów grupowych, wideo i voice notes. [Kontrakt](docs/signal/CALLS.md),
+[wyniki i otwarte kryteria](docs/status.md#rozmowy-głosowe-signal--2026-09-26).
+
 ## Wybrana korekta — odczyt, przewijanie i wzmianki, 2026-09-24
 
 **Wdrożone lokalnie: `20260924-082540-076b1e15099c`.**

@@ -7,6 +7,7 @@ QtObject {
     required property var controller
     readonly property IpcHandler handler: IpcHandler {
         target: "notifications"
+        function toggle(): string { return root.controller.toggle(); }
         function focus(): string { return root.controller.focus(); }
         function leave(): void { root.controller.closeCenter(); }
         function setDnd(enabled: bool): bool { if (!root.service.available) return false; root.service.dnd = enabled; return true; }

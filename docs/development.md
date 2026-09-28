@@ -1,5 +1,57 @@
 # Środowisko i rozwój
 
+## Zegar i odcisk po wznowieniu — 2026-09-27
+
+Potwierdzono lokalne Quickshell **0.3.1-1**, Qt **6.11.2**, fprintd
+**1.94.5-2**, libfprint **1.94.100-1**, Linux-PAM **1.7.2-2**, systemd
+**262-1** i Hyprland **0.56.2-3**. Przed zmianą sprawdzono qmltypes,
+zainstalowane XML fprintd oraz oficjalne API:
+[SystemClock](https://quickshell.org/docs/v0.3.1/types/Quickshell/SystemClock/),
+[implementację zegara 0.3.1](https://github.com/quickshell-mirror/quickshell/blob/v0.3.1/src/core/clock.cpp),
+[PamContext](https://quickshell.org/docs/v0.3.1/types/Quickshell.Services.Pam/PamContext/),
+[PamError](https://quickshell.org/docs/v0.3.1/types/Quickshell.Services.Pam/PamError/),
+[PamResult](https://quickshell.org/docs/v0.3.1/types/Quickshell.Services.Pam/PamResult/)
+i [mapowanie wyników Linux-PAM](https://github.com/quickshell-mirror/quickshell/blob/v0.3.1/src/services/pam/subprocess.cpp).
+`SystemClock.enabled` przy ponownym włączeniu synchronicznie odczytuje
+czas i planuje następną minutę. `TryAuthFailed` oznacza błąd wykonania
+uwierzytelniania; `MaxTries` pozostaje terminalny. Nie zmieniono API logind.
+
+## Prezentacja wiadomości — 2026-09-26
+
+Potwierdzono lokalnie Qt **6.11.2**, Quickshell **0.3.1** oraz Signal Desktop
+**8.27.0-1**. Zweryfikowano oficjalne
+[Control](https://doc.qt.io/qt-6.11/qml-qtquick-controls-control.html),
+[Image](https://doc.qt.io/qt-6.11/qml-qtquick-image.html) oraz
+[MediaPlayer](https://doc.qt.io/qt-6.11/qml-qtmultimedia-mediaplayer.html).
+Punktem odniesienia dla prezentacji jest Signal 8.27.0:
+[Message](https://github.com/signalapp/Signal-Desktop/blob/v8.27.0/ts/components/conversation/Message.dom.tsx),
+[ImageGrid](https://github.com/signalapp/Signal-Desktop/blob/v8.27.0/ts/components/conversation/ImageGrid.dom.tsx),
+[MessageAudio](https://github.com/signalapp/Signal-Desktop/blob/v8.27.0/ts/components/conversation/MessageAudio.dom.tsx) i
+[ReactionViewer](https://github.com/signalapp/Signal-Desktop/blob/v8.27.0/ts/components/conversation/ReactionViewer.dom.tsx).
+Kolory, typografia, gradient i wejście pochodzą ze wspólnych kontrolek Putkina.
+Nowe ikony odtwarzania/pauzy/obrazu/pobierania należą do istniejącego
+katalogu Material; źródła i sumy są w jego manifeście.
+
+## Wskaźnik pisania Signal — 2026-09-26
+
+Lokalnie Python **3.14.7** i Qt **6.11.2**. Sprawdzono oficjalne
+[asyncio.Lock](https://docs.python.org/3.14/library/asyncio-sync.html#asyncio.Lock)
+oraz [wejście QtTest](https://doc.qt.io/qt-6.11/qml-qttest-testcase.html#mouseClick-method).
+Zmiana korzysta z istniejącego protokołu bridge; nie zmienia API CLI ani
+schematu SQLite. Testy ustawień używają prywatnych XDG/D-Bus i atrap.
+
+## Rozmowy głosowe Signal — 2026-09-26
+
+Sprawdzono lokalnie Qt 6.11.2, Quickshell 0.3.1, Python 3.14.7,
+PipeWire 1.6.9, libpulse 17.0-98-gb096 i Rust/Cargo 1.98.1.
+Źródła API dotyczą dokładnie signal-cli 0.14.8 i przypiętego RingRTC 2.65.1;
+[linki, piny, poprawki i polecenia](signal/CALLS.md).
+Kontrolki opierają się na dotychczasowych komponentach oraz oficjalnym
+[Button Qt 6.11](https://doc.qt.io/qt-6.11/qml-qtquick-controls-button.html).
+Instalator dołącza tunel; runtime wymaga pactl/pacat, a kompilacja Rust,
+Clang/CMake/Protobuf/pkg-config. Testy natywne używają prywatnego serwera
+PulseAudio w PipeWire bez monitorów sprzętu i bez konta Signal.
+
 ## Odczyt, przewijanie i wzmianki — 2026-09-24
 
 Ponownie sprawdzono `qmake6 -query QT_VERSION`: **6.11.2** oraz

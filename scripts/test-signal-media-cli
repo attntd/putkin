@@ -10,7 +10,7 @@ parser.add_argument("--distribution", type=Path, required=True)
 parser.add_argument("--jdk", type=Path, required=True)
 args = parser.parse_args()
 results = []
-for name in ("SignalMediaPolicyTest", "SignalRetentionPolicyTest", "SignalEventContractTest"):
+for name in ("SignalMediaPolicyTest", "SignalRetentionPolicyTest", "SignalEventContractTest", "SignalCallContractTest"):
     results.append(subprocess.run([tool("bwrap"), "--unshare-all", "--die-with-parent", "--new-session",
     "--ro-bind", "/usr", "/usr", "--symlink", "usr/lib", "/lib", "--symlink", "usr/lib", "/lib64",
     "--proc", "/proc", "--dev", "/dev", "--tmpfs", "/tmp",

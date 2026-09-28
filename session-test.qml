@@ -16,9 +16,15 @@ ShellRoot {
         helperEnvironment: ({ WAYLAND_DISPLAY: "test-wayland", HYPRLAND_INSTANCE_SIGNATURE: "test-instance" })
     }
     SessionService { id: service; backend: backend }
+    SessionClock { id: clock }
+    QtObject {
+        id: display
+        property double timeAtResume: 0
+        function resume(): void { timeAtResume = clock.date.getTime(); }
+    }
     MockBrightnessBackend { id: backlight }
     BrightnessService { id: brightness; backend: backlight }
-    PanelPreviewWindow { id: window; sessionService: service; brightness: brightness }
+    PanelPreviewWindow { id: window; sessionService: service; brightness: brightness; sessionClock: clock; idle: display }
     SessionIpc { service: service; coordinator: window.scene.coordinator }
     IpcHandler {
         target: "probe"
@@ -29,6 +35,8 @@ ShellRoot {
                 locked: lock.locked, secure: lock.secure, hold: lock.hold, token: backend.lockToken,
                 idleReady: backend.idleReady, idleInhibited: backend.idleInhibited, sleepInhibited: backend.sleepInhibited,
                 refreshes: backlight.requests.length, loaded: window.scene.panelHost.loaded,
+                clock: clock.date.getTime(), barDate: window.scene.bar.clock.date.getTime(),
+                clockEnabled: clock.enabled, timeAtResume: display.timeAtResume,
                 active: window.scene.coordinator.activeId, created: window.scene.createdCount, destroyed: window.scene.destroyedCount });
         }
         function request(action: string): bool { return service.request(action); }
@@ -36,6 +44,8 @@ ShellRoot {
         function release(): void { protocol.release(); }
         function stale(token: int): void { backend.send({action: "lock-state", token: token, locked: true, secure: true}); }
         function refresh(): void { service.refresh(); }
+        function freezeClock(): void { clock.precision = SystemClock.Seconds; clock.enabled = false; }
+        function minuteClock(): void { clock.precision = SystemClock.Minutes; }
         function choose(action: string): void { window.scene.panelHost.window.page.choose(action); }
         function cancel(): void { window.scene.panelHost.window.page.dismissOrCollapse(); }
         function reload(hard: bool): void { Quickshell.reload(hard); }

@@ -127,15 +127,15 @@ def mark_visible(store, account, params):
         rows = []
         more = False
         if through is not None:
-            anchor = store.db.execute("SELECT sort_ms,message_id FROM messages WHERE message_id=? AND conversation_id=?", (through, cid)).fetchone()
+            anchor = store.db.execute("SELECT order_sequence,message_id FROM messages WHERE message_id=? AND conversation_id=?", (through, cid)).fetchone()
             if not anchor:
                 raise Failure("not_found")
             # Bound each transaction/response; the active view requests the next
             # batch using the same observed endpoint, never a moving timestamp.
             rows = store.db.execute("""SELECT * FROM messages WHERE conversation_id=?
                 AND direction='incoming' AND read_at_ms IS NULL AND kind IN ('text','media')
-                AND (sort_ms,message_id)<=(?,?) ORDER BY sort_ms,message_id LIMIT 101""",
-                                    (cid, anchor["sort_ms"], anchor["message_id"])).fetchall()
+                AND (order_sequence,message_id)<=(?,?) ORDER BY order_sequence,message_id LIMIT 101""",
+                                    (cid, anchor["order_sequence"], anchor["message_id"])).fetchall()
             more = len(rows) > 100
             rows = rows[:100]
         else:

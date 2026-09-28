@@ -157,6 +157,31 @@ class ReleaseTests(unittest.TestCase):
     def test_release_schema_matches_reader(self):
         self.assertEqual(self.spec["schemaMax"], SCHEMA_VERSION)
 
+    def test_installed_default_cli_name_resolves_to_bundle_without_path_lookup(self):
+        installed = self.base / "installed"
+        bundle = installed / "dependencies/signal"
+        bundle.mkdir(parents=True)
+        binary = bundle / "cli/bin/signal-cli"
+        with patch.object(signal_release, "ROOT", installed), \
+                patch.object(signal_release, "verify_runtime") as verify, \
+                patch.object(signal_release.shutil, "which") as which:
+            for value in (None, "", "signal-cli", str(binary)):
+                with self.subTest(executable=value):
+                    config = {"enabled": True, "typingIndicators": True}
+                    if value is not None:
+                        config["executable"] = value
+                    original = dict(config)
+                    command, env = signal_release.command(config)
+                    self.assertEqual(command, [str(binary)])
+                    self.assertEqual(env["JAVA_HOME"], str(bundle / "jre"))
+                    self.assertEqual(config, original)
+            verify.assert_called_with(bundle)
+            which.assert_not_called()
+            for override in ({"executable": "/usr/bin/signal-cli"}, {"executable": "foreign-cli"},
+                             {"javaHome": "/tmp/foreign-java"}):
+                with self.subTest(override=override), self.assertRaisesRegex(Failure, "invalid_config"):
+                    signal_release.command(override)
+
     def test_expiration_after_code_rollback_runs_before_history_publication(self):
         from test_signal_retention import disappearing, T
         signal_release.claim_release(self.lease)

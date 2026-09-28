@@ -9,6 +9,7 @@ Scope {
     required property var service
     required property var state
     required property var screens
+    required property date date
     property url wallpaper: ""
     readonly property bool locked: state.locked
     readonly property bool secure: nativeLock.secure
@@ -54,7 +55,7 @@ Scope {
                 service: root.service
                 animate: surface.snapshot !== null
                 wallpaper: root.wallpaper
-                date: clock.date
+                date: root.date
                 onHidden: root.finishUnlock()
                 Component.onCompleted: {
                     surface.snapshot = desktopCapture.attach(surface.screen, backdrop);
@@ -67,5 +68,4 @@ Scope {
             }
         }
     }
-    SystemClock { id: clock; precision: SystemClock.Minutes; enabled: root.locked }
 }

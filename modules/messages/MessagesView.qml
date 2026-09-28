@@ -52,6 +52,7 @@ FocusScope {
         const selected = filtered.findIndex(item => Route.equal(item.route, adapter ? adapter.selectedRoute : null));
         if (selected >= 0) list.currentIndex = selected;
         else if (list.currentIndex < 0 && list.count) list.currentIndex = 0;
+        list.focusReason = reason;
         list.forceActiveFocus(reason);
         list.positionViewAtIndex(list.currentIndex, ListView.Contain);
     }
@@ -59,8 +60,21 @@ FocusScope {
         anchors.fill: parent
         color: Theme.backgroundStrong
     }
+    CallBar {
+        id: callBar
+        objectName: "callBar"
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.margins: Metrics.space12
+        calls: root.adapter ? root.adapter.calls : null
+        downTarget: root.narrow && root.detail ? (callButton.enabled ? callButton : detailsButton) : list
+    }
     RowLayout {
-        anchors.fill: parent
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.top: callBar.visible ? callBar.bottom : parent.top
         anchors.margins: Metrics.space12
         spacing: Metrics.space12
         ColumnLayout {
@@ -122,6 +136,7 @@ FocusScope {
                     list.cancelFlick();
                     if (event.modifiers !== Qt.NoModifier && event.modifiers !== Qt.KeypadModifier) return;
                     if (event.key === Qt.Key_J || event.key === Qt.Key_Down) currentIndex = Math.min(count - 1, currentIndex + 1);
+                    else if ((event.key === Qt.Key_K || event.key === Qt.Key_Up) && currentIndex <= 0 && callBar.visible) callBar.focusInitial();
                     else if (event.key === Qt.Key_K || event.key === Qt.Key_Up) currentIndex = Math.max(0, currentIndex - 1);
                     else if (event.key === Qt.Key_H || event.key === Qt.Key_Slash) search.forceActiveFocus(Qt.TabFocusReason);
                     else if ((event.key === Qt.Key_L || event.key === Qt.Key_Right || event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && currentIndex >= 0 && currentIndex < count) {
@@ -162,7 +177,15 @@ FocusScope {
                             color: entry.foreground
                         }
                     }
-                    UI.FocusIndicator { control: list; shown: list.currentIndex === entry.index }
+                    background: UI.AccentRectangle {
+                        color: entry.fillColor
+                        radius: Metrics.radius
+                        border.width: Metrics.borderWidth
+                        border.color: entry.down ? Theme.text : entry.highlighted ? Theme.accentBorder : Theme.border
+                        accentFill: entry.accentFill
+                        accentOutline: entry.accentFill && !entry.down
+                        UI.FocusIndicator { control: list; shown: list.currentIndex === entry.index }
+                    }
                 }
             }
             UI.NavigationButton {
@@ -204,7 +227,8 @@ FocusScope {
                         objectName: "backToConversations"
                         visible: root.narrow
                         text: qsTr("Wróć")
-                        rightTarget: history
+                        rightTarget: callButton
+                        downTarget: history
                         onClicked: root.showList(focusReason)
                     }
                     Text {
@@ -219,9 +243,28 @@ FocusScope {
                         textFormat: Text.PlainText
                     }
                     UI.NavigationButton {
+                        id: callButton
+                        objectName: "startCall"
+                        visible: root.adapter && root.adapter.selectedConversation !== null && root.adapter.selectedConversation.kind === "direct"
+                        enabled: root.adapter && root.adapter.canCall
+                        text: qsTr("Zadzwoń")
+                        tooltip: ""
+                        Layout.preferredWidth: Metrics.controlHeight
+                        contentItem: UI.Glyph { symbol: "call"; color: callButton.foreground }
+                        leftTarget: back.visible ? back : list
+                        rightTarget: detailsButton
+                        upTarget: callBar.visible ? callBar.firstAction : null
+                        downTarget: history
+                        onClicked: root.adapter.calls.start(root.adapter.selectedConversation.conversationId)
+                    }
+                    UI.NavigationButton {
+                        id: detailsButton
                         objectName: "conversationDetails"
                         visible: root.adapter && root.adapter.selectedConversation !== null
                         text: qsTr("Szczegóły")
+                        leftTarget: callButton
+                        upTarget: callBar.visible ? callBar.firstAction : null
+                        downTarget: history
                         onClicked: { if (root.adapter.canManageGroups) root.adapter.inspectGroup(); root.detailsOpen = true; }
                     }
                 }
@@ -242,11 +285,21 @@ FocusScope {
                         color: Theme.textMuted; font.family: Theme.fontFamily; font.pixelSize: Metrics.smallFontSize
                     }
                 }
+                PinnedMessages {
+                    Layout.fillWidth: true
+                    adapter: root.adapter
+                }
+                MessageSelection {
+                    Layout.fillWidth: true
+                    visible: history.selecting
+                    history: history
+                }
                 MessageHistory {
                     id: history
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     adapter: root.adapter
+                    upTarget: callButton.visible && callButton.enabled ? callButton : detailsButton
                     readingEnabled: root.readingEnabled && root.adapter && root.adapter.selectedConversation && root.adapter.selectedConversation.canRead !== false && !root.creating && !root.detailsOpen && !root.previewAttachment && (!root.narrow || root.detail)
                     onPreviewRequested: (attachment, reason) => {
                         root.previewFocus = root.Window.window ? root.Window.window.activeFocusItem : null;

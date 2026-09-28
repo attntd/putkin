@@ -77,6 +77,7 @@ async def lifecycle(fixture):
     tasks = set()
     linked_file = Path(fixture["linkedFile"]) if fixture.get("linkedFile") else None
     link_uri = None
+    call = None
     writer_lock = asyncio.Lock()
     default_own = {"number": "+12025550100", "uuid": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", "messageExpirationTime": 0, "profileSharing": True}
     default_peer = {"number": "+12025550101", "uuid": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb", "messageExpirationTime": fixture.get("expiration", 0), "profileSharing": True}
@@ -94,7 +95,7 @@ async def lifecycle(fixture):
                 if fixture.get("chunkDelay"):
                     await asyncio.sleep(fixture["chunkDelay"])
     async def respond(request):
-        nonlocal link_uri
+        nonlocal link_uri, call
         method, params = request["method"], request.get("params", {})
         await asyncio.sleep(params.get("delay", fixture.get("delay", 0)))
         if method == "listAccounts":
@@ -155,6 +156,40 @@ async def lifecycle(fixture):
             for event in fixture.get("receiveEvents", [event]):
                 await emit(event)
             result = 0
+        elif method == "subscribeCallEvents":
+            record(method, params)
+            for item in fixture.get("incomingCalls", []):
+                call = dict(item)
+                await emit({"jsonrpc": "2.0", "method": "callEvent", "params": {"subscription": 1, "result": call}})
+            result = 1
+        elif method in ("startCall", "acceptCall", "rejectCall", "hangupCall", "listCalls"):
+            record(method, params)
+            if fixture.get("callError") == method:
+                await emit({"jsonrpc": "2.0", "id": request["id"], "error": {"code": -3}})
+                return
+            if method == "startCall":
+                if params.get("recipient") != [default_peer["uuid"]]:
+                    raise ValueError("Unexpected call recipient")
+                cid = fixture.get("callId", -9223372036854775807)
+                call = {"callId": cid, "state": "RINGING_OUTGOING", "isOutgoing": True,
+                        "uuid": default_peer["uuid"], "inputDeviceName": "signal_input_" + str(cid % (2**64)),
+                        "outputDeviceName": "signal_output_" + str(cid % (2**64))}
+                states = fixture.get("outgoingCallStates", ["RINGING_OUTGOING", "CONNECTED"])
+            elif method == "listCalls":
+                states = []
+            else:
+                if not call or type(params.get("callId")) is not int or params["callId"] != call["callId"]:
+                    await emit({"jsonrpc": "2.0", "id": request["id"], "error": {"code": -3}})
+                    return
+                states = ["CONNECTING", "CONNECTED"] if method == "acceptCall" else ["ENDED"]
+            for state in states:
+                call = dict(call, state=state)
+                await emit({"jsonrpc": "2.0", "method": "callEvent", "params": {"subscription": 1, "result": call}})
+            result = ([call] if call and call["state"] != "ENDED" else []) if method == "listCalls" else (call if method in ("startCall", "acceptCall") else {})
+            if fixture.get("callCrash") == method:
+                os._exit(23)
+            if fixture.get("callDelay"):
+                await asyncio.sleep(fixture["callDelay"])
         elif method in ("updateGroup", "joinGroup", "quitGroup") and "expiration" not in params:
             record(method, params)
             if fixture.get('groupError'):
@@ -227,6 +262,17 @@ async def lifecycle(fixture):
         elif method == "sendTyping":
             record("typing", params)
             result = {"timestamp": 1790000003000, "results": []}
+        elif method in ("sendPinMessage", "sendUnpinMessage"):
+            if (params.get("account") != "+12025550100" or not isinstance(params.get("targetTimestamp"), int)
+                    or not isinstance(params.get("targetAuthor"), str)
+                    or (method == "sendPinMessage" and params.get("pinDuration") not in (-1, 86400, 604800, 2592000))):
+                raise ValueError("Unexpected pin arguments")
+            record("pin" if method == "sendPinMessage" else "unpin", params)
+            if fixture.get("interactionError"):
+                await emit({"jsonrpc": "2.0", "id": request["id"], "error": {"code": -3}})
+                return
+            result = {"timestamp": fixture.get("interactionTimestamp", 1790000009000) + (1 if method == "sendUnpinMessage" else 0),
+                "results": [{"recipientAddress": {"uuid": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"}, "type": "SUCCESS"}]}
         elif method == "sendReaction" or (method == "send" and "editTimestamp" in params):
             record("reaction" if method == "sendReaction" else "edit", params)
             if fixture.get("interactionError"):
@@ -267,6 +313,8 @@ async def lifecycle(fixture):
             result = {"timestamp": 1790000200000, "results": [] if fixture.get("readReceipts") is False else [{
                 "recipientAddress": {"uuid": params["recipient"]}, "type": "SUCCESS"}]}
         elif method == "echo" and params.get("receive"):
+            if params["receive"].get("method") == "callEvent":
+                call = dict(params["receive"]["params"]["result"])
             await emit(params["receive"])
             result = {"accepted": True}
         elif method in ("echo", "mutate"):

@@ -126,10 +126,22 @@ def run(output, idle=False):
             assert leases() == [["sleep", "delay"]]
             ipc("probe", "confirm")
             eventually(leases, lambda v: not v, "release delay only after secure")
+            ipc("probe", "freezeClock")
+            old_time = state()["clock"]
+            time.sleep(1.1)
+            assert state()["clock"] == old_time
             fixture.Sleep(False)
-            eventually(state, lambda s: not s.get("hold") and s.get("refreshes", 0) > before, "resume")
+            resumed = eventually(state, lambda s: not s.get("hold") and s.get("refreshes", 0) > before, "resume")
+            assert resumed["clock"] > old_time and resumed["clockEnabled"], resumed
+            assert abs(resumed["clock"] - time.time() * 1000) < 1200, resumed
+            assert resumed["timeAtResume"] > old_time and resumed["barDate"] == resumed["clock"], resumed
+            assert resumed["secure"], resumed
+            eventually(state, lambda s: s["clock"] > resumed["clock"], "clock timer rearmed", timeout=2)
+            ipc("probe", "minuteClock")
+            assert state()["clock"] % 60000 == 0
             eventually(leases, lambda v: v == [["sleep", "delay"]], "rearm delay after resume")
             check("external sleep holds FD until secure, spoofed sender ignored, resume rearms and refreshes brightness")
+            check("real frozen SystemClock and rendered bar refresh before display resume; ticking resumes at minute precision")
 
             client = dbus.bus.BusConnection(address)
             app = dbus.Interface(client.get_object("org.freedesktop.ScreenSaver", "/ScreenSaver"), "org.freedesktop.ScreenSaver")

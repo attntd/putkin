@@ -53,6 +53,8 @@ ShellRoot {
                 pid: backend.processId, generation: backend.generation, error: service.errorCode,
                 qrSize: service.qrModules.length, linking: service.linkAttempt !== "", reconciling: service.reconciling,
                 loaded: host.loaded, pageReady: root.surface() !== null && root.surface().page !== null,
+                typingIndicators: service.configuration.typingIndicators === true,
+                actionError: service.actionError,
                 captured: root.captured, status: service.statusText});
         }
         function open(): void { panels.open("settings", null, null); }

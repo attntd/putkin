@@ -5,6 +5,9 @@ import "../core/ConversationRoute.js" as Route
 QtObject {
     id: root
     required property var service
+    readonly property var calls: service.calls
+    readonly property bool canCall: calls.available && !calls.active && !calls.busy && !calls.blocked && service.ready
+        && selectedConversation !== null && selectedConversation.kind === "direct" && selectedConversation.canSend
     readonly property string serviceId: "signal"
     readonly property string displayName: "Signal"
     readonly property string accountId: service.accountId
@@ -207,6 +210,24 @@ QtObject {
         return request("message.react", {conversationId: selectedRoute.conversationId, messageId: mid,
             versionTimestampMs: row.versionTimestampMs, emoji: emoji, remove: remove, operationId: localId()}, {kind: "reaction"}) !== "";
     }
+    property bool forwardBusy: false
+    function forwardMessages(ids: var, destination: string): bool {
+        if (!selectedRoute || forwardBusy || !ids.length) return false;
+        const rows = ids.map(mid => rowById(mid));
+        if (rows.some(row => !row || !row.canForward)) return false;
+        const values = rows.slice().sort((a, b) => a.orderSequence - b.orderSequence).map(row => ({
+            messageId: row.messageId, versionTimestampMs: row.versionTimestampMs, operationId: localId()}));
+        forwardBusy = request("message.forward", {conversationId: selectedRoute.conversationId,
+            targetConversationId: destination, messages: values}, {kind: "forward"}) !== "";
+        return forwardBusy;
+    }
+    function pinMessage(mid: string, duration: int, remove: bool): bool {
+        const row = rowById(mid);
+        if (!row || !canSend || !row.canPin) return false;
+        return request("message.pin", {conversationId: selectedRoute.conversationId, messageId: mid,
+            versionTimestampMs: row.versionTimestampMs, durationSeconds: duration, remove: remove,
+            operationId: localId()}, {kind: "pin"}) !== "";
+    }
     function sendComposer(): bool {
         stopTyping();
         if (!editingMessage) return send();
@@ -348,14 +369,18 @@ QtObject {
         const changes = {name: qsTr("Zmieniono nazwę grupy"), description: qsTr("Zmieniono opis grupy"), members: qsTr("Zmieniono skład grupy"), pendingMembers: qsTr("Zmieniono zaproszenia"), requestingMembers: qsTr("Zmieniono prośby o dołączenie"), membership: qsTr("Zmieniono członkostwo"), permissionAddMember: qsTr("Zmieniono uprawnienia dodawania"), permissionEditDetails: qsTr("Zmieniono uprawnienia edycji"), permissionSendMessage: qsTr("Zmieniono uprawnienia wysyłania")};
         return {messageId: item.messageId, system: item.kind === "system", authorServiceId: item.authorServiceId || "",
             receiptsJson: JSON.stringify(item.receipts || []), timestamp: item.sortTimestampMs,
+            orderSequence: item.orderSequence || item.sortTimestampMs,
             day: Qt.formatDate(new Date(item.sortTimestampMs), "yyyy-MM-dd"),
             time: Qt.formatTime(new Date(item.sortTimestampMs), "HH:mm"),
-            text: item.kind === "system" ? (item.systemChanges || []).map(k => changes[k] || k).join(" · ") : item.text === null ? (hidden[item.kind] || qsTr("Załącznik")) : item.text,
+            text: item.kind === "system" ? (item.systemChanges || []).map(k => changes[k] || k).join(" · ")
+                : item.text === null ? (hidden[item.kind] || ((item.attachments || []).length ? "" : qsTr("Załącznik"))) : item.text,
             author: item.direction === "outgoing" ? qsTr("Ty") : contact ? (contact.name || contact.profileName || contact.number || item.authorServiceId) : item.authorServiceId,
             outgoing: item.direction === "outgoing", status: status, attachmentsJson: JSON.stringify(item.attachments || []),
             canDeleteLocal: item.canDeleteLocal === true, canDeleteRemote: item.canDeleteRemote === true,
             expirationSeconds: item.expirationSeconds || 0,
             canReact: item.canReact === true, canEdit: item.canEdit === true, canReply: item.canReply === true,
+            canPin: item.canPin === true, pinned: item.pinned === true, canForward: item.canForward === true,
+            canCopy: typeof item.text === "string" && item.text.length > 0,
             versionTimestampMs: item.versionTimestampMs || item.sentTimestampMs || 0,
             edited: !!item.editedTimestampMs, reactionsJson: JSON.stringify(item.reactions || []), quoteJson: JSON.stringify(item.quote || null),
             mentionsJson: JSON.stringify(item.mentions || []), stylesJson: JSON.stringify(item.styles || []), versionsJson: JSON.stringify(item.versions || []),
@@ -386,11 +411,11 @@ QtObject {
             const row = normalized(item);
             let old = -1;
             for (let i = 0; i < messages.count; i++) if (messages.get(i).messageId === row.messageId) { old = i; break; }
-            if (old >= 0 && messages.get(old).timestamp === row.timestamp) { messages.set(old, row); continue; }
+            if (old >= 0 && messages.get(old).orderSequence === row.orderSequence) { messages.set(old, row); continue; }
             if (old >= 0) messages.remove(old);
             let index = 0;
-            while (index < messages.count && (messages.get(index).timestamp < row.timestamp
-                || (messages.get(index).timestamp === row.timestamp && messages.get(index).messageId < row.messageId))) index++;
+            while (index < messages.count && (messages.get(index).orderSequence < row.orderSequence
+                || (messages.get(index).orderSequence === row.orderSequence && messages.get(index).messageId < row.messageId))) index++;
             messages.insert(index, row);
         }
         historyChanged(reset);
@@ -461,7 +486,12 @@ QtObject {
             return;
         }
         if (context.kind === "typing") return;
-        if (context.kind === "edit" || context.kind === "reaction") {
+        if (context.kind === "forward") {
+            forwardBusy = false;
+            if (error) lastError = errorText(error.code);
+            return;
+        }
+        if (context.kind === "edit" || context.kind === "reaction" || context.kind === "pin") {
             if (context.kind === "edit" && current) {
                 editBusy = false;
                 if (!error) cancelEdit();
@@ -558,8 +588,9 @@ QtObject {
             const first = messages.count ? messages.get(0) : null;
             // Read-through also updates unloaded pages. Keep this window's
             // contiguous page range instead of importing isolated older rows.
-            if (!first || nextCursor === null || result.sortTimestampMs > first.timestamp
-                    || (result.sortTimestampMs === first.timestamp && result.messageId >= first.messageId)) merge([result], false);
+            const order = result.orderSequence || result.sortTimestampMs;
+            if (!first || nextCursor === null || order > first.orderSequence
+                    || (order === first.orderSequence && result.messageId >= first.messageId)) merge([result], false);
         }
         else if (context.kind === "jump" && result.conversationId === selectedRoute.conversationId) {
             // Load the contiguous older pages; inserting only the target would
@@ -574,6 +605,7 @@ QtObject {
         }
     }
     function clear(): void {
+        forwardBusy = false;
         stopTyping(); editingMessage = null; editText = ""; editBusy = false; quotedMessage = null; composeMentions = []; typingAuthors = []; jumpMessageId = "";
         draftAttachments = []; mediaRequests = ({}); mediaBusy = 0;
         redactedIds = ({}); groupDetails = null; profileDetails = null; groupOperations = []; directoryBusy = 0;

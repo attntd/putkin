@@ -41,6 +41,7 @@ Item {
         function cleanup() { backend.release(); settings.cancelEdit(); view.active = false; wait(200); }
         function test_local_and_everyone_buttons_have_distinct_scope_and_keyboard() {
             control("messageActions").click();
+            tryVerify(() => control("deleteMessage") !== null); control("deleteMessage").click();
             tryVerify(() => control("deleteMessageLocal") !== null);
             control("deleteMessageLocal").forceActiveFocus(Qt.TabFocusReason); keyClick(Qt.Key_Return);
             tryCompare(adapter.messages, "count", 0);
@@ -48,6 +49,7 @@ Item {
         }
         function test_remote_button_and_shared_accent_preview() {
             control("messageActions").click();
+            tryVerify(() => control("deleteMessage") !== null); control("deleteMessage").click();
             tryVerify(() => control("deleteMessageEveryone") !== null);
             waitForRendering(view.item); const before = grabImage(view.item);
             settings.beginEdit(); settings.setColor("accent", "#89b4fa"); settings.setColor("accentSecondary", "#f38ba8");

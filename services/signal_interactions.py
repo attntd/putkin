@@ -148,6 +148,7 @@ def actions(store, account, row):
 
 
 def summary(store, account, row):
+    import signal_pins
     mid = row['message_id']
     meta = current_meta(store, mid)
     quote = dict(meta['quote']) if meta.get('quote') else None
@@ -179,7 +180,11 @@ def summary(store, account, row):
         version_row = dict(row, sent_ms=v['version_ms'], edited_ms=None)
         receipts = signal_receipts.summary(store, account, version_row)
         versions.append({'timestampMs': v['version_ms'], 'status': receipts['status'], 'receiptSummary': receipts['receiptSummary']})
-    return {**actions(store, account, row), 'editedTimestampMs': row['edited_ms'],
+    pinned = store.db.execute('SELECT active,expires_at_ms FROM message_pins WHERE message_id=?', (mid,)).fetchone()
+    return {**actions(store, account, row), 'canPin': bool(signal_pins.allowed(store, account, row)
+                and (not operation or operation['state'] not in ('queued', 'sending', 'unknown'))),
+            'pinned': bool(pinned and pinned['active'] and (pinned['expires_at_ms'] is None or pinned['expires_at_ms'] > store.clock())),
+            'editedTimestampMs': row['edited_ms'],
             'versionTimestampMs': row['edited_ms'] or row['sent_ms'], 'versions': versions,
             'quote': quote, 'mentions': meta.get('mentions', []), 'styles': meta.get('styles', []),
             'reactions': list(groups.values()), 'interaction': dict(operation) if operation else None}

@@ -260,7 +260,7 @@ class LifecycleTests(unittest.TestCase):
         client = self.start(synthetic=False)
         state = client.state("failed")
         self.assertEqual(state["data"]["errorCode"], "media_policy_required")
-        self.assertEqual(state["data"]["schemaVersion"], 7)
+        self.assertEqual(state["data"]["schemaVersion"], 8)
         self.assertEqual(len(self.records("subscribe")), 0)
         client.send("bypass", "test.echo")
         self.assertEqual(client.reply("bypass")["error"]["code"], "unsupported_method")

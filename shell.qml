@@ -35,6 +35,7 @@ ShellRoot {
     LauncherIpc { coordinator: panels; service: launcherService }
     SignalBackend { id: signalBackend }
     SignalService { id: signalService; backend: signalBackend }
+    Binding { target: signalService.calls; property: "blocked"; value: lockService.locked || sessionService.busy }
     SignalIpc { service: signalService; coordinator: panels; blocked: lockService.locked || sessionService.busy }
     SignalMessagingAdapter { id: signalMessages; service: signalService }
     MessageHub { id: messageHub; adapters: [signalMessages] }
@@ -61,7 +62,7 @@ ShellRoot {
     CaffeinateService { id: caffeinateService; backend: caffeinateBackend }
     CaffeinateIpc { service: caffeinateService }
     PamBackend { id: authentication; fingerprintAvailable: sessionBackend.fingerprintAvailable }
-    LockHost { id: lockHost; service: lockService; state: lockState; screens: Quickshell.screens; wallpaper: wallpaperService.source }
+    LockHost { id: lockHost; service: lockService; state: lockState; screens: Quickshell.screens; wallpaper: wallpaperService.source; date: clock.date }
     LockService { id: lockService; backend: lockHost; authentication: authentication; hold: sessionBackend.unlockHeld }
     AuthenticationService { id: authorization; blocked: lockService.locked }
     AuthenticationBackend { service: authorization }
@@ -79,9 +80,8 @@ ShellRoot {
         target: lockService
         function onLockedChanged(): void { if (lockService.locked) { panels.close(false); barFocus.close(); } }
     }
-    Connections { target: sessionService; function onResumed(): void { idleService.resume(); } }
     SessionIpc { service: sessionService; coordinator: panels; lockService: lockService; idleService: idleService }
-    SessionController { service: sessionService; coordinator: panels; brightness: brightnessService }
+    SessionController { service: sessionService; coordinator: panels; brightness: brightnessService; clock: clock; idle: idleService }
     UPowerBackend { id: powerBackend }
     BatteryService { id: batteryService; backend: powerBackend }
     PowerProfileBackend { id: profileBackend }
@@ -95,6 +95,7 @@ ShellRoot {
     NotificationApplicationService { id: notificationApplications; workspaceService: hyprland; applications: DesktopEntries.applications.values }
     NotificationService { id: notifications; backend: notificationBackend; screens: Quickshell.screens; monitorService: hyprland; locked: lockService.locked; messaging: signalNotices; applicationService: notificationApplications }
     SignalNotifications { id: signalNotices; service: signalService; notifications: notifications; messagesController: messagesController }
+    SignalCallNotifications { calls: signalService.calls; notifications: notifications; messagesController: messagesController }
     ErrorNotifications {
         notifications: notifications
         sources: [
@@ -104,6 +105,7 @@ ShellRoot {
             {source: screenshotService, property: "lastError", title: "Zrzut ekranu"},
             {source: messageHub, property: "lastError", title: "Wiadomości"},
             {source: signalService, property: "lastError", title: "Signal"},
+            {source: signalService.calls, property: "lastError", title: "Signal"},
             {source: powerProfiles, property: "lastError", title: "Tryb pracy"},
             {source: hyprland, property: "lastError", title: "Workspace"},
             {source: audioService, property: "lastError", title: "Dźwięk"},
@@ -132,7 +134,7 @@ ShellRoot {
     NotificationFocus { id: notificationFocus; service: notifications; panels: panels; barFocus: barFocus }
     NotificationIpc { service: notifications; controller: notificationFocus }
     NotificationWindows { service: notifications; controller: notificationFocus; panels: panels }
-    SystemClock { id: clock; precision: SystemClock.Minutes }
+    SessionClock { id: clock }
     BarFocus {
         id: barFocus
         service: hyprland

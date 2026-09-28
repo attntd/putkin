@@ -17,7 +17,8 @@ ShellRoot {
     PersistentProperties { id: retained; reloadableId: "test-lock-state"; property bool locked: false }
     Binding { target: Quickshell; property: "watchFiles"; value: !retained.locked }
     PamBackend { id: auth; configDirectory: Quickshell.env("PUTKIN_TEST_PAM"); fingerprintAvailable: root.fingerprint && bridge.fingerprintAvailable }
-    LockHost { id: host; service: lock; state: retained; screens: root.captureEnabled ? Quickshell.screens : [] }
+    SessionClock { id: clock }
+    LockHost { id: host; service: lock; state: retained; screens: root.captureEnabled ? Quickshell.screens : []; date: clock.date }
     LockService { id: lock; backend: host; authentication: auth; hold: bridge.unlockHeld }
     SessionBackend { id: bridge; lockService: lock }
     SessionService { id: session; backend: bridge }
@@ -30,7 +31,7 @@ ShellRoot {
         function setIdleHint(value: bool): void { bridge.setIdleHint(value); }
     }
     IdleBackend { id: monitors; service: idle; bridge: idleBridge; dimSeconds: 2; displaySeconds: 3; lockSeconds: 4; sleepSeconds: 8 }
-    Connections { target: session; function onResumed(): void { idle.resume(); brightness.refresh(); } }
+    Connections { target: session; function onResumed(): void { clock.refresh(); idle.resume(); brightness.refresh(); } }
     FrameAnimation {
         running: lock.locked
         onTriggered: {
@@ -67,6 +68,9 @@ ShellRoot {
                 locked: lock.locked, secure: lock.secure, hold: lock.hold, surfaces: host.surfaceCount, lua: Hyprland.usingLua, idleError: idle.lastError,
                 screens: Quickshell.screens.map(s => s.name), fingerprint: lock.fingerprintState,
                 fingerprintActive: auth.finger.active, unlocking: lock.unlocking,
+                fingerprintRecoveryAttempts: auth.recoveryAttempts, fingerprintBlocked: auth.fingerprintBlocked,
+                fingerprintRetry: auth.retry.running, clock: clock.date.getTime(),
+                lockDates: host.views.map(view => view.date.getTime()),
                 opacities: host.views.map(view => view.opacity), fadeFrames: root.fadeFrames,
                 capturing: host.capture.capturing, captures: host.capture.frames.length,
                 animated: host.views.map(view => view.animate),
@@ -80,6 +84,7 @@ ShellRoot {
         function captureEnabled(value: bool): void { root.captureEnabled = value; }
         function enableIdle(value: bool): void { root.idleEnabled = value; }
         function refresh(): void { session.refresh(); }
+        function freezeClock(): void { clock.precision = SystemClock.Seconds; clock.enabled = false; }
         function reload(): string { if (lock.locked) return "deferred"; Quickshell.reload(false); return "accepted"; }
     }
 }

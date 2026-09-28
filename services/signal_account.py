@@ -24,6 +24,7 @@ class Account:
         self.link_error = ""
         self.reconciling = False
         self.directory_lock = asyncio.Lock()
+        self.configuration_lock = asyncio.Lock()
 
     def snapshot(self):
         return {"configuration": self.config, "linkAttempt": self.attempt,
@@ -67,11 +68,19 @@ class Account:
         if not b.lease or not b.store or not b.store.healthy:
             raise Failure("not_ready")
         if method == "account.configure":
-            if self.attempt:
-                raise Failure("busy")
-            self.configure(params)
-            await b.typing.stop_all()
-            b.restart.set()
+            async with self.configuration_lock:
+                if self.attempt:
+                    raise Failure("busy")
+                self.configure(params)
+                restart = bool(set(params) - {"typingIndicators"})
+                if restart or not self.config["typingIndicators"]:
+                    await b.typing.stop_all()
+                    b.typing.clear()
+                # Local preferences must reach QML without replacing the
+                # receiver, cancelling requests or ending an active call.
+                b.event("service.changed", b.snapshot())
+                if restart:
+                    b.restart.set()
             return {"accepted": True}
         if method == "account.link.start":
             if self.attempt:
@@ -113,7 +122,7 @@ class Account:
             if params.get("confirm") != "delete-local-history" or params.get("accountId") != b.account_id:
                 raise Failure("confirmation_required")
             with b.store.transaction():
-                for table in ("directory_operations", "directory_avatars", "conversation_preferences", "version_recipients", "interaction_outbox", "message_reactions", "message_versions", "message_metadata", "read_queue", "read_markers", "receipt_reports", "message_recipients", "reply_drafts", "conversation_notifications", "outbox_results", "outbox_attempts", "outbox", "drafts", "attachment_refs",
+                for table in ("message_pins", "forward_sources", "directory_operations", "directory_avatars", "conversation_preferences", "version_recipients", "interaction_outbox", "message_reactions", "message_versions", "message_metadata", "read_queue", "read_markers", "receipt_reports", "message_recipients", "reply_drafts", "conversation_notifications", "outbox_results", "outbox_attempts", "outbox", "drafts", "attachment_refs",
                               "attachments", "pending_events", "tombstones", "messages", "conversations",
                               "recipient_aliases", "recipients"):
                     b.store.db.execute("DELETE FROM " + table)

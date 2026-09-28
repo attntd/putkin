@@ -97,6 +97,21 @@ Item {
             compare(backend.calls[backend.calls.length - 1].method, "account.history.clear");
             compare(backend.calls[backend.calls.length - 1].params.confirm, "delete-local-history");
         }
+        function test_typing_toggle_mouse_and_keyboard() {
+            backend.configuration = {enabled: true, deviceName: "Putkin", typingIndicators: false};
+            backend.accountState = "linked";
+            backend.serviceState = "ready";
+            const button = control("signalTyping");
+            button.forceActiveFocus(Qt.TabFocusReason);
+            keyClick(Qt.Key_Return);
+            compare(backend.calls[backend.calls.length - 1].params, {typingIndicators: true});
+            tryCompare(button, "checked", true);
+            mouseClick(button);
+            compare(backend.calls[backend.calls.length - 1].params, {typingIndicators: false});
+            tryCompare(button, "checked", false);
+            compare(service.state, "ready");
+            compare(service.actionError, "");
+        }
         function test_live_both_accents_save_cancel() {
             const button = control("signalPrimary");
             waitForRendering(button);

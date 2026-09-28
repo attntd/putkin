@@ -46,8 +46,21 @@ ListView {
         }
     }
     required property var adapter
+    property Item upTarget: null
     property string anchorId: ""
-    property string actionsMessageId: ""
+    readonly property string actionsMessageId: actions.opened ? actions.messageId : ""
+    property var selectedIds: []
+    readonly property bool selecting: selectedIds.length > 0
+    readonly property bool canForwardSelection: selecting && selectedIds.every(id => adapter.rowById(id) && adapter.rowById(id).canForward)
+    function toggleSelection(mid: string): void {
+        selectedIds = selectedIds.includes(mid) ? selectedIds.filter(id => id !== mid) : selectedIds.length < 100 ? selectedIds.concat([mid]) : selectedIds;
+    }
+    function clearSelection(): void { selectedIds = []; }
+    function showActions(mid: string, trigger: Item, reason: int, mode: string): void { actions.show(mid, trigger, reason, mode); }
+    function selectionAction(mode: string, trigger: Item, reason: int): void {
+        if (selectedIds.length) actions.show(selectedIds[0], trigger, reason, mode, selectedIds);
+    }
+    MessageActions { id: actions; adapter: root.adapter; history: root }
     property real anchorOffset: 0
     property bool followEnd: true
     property bool restoring: false
@@ -59,9 +72,10 @@ ListView {
     property var restoreCallback: () => { if (Qt.isQtObject(root) && !root.releasing) root.restore(); }
     property var settleCallback: () => { if (Qt.isQtObject(root) && !root.releasing) root.settleEnd(); }
     property bool readingEnabled: false
+    property string audioAttachmentId: ""
     property int focusReason: Qt.OtherFocusReason
     objectName: "messageHistory"
-    model: adapter && !resetting ? adapter.messages : null
+    model: adapter && !resetting && !releasing ? adapter.messages : null
     clip: true
     spacing: Metrics.space8
     boundsBehavior: Flickable.StopAtBounds
@@ -106,9 +120,9 @@ ListView {
             }
         }
     }
-    onReadingEnabledChanged: scheduleRead()
-    onVisibleChanged: { scheduleEnd(); scheduleRead(); }
-    onContentYChanged: scheduleRead()
+    onReadingEnabledChanged: { scheduleRead(); if (!readingEnabled) { actions.dismiss(false); clearSelection(); } }
+    onVisibleChanged: { scheduleEnd(); scheduleRead(); if (!visible) { actions.dismiss(false); clearSelection(); } }
+    onContentYChanged: { scheduleRead(); if (!restoring) actions.dismiss(false); }
     onHeightChanged: { scheduleEnd(); scheduleRead(); }
     onWidthChanged: { scheduleEnd(); scheduleRead(); }
     onRestoringChanged: scheduleRead()
@@ -161,13 +175,18 @@ ListView {
         cancelFlick();
         if (event.modifiers !== Qt.NoModifier) return;
         if (event.key === Qt.Key_K || event.key === Qt.Key_Up) {
+            if (atYBeginning && upTarget && upTarget.visible && upTarget.enabled) {
+                upTarget.forceActiveFocus(Qt.TabFocusReason);
+                event.accepted = true;
+                return;
+            }
             followEnd = false;
             contentY = Math.max(originY, contentY - 48);
         } else if (event.key === Qt.Key_J || event.key === Qt.Key_Down) {
             contentY = Math.min(originY + Math.max(0, contentHeight - height), contentY + 48);
             followEnd = atYEnd;
         }
-        else if (event.key === Qt.Key_Escape) { actionsMessageId = ""; root.backRequested(); }
+        else if (event.key === Qt.Key_Escape) { if (selecting) clearSelection(); else root.backRequested(); }
         else if (event.key === Qt.Key_H) root.backRequested();
         else if (event.key === Qt.Key_L || event.key === Qt.Key_Return) root.composeRequested();
         else return;
@@ -186,7 +205,8 @@ ListView {
         downTarget: root
         onClicked: root.adapter.loadMore()
     }
-    delegate: Item {
+    delegate: MessageRow {}
+    component MessageRow: Item {
         id: row
         required property int index
         required property bool system
@@ -220,6 +240,10 @@ ListView {
         readonly property var quote: JSON.parse(quoteJson)
         readonly property var interaction: JSON.parse(interactionJson)
         readonly property var reactions: JSON.parse(reactionsJson)
+        readonly property var media: JSON.parse(attachmentsJson)
+        readonly property bool visualOnly: media.length > 0 && media.every(a => /^(image|video)\//.test(a.content_type))
+        readonly property bool imageOnly: visualOnly && media.every(a => a.state === "ready" && !a.errorCode) && !text && !quote
+            && !(operationId && (statusCode === "queued" || (statusCode === "failed" && safeRetry))) && !interaction
         readonly property var ownReaction: reactions.find(r => r.mine) || null
         readonly property bool accented: outgoing && !system
         readonly property color foreground: accented ? bubbleAccent.foreground : Theme.text
@@ -231,6 +255,32 @@ ListView {
         readonly property bool newDay: index <= 0 || !root.adapter.messages.get(index - 1) || root.adapter.messages.get(index - 1).day !== day
         width: root.width
         height: column.height + (newDay ? 36 : 0)
+        HoverHandler { id: hover }
+        MessageTools {
+            id: tools
+            message: row
+            history: root
+            visible: !root.selecting && !row.system && (row.canDeleteLocal || row.canReact || row.canReply || row.canEdit)
+            revealed: hover.hovered
+            x: row.outgoing ? column.x - width - Metrics.space4 : column.x + column.width + Metrics.space4
+            y: column.y + (column.height - height) / 2
+        }
+        UI.NavigationButton {
+            id: selectionButton
+            objectName: "messageSelection"
+            visible: root.selecting && !row.system && row.canDeleteLocal
+            width: 32; height: 32; padding: 4; tooltip: ""
+            x: row.outgoing ? column.x - width - Metrics.space4 : column.x + column.width + Metrics.space4
+            y: column.y
+            checked: root.selectedIds.includes(row.messageId)
+            text: checked ? qsTr("Odznacz") : qsTr("Zaznacz")
+            contentItem: UI.Glyph { symbol: selectionButton.checked ? "check" : "add"; color: selectionButton.foreground }
+            upTarget: row.index > 0 && root.itemAtIndex(row.index - 1) ? (root.itemAtIndex(row.index - 1) as MessageRow).selectionControl : root.upTarget
+            downTarget: row.index + 1 < root.count && root.itemAtIndex(row.index + 1) ? (root.itemAtIndex(row.index + 1) as MessageRow).selectionControl : root
+            onEnsureVisible: item => root.revealControl(item)
+            onClicked: root.toggleSelection(row.messageId)
+        }
+        readonly property alias selectionControl: selectionButton
         Text {
             visible: row.newDay
             width: parent.width
@@ -252,26 +302,29 @@ ListView {
         Column {
             id: column
             // Natural text widths stay independent of the wrapping width.
-            readonly property real actionsWidth: actionsButton.visible ? actionsButton.width + Metrics.space8 : 0
             readonly property real textWidth: Math.max(messageBody.implicitWidth,
                 authorLabel.visible ? authorLabel.implicitWidth : 0,
-                quoteButton.visible ? quoteButton.implicitWidth : 0) + actionsWidth
-            width: Math.min(root.width * .5, 2 * padding + Math.max(textWidth,
+                quoteButton.visible ? quoteButton.implicitWidth : 0)
+            width: Math.min(root.width * .5, 2 * Metrics.space12 + Math.max(textWidth,
                 footer.naturalWidth,
                 operationButton.visible ? operationButton.implicitWidth : 0,
                 interactionLabel.visible ? interactionLabel.implicitWidth : 0,
                 interactionButton.visible ? interactionButton.implicitWidth : 0,
-                attachments.count || root.actionsMessageId === row.messageId ? root.width * .5 : 0))
+                row.media.length ? Math.min(320, root.width * .5) - 2 * Metrics.space12 : 0))
             x: row.system ? (root.width - width) / 2 : row.outgoing ? root.width - width : 0
             y: row.newDay ? 36 : 0
-            padding: Metrics.space12
+            padding: 0
+            topPadding: row.visualOnly && !authorLabel.visible && !quoteButton.visible ? 0 : Metrics.space12
+            bottomPadding: row.imageOnly ? 0 : Metrics.space12
             spacing: Metrics.space4
             Item {
+                x: Metrics.space12
                 width: column.width - 2 * Metrics.space12
-                height: Math.max(messageContent.height, actionsButton.visible ? actionsButton.y + actionsButton.height : 0)
+                height: messageContent.height
+                visible: authorLabel.visible || quoteButton.visible
                 Column {
                     id: messageContent
-                    width: parent.width - (actionsButton.visible ? actionsButton.width + Metrics.space8 : 0)
+                    width: parent.width
                     spacing: Metrics.space4
                     Text {
                         id: authorLabel
@@ -293,186 +346,50 @@ ListView {
                         enabled: !!row.quote && row.quote.available
                         onClicked: root.adapter.jumpTo(row.quote.messageId)
                     }
-                    TextEdit {
-                        id: messageBody
-                        objectName: "messageBody"
-                        width: parent.width
-                        text: MessageText.render(row.text, JSON.parse(row.stylesJson), JSON.parse(row.mentionsJson))
-                        readOnly: true
-                        selectByMouse: true
-                        wrapMode: TextEdit.Wrap
-                        textFormat: TextEdit.RichText
-                        color: row.foreground
-                        selectionColor: Theme.backgroundStrong
-                        selectedTextColor: Theme.text
-                        font.family: Theme.fontFamily
-                        font.pixelSize: Metrics.fontSize
-                        activeFocusOnPress: false
-                    }
-                }
-                MessageButton {
-                    id: actionsButton
-                    objectName: "messageActions"
-                    visible: row.canDeleteLocal || row.canReact || row.canReply || row.canEdit || !!row.interaction
-                    anchors.right: parent.right
-                    y: messageContent.y + messageBody.y
-                    width: Metrics.iconSections.list.size
-                    height: bodyMetrics.height
-                    foreground: row.foreground
-                    text: qsTr("Akcje wiadomości")
-                    contentItem: UI.Glyph { symbol: "more_horiz"; color: actionsButton.foreground }
-                    onClicked: root.actionsMessageId = root.actionsMessageId === row.messageId ? "" : row.messageId
                 }
             }
-            Repeater {
+            AttachmentGallery {
                 id: attachments
-                model: JSON.parse(row.attachmentsJson)
-                delegate: AttachmentCard {
-                    required property var modelData
-                    width: column.width - 24
-                    attachment: modelData
-                    textColor: row.foreground
-                    mutedTextColor: row.mutedForeground
-                    onEnsureVisible: item => root.revealControl(item)
-                    onPreviewRequested: (attachment, reason) => root.previewRequested(attachment, reason)
-                }
+                objectName: "messageAttachments"
+                width: column.width
+                visible: row.media.length > 0
+                attachments: row.media
+                textColor: row.foreground
+                mutedTextColor: row.mutedForeground
+                playbackEnabled: root.readingEnabled && root.visible
+                audioOwner: root
+                onEnsureVisible: item => root.revealControl(item)
+                onPreviewRequested: (attachment, reason) => root.previewRequested(attachment, reason)
+            }
+            TextEdit {
+                id: messageBody
+                objectName: "messageBody"
+                x: Metrics.space12
+                width: column.width - 2 * Metrics.space12
+                visible: row.text !== ""
+                text: MessageText.render(row.text, JSON.parse(row.stylesJson), JSON.parse(row.mentionsJson))
+                readOnly: true
+                selectByMouse: true
+                wrapMode: TextEdit.Wrap
+                textFormat: TextEdit.RichText
+                color: row.foreground
+                selectionColor: Theme.backgroundStrong
+                selectedTextColor: Theme.text
+                font.family: Theme.fontFamily
+                font.pixelSize: Metrics.fontSize
+                activeFocusOnPress: false
             }
             BubbleButton {
                 id: operationButton
+                x: Metrics.space12
+                width: Math.min(implicitWidth, column.width - 24)
                 visible: row.operationId !== "" && (row.statusCode === "queued" || (row.statusCode === "failed" && row.safeRetry))
                 text: row.statusCode === "queued" ? qsTr("Anuluj") : qsTr("Ponów")
                 onClicked: root.adapter.changeOperation(row.operationId, row.statusCode !== "queued")
             }
-            Loader {
-                width: column.width - 24
-                active: root.actionsMessageId === row.messageId
-                visible: active
-                sourceComponent: Column {
-                spacing: Metrics.space4
-                Flow {
-                    width: parent.width
-                    spacing: Metrics.space4
-                    Repeater {
-                        id: emojiChoices
-                        model: ["👍", "❤️", "😂", "😮", "😢", "🙏", "🎉", "👎", "👩‍💻", "👍🏽"]
-                        delegate: BubbleButton {
-                            required property string modelData
-                            required property int index
-                            leftTarget: index > 0 ? emojiChoices.itemAt(index - 1) : actionsButton
-                            rightTarget: index + 1 < emojiChoices.count ? emojiChoices.itemAt(index + 1) : replyAction
-                            upTarget: actionsButton
-                            downTarget: replyAction
-                            onEnsureVisible: item => root.revealControl(item)
-                            readonly property bool mine: row.reactions.some(r => r.emoji === modelData && r.mine)
-                            text: modelData
-                            checked: mine
-                            enabled: row.canReact
-                            Accessible.name: (mine ? qsTr("Usuń reakcję ") : qsTr("Reakcja ")) + modelData
-                            onClicked: { root.adapter.react(row.messageId, modelData, mine); root.actionsMessageId = ""; }
-                        }
-                    }
-                }
-                Repeater {
-                    model: JSON.parse(row.receiptsJson)
-                    delegate: Text {
-                        required property var modelData
-                        width: column.width - 24
-                        text: root.adapter.personName(modelData.serviceId) + " · " + (modelData.viewedTimestampMs ? qsTr("Wyświetlono") : modelData.readTimestampMs ? qsTr("Przeczytano") : modelData.deliveryTimestampMs ? qsTr("Dostarczono") : qsTr("Brak raportu"))
-                        textFormat: Text.PlainText; wrapMode: Text.Wrap
-                        color: row.mutedForeground; font.family: Theme.fontFamily; font.pixelSize: Metrics.smallFontSize
-                    }
-                }
-                Repeater {
-                    model: row.reactions
-                    delegate: Text {
-                        required property var modelData
-                        width: column.width - 24
-                        text: modelData.emoji + " · " + modelData.people.map(p => p.name).join(", ")
-                        textFormat: Text.PlainText
-                        wrapMode: Text.Wrap
-                        color: row.mutedForeground
-                        font.family: Theme.fontFamily
-                        font.pixelSize: Metrics.smallFontSize
-                    }
-                }
-                Flow {
-                    width: parent.width
-                    spacing: Metrics.space4
-                    BubbleButton {
-                        id: replyAction
-                        objectName: "replyMessage"
-                        upTarget: emojiChoices.itemAt(0)
-                        rightTarget: editAction.visible ? editAction : closeAction
-                        onEnsureVisible: item => root.revealControl(item)
-                        text: qsTr("Odpowiedz")
-                        enabled: row.canReply
-                        onClicked: { root.adapter.replyTo(row.messageId); root.actionsMessageId = ""; }
-                    }
-                    BubbleButton {
-                        id: editAction
-                        objectName: "editMessage"
-                        leftTarget: replyAction
-                        rightTarget: closeAction
-                        upTarget: emojiChoices.itemAt(0)
-                        onEnsureVisible: item => root.revealControl(item)
-                        text: qsTr("Edytuj")
-                        visible: row.canEdit
-                        onClicked: { root.adapter.beginEdit(row.messageId); root.actionsMessageId = ""; }
-                    }
-                    BubbleButton {
-                        id: deleteLocalAction
-                        objectName: "deleteMessageLocal"
-                        text: qsTr("Usuń u mnie")
-                        visible: row.canDeleteLocal
-                        leftTarget: editAction.visible ? editAction : replyAction
-                        rightTarget: deleteRemoteAction.visible ? deleteRemoteAction : closeAction
-                        onEnsureVisible: item => root.revealControl(item)
-                        onClicked: { root.adapter.deleteMessage(row.messageId, "local"); root.actionsMessageId = ""; root.forceActiveFocus(focusReason); }
-                    }
-                    BubbleButton {
-                        id: deleteRemoteAction
-                        objectName: "deleteMessageEveryone"
-                        text: qsTr("Usuń u wszystkich")
-                        visible: row.canDeleteRemote
-                        leftTarget: deleteLocalAction
-                        rightTarget: closeAction
-                        onEnsureVisible: item => root.revealControl(item)
-                        onClicked: { root.adapter.deleteMessage(row.messageId, "everyone"); root.actionsMessageId = ""; root.forceActiveFocus(focusReason); }
-                    }
-                    BubbleButton {
-                        id: closeAction
-                        text: qsTr("Zamknij")
-                        leftTarget: editAction.visible ? editAction : replyAction
-                        upTarget: emojiChoices.itemAt(0)
-                        onEnsureVisible: item => root.revealControl(item)
-                        onClicked: { root.actionsMessageId = ""; root.forceActiveFocus(focusReason); }
-                    }
-                }
-                BubbleButton {
-                    objectName: "removeOwnReaction"
-                    visible: !!row.ownReaction
-                    text: qsTr("Usuń reakcję") + (row.ownReaction ? " " + row.ownReaction.emoji : "")
-                    enabled: row.canReact
-                    upTarget: replyAction
-                    onEnsureVisible: item => root.revealControl(item)
-                    onClicked: { root.adapter.react(row.messageId, row.ownReaction.emoji, true); root.actionsMessageId = ""; }
-                }
-                Repeater {
-                    model: row.edited ? JSON.parse(row.versionsJson) : []
-                    delegate: Text {
-                        required property var modelData
-                        width: column.width - 2 * Metrics.space12
-                        wrapMode: Text.Wrap
-                        text: Qt.formatTime(new Date(modelData.timestampMs), "HH:mm:ss") + " · " + (modelData.status === "read" ? qsTr("Przeczytano") : modelData.status === "delivered" ? qsTr("Dostarczono") : modelData.status === "received" ? qsTr("Odebrano") : qsTr("Wysłano"))
-                        color: row.mutedForeground
-                        font.family: Theme.fontFamily
-                        font.pixelSize: Metrics.smallFontSize
-                    }
-                }
-            }
-            }
             Text {
                 id: interactionLabel
+                x: Metrics.space12
                 width: column.width - 24
                 visible: !!row.interaction && row.interaction.state !== "sent" && row.interaction.state !== "cancelled"
                 text: !row.interaction ? "" : row.interaction.state === "unknown" ? qsTr("Zmiana · wynik nieznany") : row.interaction.state === "failed" ? qsTr("Zmiana nie została wysłana") : qsTr("Zmiana w kolejce")
@@ -484,12 +401,18 @@ ListView {
             }
             BubbleButton {
                 id: interactionButton
+                x: Metrics.space12
+                width: Math.min(implicitWidth, column.width - 24)
                 visible: !!row.interaction && (row.interaction.state === "queued" || (row.interaction.state === "failed" && row.interaction.safe_retry))
                 text: row.interaction && row.interaction.state === "queued" ? qsTr("Anuluj zmianę") : qsTr("Ponów zmianę")
                 onClicked: root.adapter.changeOperation(row.interaction.operation_id, row.interaction.state !== "queued")
             }
             Item {
                 id: footer
+                // Image-only messages keep their timestamp on the image.
+                parent: row.imageOnly ? row : column
+                x: row.imageOnly ? column.x + Metrics.space12 : Metrics.space12
+                y: row.imageOnly ? column.y + column.height - height - Metrics.space8 : 0
                 width: column.width - 2 * Metrics.space12
                 height: Math.max(reactionChips.height, statusRow.height)
                 readonly property real reactionsWidth: reactionChips.children.reduce((sum, item) =>
@@ -498,6 +421,15 @@ ListView {
                     + (row.reactions.length ? reactionsWidth + Metrics.space8 : 0)
                 readonly property real statusWidth: Math.min(width - Math.min(width * .38,
                     row.reactions.length ? reactionsWidth + Metrics.space4 : 0), statusLabel.implicitWidth + (row.outgoing ? 20 : 0))
+                Rectangle {
+                    x: row.reactions.length ? -Metrics.space4 : statusRow.x - Metrics.space4
+                    y: -Metrics.space4
+                    width: (row.reactions.length ? parent.width : statusRow.width) + 2 * Metrics.space4
+                    height: parent.height + 2 * Metrics.space4
+                    visible: row.imageOnly
+                    color: Qt.rgba(0, 0, 0, .6)
+                    radius: Metrics.space4
+                }
                 Flow {
                     id: reactionChips
                     width: Math.max(0, parent.width - footer.statusWidth - Metrics.space8)
@@ -512,11 +444,11 @@ ListView {
                             height: footerMetrics.height
                             font.pixelSize: Metrics.smallFontSize
                             font.bold: modelData.mine
-                            foreground: row.mutedForeground
+                            foreground: row.imageOnly ? "white" : row.mutedForeground
                             text: modelData.emoji + " " + modelData.count
                             checked: modelData.mine
                             Accessible.name: text + ": " + modelData.people.map(p => p.name).join(", ")
-                            onClicked: root.actionsMessageId = root.actionsMessageId === row.messageId ? "" : row.messageId
+                            onClicked: actions.showReactionPeople(row.messageId, reactionButton, focusReason, modelData.emoji)
                         }
                     }
                 }
@@ -532,15 +464,15 @@ ListView {
                         height: 16
                         y: (parent.height - height) / 2
                         symbol: ["delivered", "read", "viewed"].includes(row.statusCode) ? "check" : "send"
-                        color: row.mutedForeground
+                        color: row.imageOnly ? "white" : row.mutedForeground
                     }
                     Text {
                         id: statusLabel
                         width: parent.width - (row.outgoing ? 20 : 0)
-                        text: row.time + (row.expirationSeconds ? qsTr(" · Znikanie ") + row.expirationSeconds + " s" : "") + (row.edited ? qsTr(" · Edytowano") : "") + (row.outgoing && row.status ? " · " + row.status : "")
+                        text: row.time + (row.expirationSeconds ? qsTr(" · Znikanie ") + row.expirationSeconds + " s" : "") + (row.edited ? qsTr(" · Edytowano") : "") + (!row.imageOnly && row.outgoing && row.status ? " · " + row.status : "")
                         wrapMode: Text.Wrap
                         horizontalAlignment: Text.AlignRight
-                        color: row.mutedForeground
+                        color: row.imageOnly ? "white" : row.mutedForeground
                         font.family: Theme.fontFamily
                         font.pixelSize: Metrics.smallFontSize
                         textFormat: Text.PlainText
@@ -566,10 +498,12 @@ ListView {
             root.capture(reset);
             // Detach before a full clear while delegates may still be
             // incubating (opening a window and selecting another conversation).
-            if (reset) root.resetting = true;
+            if (reset) { actions.dismiss(false); root.clearSelection(); root.resetting = true; }
         }
         function onHistoryChanged(_reset: bool): void {
             root.resetting = false;
+            root.selectedIds = root.selectedIds.filter(id => root.adapter.rowById(id) && root.adapter.rowById(id).canDeleteLocal);
+            actions.validate();
             if (!root.releasing) Qt.callLater(root.restoreCallback);
         }
     }

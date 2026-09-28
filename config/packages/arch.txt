@@ -18,6 +18,14 @@ pam
 pambase
 bubblewrap
 patch
+# Budowanie tunelu rozmów Signal
+rust
+clang
+cmake
+protobuf
+pkgconf
+base-devel
+libpulse
 # Usługi sprzętu i pulpitu
 pipewire
 pipewire-pulse

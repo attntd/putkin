@@ -9,6 +9,13 @@ QtObject {
     property int focusReason: Qt.TabFocusReason
     property int replyHistoryKey: 0
     signal entered(string name)
+    function toggle(reason = Qt.TabFocusReason): string {
+        if (panels.activeId === "notifications" || screenName) {
+            closeCenter();
+            return "";
+        }
+        return focus(reason);
+    }
     function focus(reason = Qt.TabFocusReason): string {
         if (!service || service.locked) return "";
         return enter(reason) || openCenter(reason);

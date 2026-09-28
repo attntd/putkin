@@ -1,4 +1,5 @@
 """One durable queue for all callers. A local UUID is not server idempotency."""
+from contextlib import nullcontext
 from signal_events import digest, identifier, integer, message_fingerprint, service_id, text
 from signal_store import OUTBOX_TTL, new_id
 from signal_transport import Failure
@@ -43,7 +44,9 @@ class Outbox:
                            conversationId=row["conversation_id"], messageId=row["message_id"])
         self.store.notify_message(row["account_id"], row["message_id"])
 
-    def enqueue(self, account, params):
+    def enqueue(self, account, params, *, forwarded_attachments=None, forward_source=None, transaction=True):
+        if not transaction and not self.db.in_transaction:
+            raise Failure("storage_error")
         cid = params.get("conversationId")
         body = text(params.get("text", ""))
         aids = params.get("attachmentIds", [])
@@ -56,7 +59,7 @@ class Outbox:
         conversation = self.store.conversation(account, cid)
         own = self.store.account(account)["service_id"]
         metadata = signal_interactions.compose_metadata(self.store, account, cid, params, body)
-        with self.store.transaction():
+        with self.store.transaction() if transaction else nullcontext():
             self.store.cleanup()
             existing = self.db.execute("SELECT o.*,m.body FROM outbox o JOIN messages m USING(message_id) WHERE operation_id=?", (op,)).fetchone()
             if self.mutations.row(account, op):
@@ -75,7 +78,14 @@ class Outbox:
                 raise Failure("invalid_request")
             if context == "quickReply" and aids:
                 raise Failure("invalid_request")
-            staged = self.store.media.draft(account, cid)
+            if forwarded_attachments is not None:
+                for prepared in forwarded_attachments:
+                    self.db.execute("INSERT INTO attachments VALUES(?,?,?,?,?)", (prepared["id"], account,
+                        "local:" + prepared["id"], prepared["mime"], prepared["size"]))
+                    self.store.media.record(prepared)
+                staged = [self.store.media.item(account, p["id"]) for p in forwarded_attachments]
+            else:
+                staged = self.store.media.draft(account, cid)
             if aids and sorted(aids) != sorted(a["attachment_id"] for a in staged):
                 raise Failure("draft_conflict")
             if any(a["state"] != "ready" for a in staged if a["attachment_id"] in aids):
@@ -91,6 +101,7 @@ class Outbox:
                 VALUES(?,?,?,?,'outgoing','local',?,?,?,'queued',?)""", (mid, cid, own, now, "media" if aids else "text", body,
                     message_fingerprint(body, "media" if aids else "text", [a for a in staged if a["attachment_id"] in aids]), now + OUTBOX_TTL))
             signal_interactions.set_meta(self.store, mid, metadata)
+            self.db.execute("UPDATE messages SET order_sequence=? WHERE message_id=?", (self.store.next_message_order(), mid))
             for aid in aids:
                 self.db.execute("INSERT INTO attachment_refs VALUES(?,?)", (mid, aid))
                 self.db.execute("DELETE FROM draft_attachments WHERE conversation_id=? AND attachment_id=?", (cid, aid))
@@ -98,6 +109,8 @@ class Outbox:
                 self.store.changed("attachments.changed", accountId=account, conversationId=cid)
             self.db.execute("INSERT INTO outbox(operation_id,account_id,conversation_id,message_id,state,created_ms) VALUES(?,?,?,?,'queued',?)",
                             (op, account, cid, mid, now))
+            if forward_source is not None:
+                self.db.execute("INSERT INTO forward_sources VALUES(?,?,?)", (op, *forward_source))
             if context == "quickReply":
                 signal_replies.attach(self.store, account, params, op)
             self.store.touch(account, cid, now)
@@ -105,12 +118,19 @@ class Outbox:
         return self.status(account, op)
 
     def next(self, account):
-        row = self.db.execute("SELECT operation_id FROM (SELECT operation_id,created_ms FROM outbox WHERE account_id=? AND state='queued' UNION ALL SELECT operation_id,created_ms FROM interaction_outbox WHERE account_id=? AND state='queued') ORDER BY created_ms,operation_id LIMIT 1", (account, account)).fetchone()
+        # Multiple forwarded messages commonly share one millisecond. Preserve
+        # their enqueue order on the wire as well as in the local timeline.
+        row = self.db.execute("""SELECT operation_id FROM (
+            SELECT o.operation_id,o.created_ms,m.order_sequence AS sequence
+            FROM outbox o JOIN messages m USING(message_id) WHERE o.account_id=? AND o.state='queued'
+            UNION ALL SELECT operation_id,created_ms,9223372036854775807
+            FROM interaction_outbox WHERE account_id=? AND state='queued')
+            ORDER BY created_ms,sequence,operation_id LIMIT 1""", (account, account)).fetchone()
         return row[0] if row else None
 
     def rpc_method(self, account, operation):
         row = self.mutations.row(account, operation)
-        return {"reaction": "sendReaction", "delete": "remoteDelete"}.get(row["kind"], "send") if row else "send"
+        return {"reaction": "sendReaction", "delete": "remoteDelete", "pin": "sendPinMessage", "unpin": "sendUnpinMessage"}.get(row["kind"], "send") if row else "send"
 
     def begin(self, account, operation):
         mutation = self.mutations.row(account, operation)
@@ -237,6 +257,11 @@ class Outbox:
             self.db.execute("UPDATE message_versions SET message_id=? WHERE message_id=?", (mid, copy["message_id"]))
             self.db.execute("UPDATE message_reactions SET message_id=? WHERE message_id=?", (mid, copy["message_id"]))
             self.db.execute("UPDATE interaction_outbox SET message_id=? WHERE message_id=?", (mid, copy["message_id"]))
+            self.db.execute("""INSERT INTO message_pins
+                SELECT ?,event_ms,actor,active,pin_order,expires_at_ms FROM message_pins WHERE message_id=?
+                ON CONFLICT(message_id) DO UPDATE SET event_ms=excluded.event_ms,actor=excluded.actor,
+                active=excluded.active,pin_order=excluded.pin_order,expires_at_ms=excluded.expires_at_ms
+                WHERE excluded.event_ms>message_pins.event_ms""", (mid, copy["message_id"]))
             self.db.execute("INSERT OR IGNORE INTO version_recipients SELECT ?,version_ms,recipient FROM version_recipients WHERE message_id=?", (mid, copy["message_id"]))
             if copy["edited_ms"] and local["kind"] not in ("deleted", "expired"):
                 self.db.execute("UPDATE messages SET edited_ms=?,body=? WHERE message_id=?", (copy["edited_ms"], copy["body"], mid))

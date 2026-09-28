@@ -265,12 +265,15 @@ class ReceiptTests(unittest.TestCase):
         self.store.receive(self.account, event(timestamp=1790000003000))
         self.store.close(); self.store = None
         db = sqlite3.connect(self.lease.data / "history.sqlite3")
-        for table in ("directory_operations", "directory_avatars", "conversation_preferences", "version_recipients", "interaction_outbox", "message_reactions", "message_versions", "message_metadata", "media_cli_gc", "draft_attachments", "media_files", "read_queue", "read_markers", "receipt_reports", "message_recipients"):
+        for table in ("message_pins", "forward_sources", "directory_operations", "directory_avatars", "conversation_preferences", "version_recipients", "interaction_outbox", "message_reactions", "message_versions", "message_metadata", "media_cli_gc", "draft_attachments", "media_files", "read_queue", "read_markers", "receipt_reports", "message_recipients"):
             db.execute("DROP TABLE " + table)
         db.execute("DROP TRIGGER attachment_cli_gc")
         db.execute("ALTER TABLE drafts DROP COLUMN composition")
         db.execute("DROP INDEX messages_unread")
         db.execute("DROP INDEX messages_receipt_target")
+        db.execute("DROP INDEX messages_order")
+        db.execute("ALTER TABLE messages DROP COLUMN order_sequence")
+        db.execute("DELETE FROM store_metadata WHERE key='message-order'")
         db.execute("ALTER TABLE messages DROP COLUMN read_at_ms")
         for column in ("expiration_seconds", "expiration_start_ms", "hidden_local"):
             db.execute("ALTER TABLE messages DROP COLUMN " + column)
@@ -280,7 +283,7 @@ class ReceiptTests(unittest.TestCase):
         self.store = Store(self.lease, self.committed, lambda: self.now)
         self.assertEqual(self.message(mid)["status"], "read")
         self.assertEqual(self.store.conversation_item(self.account, self.conversation())["unreadCount"], 0)
-        self.assertEqual(self.store.db.execute("PRAGMA user_version").fetchone()[0], 7)
+        self.assertEqual(self.store.db.execute("PRAGMA user_version").fetchone()[0], 8)
 
 
 class ReceiptBridgeTests(unittest.TestCase):

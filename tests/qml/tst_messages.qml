@@ -134,6 +134,51 @@ Item {
             keyClick(Qt.Key_Escape);
             verify(list.activeFocus);
         }
+        function test_escape_focus_stays_on_selected_tile_data() {
+            return [{tag: "wide", width: 980}, {tag: "narrow", width: 320}];
+        }
+        function test_escape_focus_stays_on_selected_tile(data) {
+            scene.width = data.width;
+            backend.rows = backend.rows.concat([Object.assign({}, backend.rows[0], {
+                conversationId: "chat-b", title: "Łukasz", target: "aci:other", unreadCount: 0
+            })]);
+            adapter.refreshList();
+            const list = control("conversationList");
+            tryCompare(list, "count", 3);
+            list.forceLayout();
+            const first = list.itemAtIndex(0);
+            mouseClick(first, first.width / 2, first.height / 2);
+            tryVerify(() => control("messageEditor").activeFocus);
+            keyClick(Qt.Key_Escape);
+            keyClick(Qt.Key_J); keyClick(Qt.Key_Return);
+            tryVerify(() => control("messageEditor").activeFocus && adapter.draftReady);
+            mouseMove(scene, scene.width - 2, 2);
+            waitForRendering(view.item);
+            const neighbors = [list.itemAtIndex(0), list.itemAtIndex(2)];
+            const before = data.width >= 680 ? neighbors.map(item => grabImage(item)) : [];
+            keyClick(Qt.Key_Escape);
+            tryVerify(() => list.activeFocus && list.visible);
+            compare(list.currentIndex, 1);
+            waitForRendering(list);
+            grabImage(view.item).save(Qt.resolvedUrl("../../docs/evidence/signal-message-polish-20260926/focus-" + data.tag + ".png").toString().replace("file://", ""));
+            function indicators(item) {
+                let found = item.objectName === "focusIndicator" && item.visible ? [item] : [];
+                for (const child of item.children) found = found.concat(indicators(child));
+                return found;
+            }
+            for (let i = 0; i < 3; i++) {
+                const entry = list.itemAtIndex(i), outlines = indicators(entry);
+                compare(outlines.length, i === 1 ? 1 : 0, "focus indicators in tile " + i);
+                for (const outline of outlines) {
+                    const top = outline.mapToItem(entry, 0, 0);
+                    verify(top.y >= 0 && top.y + outline.height <= entry.height, "focus stays inside the tile");
+                }
+            }
+            if (before.length) neighbors.forEach((item, i) => verify(before[i].equals(grabImage(item)), "Escape must not change adjacent tile pixels"));
+            keyClick(Qt.Key_J);
+            compare(indicators(list.itemAtIndex(1)).length, 0);
+            compare(indicators(list.itemAtIndex(2)).length, 1);
+        }
         function test_bubble_width_data() {
             const rows = [];
             for (const width of [320, 640, 980, 1600]) for (const outgoing of [false, true])
@@ -144,6 +189,7 @@ Item {
             scene.width = data.width;
             const message = backend.history["chat-g"][0];
             message.text = "OK";
+            message.canDeleteLocal = true;
             if (data.outgoing) { message.direction = "outgoing"; message.status = "sent"; }
             choose("chat-g");
             const history = control("messageHistory");
@@ -167,17 +213,23 @@ Item {
             tryCompare(bubble, "width", shortWidth);
             scene.width = 320;
             tryVerify(() => bubble.width <= history.width / 2);
+            (view.item as MessagesView).readingEnabled = true;
+            // Let the narrow layout and visible-read refresh settle before
+            // comparing popup geometry against the bubble.
+            waitForPolish(view.item); wait(350);
+            const originalWidth = bubble.width, originalHeight = bubble.height;
             findChild(row, "messageActions").forceActiveFocus(Qt.TabFocusReason);
             keyClick(Qt.Key_Return);
             tryCompare(history, "actionsMessageId", row.messageId);
-            tryVerify(() => findChild(row, "deleteMessageLocal") !== null);
-            wait(100);
-            const action = findChild(row, "deleteMessageLocal");
-            const point = action.mapToItem(bubble, 0, 0);
-            verify(point.x >= 0 && point.x + action.width <= bubble.width);
+            const overlay = scene.Window.window.contentItem;
+            tryVerify(() => findChild(overlay, "deleteMessage") !== null);
+            findChild(overlay, "deleteMessage").click();
+            tryVerify(() => findChild(overlay, "deleteMessageLocal") !== null);
+            const action = findChild(overlay, "deleteMessageLocal");
+            verify(findChild(row, "deleteMessageLocal") === null);
             verify(action.contentItem.contentWidth <= action.contentItem.width + 1);
-            compare(bubble.width, history.width / 2);
-            keyClick(Qt.Key_Return);
+            compare(bubble.width, originalWidth); compare(bubble.height, originalHeight);
+            action.click();
             tryCompare(history, "actionsMessageId", "");
         }
         function test_route_scope_and_stale_replies() {

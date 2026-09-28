@@ -1,6 +1,7 @@
 fish_add_path ~/.local/bin
 
 if status is-interactive
+  set -g fish_greeting
 
   function fish_user_key_bindings
     fish_vi_key_bindings default

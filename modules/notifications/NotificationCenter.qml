@@ -86,7 +86,7 @@ Column {
             leftTarget: dnd
             downTarget: root.cardAt(0) ? root.cardAt(0).selectionControl : null
             KeyNavigation.tab: downTarget || root.headerControl; KeyNavigation.backtab: dnd
-            onClicked: { root.service.clearHistory(); root.focusInitial(focusReason); }
+            onClicked: { root.service.clearHistory(); root.dismissed(); }
             onEnsureVisible: item => root.reveal(item)
         }
     }

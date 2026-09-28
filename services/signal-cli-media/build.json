@@ -11,6 +11,7 @@
     "JsonSyncDataMessage.java": "https://raw.githubusercontent.com/AsamK/signal-cli/v0.14.8/src/main/java/org/asamk/signal/json/JsonSyncDataMessage.java",
     "SendHelper.java": "https://raw.githubusercontent.com/AsamK/signal-cli/v0.14.8/lib/src/main/java/org/asamk/signal/manager/helper/SendHelper.java",
     "MessageSendLogStore.java": "https://raw.githubusercontent.com/AsamK/signal-cli/v0.14.8/lib/src/main/java/org/asamk/signal/manager/storage/sendLog/MessageSendLogStore.java",
-    "SendMessageResultUtils.java": "https://raw.githubusercontent.com/AsamK/signal-cli/v0.14.8/src/main/java/org/asamk/signal/util/SendMessageResultUtils.java"
+    "SendMessageResultUtils.java": "https://raw.githubusercontent.com/AsamK/signal-cli/v0.14.8/src/main/java/org/asamk/signal/util/SendMessageResultUtils.java",
+    "CallManager.java": "https://raw.githubusercontent.com/AsamK/signal-cli/v0.14.8/lib/src/main/java/org/asamk/signal/manager/helper/CallManager.java"
   }
 }

@@ -1,5 +1,11 @@
 # Signal — testy i izolacja
 
+## Rozmowy głosowe 1:1 — 2026-09-26
+
+[CALLS.md](CALLS.md) opisuje nowe IPC, interfejs, pin tunelu RingRTC,
+poprawki urządzeń połączonych, budowanie oraz testy i ograniczenia.
+Schemat SQLite v7, polityka retencji 2 i IPC v1 pozostają zgodne.
+
 Kontrakt S00, 2026-09-20. **Syntetyczny transport nie dowodzi synchronizacji
 z telefonem.** Wyniki wykonanych prób: [STATUS.md](STATUS.md).
 

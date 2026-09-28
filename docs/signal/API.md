@@ -1,5 +1,31 @@
 # Signal — zweryfikowane API S00
 
+## Kolejność i akcje wiadomości — 2026-09-26
+
+Aktualny schemat to **SQLite v8**, nadal IPC v1 i signal-cli 0.14.8 JVM
+z putkin-retention-2. Wiadomość dodaje `orderSequence`, `canForward`,
+`canPin` i `pinned`. `orderSequence` jest trwałą kolejnością przyjęcia;
+`sortTimestampMs` nadal dostarcza datę i HH:mm, bez porządkowania historii.
+Cursor `messages-order-2` nie akceptuje kursora wcześniejszego porządku.
+
+| IPC | Kontrakt |
+| --- | --- |
+| `message.pin` | accountId, conversationId, messageId, versionTimestampMs, operationId, remove:boolean, durationSeconds: 86400/604800/2592000/-1. Enqueue `sendPinMessage` lub `sendUnpinMessage`; ponowienie wyłącznie bezpiecznych operacji. |
+| `message.forward` | accountId, conversationId źródła, targetConversationId, messages: 1–100 obiektów messageId/versionTimestampMs/operationId. Walidacja całego zestawu, niezależne kopie gotowych załączników, jedna transakcja outboxu, bez zmiany szkicu celu. Wynik: operations. |
+
+Rozmowa zawiera `pinnedMessages` (maksymalnie trzy) z messageId, text,
+authorServiceId, expiresAtMs i pinOrder. Usunięcie/wygaśnięcie oryginału
+usuwa przypięcie. Zdarzenia pin/unpin sprawdzają autora i uprawnienia
+edycji atrybutów grupy. Brakujący cel nie tworzy zastępczej wiadomości.
+Starszy runtime z maksymalnym schematem v7 nie jest zgodnym rollbackiem.
+[Zakres i źródła](MESSAGE_ACTIONS.md).
+
+## Rozmowy głosowe 1:1 — 2026-09-26
+
+[CALLS.md](CALLS.md) opisuje nowe IPC, interfejs, pin tunelu RingRTC,
+poprawki urządzeń połączonych, budowanie oraz testy i ograniczenia.
+Schemat SQLite v7, polityka retencji 2 i IPC v1 pozostają zgodne.
+
 ## S12 — lokalna diagnostyka i preflight
 
 Pin protokołu pozostaje **0.14.8 JVM + putkin-retention-2**, SQLite v7

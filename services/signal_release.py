@@ -157,7 +157,10 @@ def command(config):
             raise Failure("runtime_invalid") from None
         executable = bundle / "cli/bin/signal-cli"
         java = bundle / "jre"
-        if (config.get("executable") and Path(config["executable"]).resolve() != executable.resolve()
+        # Settings use this default name. Installed builds always resolve it
+        # inside the verified bundle, never through the desktop's PATH.
+        if (config.get("executable") not in (None, "", "signal-cli")
+                and Path(config["executable"]).resolve() != executable.resolve()
                 or config.get("javaHome") and Path(config["javaHome"]).resolve() != java.resolve()):
             raise Failure("invalid_config")
         env["JAVA_HOME"] = str(java)

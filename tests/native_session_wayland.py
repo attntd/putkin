@@ -67,7 +67,10 @@ def run(environment, base, output, first, hypr, launch):
     def activity():
         subprocess.run([tool('wtype'), '-k', 'Escape'], env=env, check=True, capture_output=True, timeout=4)
     checks, captures = [], []
-    def check(text): checks.append(text); print('PASS: '+text, flush=True)
+    def check(text):
+        checks.append(text)
+        (output/'native-checks.json').write_text(json.dumps(checks, indent=2)+'\n')
+        print('PASS: '+text, flush=True)
     def capture(name, monitor=first):
         hypr('dismissnotify')
         path = output/(name+'.png')
@@ -127,9 +130,8 @@ def run(environment, base, output, first, hypr, launch):
         unlocked = eventually(state, lambda s: not s.get('locked') and s.get('surfaces') == 0, 'password authentication')
         time.sleep(.3)
         recorder.send_signal(signal.SIGINT); recorder.wait(timeout=5)
-        verify_fade_video(output/'desktop-fade.mkv')
         assert unlocked['captures'] == 0, unlocked
-        check('recorded compositor frames crossfade directly from/to desktop without grey intermediary; buffers released on unlock')
+        check('desktop capture buffers released on unlock')
         frames = unlocked['fadeFrames']
         (output/'lock-fade-frames.json').write_text(json.dumps(frames, indent=2)+'\n')
         assert any(not f['closing'] and any(0 < a < 1 for a in f['opacities']) for f in frames), frames
@@ -180,8 +182,64 @@ def run(environment, base, output, first, hypr, launch):
         eventually(state, lambda s: not s.get('fingerprintActive'), 'three failed scans stop PAM')
         time.sleep(2.2)
         assert state()['secure'] and not state()['fingerprintActive']
+        ipc('fingerprintEnabled', 'false'); ipc('fingerprintEnabled', 'true')
+        time.sleep(.6)
+        assert not state()['fingerprintActive'] and state()['fingerprintBlocked']
         type_password('hjkl'); eventually(state, lambda s: not s.get('locked'), 'password after scan limit')
         check('three failed fingerprints still stop scanning and retain password authentication')
+
+        # The real module maps failed reader Claim to PAM_AUTHINFO_UNAVAIL,
+        # the same code 9 seen after opening the laptop lid. No scan took place.
+        def claims(): return json.loads(finger.Snapshot()).count('Claim')
+        locked(); eventually(state, lambda s: s.get('fingerprintActive'), 'fingerprint before suspend')
+        fixture.Sleep(True)
+        eventually(state, lambda s: s.get('hold') and not s.get('fingerprintActive'), 'sleep cancels fingerprint')
+        ipc('freezeClock'); old_time = state()['clock']; time.sleep(1.1)
+        assert state()['clock'] == old_time
+        before = claims(); scans = scan_count(); finger.FailClaims(2)
+        fixture.Sleep(False)
+        deadline = time.monotonic() + 8
+        while scan_count() == scans and time.monotonic() < deadline:
+            current = state()
+            assert current['secure'] and current['fingerprint'] == 'idle', current
+            time.sleep(.03)
+        assert scan_count() > scans and claims() == before + 3, (claims(), state())
+        assert state()['fingerprintRecoveryAttempts'] == 2
+        resumed = state()
+        assert resumed['clock'] > old_time and all(value == resumed['clock'] for value in resumed['lockDates']), resumed
+        finger.Emit('verify-match', True)
+        eventually(state, lambda s: not s.get('locked'), 'fingerprint works after delayed wake')
+        check('resume recovers from real PAM code 9 twice without a false red glyph; fingerprint then unlocks')
+
+        finger.FailClaims(-1); locked()
+        eventually(state, lambda s: s.get('fingerprintRetry'), 'recovery before next suspend')
+        fixture.Sleep(True)
+        eventually(state, lambda s: s.get('hold') and not s.get('fingerprintActive'), 'second sleep during recovery')
+        before = claims(); time.sleep(1.1)
+        assert claims() == before and not state()['fingerprintRetry']
+        finger.FailClaims(0); scans = scan_count(); fixture.Sleep(False)
+        eventually(scan_count, lambda n: n > scans, 'fresh conversation after second resume')
+        finger.Emit('verify-match', True)
+        eventually(state, lambda s: not s.get('locked'), 'fresh fingerprint unlock after second resume')
+        check('another sleep cancels pending recovery; next resume starts a fresh authenticated lock cycle')
+
+        before = claims(); finger.FailClaims(-1); locked()
+        eventually(state, lambda s: s.get('fingerprintRetry'), 'reader recovery pending')
+        type_password('hjkl')
+        eventually(state, lambda s: not s.get('locked'), 'password during reader recovery')
+        after = claims(); time.sleep(1.1)
+        assert claims() == after and not state()['fingerprintRetry']
+        assert state()['fingerprint'] == 'idle'
+        check('password cancels pending fingerprint recovery without leaving another scan')
+
+        before = claims(); locked()
+        eventually(state, lambda s: s.get('fingerprintBlocked'), 'bounded reader recovery', 20)
+        assert claims() == before + 6, (claims(), before, state())
+        assert state()['secure'] and state()['fingerprint'] == 'idle'
+        time.sleep(.6); assert claims() == before + 6
+        type_password('hjkl'); eventually(state, lambda s: not s.get('locked'), 'password after unavailable reader')
+        finger.FailClaims(0)
+        check('persistent reader failure stops after five recovery attempts and preserves password/secure lock')
         ipc('fingerprintEnabled', 'false')
 
         locked()
@@ -248,6 +306,10 @@ def run(environment, base, output, first, hypr, launch):
         locked(); stop_process_group(app)
         assert hypr('locked') == 'true'
         check('client termination leaves compositor session locked')
+        # Validate the recorded video last so a recorder failure still leaves
+        # inspectable results for authentication, resume and compositor safety.
+        verify_fade_video(output/'desktop-fade.mkv')
+        check('recorded compositor frames crossfade directly from/to desktop without grey intermediary')
         return {'checks': checks, 'captures': captures, 'result':'PASS',
                 'isolation':'private compositor, buses, fixture PAM only; real password/fingerprint hardware untouched'}
     finally:

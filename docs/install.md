@@ -1,5 +1,48 @@
 # Instalacja Putkina
 
+## Odcisk i zegar po wznowieniu — 2026-09-27
+
+Aktywne **`20260927-093540-8d0a4069d380`**, zainstalowane przez
+`scripts/install --activate --shell-only --offline --no-prune`.
+184 QML przeszły bramkę pakowania; wszystkie 399 plików runtime odpowiadają
+źródłom. Dwa odczyty co 10 s potwierdziły stabilny shell, jego własność
+powiadomień, Signal `ready/linked`, gotowość blokady i czysty dziennik.
+Zachowano ustawienia i Caffeinate `presentation`; PAM systemu i fprintd
+nie były modyfikowane. [Log](evidence/resume-20260927/install.log),
+[odbiór](evidence/resume-20260927/activation.json),
+[testy i ograniczenia](status.md#odcisk-i-zegar-po-wznowieniu--2026-09-27).
+`previous`: `20260926-154449-281bca0c1223`; starszych wydań nie usuwano.
+Powrót z odblokowanej sesji: `scripts/install --restore --activate`.
+
+## Korekta wskaźnika pisania — 2026-09-26
+
+Aktywne **`20260926-102323-837f360c2241`** po odblokowaniu pulpitu przez
+użytkownika i instalacji `--activate --shell-only --offline --no-prune`.
+175 QML przy pakowaniu i 375 plików runtime zgodnych ze źródłami.
+Dwa odczyty w odstępie 10 s potwierdziły stabilny shell i Signal
+`ready/linked`, bez błędów i ostrzeżeń. Zachowane ustawienia, skróty,
+konfiguracja Signala, włączony wskaźnik pisania i Caffeinate `background`.
+[Log aktywacji](evidence/signal-typing-20260926/live-install.log),
+[odbiór](evidence/signal-typing-20260926/live-activation.json).
+`previous`: `20260926-095602-1adc1e9c40ed`; starszych wydań nie usuwano.
+Wcześniej sprawdzono prywatny pakiet z rzeczywistym CLI/JRE:
+[weryfikacja](evidence/signal-typing-20260926/packaged-runtime.json).
+
+## Rozmowy głosowe Signal — 2026-09-26
+
+Aktywne **`20260926-095602-1adc1e9c40ed`** po zleconej instalacji
+`scripts/install --activate --shell-only --offline --no-prune`, z gotowym
+pakietem CLI/JRE i tunelem RingRTC. Walidacja 175 QML; 375 plików runtime
+zgodnych ze źródłami. Dwa odczyty w odstępie 10 s: stabilny shell,
+Signal `ready/linked`, poprawny właściciel powiadomień, gotowe idle/lock
+oraz JVM skonfigurowany z przypiętym tunelem. Bez błędów i ostrzeżeń.
+Ustawienia, skróty, konfiguracja konta i Caffeinate `background` zachowane.
+[Log aktywacji](evidence/signal-calls-20260926/live-install.log),
+[odbiór](evidence/signal-calls-20260926/live-activation.json).
+Poprzednie `20260924-082540-076b1e15099c` jest zachowane; powrót przez
+`scripts/install --restore --activate`. Nie usuwano starszych wydań.
+Rzeczywista rozmowa z drugim urządzeniem pozostaje do sprawdzenia.
+
 ## Odczyt, przewijanie i wzmianki — 2026-09-24
 
 Aktywne **`20260924-082540-076b1e15099c`** po

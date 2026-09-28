@@ -107,6 +107,7 @@ def system_event(store, account, cid, changes):
     store.db.execute("""INSERT INTO messages(message_id,conversation_id,author,sort_ms,direction,origin,kind,status,read_at_ms)
         VALUES(?,?,'',?,'incoming','local','system','received',?)""", (mid, cid, store.clock(), store.clock()))
     store.db.execute('INSERT INTO message_metadata VALUES(?,?)', (mid, json.dumps({'systemChanges': changes})))
+    store.db.execute('UPDATE messages SET order_sequence=? WHERE message_id=?', (store.next_message_order(), mid))
     store.touch(account, cid, store.clock())
     store.notify_message(account, mid)
 

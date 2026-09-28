@@ -24,7 +24,7 @@ def dependencies():
     if sys.version_info < (3, 12):
         raise RuntimeError("Instalator wymaga Python 3.12 lub nowszego (weryfikowane rozpakowywanie archiwów).")
     required = ["quickshell", "Hyprland", "uwsm", "hyprctl", "busctl", "gdbus", "systemctl",
-                "python3", "dbus-run-session", "bwrap", "ffmpeg", "ffprobe", "file"]
+                "python3", "dbus-run-session", "bwrap", "ffmpeg", "ffprobe", "file", "pactl", "pacat"]
     missing = [name for name in required if not shutil.which(name)]
     missing += ["python:" + name for name in ("dbus", "gi") if importlib.util.find_spec(name) is None]
     for name in ("qmlformat", "qmllint", "qmake6"):

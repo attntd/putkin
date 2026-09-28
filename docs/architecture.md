@@ -1,5 +1,57 @@
 # Architektura Putkin
 
+## Wznowienie sesji — 2026-09-27
+
+Jeden `SessionClock` dostarcza datę paskom i `LockHost`; widoki blokady
+nie tworzą własnego zegara. `SessionController` odświeża go przed wznowieniem
+DPMS i jasności. Pomocnik emituje resume przed odczytami D-Bus, a zwalnia
+hold PAM po ponownym wykryciu czytnika. `PamBackend` ogranicza ponowienia
+błędu dostępności i zachowuje terminalny limit prób; timer należy do cyklu
+uwierzytelniania i kończy się razem z nim. [Kontrakt](session.md).
+
+## Fokus i prezentacja mediów — 2026-09-26
+
+Delegat rozmowy ma jedno tło z `FocusIndicator` zależnym od wyboru listy;
+nie nakłada na nie zewnętrznego obrysu bazowego przycisku. Adapter zachowuje
+pustą treść wiadomości z rzeczywistym załącznikiem; nie usuwa tekstu
+podpisanego przez nadawcę ani oznaczeń usunięcia/wygaśnięcia.
+
+`AttachmentGallery` układa obrazy lub karty plików. Jej geometria obserwuje
+gotowe delegaty oraz rzeczywiste proporcje `Image`, nie sam licznik Repeatera
+czy żądany `sourceSize`. `AudioAttachment` używa Qt MediaPlayer; wyjście
+audio powstaje dopiero po aktywacji, historia utrzymuje jedno aktywne ID.
+Ukrycie, blokada, zmiana rozmowy i usunięcie delegata zatrzymują audio.
+Wszystkie media nadal pochodzą z kontrolowanego magazynu załączników.
+Popup `reactionPeople` korzysta z istniejących danych i cyklu życia
+`MessageActions`; odświeżenie reakcji aktualizuje listę lub zamyka popup.
+Schemat SQLite v8 i protokół bridge pozostają zgodne.
+
+## Kolejność i akcje wiadomości — 2026-09-26
+
+SQLite v8 nadaje `order_sequence` przy przyjęciu rekordu lub enqueue.
+Migracja odtwarza dotychczasową kolejność zapisu; paginacja, odczyt do ID
+i merge QML korzystają z niej zamiast zegara nadawcy. Znaczniki protokołu
+pozostają tożsamością wiadomości i źródłem wyświetlanej daty/godziny.
+
+`MessageTools` wywołuje jeden `MessageActions` na historię. Popup na
+Overlay ma własny cykl wejścia/fokusu i zamyka się po unieważnieniu celu.
+Zaznaczenie żyje tylko w widoku. `signal_forward` klonuje gotowe media,
+ponownie sprawdza wersje i uprawnienia, a następnie zapisuje cały zestaw
+w istniejącym outboxie w jednej transakcji, zachowując szkic docelowy.
+`signal_pins` przechowuje maksymalnie trzy przypięcia, uprawnienia i czas
+wygaśnięcia; wysyłanie pin/unpin używa istniejącej kolejki mutacji.
+[Kontrakt](signal/MESSAGE_ACTIONS.md).
+
+## Rozmowy głosowe Signal — 2026-09-26
+
+`SignalCallService` należy do usługi, nie do okna. `signal_calls.Calls`
+zarządza jedną nietrwałą sesją przez istniejący transport CLI, niezależnie
+od outboxu. Osobny, przypięty RingRTC wykonuje WebRTC; `CallAudio` jest
+właścicielem procesów PCM w obu kierunkach. Mute kończy wyłącznie capture
+tej rozmowy. Nie ma nagrywania, replay ani nowej bazy. Powiadomienia
+obserwują stan i unieważniają akcje po zakończeniu/blokadzie.
+[Szczegóły i granice](signal/CALLS.md).
+
 ## Odczyt i wzmianki Message Huba — 2026-09-24
 
 `MessageHistory` zachowuje bramkę aktywnego okna i 250 ms stabilnego widoku.
