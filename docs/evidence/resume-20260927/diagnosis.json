@@ -1,0 +1,23 @@
+{
+  "date": "2026-09-27",
+  "timezone": "Europe/Warsaw",
+  "source": "Read-only journalctl for putkin.service and systemd-suspend.service; systemctl show fprintd.service; GetDefaultDevice",
+  "resumeTimes": [
+    "09:04:10",
+    "10:01:33"
+  ],
+  "fingerprintPamResultAfterEachResume": 9,
+  "fingerprintPamMessagesBeforeFailure": 0,
+  "daemonActive": true,
+  "defaultDevicePresent": true,
+  "readerClaimOrScanPerformed": false,
+  "underlyingReaderFailure": "unconfirmed",
+  "versions": {
+    "quickshell": "0.3.1-1",
+    "qt": "6.11.2",
+    "fprintd": "1.94.5-2",
+    "libfprint": "1.94.100-1",
+    "pam": "1.7.2-2",
+    "systemd": "262-1"
+  }
+}

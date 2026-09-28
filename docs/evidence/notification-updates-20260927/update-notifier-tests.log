@@ -1,0 +1,13 @@
+test_checkupdates_empty_exit_two_is_success (__main__.Notifications.test_checkupdates_empty_exit_two_is_success) ... ok
+test_delivery_failure_retries_and_database_is_removed (__main__.Notifications.test_delivery_failure_retries_and_database_is_removed) ... ok
+test_failed_source_keeps_last_successful_result (__main__.Notifications.test_failed_source_keeps_last_successful_result) ... ok
+test_first_update_and_repeat (__main__.Notifications.test_first_update_and_repeat) ... ok
+test_new_target_with_same_count_notifies (__main__.Notifications.test_new_target_with_same_count_notifies) ... ok
+test_no_updates_is_silent (__main__.Notifications.test_no_updates_is_silent) ... ok
+test_partial_success_is_labelled (__main__.Notifications.test_partial_success_is_labelled) ... ok
+test_subset_installed_does_not_notify_again (__main__.Notifications.test_subset_installed_does_not_notify_again) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.009s
+
+OK

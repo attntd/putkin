@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "scope": "production QML + SQLite + synthetic CLI; offscreen/private XDG/D-Bus; no phone",
+  "checks": [
+    "lazy native window; username resolved without send; empty conversation before first send",
+    "composer to durable outbox to fake send; no delivered/read claim",
+    "closed window receives 65 messages; same process/subscription; ordinary open focuses list, scoped conversation routing focuses editor and reuses window; 50+16 history pages",
+    "hard reload restores committed draft/account/history; old bridge reaped; no repeated send"
+  ],
+  "qmlErrors": [],
+  "remainingOwnedProcesses": []
+}

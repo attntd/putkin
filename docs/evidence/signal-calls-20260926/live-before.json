@@ -1,0 +1,19 @@
+{
+  "prepared": "20260926-095124-1adc1e9c40ed",
+  "sourceFiles": 375,
+  "oldBuild": "20260924-082540-076b1e15099c",
+  "oldPid": 921,
+  "caffeinate": "background",
+  "unlocked": true,
+  "signal": {
+    "state": "ready",
+    "accountState": "linked",
+    "schemaVersion": 7,
+    "cliVersion": "0.14.8",
+    "errorCode": "",
+    "linkError": "",
+    "eventErrorLocation": "",
+    "qrVisible": false,
+    "processId": 1137
+  }
+}

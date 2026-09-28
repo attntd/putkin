@@ -1,0 +1,223 @@
+{
+  "build": "20260927-093540-8d0a4069d380",
+  "checks": [
+    {
+      "session": {
+        "busy": false,
+        "phase": "",
+        "error": "",
+        "result": "",
+        "capabilities": {
+          "reboot": {
+            "available": true,
+            "reason": ""
+          },
+          "poweroff": {
+            "available": true,
+            "reason": ""
+          },
+          "suspend": {
+            "available": false,
+            "reason": "Operację wstrzymuje inhibitor aplikacji."
+          },
+          "hibernate": {
+            "available": false,
+            "reason": "Operację wstrzymuje inhibitor aplikacji."
+          },
+          "idleSuspend": {
+            "available": false,
+            "reason": "Operację wstrzymuje inhibitor aplikacji."
+          },
+          "logout": {
+            "available": true,
+            "reason": ""
+          },
+          "lock": {
+            "available": true,
+            "reason": ""
+          }
+        },
+        "lock": {
+          "locked": false,
+          "secure": false
+        },
+        "idle": {
+          "ready": true,
+          "inhibited": true,
+          "sleepInhibited": true,
+          "dimmed": false,
+          "displaysOff": false,
+          "error": ""
+        }
+      },
+      "signal": {
+        "state": "ready",
+        "accountState": "linked",
+        "schemaVersion": 8,
+        "cliVersion": "0.14.8",
+        "errorCode": "",
+        "linkError": "",
+        "eventErrorLocation": "",
+        "qrVisible": false,
+        "processId": 142342
+      },
+      "caffeinate": {
+        "active": true,
+        "mode": "presentation",
+        "busy": false,
+        "preventDisplaySleep": true,
+        "preventLock": true,
+        "preventSleep": true,
+        "error": ""
+      },
+      "bar": {
+        "available": true,
+        "monitors": [
+          {
+            "name": "eDP-1",
+            "activeId": 4
+          }
+        ],
+        "focusedMonitor": "eDP-1",
+        "workspaces": [
+          {
+            "id": 1,
+            "visibleOn": ""
+          },
+          {
+            "id": 2,
+            "visibleOn": ""
+          },
+          {
+            "id": 3,
+            "visibleOn": ""
+          },
+          {
+            "id": 4,
+            "visibleOn": "eDP-1"
+          },
+          {
+            "id": 5,
+            "visibleOn": ""
+          }
+        ],
+        "busy": false,
+        "error": ""
+      },
+      "servicePid": 142307,
+      "serviceState": "active",
+      "notificationsPid": 142307
+    },
+    {
+      "session": {
+        "busy": false,
+        "phase": "",
+        "error": "",
+        "result": "",
+        "capabilities": {
+          "reboot": {
+            "available": true,
+            "reason": ""
+          },
+          "poweroff": {
+            "available": true,
+            "reason": ""
+          },
+          "suspend": {
+            "available": false,
+            "reason": "Operację wstrzymuje inhibitor aplikacji."
+          },
+          "hibernate": {
+            "available": false,
+            "reason": "Operację wstrzymuje inhibitor aplikacji."
+          },
+          "idleSuspend": {
+            "available": false,
+            "reason": "Operację wstrzymuje inhibitor aplikacji."
+          },
+          "logout": {
+            "available": true,
+            "reason": ""
+          },
+          "lock": {
+            "available": true,
+            "reason": ""
+          }
+        },
+        "lock": {
+          "locked": false,
+          "secure": false
+        },
+        "idle": {
+          "ready": true,
+          "inhibited": true,
+          "sleepInhibited": true,
+          "dimmed": false,
+          "displaysOff": false,
+          "error": ""
+        }
+      },
+      "signal": {
+        "state": "ready",
+        "accountState": "linked",
+        "schemaVersion": 8,
+        "cliVersion": "0.14.8",
+        "errorCode": "",
+        "linkError": "",
+        "eventErrorLocation": "",
+        "qrVisible": false,
+        "processId": 142342
+      },
+      "caffeinate": {
+        "active": true,
+        "mode": "presentation",
+        "busy": false,
+        "preventDisplaySleep": true,
+        "preventLock": true,
+        "preventSleep": true,
+        "error": ""
+      },
+      "bar": {
+        "available": true,
+        "monitors": [
+          {
+            "name": "eDP-1",
+            "activeId": 2
+          }
+        ],
+        "focusedMonitor": "eDP-1",
+        "workspaces": [
+          {
+            "id": 1,
+            "visibleOn": ""
+          },
+          {
+            "id": 2,
+            "visibleOn": "eDP-1"
+          },
+          {
+            "id": 3,
+            "visibleOn": ""
+          },
+          {
+            "id": 4,
+            "visibleOn": ""
+          },
+          {
+            "id": 5,
+            "visibleOn": ""
+          }
+        ],
+        "busy": false,
+        "error": ""
+      },
+      "servicePid": 142307,
+      "serviceState": "active",
+      "notificationsPid": 142307
+    }
+  ],
+  "runtimeFiles": 399,
+  "runtimeDifferences": [],
+  "journal": "Sep 27 11:36:39 lenovo-x1 systemd[751]: Starting env...\nSep 27 11:36:39 lenovo-x1 systemd[751]: Started env.\nSep 27 11:36:39 lenovo-x1 env[142307]:   INFO: Launching config: \"/home/attntd/.config/quickshell/shell.qml\"\nSep 27 11:36:39 lenovo-x1 env[142307]:   INFO: Shell ID: \"770bba0d0f619c4ab3ab0453a539d542\" Path ID \"770bba0d0f619c4ab3ab0453a539d542\"\nSep 27 11:36:39 lenovo-x1 env[142307]:   INFO: Saving logs to \"/run/user/1000/quickshell/by-id/zs1331o0mt/log.qslog\"\nSep 27 11:36:40 lenovo-x1 env[142307]:   INFO: Configuration Loaded",
+  "previous": "20260926-154449-281bca0c1223"
+}

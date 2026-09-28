@@ -1,0 +1,19 @@
+[
+  "desktop capture buffers released on unlock",
+  "native lock covers all outputs; bad password stays locked; hjkl typed literally unlocks via actual fixture PAM",
+  "all native surfaces fade in/out; compositor secure remains true throughout authenticated fade-out",
+  "missing desktop captures lock immediately and opaquely on every output; password still unlocks",
+  "real pam_fprintd reports mismatch/reset and accepts fingerprint after more than 30 seconds waiting",
+  "password remains usable while the independent fingerprint conversation waits",
+  "three failed fingerprints still stop scanning and retain password authentication",
+  "resume recovers from real PAM code 9 twice without a false red glyph; fingerprint then unlocks",
+  "another sleep cancels pending recovery; next resume starts a fresh authenticated lock cycle",
+  "password cancels pending fingerprint recovery without leaving another scan",
+  "persistent reader failure stops after five recovery attempts and preserves password/secure lock",
+  "locked hotplug covers new output; reload deferred until unlocked",
+  "native idle thresholds dim, DPMS off, lock; activity restores DPMS/brightness without unlocking",
+  "presentation suppresses native idle events; background permits locking but prevents automatic sleep",
+  "unsupported automatic sleep keeps lock/password working without a session error after unlock",
+  "native automatic SuspendThenHibernate reaches fake logind only after compositor secure",
+  "client termination leaves compositor session locked"
+]

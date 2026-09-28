@@ -1,0 +1,45 @@
+{
+  "recordedAt": "2026-09-27T11:54:19.840762+02:00",
+  "physicalTestBeforeRestart": {
+    "result": "FAIL",
+    "reportedBy": "user",
+    "suspendAt": "2026-09-27T11:45:11+02:00",
+    "resumeAt": "2026-09-27T11:45:23+02:00",
+    "fingerprintPamResult": 9,
+    "fingerprintPamError": "PAM_AUTHINFO_UNAVAIL",
+    "failedAttempts": 5,
+    "passwordUnlockAt": "2026-09-27T11:45:38+02:00"
+  },
+  "directDeviceCheckBeforeRestart": {
+    "enrolledCount": 1,
+    "claim": "net.reactivated.Fprint.Error.Internal",
+    "message": "Open failed with error: Device 06cb:019f is already open",
+    "releaseCalled": false,
+    "verificationOrPamStarted": false
+  },
+  "priorDaemonError": {
+    "at": "2026-09-26T20:59:04+02:00",
+    "message": "Error closing device after disconnect: endpoint stalled or request not supported",
+    "causalLinkConfirmed": false
+  },
+  "localVersions": {
+    "quickshell": "0.3.1-1",
+    "qt6-base": "6.11.2",
+    "fprintd": "1.94.5-2",
+    "libfprint": "1.94.100-1"
+  },
+  "repair": "fprintd.service restart through standard system authentication",
+  "afterRestartReport": "fprintd-after-restart.json",
+  "physicalTestAfterRestart": {
+    "result": "PASS",
+    "reportedBy": "user",
+    "userReply": "Odcisk odblokował ekran",
+    "suspendAt": "2026-09-27T11:53:52+02:00",
+    "resumeAt": "2026-09-27T11:54:12+02:00",
+    "fingerprintPromptAt": "2026-09-27T11:54:12+02:00",
+    "fingerprintPamSuccessAt": "2026-09-27T11:54:14+02:00",
+    "successfulSleepCyclesObserved": 1
+  },
+  "permanentSuspendFixConfirmed": false,
+  "runtimeCodeChangedInFollowup": false
+}

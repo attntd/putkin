@@ -1,0 +1,11 @@
+--- CallManager.java
++++ CallManager.java
+@@ -461,7 +461,7 @@
+         var config = mapper.createObjectNode();
+         config.put("call_id", Utils.callIdUnsigned(state.callId));
+         config.put("is_outgoing", state.isOutgoing);
+-        config.put("local_device_id", 1);
++        config.put("local_device_id", account.getDeviceId());
+         return writeJson(config);
+     }
+ 

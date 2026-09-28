@@ -1,0 +1,7 @@
+test_clock_event_precedes_discovery_and_authentication_waits (test_session_resume.SessionResumeTests.test_clock_event_precedes_discovery_and_authentication_waits) ... ok
+test_spoofed_and_duplicate_resume_do_not_restart_authentication (test_session_resume.SessionResumeTests.test_spoofed_and_duplicate_resume_do_not_restart_authentication) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.000s
+
+OK

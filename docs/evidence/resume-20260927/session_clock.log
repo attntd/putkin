@@ -1,0 +1,19 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+QWARN  : qmltestrunner::tst_session_clock::compile() 
+  /home/attntd/projects/putkin/tests/qml/tst_session_clock.qml produced 1 error(s):
+    /home/attntd/projects/putkin/tests/qml/tst_session_clock.qml:3,1: module "Quickshell" plugin "quickshell-coreplugin" not found
+  Working directory: /home/attntd/projects/putkin
+  Import paths:
+    '/home/attntd/projects/putkin'
+    '/usr/lib/qt6/bin'
+    'qrc:/qt-project.org/imports'
+    'qrc:/qt/qml'
+    '/usr/lib/qt6/qml'
+  Plugin paths:
+    '.'
+
+FAIL!  : qmltestrunner::tst_session_clock::compile() module "Quickshell" plugin "quickshell-coreplugin" not found
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_session_clock.qml(3)]
+Totals: 0 passed, 1 failed, 0 skipped, 0 blacklisted, 2ms
+********* Finished testing of qmltestrunner *********

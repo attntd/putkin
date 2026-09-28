@@ -1,0 +1,9 @@
+{
+  "target": "/home/attntd/.config/hypr/hyprland.lua",
+  "backup": "/home/attntd/.local/state/putkin/fixes/window-border-20260927/hyprland.lua.before",
+  "before_sha256": "2add0ac620a62d6aab804a04bd51545782942b3ac90712be75d4826990f230ab",
+  "after_sha256": "73dbd5f0bce96fd11e9a259dcc1b74a37d4d5c77d4a01e52fb11466f76b32e00",
+  "addition": "\n-- Putkin: whole-monitor damage for the local Intel Xe/Samsung panel.\n-- Keeps idle frame suppression; avoids the intermittent horizontal border artifact.\nhl.config({ debug = { damage_tracking = 1 } })\n",
+  "runtime_mode": 1,
+  "user_observation": "na ten moment nie widze paska"
+}

@@ -1,0 +1,191 @@
+#!/usr/bin/env python3
+"""Inspect window borders with two synthetic clients on a private Wayland output."""
+import argparse
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+import tempfile
+import time
+
+from _common import ROOT, isolated_environment, qml_errors, stop_process_group, tool
+
+
+def eventually(read, predicate, label, seconds=12):
+    deadline = time.monotonic() + seconds
+    last = None
+    while time.monotonic() < deadline:
+        last = read()
+        if predicate(last):
+            return last
+        time.sleep(.04)
+    raise AssertionError(f'{label}: {last}')
+
+
+def inside(base):
+    assert os.environ.get('PUTKIN_BORDERS_TEST') == '1'
+    assert Path('/proc/1/comm').read_text().strip() == 'bwrap'
+    evidence = base / 'evidence'
+    evidence.mkdir()
+    config = base / 'hyprland.lua'
+    config.write_text('''hl.monitor({output="",mode="1280x900@60",position="auto",scale=1})
+hl.config({input={follow_mouse=0},misc={disable_hyprland_logo=true,disable_splash_rendering=true},xwayland={enabled=false}})
+''' + f'dofile({json.dumps(str(ROOT / "config/hypr/appearance.lua"))})\n'
+        + f'dofile({json.dumps(str(ROOT / "config/hypr/animations.lua"))})\n')
+    env = dict(os.environ)
+    processes = []
+    report = {'captures': [], 'result': 'FAIL'}
+    with (evidence / 'hyprland.log').open('w+') as hypr_log, (evidence / 'quickshell.log').open('w+') as app_log:
+        try:
+            compositor = subprocess.Popen([tool('Hyprland'), '--config', str(config)], env=env,
+                stdout=hypr_log, stderr=subprocess.STDOUT, start_new_session=True)
+            processes.append(compositor)
+            sockets = eventually(lambda: list((base / 'r/hypr').glob('*/.socket.sock')), bool, 'compositor')
+            env['HYPRLAND_INSTANCE_SIGNATURE'] = sockets[0].parent.name
+            env['WAYLAND_DISPLAY'] = eventually(lambda: [p for p in (base / 'r').glob('wayland-*') if p.is_socket()], bool, 'display')[0].name
+            env['QT_QPA_PLATFORM'] = 'wayland'
+            env.pop('QT_QUICK_BACKEND', None)
+
+            def hypr(*args, data=False):
+                result = subprocess.run([tool('hyprctl'), *(['-j'] if data else []), *args], env=env,
+                    capture_output=True, text=True, timeout=5)
+                assert result.returncode == 0, result.stdout + result.stderr
+                return json.loads(result.stdout) if data else result.stdout.strip()
+
+            eventually(lambda: hypr('monitors', data=True), bool, 'monitor')
+            hypr('output', 'create', 'headless')
+            monitors = eventually(lambda: hypr('monitors', data=True),
+                lambda ms: any(m['name'].startswith('HEADLESS-') for m in ms), 'test output')
+            output = next(m['name'] for m in monitors if m['name'].startswith('HEADLESS-'))
+            hypr('eval', f'hl.monitor({{output="{output}",mode="1920x1200@60",position="2000x0",scale=1}})')
+            hypr('dispatch', f'hl.dsp.focus({{monitor="{output}"}})')
+            entry = str(ROOT / 'window-borders-test.qml')
+            app = subprocess.Popen([tool('quickshell'), '--no-color', '--path', entry], env=env,
+                stdout=app_log, stderr=subprocess.STDOUT, start_new_session=True)
+            processes.append(app)
+            clients = lambda: hypr('clients', data=True)
+            eventually(clients, lambda cs: len(cs) == 1, 'first client')
+            time.sleep(1)
+            report['version'] = hypr('version', data=True)
+
+            def ipc(method, *args):
+                result = subprocess.run([tool('quickshell'), 'ipc', '--path', entry, 'call', 'probe', method, *args],
+                    env=env, check=True, capture_output=True, text=True, timeout=5)
+                return result.stdout.strip()
+
+            def capture(name, damage_mode):
+                hypr('dismissnotify')
+                path = evidence / (name + '.png')
+                subprocess.run([tool('grim'), '-o', output, str(path)], env=env, check=True, capture_output=True, timeout=8)
+                monitor = next(m for m in hypr('monitors', data=True) if m['name'] == output)
+                windows = clients()
+                active = hypr('activewindow', data=True)['address']
+                scale = monitor['scale']
+                rgb = subprocess.run([tool('magick'), str(path), '-depth', '8', 'RGB:-'], env=env,
+                    check=True, capture_output=True, timeout=10).stdout
+                width, height = monitor['width'], monitor['height']
+                assert len(rgb) == width * height * 3
+                boxes = [(round((c['at'][0] - monitor['x'] - 2) * scale),
+                          round((c['at'][1] - monitor['y'] - 2) * scale),
+                          round((c['at'][0] - monitor['x'] + c['size'][0] + 2) * scale),
+                          round((c['at'][1] - monitor['y'] + c['size'][1] + 2) * scale)) for c in windows]
+                # The synthetic background and clients are neutral Mocha colors.
+                # Accent-colored pixels outside every border expose overspill.
+                bad = []
+                colored_inactive = []
+                for window, box in zip(windows, boxes):
+                    for y in range(max(0, box[1] - 5), min(height, box[1] + 8)):
+                        for x in range(width):
+                            if any(l - 1 <= x < r + 1 and t - 1 <= y < b + 1 for l, t, r, b in boxes):
+                                continue
+                            offset = (y * width + x) * 3
+                            red, green, blue = rgb[offset:offset + 3]
+                            if max(red, green) > 100 and blue > 130:
+                                bad.append([x, y, red, green, blue])
+                    if window['address'] != active:
+                        y = box[1] + 1
+                        for x in range(box[0] + 2, box[2] - 2):
+                            offset = (y * width + x) * 3
+                            red, green, blue = rgb[offset:offset + 3]
+                            if max(red, green) > 100 and blue > 130:
+                                colored_inactive.append([x, y, red, green, blue])
+                active_box = boxes[next(i for i, window in enumerate(windows) if window['address'] == active)]
+                x, y = active_box[0] + 5, active_box[1] + 1
+                offset = (y * width + x) * 3
+                accent = list(rgb[offset:offset + 3])
+                record = dict(image=path.name, boxes=boxes, scale=scale, damage_mode=damage_mode,
+                    overspill=len(bad), colored_inactive=len(colored_inactive), active_sample=accent,
+                    samples=(bad + colored_inactive)[:12])
+                report['captures'].append(record)
+                print(json.dumps(record), flush=True)
+                assert not bad and not colored_inactive, record
+                assert accent[0] > 140 and accent[2] > 180, record
+
+            for scale, mode in [(1, '1920x1200@60'), (1.5, '2880x1800@60')]:
+                assert hypr('eval', f'hl.monitor({{output="{output}",mode="{mode}",position="2000x0",scale={scale}}})') == 'ok'
+                for damage_mode in [2, 1]:
+                    assert hypr('eval', f'hl.config({{debug={{damage_tracking={damage_mode}}}}})') == 'ok'
+                    assert hypr('getoption', 'debug:damage_tracking', data=True)['int'] == damage_mode
+                    prefix = f'scale-{scale}-damage-{damage_mode}'
+                    ipc('showSecond', 'false')
+                    eventually(clients, lambda cs: len(cs) == 1, 'single client')
+                    time.sleep(.8)
+                    capture(prefix + '-single', damage_mode)
+                    ipc('showSecond', 'true')
+                    eventually(clients, lambda cs: len(cs) == 2, 'two clients')
+                    time.sleep(.8)
+                    for window in clients():
+                        assert hypr('dispatch', f'hl.dsp.focus({{window="address:{window["address"]}"}})') == 'ok'
+                        time.sleep(.8)
+                        for index in range(4):
+                            capture(prefix + '-' + window['title'].split()[-1] + f'-{index}', damage_mode)
+                            time.sleep(.09)
+            ipc('animateUpdates', 'false')
+            errors = qml_errors((evidence / 'quickshell.log').read_text())
+            assert not errors, errors
+            report['result'] = 'PASS'
+        finally:
+            for process in reversed(processes):
+                stop_process_group(process)
+            (evidence / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--inside', type=Path, help=argparse.SUPPRESS)
+    parser.add_argument('--output', type=Path, default=ROOT / 'artifacts/window-borders')
+    args = parser.parse_args()
+    if args.inside:
+        inside(args.inside)
+        return 0
+    output = args.output.resolve()
+    output.mkdir(parents=True, exist_ok=True)
+    parent = Path(os.environ['XDG_RUNTIME_DIR']) / os.environ['WAYLAND_DISPLAY']
+    assert parent.is_socket()
+    with tempfile.TemporaryDirectory(prefix='pk-bdr-') as directory:
+        base = Path(directory)
+        env = isolated_environment(directory)
+        (base / 'r').mkdir(mode=0o700)
+        env.update(XDG_RUNTIME_DIR=str(base / 'r'), WAYLAND_DISPLAY='parent-wayland', PUTKIN_BORDERS_TEST='1',
+            QS_NO_RELOAD_POPUP='1', HOME=str(base))
+        command = [tool('bwrap'), '--unshare-all', '--die-with-parent', '--ro-bind', '/', '/',
+            '--dev', '/dev', '--proc', '/proc', '--tmpfs', '/run', '--tmpfs', '/tmp', '--bind', directory, directory,
+            '--ro-bind', str(parent), str(base / 'r/parent-wayland'),
+            '--dev-bind', '/dev/dri/renderD128', '/dev/dri/renderD128',
+            tool('dbus-run-session'), '--', sys.executable, str(Path(__file__).resolve()), '--inside', directory]
+        process = subprocess.Popen(command, env=env, start_new_session=True)
+        try:
+            result = process.wait(timeout=120)
+        finally:
+            stop_process_group(process)
+            if (base / 'evidence').exists():
+                shutil.copytree(base / 'evidence', output, dirs_exist_ok=True)
+    (output / 'cleanup.json').write_text(json.dumps({'private_directory_removed': not base.exists(),
+        'wrapper_reaped': process.poll() is not None}) + '\n')
+    return result
+
+
+if __name__ == '__main__':
+    sys.exit(main())

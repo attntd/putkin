@@ -1,0 +1,15 @@
+{
+  "result": "PASS",
+  "target": "/home/attntd/.config/hypr/hyprland.lua",
+  "backup": "/home/attntd/.local/state/putkin/fixes/window-border-20260927/hyprland.lua.before",
+  "after_sha256": "73dbd5f0bce96fd11e9a259dcc1b74a37d4d5c77d4a01e52fb11466f76b32e00",
+  "reload": "ok",
+  "config_errors": "",
+  "effective": {
+    "option": "debug:damage_tracking",
+    "int": 1,
+    "set": true
+  },
+  "shell_restarted": false,
+  "kernel_changed": false
+}

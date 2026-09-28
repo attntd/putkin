@@ -1,0 +1,12 @@
+  INFO: Launching config: "/home/attntd/projects/putkin/artifacts/resume-baseline-aj2rchrp/native-session-test.qml"
+  INFO: Shell ID: "b60500b2268f41071522dd1710428907" Path ID "b60500b2268f41071522dd1710428907"
+  INFO: Saving logs to "/tmp/pw-yrvzgc0n/r/quickshell/by-id/61kxn0mt/log.qslog"
+  INFO: Configuration Loaded
+quickshell.service.pam.subprocess: Waiting for parent confirmation...
+quickshell.service.pam.subprocess: Starting pam session for user "attntd" with config "putkin-password" in dir "/tmp/pw-yrvzgc0n/pam"
+quickshell.service.pam.subprocess: Relaying pam message: "Fixture password" echo: 0 error: 0 responseRequired: 1
+quickshell.service.pam.subprocess: Got response for request.quickshell.service.pam.subprocess: Failed to authenticate.
+quickshell.service.pam.subprocess: Waiting for parent confirmation...
+quickshell.service.pam.subprocess: Starting pam session for user "attntd" with config "putkin-password" in dir "/tmp/pw-yrvzgc0n/pam"
+quickshell.service.pam.subprocess: Relaying pam message: "Fixture password" echo: 0 error: 0 responseRequired: 1
+quickshell.service.pam.subprocess: Got response for request.quickshell.service.pam.subprocess: Authenticated successfully.

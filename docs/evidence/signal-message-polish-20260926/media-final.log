@@ -1,0 +1,40 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::SignalMessageMedia::initTestCase()
+QINFO  : qmltestrunner::SignalMessageMedia::test_audio_inline_play_pause_seek_and_stop_on_lock() qt.multimedia.ffmpeg: Using Qt multimedia with FFmpeg version n9.0.2 GPL version 3 or later
+Input #0, wav, from '/home/attntd/projects/putkin/tests/fixtures/signal/media/audio-long.wav':
+  Duration: 00:00:08.00, bitrate: 128 kb/s
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 8000 Hz, 1 channels, s16, 128 kb/s
+PASS   : qmltestrunner::SignalMessageMedia::test_audio_inline_play_pause_seek_and_stop_on_lock()
+PASS   : qmltestrunner::SignalMessageMedia::test_caption_keeps_literal_attachment_word_below_photo()
+PASS   : qmltestrunner::SignalMessageMedia::test_file_card_name_size_and_unavailable_state()
+Input #0, wav, from '/home/attntd/projects/putkin/tests/fixtures/signal/media/audio-long.wav':
+  Duration: 00:00:08.00, bitrate: 128 kb/s
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 8000 Hz, 1 channels, s16, 128 kb/s
+Input #0, wav, from '/home/attntd/projects/putkin/tests/fixtures/signal/media/audio-long.wav':
+  Duration: 00:00:08.00, bitrate: 128 kb/s
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 8000 Hz, 1 channels, s16, 128 kb/s
+PASS   : qmltestrunner::SignalMessageMedia::test_mixed_media_and_exclusive_audio_playback()
+PASS   : qmltestrunner::SignalMessageMedia::test_pending_photo_keeps_state_visible_and_never_overlaps()
+PASS   : qmltestrunner::SignalMessageMedia::test_photo_is_edge_to_edge_without_placeholder(wide-incoming)
+PASS   : qmltestrunner::SignalMessageMedia::test_photo_is_edge_to_edge_without_placeholder(narrow-outgoing)
+PASS   : qmltestrunner::SignalMessageMedia::test_photo_mosaic_keeps_all_files_clickable(2)
+PASS   : qmltestrunner::SignalMessageMedia::test_photo_mosaic_keeps_all_files_clickable(3)
+PASS   : qmltestrunner::SignalMessageMedia::test_photo_mosaic_keeps_all_files_clickable(4)
+PASS   : qmltestrunner::SignalMessageMedia::test_photo_mosaic_keeps_all_files_clickable(5)
+PASS   : qmltestrunner::SignalMessageMedia::test_photo_mosaic_keeps_all_files_clickable(7)
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/home/attntd/projects/putkin/tests/fixtures/signal/media/video.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf63.1.101
+  Duration: 00:00:00.20, start: 0.000000, bitrate: 68 kb/s
+  Stream #0:0[0x1](und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(progressive), 96x64 [SAR 1:1 DAR 3:2], 31 kb/s, 25 fps, 25 tbr, 12800 tbn (default)
+    Metadata:
+      handler_name    : VideoHandler
+      encoder         : Lavc63.1.101 libx264
+PASS   : qmltestrunner::SignalMessageMedia::test_video_thumbnail_has_play_and_opens_player()
+PASS   : qmltestrunner::SignalMessageMedia::cleanupTestCase()
+Totals: 15 passed, 0 failed, 0 skipped, 0 blacklisted, 11811ms
+********* Finished testing of qmltestrunner *********

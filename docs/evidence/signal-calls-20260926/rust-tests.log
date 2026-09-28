@@ -1,0 +1,57 @@
+   Compiling signal-call-tunnel v0.1.0 (/home/attntd/projects/putkin/artifacts/signal-calls/build-cache/calls-cbc481d5f5c31141/source/signal-call-tunnel)
+warning: constant `AUDIO_HAL_PATH` is never used
+  --> /home/attntd/projects/putkin/artifacts/signal-calls/build-cache/calls-cbc481d5f5c31141/source/third-party/ringrtc/src/rust/src/virtual_audio.rs:17:7
+   |
+17 | const AUDIO_HAL_PATH: &str = "/Library/Audio/Plug-Ins/HAL/";
+   |       ^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `setup` is never used
+  --> /home/attntd/projects/putkin/artifacts/signal-calls/build-cache/calls-cbc481d5f5c31141/source/third-party/ringrtc/src/rust/src/virtual_audio.rs:46:4
+   |
+46 | fn setup(input_source: &str, output_sink: &str) -> anyhow::Result<()> {
+   |    ^^^^^
+
+warning: function `teardown` is never used
+  --> /home/attntd/projects/putkin/artifacts/signal-calls/build-cache/calls-cbc481d5f5c31141/source/third-party/ringrtc/src/rust/src/virtual_audio.rs:80:4
+   |
+80 | fn teardown(input_source: &str, output_sink: &str) -> anyhow::Result<()> {
+   |    ^^^^^^^^
+
+warning: `ringrtc` (lib) generated 3 warnings
+    Finished `release` profile [optimized] target(s) in 2.73s
+     Running unittests src/main.rs (artifacts/signal-calls/build-cache/calls-cbc481d5f5c31141/source/signal-call-tunnel/target/release/deps/signal_call_tunnel-94db99e30ecaab32)
+
+running 28 tests
+test config::tests::deserialize_missing_field_fails ... ok
+test config::tests::deserialize_wrong_type_fails ... ok
+test config::tests::deserialize_valid_config ... ok
+test config::tests::deserialize_extra_fields_ok ... ok
+test config::tests::deserialize_with_device_names ... ok
+test control::tests::parse_accept ... ok
+test control::tests::parse_create_outgoing_call ... ok
+test control::tests::parse_hangup ... ok
+test control::tests::parse_invalid_json_fails ... ok
+test control::tests::parse_missing_type_fails ... ok
+test control::tests::parse_proceed_no_ice_servers ... ok
+test control::tests::parse_proceed_with_ice_servers ... ok
+test control::tests::parse_received_answer ... ok
+test control::tests::parse_received_ice ... ok
+test control::tests::parse_received_ice_empty ... ok
+test control::tests::parse_received_offer ... ok
+test control::tests::parse_unknown_type_fails ... ok
+test platform::tests::round_trip_offer ... ok
+test platform::tests::round_trip_ice ... ok
+test platform::tests::send_answer_json ... ok
+test platform::tests::send_hangup_json ... ok
+test platform::tests::send_busy_json ... ok
+test platform::tests::send_ice_empty_candidates_json ... ok
+test platform::tests::send_ice_json ... ok
+test platform::tests::send_offer_json ... ok
+test platform::tests::state_change_with_reason_json ... ok
+test platform::tests::send_offer_video_json ... ok
+test platform::tests::state_change_without_reason_json ... ok
+
+test result: ok. 28 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

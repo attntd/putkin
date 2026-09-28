@@ -1,0 +1,16 @@
+.Signal: pobieranie archive
+Signal: pobieranie archive
+...Signal: pobieranie archive
+........................................................................................................Executing <Task finished name='Task-94' coro=<ForwardTests.test_media_forward_has_independent_files_and_expiration_does_not_remove_it() done, defined at /home/attntd/projects/putkin/tests/test_signal_message_actions.py:153> result=None created at /usr/lib/python3.14/asyncio/runners.py:110> took 1.142 seconds
+................................../home/attntd/projects/putkin/services/signal_store.py:151: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f5a097622f0>
+  self.db.execute("UPDATE messages SET status='unknown' WHERE status='sending'")
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/home/attntd/projects/putkin/services/signal_store.py:151: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f5a09390310>
+  self.db.execute("UPDATE messages SET status='unknown' WHERE status='sending'")
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+.......................Executing <Task finished name='Task-99' coro=<OutputPressureTests.test_stalled_reader_has_four_megabyte_bound_and_requests_shutdown() done, defined at /home/attntd/projects/putkin/tests/test_signal_reliability.py:109> result=None created at /usr/lib/python3.14/asyncio/runners.py:110> took 0.240 seconds
+......................
+----------------------------------------------------------------------
+Ran 187 tests in 211.586s
+
+OK

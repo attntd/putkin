@@ -1,0 +1,14 @@
+{
+  "before": {
+    "option": "debug:damage_tracking",
+    "int": 2,
+    "set": false
+  },
+  "after": {
+    "option": "debug:damage_tracking",
+    "int": 1,
+    "set": true
+  },
+  "restore": "hyprctl eval 'hl.config({debug={damage_tracking=2}})'",
+  "persistent": false
+}

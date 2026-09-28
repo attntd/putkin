@@ -1,0 +1,123 @@
+{
+  "scope": "Read-only timestamp metadata; no text, identities or conversation identifiers",
+  "stats": {
+    "message_count": 463,
+    "sent_sort_mismatches": 0,
+    "minimum_server_offset_ms": -14646,
+    "maximum_server_offset_ms": 20732
+  },
+  "late_received_after_local_with_earlier_sort": [
+    {
+      "direction": "incoming",
+      "origin": "remote",
+      "sort_delta_ms": -12464,
+      "server_minus_sent_ms": -275,
+      "server_delta_ms": null,
+      "same_display_minute": 1
+    },
+    {
+      "direction": "incoming",
+      "origin": "remote",
+      "sort_delta_ms": -1423,
+      "server_minus_sent_ms": -190,
+      "server_delta_ms": null,
+      "same_display_minute": 1
+    },
+    {
+      "direction": "incoming",
+      "origin": "remote",
+      "sort_delta_ms": -3518,
+      "server_minus_sent_ms": 84,
+      "server_delta_ms": null,
+      "same_display_minute": 1
+    },
+    {
+      "direction": "incoming",
+      "origin": "remote",
+      "sort_delta_ms": -13279,
+      "server_minus_sent_ms": 148,
+      "server_delta_ms": null,
+      "same_display_minute": 0
+    },
+    {
+      "direction": "incoming",
+      "origin": "remote",
+      "sort_delta_ms": -458,
+      "server_minus_sent_ms": 181,
+      "server_delta_ms": null,
+      "same_display_minute": 1
+    },
+    {
+      "direction": "incoming",
+      "origin": "remote",
+      "sort_delta_ms": -615,
+      "server_minus_sent_ms": 410,
+      "server_delta_ms": null,
+      "same_display_minute": 1
+    },
+    {
+      "direction": "incoming",
+      "origin": "remote",
+      "sort_delta_ms": -7494,
+      "server_minus_sent_ms": 112,
+      "server_delta_ms": null,
+      "same_display_minute": 1
+    },
+    {
+      "direction": "incoming",
+      "origin": "remote",
+      "sort_delta_ms": -1139,
+      "server_minus_sent_ms": -541,
+      "server_delta_ms": null,
+      "same_display_minute": 1
+    },
+    {
+      "direction": "incoming",
+      "origin": "remote",
+      "sort_delta_ms": -9116,
+      "server_minus_sent_ms": -572,
+      "server_delta_ms": null,
+      "same_display_minute": 1
+    },
+    {
+      "direction": "incoming",
+      "origin": "remote",
+      "sort_delta_ms": -6164,
+      "server_minus_sent_ms": -551,
+      "server_delta_ms": null,
+      "same_display_minute": 1
+    },
+    {
+      "direction": "incoming",
+      "origin": "remote",
+      "sort_delta_ms": -4770,
+      "server_minus_sent_ms": -535,
+      "server_delta_ms": null,
+      "same_display_minute": 1
+    },
+    {
+      "direction": "incoming",
+      "origin": "remote",
+      "sort_delta_ms": -3505,
+      "server_minus_sent_ms": 72,
+      "server_delta_ms": null,
+      "same_display_minute": 1
+    },
+    {
+      "direction": "incoming",
+      "origin": "remote",
+      "sort_delta_ms": -3074,
+      "server_minus_sent_ms": 71,
+      "server_delta_ms": null,
+      "same_display_minute": 1
+    },
+    {
+      "direction": "incoming",
+      "origin": "remote",
+      "sort_delta_ms": -2515,
+      "server_minus_sent_ms": 89,
+      "server_delta_ms": null,
+      "same_display_minute": 1
+    }
+  ]
+}

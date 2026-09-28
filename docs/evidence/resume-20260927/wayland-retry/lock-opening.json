@@ -1,0 +1,208 @@
+{
+  "ready": true,
+  "error": "",
+  "locked": true,
+  "secure": true,
+  "hold": false,
+  "surfaces": 2,
+  "lua": true,
+  "idleError": "",
+  "screens": [
+    "WAYLAND-1",
+    "HEADLESS-1"
+  ],
+  "fingerprint": "idle",
+  "fingerprintActive": false,
+  "unlocking": false,
+  "fingerprintRecoveryAttempts": 0,
+  "fingerprintBlocked": false,
+  "fingerprintRetry": false,
+  "clock": 1790501220000,
+  "lockDates": [
+    1790501220000,
+    1790501220000
+  ],
+  "opacities": [
+    1,
+    1
+  ],
+  "fadeFrames": [
+    {
+      "closing": false,
+      "secure": false,
+      "opacities": []
+    },
+    {
+      "closing": false,
+      "secure": false,
+      "opacities": []
+    },
+    {
+      "closing": false,
+      "secure": false,
+      "opacities": [
+        0,
+        0
+      ]
+    },
+    {
+      "closing": false,
+      "secure": true,
+      "opacities": [
+        0,
+        0
+      ]
+    },
+    {
+      "closing": false,
+      "secure": true,
+      "opacities": [
+        0,
+        0
+      ]
+    },
+    {
+      "closing": false,
+      "secure": true,
+      "opacities": [
+        0,
+        0
+      ]
+    },
+    {
+      "closing": false,
+      "secure": true,
+      "opacities": [
+        0,
+        0
+      ]
+    },
+    {
+      "closing": false,
+      "secure": true,
+      "opacities": [
+        0.0020480000000000003,
+        0.0020480000000000003
+      ]
+    },
+    {
+      "closing": false,
+      "secure": true,
+      "opacities": [
+        0.0663255,
+        0.0663255
+      ]
+    },
+    {
+      "closing": false,
+      "secure": true,
+      "opacities": [
+        0.15721600000000005,
+        0.15721600000000005
+      ]
+    },
+    {
+      "closing": false,
+      "secure": true,
+      "opacities": [
+        0.29635199999999995,
+        0.29635199999999995
+      ]
+    },
+    {
+      "closing": false,
+      "secure": true,
+      "opacities": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "closing": false,
+      "secure": true,
+      "opacities": [
+        0.7036479999999999,
+        0.7036479999999999
+      ]
+    },
+    {
+      "closing": false,
+      "secure": true,
+      "opacities": [
+        0.842784,
+        0.842784
+      ]
+    },
+    {
+      "closing": false,
+      "secure": true,
+      "opacities": [
+        0.929696,
+        0.929696
+      ]
+    },
+    {
+      "closing": false,
+      "secure": true,
+      "opacities": [
+        0.976672,
+        0.976672
+      ]
+    },
+    {
+      "closing": false,
+      "secure": true,
+      "opacities": [
+        0.996,
+        0.996
+      ]
+    },
+    {
+      "closing": false,
+      "secure": true,
+      "opacities": [
+        0.999968,
+        0.999968
+      ]
+    },
+    {
+      "closing": false,
+      "secure": true,
+      "opacities": [
+        1,
+        1
+      ]
+    },
+    {
+      "closing": false,
+      "secure": true,
+      "opacities": [
+        1,
+        1
+      ]
+    },
+    {
+      "closing": false,
+      "secure": true,
+      "opacities": [
+        1,
+        1
+      ]
+    }
+  ],
+  "capturing": false,
+  "captures": 2,
+  "animated": [
+    true,
+    true
+  ],
+  "sleepAvailable": true,
+  "passwordFailed": false,
+  "passwordBusy": false,
+  "dimmed": false,
+  "percent": 60,
+  "displaysOff": false,
+  "idleInhibited": false,
+  "sleepInhibited": false,
+  "watching": false
+}

@@ -1,0 +1,18 @@
+test_real_bridge_dispatches_pin_unpin_and_forward_once (test_signal_message_actions.ActionsBridgeTests.test_real_bridge_dispatches_pin_unpin_and_forward_once) ... ok
+test_failed_batch_is_atomic_and_rejects_stale_deleted_and_wrong_account (test_signal_message_actions.ForwardTests.test_failed_batch_is_atomic_and_rejects_stale_deleted_and_wrong_account) ... ok
+test_forward_does_not_replace_draft_and_same_request_never_duplicates (test_signal_message_actions.ForwardTests.test_forward_does_not_replace_draft_and_same_request_never_duplicates) ... ok
+test_media_forward_has_independent_files_and_expiration_does_not_remove_it (test_signal_message_actions.ForwardTests.test_media_forward_has_independent_files_and_expiration_does_not_remove_it) ... Executing <Task finished name='Task-12' coro=<ForwardTests.test_media_forward_has_independent_files_and_expiration_does_not_remove_it() done, defined at /home/attntd/projects/putkin/tests/test_signal_message_actions.py:185> result=None created at /usr/lib/python3.14/asyncio/runners.py:110> took 1.107 seconds
+ok
+test_deleted_targets_and_group_permissions_do_not_allow_pinning (test_signal_message_actions.PinsTests.test_deleted_targets_and_group_permissions_do_not_allow_pinning) ... ok
+test_pin_on_sync_copy_survives_own_send_confirmation (test_signal_message_actions.PinsTests.test_pin_on_sync_copy_survives_own_send_confirmation) ... ok
+test_pin_rpc_duration_unpin_and_restart (test_signal_message_actions.PinsTests.test_pin_rpc_duration_unpin_and_restart) ... ok
+test_remote_group_pin_requires_edit_permission_and_failed_send_is_not_optimistic (test_signal_message_actions.PinsTests.test_remote_group_pin_requires_edit_permission_and_failed_send_is_not_optimistic) ... ok
+test_remote_pins_limit_duplicates_order_expiry_and_no_history (test_signal_message_actions.PinsTests.test_remote_pins_limit_duplicates_order_expiry_and_no_history) ... ok
+test_equal_timestamps_page_by_reception_without_gaps_or_duplicates (test_signal_ordering.OrderingTests.test_equal_timestamps_page_by_reception_without_gaps_or_duplicates) ... ok
+test_later_received_earlier_sender_clock_stays_after_reply_even_after_ack (test_signal_ordering.OrderingTests.test_later_received_earlier_sender_clock_stays_after_reply_even_after_ack) ... ok
+test_real_v7_migration_is_atomic_and_preserves_history_drafts_and_pending_operations (test_signal_ordering.OrderingTests.test_real_v7_migration_is_atomic_and_preserves_history_drafts_and_pending_operations) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 2.427s
+
+OK

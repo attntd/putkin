@@ -1,0 +1,12 @@
+bus:
+
+shell:
+  INFO: Launching config: "/home/attntd/projects/putkin/signal-pairing-test.qml"
+  INFO: Shell ID: "802bde96c6fc424096a6d1ad916ea81a" Path ID "802bde96c6fc424096a6d1ad916ea81a"
+  INFO: Saving logs to "/tmp/pk-signal-pairing-yg_524ym/runtime/quickshell/by-id/cnf1hyuylt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  INFO: Reloading configuration...
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks

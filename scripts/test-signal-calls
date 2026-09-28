@@ -1,0 +1,157 @@
+#!/usr/bin/env python3
+"""Call behavior/QML and real RingRTC lifecycle on hardware-free private audio."""
+import argparse
+import asyncio
+import json
+import os
+from pathlib import Path
+import select
+import signal
+import subprocess
+import sys
+import tempfile
+import time
+
+from _common import ROOT, isolated_environment, tool, qml_errors, stop_process_group
+sys.path.insert(0, str(ROOT / "services"))
+from signal_call_runtime import verify
+from signal_call_audio import CallAudio
+
+
+def eventually(function, predicate, seconds=10):
+    end = time.monotonic() + seconds
+    while time.monotonic() < end:
+        value = function()
+        if predicate(value):
+            return value
+        time.sleep(.05)
+    raise AssertionError("Timed out waiting for isolated audio")
+
+
+def native(bundle, output):
+    binary = verify(bundle)
+    report = {"passed": False, "checks": [], "hardware": False, "signalAccount": False}
+    with tempfile.TemporaryDirectory(prefix="pk-call-audio-") as temporary:
+        base = Path(temporary)
+        env = isolated_environment(temporary)
+        env.pop("PIPEWIRE_REMOTE", None)
+        env["PIPEWIRE_RUNTIME_DIR"] = env["XDG_RUNTIME_DIR"]
+        env["PULSE_SERVER"] = "unix:" + env["XDG_RUNTIME_DIR"] + "/pulse/native"
+        env["PULSE_RUNTIME_PATH"] = env["XDG_RUNTIME_DIR"] + "/pulse"
+        processes = []
+        log = (output / "native-audio.log").open("w+")
+        def spawn(command, **kwargs):
+            child = subprocess.Popen(command, env=env, stderr=log, start_new_session=True, **kwargs)
+            processes.append(child)
+            return child
+        def pactl(*args):
+            result = subprocess.run(["pactl", *args], env=env, capture_output=True, text=True, timeout=3)
+            return result.stdout if result.returncode == 0 else ""
+        def modules():
+            return [v for v in json.loads(pactl("-f", "json", "list", "modules") or "[]") if "signal_" in v.get("argument", "")]
+        try:
+            config = base / "pipewire-calls.conf"
+            config.write_text((ROOT / "tests/pipewire.conf").read_text().replace("{ name = libpipewire-module-protocol-native }", "{ name = libpipewire-module-protocol-native }\n    { name = libpipewire-module-client-node }\n    { name = libpipewire-module-link-factory }"))
+            spawn([tool("pipewire"), "-c", str(config)], stdout=log)
+            spawn([tool("pipewire-pulse"), "-c", str(ROOT / "tests/pipewire-calls-pulse.conf")], stdout=log)
+            eventually(lambda: pactl("info"), lambda v: "Server Name:" in v)
+            pactl("set-default-source", "putkin-test-microphone")
+            pactl("set-default-sink", "putkin-test-speakers")
+            for kind, name in (("source", "putkin-test-microphone"), ("sink", "putkin-test-speakers")):
+                subprocess.run(["pw-metadata", "-n", "default", "0", "default.audio." + kind,
+                    json.dumps({"name": name}), "Spa:String:JSON"], env=env, check=True, stdout=log, stderr=log)
+            sandbox = [tool("bwrap"), "--unshare-user", "--unshare-net", "--unshare-ipc", "--unshare-uts",
+                "--ro-bind", "/usr", "/usr", "--symlink", "usr/bin", "/bin", "--symlink", "usr/lib", "/lib",
+                "--symlink", "usr/lib", "/lib64", "--proc", "/proc", "--dev", "/dev", "--tmpfs", "/tmp",
+                "--ro-bind", str(binary), "/tool/signal-call-tunnel", "--bind", env["XDG_RUNTIME_DIR"], "/runtime",
+                "--clearenv", "--setenv", "PATH", "/usr/bin", "--setenv", "LANG", "C.UTF-8",
+                "--setenv", "XDG_RUNTIME_DIR", "/runtime", "--setenv", "PULSE_SERVER", "unix:/runtime/pulse/native",
+                "--", "/tool/signal-call-tunnel"]
+            for mode in ("eof", "term"):
+                child = spawn(sandbox, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+                child.stdin.write(b'{"call_id":123456789123456789,"is_outgoing":true,"local_device_id":2}\n')
+                child.stdin.flush()
+                assert select.select([child.stdout], [], [], 20)[0], "Tunnel did not report ready"
+                ready = json.loads(child.stdout.readline())
+                assert ready["type"] == "ready", ready
+                eventually(modules, lambda v: len(v) == 3)
+                if mode == "eof":
+                    # Exercise the production PCM pipes, using only null test devices.
+                    async def routing():
+                        original = dict(os.environ)
+                        os.environ.clear(); os.environ.update(env)
+                        audio = CallAudio()
+                        try:
+                            await audio.start(ready["inputDeviceName"], ready["outputDeviceName"])
+                            assert len(audio.pairs["microphone"]) == 2 and len(audio.pairs["receive"]) == 2
+                            await asyncio.sleep(.3)
+                            assert all(p.returncode is None for pair in audio.pairs.values() for p in pair)
+                            receive = list(audio.pairs["receive"])
+                            microphone = list(audio.pairs["microphone"])
+                            await audio.mute(True)
+                            assert all(p.returncode is not None for p in microphone)
+                            assert all(p.returncode is None for p in receive)
+                            await audio.mute(False)
+                            children = [p for pair in audio.pairs.values() for p in pair]
+                            await audio.close()
+                            assert all(p.returncode is not None for p in children)
+                        finally:
+                            await audio.close()
+                            os.environ.clear(); os.environ.update(original)
+                    asyncio.run(routing())
+                    report["checks"].append("real PCM processes: mute stops only microphone; hangup reaps both directions")
+                    child.stdin.close()
+                else:
+                    # bwrap may supervise a child even without a PID namespace.
+                    owned = [child.pid]
+                    tunnel_pid = None
+                    while owned:
+                        pid = owned.pop()
+                        try:
+                            if os.readlink(f"/proc/{pid}/exe").endswith("/signal-call-tunnel"):
+                                tunnel_pid = pid
+                                break
+                            owned.extend(int(v) for v in Path(f"/proc/{pid}/task/{pid}/children").read_text().split())
+                        except FileNotFoundError:
+                            continue
+                    assert tunnel_pid is not None, "Owned tunnel disappeared"
+                    os.kill(tunnel_pid, signal.SIGTERM)
+                child.wait(timeout=15)
+                assert child.returncode == 0, (mode, child.returncode)
+                eventually(modules, lambda v: not v)
+                report["checks"].append("RingRTC creates and removes only its three virtual modules on " + mode)
+            report["passed"] = True
+        finally:
+            for process in reversed(processes):
+                stop_process_group(process)
+            log.close()
+            (output / "native-audio.json").write_text(json.dumps(report, indent=2) + "\n")
+    return report
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, default=ROOT / "artifacts/signal-calls")
+    parser.add_argument("--native", action="store_true")
+    parser.add_argument("--bundle", type=Path, default=ROOT / "artifacts/signal-call-runtime")
+    args = parser.parse_args()
+    args.output.mkdir(parents=True, exist_ok=True)
+    result = subprocess.run([sys.executable, "-m", "unittest", "discover", "-s", str(ROOT / "tests"), "-p", "test_signal_calls.py", "-v"], capture_output=True, text=True)
+    (args.output / "python.log").write_text(result.stdout + result.stderr)
+    if result.returncode:
+        print(result.stdout + result.stderr); return 1
+    with tempfile.TemporaryDirectory(prefix="pk-call-qml-") as temporary:
+        result = subprocess.run([tool("dbus-run-session"), "--", tool("qmltestrunner"), "-input", str(ROOT / "tests/qml/tst_signal_calls.qml"), "-import", str(ROOT)],
+            env=isolated_environment(temporary), capture_output=True, text=True, timeout=90)
+        text = result.stdout + result.stderr
+        (args.output / "qml.log").write_text(text)
+        if result.returncode or qml_errors(text):
+            print(text); return 1
+    if args.native:
+        print(json.dumps(native(args.bundle, args.output), indent=2))
+    print("PASS: Signal calls")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

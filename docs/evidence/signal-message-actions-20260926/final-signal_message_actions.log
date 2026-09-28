@@ -1,0 +1,15 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::SignalMessageActions::initTestCase()
+PASS   : qmltestrunner::SignalMessageActions::test_copy_plain_text_and_info_popup()
+PASS   : qmltestrunner::SignalMessageActions::test_delete_scopes_and_invalidation_on_route_lock_redaction()
+PASS   : qmltestrunner::SignalMessageActions::test_forward_confirmation_selection_and_target_draft_unchanged()
+PASS   : qmltestrunner::SignalMessageActions::test_icons_outside_bubble_and_popup_does_not_resize_history(wide-outgoing)
+PASS   : qmltestrunner::SignalMessageActions::test_icons_outside_bubble_and_popup_does_not_resize_history(narrow-incoming)
+PASS   : qmltestrunner::SignalMessageActions::test_keyboard_menu_navigation_escape_and_pointer_focus()
+PASS   : qmltestrunner::SignalMessageActions::test_order_uses_reception_and_hhmm_survives_ack_and_incremental_merge()
+PASS   : qmltestrunner::SignalMessageActions::test_pin_duration_display_jump_and_unpin()
+PASS   : qmltestrunner::SignalMessageActions::test_reaction_row_full_picker_replace_remove_and_reply()
+PASS   : qmltestrunner::SignalMessageActions::cleanupTestCase()
+Totals: 11 passed, 0 failed, 0 skipped, 0 blacklisted, 15463ms
+********* Finished testing of qmltestrunner *********

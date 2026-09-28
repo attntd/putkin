@@ -1,0 +1,15 @@
+{
+  "build": "20260926-095602-1adc1e9c40ed",
+  "signal": {
+    "state": "failed",
+    "accountState": "linked",
+    "schemaVersion": 7,
+    "cliVersion": "0.14.8",
+    "errorCode": "invalid_config",
+    "linkError": "",
+    "eventErrorLocation": "",
+    "qrVisible": false,
+    "processId": 64807
+  },
+  "caffeinate": "background"
+}

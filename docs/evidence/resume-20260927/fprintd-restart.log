@@ -1,0 +1,9 @@
+Sep 27 11:51:52 lenovo-x1 systemd[1]: Stopping Fingerprint Authentication Daemon...
+Sep 27 11:51:52 lenovo-x1 fprintd[84138]: libusb: warning [libusb_exit] device 3.2 still referenced
+Sep 27 11:51:52 lenovo-x1 fprintd[84138]: libusb: warning [libusb_exit] device 3.1 still referenced
+Sep 27 11:51:52 lenovo-x1 fprintd[84138]: libusb: warning [libusb_exit] application left some devices open
+Sep 27 11:51:52 lenovo-x1 systemd[1]: fprintd.service: Deactivated successfully.
+Sep 27 11:51:52 lenovo-x1 systemd[1]: Stopped Fingerprint Authentication Daemon.
+Sep 27 11:51:52 lenovo-x1 systemd[1]: fprintd.service: Consumed 1.574s CPU time over 18h 27min 36.878s wall clock time, 5.7M memory peak.
+Sep 27 11:51:52 lenovo-x1 systemd[1]: Starting Fingerprint Authentication Daemon...
+Sep 27 11:51:52 lenovo-x1 systemd[1]: Started Fingerprint Authentication Daemon.

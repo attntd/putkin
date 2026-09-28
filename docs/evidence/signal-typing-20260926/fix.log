@@ -1,0 +1,19 @@
+test_installed_default_cli_name_resolves_to_bundle_without_path_lookup (test_signal_release.ReleaseTests.test_installed_default_cli_name_resolves_to_bundle_without_path_lookup) ... ok
+test_typing_preference_preserves_receiver_call_and_stops_ephemeral_typing (test_signal_calls.CallsTests.test_typing_preference_preserves_receiver_call_and_stops_ephemeral_typing) ... FAIL
+
+======================================================================
+FAIL: test_typing_preference_preserves_receiver_call_and_stops_ephemeral_typing (test_signal_calls.CallsTests.test_typing_preference_preserves_receiver_call_and_stops_ephemeral_typing)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/attntd/projects/putkin/tests/test_signal_calls.py", line 77, in test_typing_preference_preserves_receiver_call_and_stops_ephemeral_typing
+    self.assertEqual(changed["data"]["serviceState"], "ready")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'starting' != 'ready'
+- starting
++ ready
+
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.713s
+
+FAILED (failures=1)

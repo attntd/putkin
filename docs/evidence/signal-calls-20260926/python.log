@@ -1,0 +1,15 @@
+test_audio_failure_ends_call_without_disabling_messages (test_signal_calls.CallsTests.test_audio_failure_ends_call_without_disabling_messages) ... ok
+test_consecutive_incoming_calls_keep_independent_audio (test_signal_calls.CallsTests.test_consecutive_incoming_calls_keep_independent_audio) ... ok
+test_groups_notes_wrong_account_and_stale_ids_do_not_reach_cli (test_signal_calls.CallsTests.test_groups_notes_wrong_account_and_stale_ids_do_not_reach_cli) ... ok
+test_incoming_before_subscription_reply_does_not_open_microphone_until_accepted (test_signal_calls.CallsTests.test_incoming_before_subscription_reply_does_not_open_microphone_until_accepted) ... ok
+test_late_hangup_response_does_not_end_next_incoming_call (test_signal_calls.CallsTests.test_late_hangup_response_does_not_end_next_incoming_call) ... ok
+test_mute_failure_stops_audio_and_call (test_signal_calls.CallsTests.test_mute_failure_stops_audio_and_call) ... ok
+test_outgoing_large_signed_id_mute_hangup_and_one_subscription (test_signal_calls.CallsTests.test_outgoing_large_signed_id_mute_hangup_and_one_subscription) ... ok
+test_reject_never_opens_audio_and_late_connected_cannot_revive_call (test_signal_calls.CallsTests.test_reject_never_opens_audio_and_late_connected_cannot_revive_call) ... ok
+test_remote_end_and_cli_restart_never_replay_outgoing_call (test_signal_calls.CallsTests.test_remote_end_and_cli_restart_never_replay_outgoing_call) ... ok
+test_rpc_error_does_not_retry_start (test_signal_calls.CallsTests.test_rpc_error_does_not_retry_start) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 8.174s
+
+OK

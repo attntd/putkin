@@ -1,0 +1,27 @@
+HEAD is now at 02c84e9 Fail audio test when BlackHole loopback is broken
+HEAD is now at a86f8a6 Bump version to v2.65.1
+   Compiling ringrtc v2.65.1 (/home/attntd/projects/putkin/artifacts/signal-calls/build-cache/calls-cbc481d5f5c31141/source/third-party/ringrtc/src/rust)
+   Compiling signal-call-tunnel v0.1.0 (/home/attntd/projects/putkin/artifacts/signal-calls/build-cache/calls-cbc481d5f5c31141/source/signal-call-tunnel)
+warning: constant `AUDIO_HAL_PATH` is never used
+  --> /home/attntd/projects/putkin/artifacts/signal-calls/build-cache/calls-cbc481d5f5c31141/source/third-party/ringrtc/src/rust/src/virtual_audio.rs:17:7
+   |
+17 | const AUDIO_HAL_PATH: &str = "/Library/Audio/Plug-Ins/HAL/";
+   |       ^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `setup` is never used
+  --> /home/attntd/projects/putkin/artifacts/signal-calls/build-cache/calls-cbc481d5f5c31141/source/third-party/ringrtc/src/rust/src/virtual_audio.rs:46:4
+   |
+46 | fn setup(input_source: &str, output_sink: &str) -> anyhow::Result<()> {
+   |    ^^^^^
+
+warning: function `teardown` is never used
+  --> /home/attntd/projects/putkin/artifacts/signal-calls/build-cache/calls-cbc481d5f5c31141/source/third-party/ringrtc/src/rust/src/virtual_audio.rs:80:4
+   |
+80 | fn teardown(input_source: &str, output_sink: &str) -> anyhow::Result<()> {
+   |    ^^^^^^^^
+
+warning: `ringrtc` (lib) generated 3 warnings
+    Finished `release` profile [optimized] target(s) in 37.21s
+{"bundle": "/home/attntd/projects/putkin/artifacts/signal-call-runtime", "binary": "/home/attntd/projects/putkin/artifacts/signal-call-runtime/bin/signal-call-tunnel"}

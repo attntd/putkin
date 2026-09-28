@@ -1,0 +1,11 @@
+{
+  "format": 1,
+  "repository": "https://github.com/visigoth/signal-call-tunnel.git",
+  "commit": "02c84e9bfbb45e6872956ac2168adcc0b1e7a8ba",
+  "ringrtcRepository": "https://github.com/signalapp/ringrtc.git",
+  "ringrtcCommit": "a86f8a6832cec291ef4f77e4ee9b941e5b91a01f",
+  "patches": {
+    "compatibility.patch": "6647ee34b5adba050890a3cabe4ca01e17344bab7fed996b00a44a1bdfee28ed",
+    "audio-lifecycle.patch": "61cc82d1fe3fc243ff35d630b490b15e55cf5aa433e77f73c24c63587ec36681"
+  }
+}

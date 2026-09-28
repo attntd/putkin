@@ -1,0 +1,31 @@
+test_installed_default_cli_name_resolves_to_bundle_without_path_lookup (test_signal_release.ReleaseTests.test_installed_default_cli_name_resolves_to_bundle_without_path_lookup) ... 
+  test_installed_default_cli_name_resolves_to_bundle_without_path_lookup (test_signal_release.ReleaseTests.test_installed_default_cli_name_resolves_to_bundle_without_path_lookup) (executable='signal-cli') ... ERROR
+test_typing_preference_preserves_receiver_call_and_stops_ephemeral_typing (test_signal_calls.CallsTests.test_typing_preference_preserves_receiver_call_and_stops_ephemeral_typing) ... FAIL
+
+======================================================================
+ERROR: test_installed_default_cli_name_resolves_to_bundle_without_path_lookup (test_signal_release.ReleaseTests.test_installed_default_cli_name_resolves_to_bundle_without_path_lookup) (executable='signal-cli')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/attntd/projects/putkin/tests/test_signal_release.py", line 174, in test_installed_default_cli_name_resolves_to_bundle_without_path_lookup
+    command, env = signal_release.command(config)
+                   ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/home/attntd/projects/putkin/services/signal_release.py", line 162, in command
+    raise Failure("invalid_config")
+signal_transport.Failure: invalid_config
+
+======================================================================
+FAIL: test_typing_preference_preserves_receiver_call_and_stops_ephemeral_typing (test_signal_calls.CallsTests.test_typing_preference_preserves_receiver_call_and_stops_ephemeral_typing)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/attntd/projects/putkin/tests/test_signal_calls.py", line 77, in test_typing_preference_preserves_receiver_call_and_stops_ephemeral_typing
+    self.assertEqual(changed["data"]["serviceState"], "ready")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'starting' != 'ready'
+- starting
++ ready
+
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.878s
+
+FAILED (failures=1, errors=1)

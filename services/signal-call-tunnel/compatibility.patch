@@ -1,0 +1,141 @@
+diff --git a/signal-call-tunnel/Cargo.lock b/signal-call-tunnel/Cargo.lock
+index 15fa7e3..5c0361d 100644
+--- a/signal-call-tunnel/Cargo.lock
++++ b/signal-call-tunnel/Cargo.lock
+@@ -1852,6 +1852,7 @@ dependencies = [
+  "base64",
+  "env_logger",
+  "log",
++ "libc",
+  "ringrtc",
+  "serde",
+  "serde_json",
+diff --git a/signal-call-tunnel/Cargo.toml b/signal-call-tunnel/Cargo.toml
+index b45c96d..dabac7c 100644
+--- a/signal-call-tunnel/Cargo.toml
++++ b/signal-call-tunnel/Cargo.toml
+@@ -11,6 +11,7 @@ log = "0.4"
+ env_logger = "0.11"
+ base64 = "0.22"
+ anyhow = "1"
++libc = "0.2"
+ 
+ [patch.crates-io]
+ # Use Signal's fork of curve25519-dalek for zkgroup compatibility (matches ringrtc workspace).
+diff --git a/signal-call-tunnel/src/control.rs b/signal-call-tunnel/src/control.rs
+index 583ab4b..7110822 100644
+--- a/signal-call-tunnel/src/control.rs
++++ b/signal-call-tunnel/src/control.rs
+@@ -29,7 +29,7 @@ pub enum ControlMessage {
+         sender_identity_key: Vec<u8>,
+         receiver_identity_key: Vec<u8>,
+     },
+-    ReceivedIce { candidates: Vec<Vec<u8>> },
++    ReceivedIce { candidates: Vec<Vec<u8>>, sender_device_id: u32 },
+     Accept,
+     Hangup,
+ }
+@@ -115,7 +115,7 @@ pub fn parse_message(line: &str) -> Result<ControlMessage> {
+             } else {
+                 Vec::new()
+             };
+-            Ok(ControlMessage::ReceivedIce { candidates })
++            Ok(ControlMessage::ReceivedIce { candidates, sender_device_id: v["senderDeviceId"].as_u64().unwrap_or(1) as u32 })
+         }
+         "accept" => Ok(ControlMessage::Accept),
+         "hangup" => Ok(ControlMessage::Hangup),
+@@ -292,10 +292,11 @@ mod tests {
+     #[test]
+     fn parse_received_ice() {
+         // Two base64-encoded candidates
+-        let json = r#"{"type":"receivedIce","candidates":["AQID","BAUG"]}"#;
++        let json = r#"{"type":"receivedIce","candidates":["AQID","BAUG"],"senderDeviceId":7}"#;
+         let msg = parse_message(json).unwrap();
+         match msg {
+-            ControlMessage::ReceivedIce { candidates } => {
++            ControlMessage::ReceivedIce { candidates, sender_device_id } => {
++                assert_eq!(sender_device_id, 7);
+                 assert_eq!(candidates.len(), 2);
+                 assert_eq!(candidates[0], vec![1, 2, 3]);
+                 assert_eq!(candidates[1], vec![4, 5, 6]);
+@@ -308,7 +309,7 @@ mod tests {
+     fn parse_received_ice_empty() {
+         let msg = parse_message(r#"{"type":"receivedIce","candidates":[]}"#).unwrap();
+         match msg {
+-            ControlMessage::ReceivedIce { candidates } => {
++            ControlMessage::ReceivedIce { candidates, .. } => {
+                 assert!(candidates.is_empty());
+             }
+             _ => panic!("expected ReceivedIce, got {:?}", msg),
+diff --git a/signal-call-tunnel/src/main.rs b/signal-call-tunnel/src/main.rs
+index 7f59747..e6afcc4 100644
+--- a/signal-call-tunnel/src/main.rs
++++ b/signal-call-tunnel/src/main.rs
+@@ -6,6 +6,10 @@ use std::io::BufRead;
+ use std::io::BufReader;
+ use std::sync::mpsc;
+ use std::time::Duration;
++use std::sync::atomic::{AtomicBool, Ordering};
++
++static STOP: AtomicBool = AtomicBool::new(false);
++extern "C" fn stop_signal(_: libc::c_int) { STOP.store(true, Ordering::Relaxed); }
+ 
+ use anyhow::{Context, Result};
+ use log::{debug, error, info};
+@@ -48,6 +52,16 @@ impl http::Delegate for NullHttpClient {
+ }
+ 
+ fn main() -> Result<()> {
++    // Java destroys its child on hangup; unwind normally so virtual devices go away.
++    #[cfg(target_os = "linux")]
++    unsafe {
++        let parent = libc::getppid();
++        libc::signal(libc::SIGTERM, stop_signal as *const () as libc::sighandler_t);
++        libc::signal(libc::SIGINT, stop_signal as *const () as libc::sighandler_t);
++        if libc::prctl(libc::PR_SET_PDEATHSIG, libc::SIGTERM) != 0 || libc::getppid() != parent {
++            anyhow::bail!("call owner unavailable");
++        }
++    }
+     env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("info"))
+         .format_timestamp_millis()
+         .init();
+@@ -120,7 +134,12 @@ fn main() -> Result<()> {
+     let mut pcf = PeerConnectionFactory::new(&audio_config, false, "", None)?;
+ 
+     // Wait for cubeb to enumerate the virtual devices
++    let enumeration_started = std::time::Instant::now();
+     loop {
++        if STOP.load(Ordering::Relaxed) { return Ok(()); }
++        if enumeration_started.elapsed() > Duration::from_secs(10) {
++            anyhow::bail!("audio device enumeration interrupted");
++        }
+         std::thread::sleep(Duration::from_millis(100));
+         if pcf
+             .get_audio_playout_devices()
+@@ -194,7 +213,7 @@ fn main() -> Result<()> {
+     });
+ 
+     // Main event loop: process control messages
+-    loop {
++    while !STOP.load(Ordering::Relaxed) {
+         let msg = match control.msg_receiver.recv_timeout(Duration::from_millis(100)) {
+             Ok(msg) => msg,
+             Err(mpsc::RecvTimeoutError::Timeout) => continue,
+@@ -363,7 +382,7 @@ fn main() -> Result<()> {
+                     error!("Failed to process received answer: {}", e);
+                 }
+             }
+-            ControlMessage::ReceivedIce { candidates } => {
++            ControlMessage::ReceivedIce { candidates, sender_device_id } => {
+                 debug!("Received {} ICE candidates", candidates.len());
+ 
+                 let ice_candidates: Vec<signaling::IceCandidate> = candidates
+@@ -375,7 +394,7 @@ fn main() -> Result<()> {
+                     ice: signaling::Ice {
+                         candidates: ice_candidates,
+                     },
+-                    sender_device_id: 1 as DeviceId,
++                    sender_device_id: sender_device_id as DeviceId,
+                 };
+ 
+                 if let Err(e) = call_manager.received_ice(

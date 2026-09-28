@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "checks": [
+    "real PCM processes: mute stops only microphone; hangup reaps both directions",
+    "RingRTC creates and removes only its three virtual modules on eof",
+    "RingRTC creates and removes only its three virtual modules on term"
+  ],
+  "hardware": false,
+  "signalAccount": false
+}

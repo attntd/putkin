@@ -1,0 +1,19 @@
+{
+  "at": "2026-09-27T11:52:41.334727+02:00",
+  "verificationOrPamStarted": false,
+  "attempts": [
+    {
+      "attempt": 1,
+      "enrolledCount": 1,
+      "claim": "ok",
+      "release": "ok"
+    },
+    {
+      "attempt": 2,
+      "enrolledCount": 1,
+      "claim": "ok",
+      "release": "ok"
+    }
+  ],
+  "service": "ActiveState=active\nSubState=running\nMainPID=144184\n"
+}

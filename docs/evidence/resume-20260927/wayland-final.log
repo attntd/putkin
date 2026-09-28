@@ -1,0 +1,34 @@
+PASS: desktop capture buffers released on unlock
+PASS: native lock covers all outputs; bad password stays locked; hjkl typed literally unlocks via actual fixture PAM
+PASS: all native surfaces fade in/out; compositor secure remains true throughout authenticated fade-out
+PASS: missing desktop captures lock immediately and opaquely on every output; password still unlocks
+PASS: real pam_fprintd reports mismatch/reset and accepts fingerprint after more than 30 seconds waiting
+PASS: password remains usable while the independent fingerprint conversation waits
+PASS: three failed fingerprints still stop scanning and retain password authentication
+PASS: resume recovers from real PAM code 9 twice without a false red glyph; fingerprint then unlocks
+PASS: another sleep cancels pending recovery; next resume starts a fresh authenticated lock cycle
+PASS: password cancels pending fingerprint recovery without leaving another scan
+PASS: persistent reader failure stops after five recovery attempts and preserves password/secure lock
+PASS: locked hotplug covers new output; reload deferred until unlocked
+PASS: native idle thresholds dim, DPMS off, lock; activity restores DPMS/brightness without unlocking
+PASS: presentation suppresses native idle events; background permits locking but prevents automatic sleep
+PASS: unsupported automatic sleep keeps lock/password working without a session error after unlock
+PASS: native automatic SuspendThenHibernate reaches fake logind only after compositor secure
+PASS: client termination leaves compositor session locked
+Traceback (most recent call last):
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 643, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 592, in main
+    inside(args.inside, args.smoke, args.idle, args.native_session, args.screenshot, args.launcher_preview, args.signal, args.authentication)
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/putkin/scripts/test-wayland", line 159, in inside
+    report['native_session'] = run(env, base, output, first, hypr, launch)
+                               ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/putkin/tests/native_session_wayland.py", line 311, in run
+    verify_fade_video(output/'desktop-fade.mkv')
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/attntd/projects/putkin/tests/native_session_wayland.py", line 106, in verify_fade_video
+    alpha = sum((v-a)*delta for v,a,delta in zip(values,source,vector)) / norm
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~
+ZeroDivisionError: division by zero

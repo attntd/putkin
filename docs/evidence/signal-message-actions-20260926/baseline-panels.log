@@ -1,0 +1,25 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::Panels::initTestCase()
+PASS   : qmltestrunner::Panels::test_close_before_async_load_and_switch_monitor_hotplug()
+PASS   : qmltestrunner::Panels::test_directions_enter_keypad_space_and_escape_layers(escape)
+PASS   : qmltestrunner::Panels::test_directions_enter_keypad_space_and_escape_layers(q)
+PASS   : qmltestrunner::Panels::test_disabled_tab_arrows_and_text_editing()
+PASS   : qmltestrunner::Panels::test_keyboard_bar_entry_and_return_focus(escape)
+PASS   : qmltestrunner::Panels::test_keyboard_bar_entry_and_return_focus(q)
+PASS   : qmltestrunner::Panels::test_long_content_and_resize_preserve_visible_focus()
+PASS   : qmltestrunner::Panels::test_modified_q_keeps_panel_open()
+FAIL!  : qmltestrunner::Panels::test_mouse_active_indicator_tooltip_and_outside_consumption() 'verify()' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/artifacts/signal-message-actions/baseline/tests/qml/tst_panels.qml(97)]
+PASS   : qmltestrunner::Panels::test_q_preserves_text_focus(text)
+PASS   : qmltestrunner::Panels::test_q_preserves_text_focus(readonly-text)
+PASS   : qmltestrunner::Panels::test_q_preserves_text_focus(numeric-validator)
+PASS   : qmltestrunner::Panels::test_q_preserves_text_focus(multiline)
+PASS   : qmltestrunner::Panels::test_q_preserves_text_focus(readonly-multiline)
+PASS   : qmltestrunner::Panels::test_reject_unknown_surface_and_missing_screen()
+PASS   : qmltestrunner::Panels::test_settings_replaces_page_and_keeps_local_state_local()
+PASS   : qmltestrunner::Panels::test_small_screen_scroll_and_visible_focus()
+PASS   : qmltestrunner::Panels::test_twenty_cycles_and_reopen_during_fade()
+PASS   : qmltestrunner::Panels::cleanupTestCase()
+Totals: 19 passed, 1 failed, 0 skipped, 0 blacklisted, 18101ms
+********* Finished testing of qmltestrunner *********

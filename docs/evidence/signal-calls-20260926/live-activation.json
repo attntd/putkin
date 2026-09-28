@@ -1,0 +1,61 @@
+{
+  "passed": true,
+  "build": "20260926-095602-1adc1e9c40ed",
+  "previous": "20260924-082540-076b1e15099c",
+  "sourceFilesVerified": 375,
+  "preferencesPreserved": {
+    "settings.json": true,
+    "keyboard.json": true,
+    "signal.json": true
+  },
+  "observationsSecondsApart": 10,
+  "observations": [
+    {
+      "shellPid": 64764,
+      "signal": {
+        "state": "ready",
+        "accountState": "linked",
+        "schemaVersion": 7,
+        "cliVersion": "0.14.8",
+        "errorCode": "",
+        "linkError": "",
+        "eventErrorLocation": "",
+        "qrVisible": false,
+        "processId": 64807
+      },
+      "notificationOwner": 64764,
+      "idleReady": true,
+      "lockAvailable": true,
+      "locked": false,
+      "caffeinateMode": "background",
+      "cliPid": 64975,
+      "pinnedCallTunnelConfigured": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "shellPid": 64764,
+      "signal": {
+        "state": "ready",
+        "accountState": "linked",
+        "schemaVersion": 7,
+        "cliVersion": "0.14.8",
+        "errorCode": "",
+        "linkError": "",
+        "eventErrorLocation": "",
+        "qrVisible": false,
+        "processId": 64807
+      },
+      "notificationOwner": 64764,
+      "idleReady": true,
+      "lockAvailable": true,
+      "locked": false,
+      "caffeinateMode": "background",
+      "cliPid": 64975,
+      "pinnedCallTunnelConfigured": true,
+      "errors": [],
+      "warnings": []
+    }
+  ],
+  "liveVoiceCallTested": false
+}

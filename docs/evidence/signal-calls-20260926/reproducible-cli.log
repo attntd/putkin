@@ -1,0 +1,27 @@
+Signal: nakładanie poprawek i kompilacja
+patching file /tmp/pk-media-build-yrbqvjmp/IncomingMessageHandler.java
+patching file /tmp/pk-media-build-yrbqvjmp/AttachmentHelper.java
+patching file /tmp/pk-media-build-yrbqvjmp/AttachmentStore.java
+patching file /tmp/pk-media-build-yrbqvjmp/JsonSyncDataMessage.java
+patching file /tmp/pk-media-build-yrbqvjmp/SendHelper.java
+patching file /tmp/pk-media-build-yrbqvjmp/MessageSendLogStore.java
+patching file /tmp/pk-media-build-yrbqvjmp/SendMessageResultUtils.java
+patching file /tmp/pk-media-build-yrbqvjmp/CallManager.java
+PASS: size boundaries and real cache quota
+{"policy": "putkin-retention-2", "librarySha256": "68e38bdd394b4404fb036fd5cadd820927ca9ce8ce20bb9452e8bae85c725437", "applicationSha256": "f6c04e0856530875bbb2f1b4f4d2b621408c057b089e2b87567c69d65e2fa502"}
+{
+  "bundle": "/home/attntd/projects/putkin/artifacts/signal-cache/4555d3e63fd7ba8e00f719d7983d28b7cecb9c2862167b8912c5e7a139962e40/.build-p2foo2x8/runtime",
+  "platform": "linux-x86_64",
+  "cliVersion": "0.14.8",
+  "javaVersion": "25.0.4.1+1",
+  "policy": "putkin-retention-2",
+  "treeSha256": "4555d3e63fd7ba8e00f719d7983d28b7cecb9c2862167b8912c5e7a139962e40"
+}
+{
+  "bundle": "artifacts/signal-cache/4555d3e63fd7ba8e00f719d7983d28b7cecb9c2862167b8912c5e7a139962e40/runtime",
+  "platform": "linux-x86_64",
+  "cliVersion": "0.14.8",
+  "javaVersion": "25.0.4.1+1",
+  "policy": "putkin-retention-2",
+  "treeSha256": "4555d3e63fd7ba8e00f719d7983d28b7cecb9c2862167b8912c5e7a139962e40"
+}

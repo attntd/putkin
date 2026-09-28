@@ -1,0 +1,10 @@
+{
+  "build": "20260926-114434-3d56b47505d0",
+  "shellPid": 85655,
+  "signalState": "ready",
+  "accountState": "linked",
+  "schemaVersion": 8,
+  "locked": false,
+  "caffeinate": "background",
+  "typingIndicators": true
+}

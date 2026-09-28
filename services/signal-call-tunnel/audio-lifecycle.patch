@@ -1,0 +1,61 @@
+diff --git a/src/rust/src/virtual_audio.rs b/src/rust/src/virtual_audio.rs
+index e7f1434..613d84a 100644
+--- a/src/rust/src/virtual_audio.rs
++++ b/src/rust/src/virtual_audio.rs
+@@ -151,15 +151,43 @@ fn stop(input_source: &str, output_sink: &str) -> anyhow::Result<()> {
+ pub struct VirtualAudioDevicePair {
+     input_source: String,
+     output_sink: String,
++    #[cfg(target_os = "linux")]
++    modules: Vec<String>,
+ }
+ 
+ impl VirtualAudioDevicePair {
+     pub fn new(input_source: &str, output_sink: &str) -> anyhow::Result<Self> {
++        #[cfg(target_os = "linux")]
++        {
++            // Retain only IDs created by this call; partial setup also unwinds.
++            let mut pair = Self { input_source: input_source.into(), output_sink: output_sink.into(), modules: Vec::new() };
++            let input_sink = format!("sink_for_{}", input_source);
++            for args in [
++                vec!["module-null-sink".into(), format!("sink_name={}", input_sink)],
++                vec!["module-remap-source".into(), format!("source_name={}", input_source),
++                    format!("source_properties=device.description={}", input_source),
++                    format!("master={}.monitor", input_sink)],
++                vec!["module-null-sink".into(), format!("sink_name={}", output_sink),
++                    format!("sink_properties=device.description={}", output_sink)],
++            ] {
++                let output = Command::new("pactl").arg("load-module").args(args)
++                    .args(["format=s16le", "rate=48000", "channels=2"]).output()?;
++                let module = String::from_utf8(output.stdout)?.trim().to_owned();
++                if !output.status.success() || module.is_empty() || !module.bytes().all(|b| b.is_ascii_digit()) {
++                    return Err(anyhow!("virtual audio setup failed"));
++                }
++                pair.modules.push(module);
++            }
++            return Ok(pair);
++        }
++        #[cfg(not(target_os = "linux"))]
++        {
+         setup(input_source, output_sink)?;
+         Ok(VirtualAudioDevicePair {
+             input_source: input_source.to_string(),
+             output_sink: output_sink.to_string(),
+         })
++        }
+     }
+ 
+     pub fn play(
+@@ -192,6 +220,12 @@ impl VirtualAudioDevicePair {
+ 
+ impl Drop for VirtualAudioDevicePair {
+     fn drop(&mut self) {
++        #[cfg(target_os = "linux")]
++        for module in self.modules.iter().rev() {
++            let _ = Command::new("pactl").args(["unload-module", module])
++                .stdout(Stdio::null()).stderr(Stdio::null()).status();
++        }
++        #[cfg(not(target_os = "linux"))]
+         if let Err(e) = teardown(&self.input_source, &self.output_sink) {
+             error!("Failed to tear down {:?} {}", self, e);
+         }

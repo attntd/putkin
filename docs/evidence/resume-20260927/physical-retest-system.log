@@ -1,0 +1,12 @@
+Sep 27 11:53:52 lenovo-x1 systemd-logind[513]: suspend requested from client PID 142336 ('python3') (unit user@1000.service)...
+Sep 27 11:53:52 lenovo-x1 systemd-logind[513]: The system will suspend now!
+Sep 27 11:53:52 lenovo-x1 systemd[1]: Starting System Suspend...
+Sep 27 11:53:52 lenovo-x1 systemd-sleep[144514]: Successfully froze unit 'user.slice'.
+Sep 27 11:53:52 lenovo-x1 systemd-sleep[144514]: Performing sleep operation 'suspend'...
+Sep 27 11:54:11 lenovo-x1 systemd-logind[513]: Lid closed.
+Sep 27 11:54:11 lenovo-x1 systemd-logind[513]: Lid opened.
+Sep 27 11:54:12 lenovo-x1 systemd-sleep[144514]: System returned from sleep operation 'suspend'.
+Sep 27 11:54:12 lenovo-x1 systemd-sleep[144514]: Successfully thawed unit 'user.slice'.
+Sep 27 11:54:12 lenovo-x1 systemd[1]: systemd-suspend.service: Deactivated successfully.
+Sep 27 11:54:12 lenovo-x1 systemd[1]: Finished System Suspend.
+Sep 27 11:54:12 lenovo-x1 systemd-logind[513]: Operation 'suspend' finished.

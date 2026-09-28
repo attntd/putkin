@@ -1,0 +1,18 @@
+{
+  "build": "20260926-102323-837f360c2241",
+  "shellId": "woh1hkvylt",
+  "shellPid": 69584,
+  "signal": {
+    "state": "ready",
+    "accountState": "linked",
+    "schemaVersion": 7,
+    "cliVersion": "0.14.8",
+    "errorCode": "",
+    "linkError": "",
+    "eventErrorLocation": "",
+    "qrVisible": false,
+    "processId": 69618
+  },
+  "locked": false,
+  "caffeinate": "background"
+}

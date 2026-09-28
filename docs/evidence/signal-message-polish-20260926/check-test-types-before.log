@@ -1,0 +1,14 @@
+FAIL [imports/types, exit=255] /home/attntd/projects/putkin/tests/qml/tst_signal_message_media.qml
+Warning: /home/attntd/projects/putkin/tests/qml/tst_signal_message_media.qml:79:40: Member "previewAttachment" not found on type "QObject" [missing-property]
+            tryVerify(() => !view.item.previewAttachment);
+                                       ^^^^^^^^^^^^^^^^^
+Warning: /home/attntd/projects/putkin/tests/qml/tst_signal_message_media.qml:115:31: Member "previewAttachment" not found on type "QObject" [missing-property]
+            compare(view.item.previewAttachment.attachment_id, "photo-" + (data.count - 1));
+                              ^^^^^^^^^^^^^^^^^
+Warning: /home/attntd/projects/putkin/tests/qml/tst_signal_message_media.qml:117:40: Member "previewAttachment" not found on type "QObject" [missing-property]
+            tryVerify(() => !view.item.previewAttachment);
+                                       ^^^^^^^^^^^^^^^^^
+Warning: /home/attntd/projects/putkin/tests/qml/tst_signal_message_media.qml:134:65: Member "previewAttachment" not found on type "QObject" [missing-property]
+            keyClick(Qt.Key_Escape); tryVerify(() => !view.item.previewAttachment);
+                                                                ^^^^^^^^^^^^^^^^^
+FAIL: 292 plików QML, 1 z błędami.

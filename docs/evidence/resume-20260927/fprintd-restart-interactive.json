@@ -1,0 +1,11 @@
+{
+  "at": "2026-09-27T11:51:43.798033+02:00",
+  "guard": {
+    "locked": false,
+    "busy": false
+  },
+  "restartReturncode": 0,
+  "stdout": "",
+  "stderr": "",
+  "after": "ActiveState=active\nSubState=running\nActiveEnterTimestamp=Sun 2026-09-27 11:51:52 CEST\nMainPID=144184\n"
+}

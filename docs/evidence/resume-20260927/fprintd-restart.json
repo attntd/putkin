@@ -1,0 +1,12 @@
+{
+  "at": "2026-09-27T11:51:00.853473+02:00",
+  "guard": {
+    "locked": false,
+    "busy": false
+  },
+  "before": "ActiveState=active\nSubState=running\nActiveEnterTimestamp=Sat 2026-09-26 13:41:27 CEST\nMainPID=84138\n",
+  "restartReturncode": 1,
+  "stdout": "",
+  "stderr": "Failed to restart fprintd.service: Access denied as the requested operation requires interactive authentication. However, interactive authentication has not been enabled by the calling program.\nSee system logs and 'systemctl status fprintd.service' for details.\n",
+  "after": "ActiveState=active\nSubState=running\nActiveEnterTimestamp=Sat 2026-09-26 13:41:27 CEST\nMainPID=84138\n"
+}

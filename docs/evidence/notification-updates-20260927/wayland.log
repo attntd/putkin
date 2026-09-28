@@ -1,0 +1,5 @@
+PASS: native BarWindow/WallpaperWindow/InteractivePanelWindow mapped; initial panel keyboard focus; real output capture
+PASS: GPU pixels follow the panel gradient; open bar module keeps its neutral background
+PASS: GPU clock ink centered; original Material charging icon preserves battery height in a wider frame
+PASS: Super+N toggles toasts/center; Q and clear close center; j/k navigate; d deletes; q/Escape archive; Enter consumes resident toast; foreign text input returns
+PASS smoke only

@@ -1,0 +1,6 @@
+test_only_pinned_executable_is_accepted (test_signal_call_runtime.CallRuntimeTests.test_only_pinned_executable_is_accepted) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.003s
+
+OK
