@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Controls.Basic as Controls
 import "../core"
 import "../services"
 import "../preview"
@@ -9,6 +10,8 @@ Item {
     width: 980
     height: 720
     readonly property bool ready: adapter.draftReady && !adapter.loading && hub.conversations.length === 60
+    readonly property Item conversationScrollBar: view.list.Controls.ScrollBar.vertical
+    readonly property Item historyScrollBar: view.historyView.Controls.ScrollBar.vertical
     MockMessagingBackend { id: backend }
     SignalService { id: service; backend: backend }
     SignalMessagingAdapter { id: adapter; service: service }

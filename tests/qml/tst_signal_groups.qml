@@ -103,7 +103,12 @@ Item {
             control("acceptMessageRequest").click(); tryVerify(() => adapter.canSend);
             details(); control("muteConversation").click();
             tryVerify(() => backend.calls.some(c => c.method === "conversation.notifications"));
-            control("hideConversation").click(); tryVerify(() => adapter.selectedConversation.hidden);
+            control("hideConversation").click(); tryCompare(adapter, "selectedConversation", null);
+            verify(control("conversationList").activeFocus);
+            control("showConversationArchive").click();
+            compare(control("conversationList").count, 1);
+            hub.openConversation(adapter.address("chat-a"));
+            tryVerify(() => adapter.draftReady && !adapter.loading); details();
             control("blockConversation").click(); control("confirmGroupAction").click(); tryVerify(() => !adapter.canSend);
             verify(backend.calls.some(c => c.method === "conversation.block"));
         }

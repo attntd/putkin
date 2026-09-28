@@ -97,7 +97,7 @@ class OrderingTests(unittest.TestCase):
             self.assertEqual(old.execute('SELECT kind FROM interaction_outbox').fetchone()[0], 'reaction')
         self.store = Store(self.lease, self.committed, lambda: self.now)
         self.outbox = Outbox(self.store)
-        self.assertEqual(self.store.db.execute('PRAGMA user_version').fetchone()[0], 8)
+        self.assertEqual(self.store.db.execute('PRAGMA user_version').fetchone()[0], 9)
         self.assertEqual(self.store.db.execute('PRAGMA integrity_check').fetchone()[0], 'ok')
         self.assertEqual([m['messageId'] for m in self.messages(cid)], before)
         self.assertEqual(self.outbox.status(self.account, pending['operationId'])['state'], 'queued')

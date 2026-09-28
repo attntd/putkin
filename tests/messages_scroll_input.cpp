@@ -31,7 +31,10 @@ int main(int argc, char **argv) {
     for (const auto name : {"conversationList", "messageHistory"}) {
         auto list = view.rootObject()->findChild<QQuickItem *>(name);
         require(list, "list exists");
-        auto bar = list->findChild<QQuickItem *>("scrollBar");
+        // Read the attached property directly; the QObject tree also contains
+        // scrollbars owned by hidden message menus.
+        auto bar = view.rootObject()->property(QString::fromLatin1(name) == "conversationList"
+            ? "conversationScrollBar" : "historyScrollBar").value<QQuickItem *>();
         require(bar, "scrollbar exists");
         auto thumb = bar->property("contentItem").value<QQuickItem *>();
         require(thumb, "scrollbar thumb exists");

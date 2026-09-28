@@ -33,7 +33,8 @@ ShellRoot {
             }
             if (controller.window) inspect(controller.window.view);
             return JSON.stringify({state: service.state, pid: backend.processId, generation: backend.generation,
-                accountId: adapter.accountId, conversations: adapter.conversations.map(v => ({route: v.route, title: v.title})),
+                accountId: adapter.accountId, cardsCollapsed: adapter.cardsCollapsed,
+                conversations: adapter.conversations.map(v => ({route: v.route, title: v.title, archived: v.archived, pinned: v.pinned, markedUnread: v.markedUnread})),
                 loaded: controller.loaded, windows: root.windowsCreated, interactive: controller.interactive,
                 // ListView is a focus scope; Qt may make its current delegate
                 // the activeFocusItem while the list itself has activeFocus.
@@ -49,6 +50,8 @@ ShellRoot {
         function create(query: string): bool { return adapter.createConversation(query, null); }
         function draft(text: string): void { adapter.editDraft(text); }
         function send(): bool { return adapter.send(); }
+        function cards(collapsed: bool): void { adapter.setCardsCollapsed(collapsed); }
+        function organize(cid: string, action: string, value: bool): bool { return adapter.manageConversation(cid, action, value); }
         function more(): void { adapter.loadMore(); }
         function receive(wire: string): void { backend.request("test.echo", {receive: JSON.parse(wire)}); }
         function close(): void { controller.close(); }

@@ -113,6 +113,7 @@ class Outbox:
                 self.db.execute("INSERT INTO forward_sources VALUES(?,?,?)", (op, *forward_source))
             if context == "quickReply":
                 signal_replies.attach(self.store, account, params, op)
+            self.db.execute('UPDATE conversation_preferences SET hidden=0 WHERE conversation_id=?', (cid,))
             self.store.touch(account, cid, now)
             self.changed(self.row(account, op))
         return self.status(account, op)

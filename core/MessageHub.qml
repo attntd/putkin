@@ -6,8 +6,8 @@ QtObject {
     id: root
     required property var adapters
     property var activeAdapter: adapters.length ? adapters[0] : null
-    readonly property var conversations: adapters.reduce((items, adapter) => items.concat(adapter.conversations), []).sort((a, b) => b.activityTimestampMs - a.activityTimestampMs)
-    readonly property int unreadCount: conversations.reduce((total, item) => total + item.unreadCount, 0)
+    readonly property var conversations: adapters.reduce((items, adapter) => items.concat(adapter.conversations), []).sort((a, b) => Number(!!b.pinned) - Number(!!a.pinned) || b.activityTimestampMs - a.activityTimestampMs || a.conversationId.localeCompare(b.conversationId))
+    readonly property int unreadCount: conversations.reduce((total, item) => total + Math.max(item.unreadCount, item.markedUnread ? 1 : 0), 0)
     readonly property string lastError: activeAdapter ? activeAdapter.lastError : ""
     signal conversationOpened(var route)
     function adapterFor(route: var): var {

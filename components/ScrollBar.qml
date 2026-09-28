@@ -12,6 +12,7 @@ Controls.ScrollBar {
     policy: Controls.ScrollBar.AsNeeded
     hoverEnabled: true
     focusPolicy: Qt.NoFocus
+    readonly property Flickable flickable: parent as Flickable
     Keys.forwardTo: [input]
     ControlInput { id: input; control: root }
     // Position also changes for keyboard scrolling, which need not set moving.
@@ -23,7 +24,7 @@ Controls.ScrollBar {
         radius: Metrics.radius
         color: root.pressed ? Theme.surface : Theme.border
         accentFill: root.pressed || root.hovered
-        opacity: root.size < 1 && (root.pressed || activity.running) ? 1 : 0
+        opacity: root.size < 1 && (root.pressed || (root.flickable && root.flickable.moving) || activity.running) ? 1 : 0
         Behavior on opacity { NumberAnimation { duration: Metrics.panelFade; easing.type: Easing.InOutCubic } }
     }
     background: Rectangle { color: "transparent" }

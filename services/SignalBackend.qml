@@ -46,7 +46,7 @@ QtObject {
         invalidate("result_unknown");
     }
     function applyState(data: var): bool {
-        if (!data || data.ipcVersion !== 1 || [0, 1, 2, 3, 4, 5, 6, 7, 8].indexOf(data.schemaVersion) < 0
+        if (!data || data.ipcVersion !== 1 || [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].indexOf(data.schemaVersion) < 0
                 || ["disabled", "idle", "starting", "ready", "reconnecting", "stopping", "failed"].indexOf(data.serviceState) < 0
                 || ["unlinked", "linking", "linked", "relinkRequired"].indexOf(data.accountState) < 0
                 || !Array.isArray(data.capabilities) || typeof data.errorCode !== "string"

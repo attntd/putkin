@@ -1,5 +1,40 @@
 # Architektura Putkin
 
+## Nawigacja rozmowy i pisanie — 2026-09-28
+
+`MessagesView` przekazuje sposób wejścia z listy do `MessageComposer`.
+Klawiatura otwiera pole w nawigacji; kliknięcie, jawne otwarcie z
+powiadomienia i odpowiedź/edycja uruchamiają pisanie. Composer zachowuje
+standardowy TextArea: `readOnly` odcina edycję podczas nawigacji,
+`cursorVisible` pokazuje natywny kursor wyłącznie przy pisaniu.
+Stan ten nie tworzy elementu UI ani ustawienia trwałego. Escape nie
+wywołuje anulowania szkicu/edycji; zatrzymuje też wskaźnik pisania.
+
+`MessageHistory` nawiguje po ID wiadomości, a model zachowuje wybór
+po paginacji i odświeżeniu. Dymek jest standardową kontrolką Qt z
+`ControlInput`/`FocusIndicator`; kliknięcie lub przeciągnięcie historii
+usuwa ramkę. Spacja/Enter korzystają z istniejącego `MessageActions`
+i jego przywracania fokusu. Nie dodano poleceń widoków, API bridge
+ani migracji danych. [Kontrakt](signal/CONVERSATIONS.md#nawigacja-i-pisanie).
+
+## Organizacja rozmów — 2026-09-28
+
+`ConversationSidebar`, `ConversationAvatar` i `ConversationMenu` otrzymują
+jawne modele/adaptery. `MessagesView` składa listę, nagłówek, historię i nakładki.
+Wybór na liście jest zachowywany po adresie rozmowy, nie po indeksie.
+Odłożone przeliczenie listy należy do jej timera i kończy się z widokiem.
+Fokus edytora oczekujący na szkic jest anulowany po ręcznym przejściu do
+innej kontrolki, również wewnątrz obszaru rozmowy.
+
+SQLite v9 dodaje `pinned` i `marked_unread` do `conversation_preferences`;
+`hidden` pozostaje fizyczną flagą archiwum i aliasem starszego IPC.
+Układ kart jest zapisany per konto w `store_metadata`. Preferencje trafiają
+do UI po zatwierdzeniu transakcji. Odczyt całej rozmowy korzysta z istniejącej
+kolejki receipts i stałej kotwicy po ID, w partiach do 100 wiadomości.
+Awatary widocznych delegatów pobiera pojedyncza kolejka adaptera przez
+istniejący kontrolowany magazyn; brak procesów i pobierania URL w widokach.
+[Kontrakt](signal/CONVERSATIONS.md).
+
 ## Wznowienie sesji — 2026-09-27
 
 Jeden `SessionClock` dostarcza datę paskom i `LockHost`; widoki blokady

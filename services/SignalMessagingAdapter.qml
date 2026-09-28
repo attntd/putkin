@@ -15,6 +15,53 @@ QtObject {
     readonly property bool available: service.accountState === "linked" && service.configuration.enabled
     readonly property bool canCreate: available && service.ready
     property var conversations: []
+    property bool cardsCollapsed: false
+    property bool layoutBusy: false
+    property var avatarRequests: ({})
+    property var avatarQueue: []
+    property bool avatarBusy: false
+    signal conversationManaged(string cid, string action, bool value)
+    function setCardsCollapsed(value: bool): void {
+        if (!layoutBusy) layoutBusy = request("messages.preferences", {cardsCollapsed: value}, {kind: "layout"}) !== "";
+    }
+    function ensureAvatar(item: var): void {
+        if (!item || item.kind === "note" || avatarRequests[item.target] || service.capabilities.indexOf("directory.avatar") < 0) return;
+        avatarRequests[item.target] = true;
+        const params = item.kind === "group" ? {groupId: item.target} : {serviceId: item.target};
+        avatarQueue.push({params: params, target: item.target});
+        drainAvatars();
+    }
+    function drainAvatars(): void {
+        if (avatarBusy || !avatarQueue.length) return;
+        const next = avatarQueue[0];
+        if (request("directory.avatar", next.params, {kind: "listAvatar", target: next.target})) {
+            avatarBusy = true; avatarQueue.shift();
+        }
+    }
+    function manageConversation(cid: string, action: string, value: bool): bool {
+        if (!conversations.some(c => c.conversationId === cid)) return false;
+        const params = {conversationId: cid};
+        let method = "conversation.preferences";
+        if (action === "muted") { method = "conversation.notifications"; params.muted = value; }
+        else if (action === "read") method = "conversation.read";
+        else if (["archived", "pinned", "markedUnread"].includes(action)) params[action] = value;
+        else return false;
+        lastError = "";
+        return request(method, params, {kind: "manageConversation", cid: cid, action: action, value: value}) !== "";
+    }
+    function closeConversation(): void {
+        stopTyping(); flushDraft(); selection++;
+        composerReset();
+        selectedRoute = null; selectedConversation = null;
+        historyChanging(true); messages.clear(); historyChanged(true);
+        draftReady = false; draftText = ""; draftAttachments = [];
+    }
+    function composerReset(): void {
+        editingMessage = null; editText = ""; editBusy = false; quotedMessage = null;
+        composeMentions = []; typingAuthors = []; jumpMessageId = ""; loading = false;
+        nextCursor = null; sending = false; resolving = false; groupDetails = null; profileDetails = null;
+        readThroughRequest = ""; readThroughId = ""; refreshIds = ({}); messageRequest = "";
+    }
     property var contacts: []
     property var directory: ({contacts: [], groups: []})
     property var groupDetails: null
@@ -306,6 +353,8 @@ QtObject {
     function refresh(): void {
         if (!accountId || service.capabilities.indexOf("conversations.page") < 0) return;
         request("account.directory", {}, {kind: "directory"});
+        if (service.capabilities.indexOf("messages.preferences") >= 0 && !layoutBusy)
+            layoutBusy = request("messages.preferences", {}, {kind: "layout"}) !== "";
         refreshList(); loadOperations();
     }
     function refreshList(): void {
@@ -332,6 +381,9 @@ QtObject {
         historyChanging(true);
         selectedRoute = address(item.conversationId);
         selectedConversation = item;
+        ensureAvatar(item);
+        if (item.markedUnread && item.canRead !== false)
+            request("conversation.preferences", {conversationId: item.conversationId, markedUnread: false}, {kind: "preferences"});
         messages.clear(); nextCursor = null; loading = false;
         draftText = ""; draftReady = false; sending = false;
         const cached = drafts[item.conversationId];
@@ -468,6 +520,28 @@ QtObject {
         const context = requests[id]; delete requests[id];
         if (!context || context.account !== accountId) return;
         const current = context.selection === selection;
+        Qt.callLater(drainAvatars);
+        if (context.kind === "layout") {
+            layoutBusy = false;
+            if (error) lastError = errorText(error.code);
+            else cardsCollapsed = result.cardsCollapsed;
+            return;
+        }
+        if (context.kind === "listAvatar") {
+            avatarBusy = false;
+            if (!error) refreshList();
+            return;
+        }
+        if (context.kind === "manageConversation") {
+            if (error) { lastError = errorText(error.code); return; }
+            if (context.action === "read" && result.hasMore) {
+                request("conversation.read", {conversationId: context.cid, throughMessageId: result.throughMessageId}, context);
+                return;
+            }
+            refreshList();
+            conversationManaged(context.cid, context.action, context.value);
+            return;
+        }
         if (context.kind === "groupOperations") { if (!error) groupOperations = result.items; return; }
         if (context.kind === "directoryAction") {
             directoryBusy = Math.max(0, directoryBusy - 1);
@@ -605,13 +679,14 @@ QtObject {
         }
     }
     function clear(): void {
+        avatarRequests = ({}); avatarQueue = []; avatarBusy = false; layoutBusy = false; cardsCollapsed = false;
         forwardBusy = false;
         stopTyping(); editingMessage = null; editText = ""; editBusy = false; quotedMessage = null; composeMentions = []; typingAuthors = []; jumpMessageId = "";
         draftAttachments = []; mediaRequests = ({}); mediaBusy = 0;
         redactedIds = ({}); groupDetails = null; profileDetails = null; groupOperations = []; directoryBusy = 0;
         selection++; requests = ({}); readRequests = ({}); drafts = ({}); conversations = []; contacts = [];
         readThroughRequest = ""; readThroughId = "";
-        selectedRoute = null; selectedConversation = null; messages.clear(); refreshIds = ({}); messageRequest = "";
+        selectedRoute = null; selectedConversation = null; messages.clear(); nextCursor = null; refreshIds = ({}); messageRequest = "";
         draftText = ""; draftReady = false; sending = false; loading = false; resolving = false; listLoading = false; listDirty = false;
         refresh();
     }

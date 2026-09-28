@@ -105,6 +105,8 @@ ShellRoot {
                 presentationOpacity: view ? view.parent.opacity : 0, geometry: view ? {width: view.width, height: view.height} : null,
                 focus: view && view.Window.window && view.Window.window.activeFocusItem ? view.Window.window.activeFocusItem.objectName : "",
                 listFocused: listFocused,
+                insertMode: view ? view.insertMode : false,
+                focusedMessageId: view ? view.historyView.focusedMessageId : "",
                 nextCursor: adapter.nextCursor, delegates: view ? view.historyView.contentItem.children.length : 0,
                 accent: Theme.accent.toString(), secondary: Theme.accentSecondary.toString(), settingsReady: settings.ready,
                 settingsSaving: settings.saving, coverActive: coverItem.Window.active, coverText: coverItem.text,

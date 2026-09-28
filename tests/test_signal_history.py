@@ -116,7 +116,7 @@ class HistoryTests(unittest.TestCase):
         self.assertEqual(self.store.draft(self.account, cid)["revision"], 1)
         self.assertEqual(self.outbox.status(self.account, op["operationId"])["state"], "sent")
         self.assertTrue(any(n == "message.changed" for n, _ in self.changes))
-        self.assertEqual(self.store.db.execute("PRAGMA user_version").fetchone()[0], 8)
+        self.assertEqual(self.store.db.execute("PRAGMA user_version").fetchone()[0], 9)
         self.assertEqual(self.store.db.execute("PRAGMA synchronous").fetchone()[0], 2)
         for suffix in ("", "-wal", "-shm"):
             self.assertEqual((self.lease.data / ("history.sqlite3" + suffix)).stat().st_mode & 0o777, 0o600)

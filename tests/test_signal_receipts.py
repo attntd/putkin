@@ -283,7 +283,7 @@ class ReceiptTests(unittest.TestCase):
         self.store = Store(self.lease, self.committed, lambda: self.now)
         self.assertEqual(self.message(mid)["status"], "read")
         self.assertEqual(self.store.conversation_item(self.account, self.conversation())["unreadCount"], 0)
-        self.assertEqual(self.store.db.execute("PRAGMA user_version").fetchone()[0], 8)
+        self.assertEqual(self.store.db.execute("PRAGMA user_version").fetchone()[0], 9)
 
 
 class ReceiptBridgeTests(unittest.TestCase):

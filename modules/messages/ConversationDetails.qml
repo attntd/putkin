@@ -16,6 +16,8 @@ FocusScope {
     property var confirmation: null
     property string avatar: ""
     property string successor: ""
+    property int initialFocusReason: Qt.TabFocusReason
+    signal managementRequested(int reason)
     signal dismissed()
     function ask(label: string, action: string, params: var): void {
         confirmation = {label: label, action: action, params: params};
@@ -43,7 +45,7 @@ FocusScope {
         anchors.fill: parent; anchors.margins: Metrics.space12; spacing: Metrics.space8
         RowLayout {
             Layout.fillWidth: true
-            UI.NavigationButton { objectName: "closeConversationDetails"; text: qsTr("Wróć"); onClicked: root.dismissed() }
+            UI.NavigationButton { id: closeButton; objectName: "closeConversationDetails"; text: qsTr("Wróć"); onClicked: root.dismissed() }
             Text { text: root.conversation ? root.conversation.title : ""; textFormat: Text.PlainText; color: Theme.text; font.family: Theme.fontFamily; font.pixelSize: Metrics.fontSize; elide: Text.ElideRight; Layout.fillWidth: true }
             UI.NavigationButton { objectName: "refreshGroup"; text: qsTr("Odśwież"); enabled: !root.busy; onClicked: { if (root.group) root.adapter.inspectGroup(); else root.adapter.inspectContact(root.conversation.target); } }
         }
@@ -57,7 +59,7 @@ FocusScope {
                 id: content
                 width: scroll.width
                 spacing: Metrics.space8
-                Image { source: root.group ? root.group.avatar || root.conversation.avatar || "" : root.conversation ? root.conversation.avatar || "" : ""; visible: source.toString() !== ""; Layout.preferredWidth: 64; Layout.preferredHeight: 64; fillMode: Image.PreserveAspectFit }
+                ConversationAvatar { conversation: root.conversation; Layout.preferredWidth: 64; Layout.preferredHeight: 64 }
                 Text {
                     Layout.fillWidth: true
                     text: root.group ? ({member: qsTr("Członek"), invited: qsTr("Zaproszenie"), requesting: qsTr("Oczekiwanie na akceptację"), left: qsTr("Poza grupą"), terminated: qsTr("Grupa zakończona")})[root.group.membership] || qsTr("Stan nieznany") : root.conversation ? root.conversation.target : ""
@@ -67,7 +69,7 @@ FocusScope {
                 Flow {
                     Layout.fillWidth: true; spacing: Metrics.space4
                     UI.NavigationButton { objectName: "muteConversation"; text: root.conversation && root.conversation.muted ? qsTr("Włącz powiadomienia") : qsTr("Wycisz lokalnie"); onClicked: root.adapter.muteConversation(!root.conversation.muted); onEnsureVisible: item => root.reveal(item) }
-                    UI.NavigationButton { objectName: "hideConversation"; text: root.conversation && root.conversation.hidden ? qsTr("Pokaż lokalnie") : qsTr("Ukryj lokalnie"); onClicked: root.adapter.hideConversation(!root.conversation.hidden); onEnsureVisible: item => root.reveal(item) }
+                    UI.NavigationButton { objectName: "hideConversation"; text: root.conversation && root.conversation.hidden ? qsTr("Przywróć z archiwum") : qsTr("Archiwizuj"); onClicked: { root.managementRequested(focusReason); root.adapter.manageConversation(root.conversation.conversationId, "archived", !root.conversation.hidden); } onEnsureVisible: item => root.reveal(item) }
                     UI.NavigationButton { objectName: "blockConversation"; visible: root.conversation && root.conversation.kind !== "note"; text: root.conversation && root.conversation.blocked ? qsTr("Odblokuj") : qsTr("Zablokuj"); enabled: !root.busy; onClicked: { if (root.conversation.blocked) root.adapter.blockConversation(false, false); else root.ask(qsTr("Zablokuj") + " · " + root.conversation.title, "block", {}); } onEnsureVisible: item => root.reveal(item) }
                     UI.NavigationButton { objectName: "acceptGroupInvitation"; visible: root.group && root.group.canAccept; text: qsTr("Przyjmij zaproszenie"); enabled: !root.busy; onClicked: root.adapter.groupAction("accept", {}); onEnsureVisible: item => root.reveal(item) }
                 }
@@ -200,5 +202,6 @@ FocusScope {
     Keys.onEscapePressed: { if (confirmation) confirmation = null; else dismissed(); }
     Component.onCompleted: {
         if (group) { name.text = group.name; description.text = group.description; }
+        closeButton.forceActiveFocus(initialFocusReason);
     }
 }

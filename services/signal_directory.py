@@ -83,6 +83,9 @@ def access(store, account, row, contact, group):
         send = readable and not contact.get('unregistered', False) and not row['target'].startswith(('unresolved:', 'pni:'))
     return {'canSend': send, 'canRead': readable, 'requestState': 'blocked' if blocked else state,
             'blocked': blocked, 'hidden': bool(preference and preference['hidden']),
+            'archived': bool(preference and preference['hidden']),
+            'pinned': bool(preference and preference['pinned']),
+            'markedUnread': bool(preference and preference['marked_unread']),
             'canSetExpiration': group.get('canEdit', False) if row['kind'] == 'group' else send,
             'avatar': avatar_url(store, account, row['target'])}
 
@@ -145,9 +148,34 @@ def install(store, account, result):
 def preferences(store, account, params):
     cid = params.get('conversationId')
     store.conversation(account, cid)
-    if type(params.get('hidden')) is not bool:
+    fields = {'hidden': 'hidden', 'archived': 'hidden', 'pinned': 'pinned', 'markedUnread': 'marked_unread'}
+    changes = {column: params[key] for key, column in fields.items() if key in params}
+    if not changes or any(type(params[key]) is not bool for key in fields if key in params):
         raise Failure('invalid_request')
+    if 'hidden' in params and 'archived' in params and params['hidden'] != params['archived']:
+        raise Failure('invalid_request')
+    if changes.get('hidden') and changes.get('pinned'):
+        raise Failure('invalid_request')
+    if changes.get('hidden'):
+        changes['pinned'] = False
+    if changes.get('pinned'):
+        changes['hidden'] = False
     with store.transaction():
-        store.db.execute('INSERT INTO conversation_preferences(conversation_id,hidden) VALUES(?,?) ON CONFLICT(conversation_id) DO UPDATE SET hidden=excluded.hidden', (cid, params['hidden']))
+        store.db.execute('INSERT OR IGNORE INTO conversation_preferences(conversation_id) VALUES(?)', (cid,))
+        for column, value in changes.items():
+            store.db.execute(f'UPDATE conversation_preferences SET {column}=? WHERE conversation_id=?', (value, cid))
         store.changed('conversation.changed', accountId=account, conversationId=cid)
     return store.conversation_item(account, cid)
+
+
+def layout(store, account, params):
+    store.account(account)
+    key = 'messages-layout:' + account
+    if 'cardsCollapsed' in params:
+        if type(params['cardsCollapsed']) is not bool:
+            raise Failure('invalid_request')
+        with store.transaction():
+            store.db.execute('INSERT INTO store_metadata VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value',
+                             (key, json.dumps({'cardsCollapsed': params['cardsCollapsed']})))
+    row = store.db.execute('SELECT value FROM store_metadata WHERE key=?', (key,)).fetchone()
+    return json.loads(row[0]) if row else {'cardsCollapsed': False}

@@ -1,6 +1,5 @@
 pragma ComponentBehavior: Bound
 import QtQuick
-import QtQuick.Controls.Basic as Controls
 import QtQuick.Layouts
 import "../../core"
 import "../../core/ConversationRoute.js" as Route
@@ -9,7 +8,7 @@ import "../../components" as UI
 FocusScope {
     id: root
     property bool detailsOpen: false
-    property bool showHidden: false
+    property alias showHidden: sidebar.archived
     required property var hub
     readonly property bool accentScope: true
     readonly property var adapter: hub.activeAdapter
@@ -23,18 +22,29 @@ FocusScope {
     property int previewReason: Qt.TabFocusReason
     property int conversationFocusReason: Qt.TabFocusReason
     property bool composerFocusPending: false
-    readonly property var filtered: hub.conversations.filter(item => (showHidden || !item.hidden) && (item.title + " " + item.searchText + " " + item.serviceName).toLocaleLowerCase().indexOf(search.text.toLocaleLowerCase()) >= 0)
+    property bool settingComposerFocus: false
+    property bool conversationInsert: true
+    readonly property alias insertMode: composer.insertMode
+    readonly property var filtered: sidebar.filtered
+    readonly property alias list: sidebar.listView
+    property var pendingDetailsRoute: null
+    property int detailsReason: Qt.TabFocusReason
+    property int managementReason: Qt.OtherFocusReason
     signal dismissed()
     function focusInitial(compose = false): void {
         if (compose) {
+            conversationInsert = true;
             detail = true; creating = false;
             focusComposer();
         } else showList();
     }
-    function focusComposer(reason = Qt.TabFocusReason): void {
+    function focusComposer(reason = Qt.TabFocusReason, insert = true): void {
         conversationFocusReason = reason;
+        composer.insertMode = insert;
         composerFocusPending = true;
+        settingComposerFocus = true;
         conversation.forceActiveFocus(reason);
+        settingComposerFocus = false;
         restoreComposerFocus();
     }
     function restoreComposerFocus(): void {
@@ -44,18 +54,24 @@ FocusScope {
     }
     function openConversation(route: var, reason: int): void {
         conversationFocusReason = reason;
+        conversationInsert = reason === Qt.MouseFocusReason;
         root.hub.openConversation(route);
     }
     function showList(reason = Qt.TabFocusReason): void {
         composerFocusPending = false;
+        composer.leaveInsert();
         creating = false; detail = false;
-        const selected = filtered.findIndex(item => Route.equal(item.route, adapter ? adapter.selectedRoute : null));
-        if (selected >= 0) list.currentIndex = selected;
-        else if (list.currentIndex < 0 && list.count) list.currentIndex = 0;
-        list.focusReason = reason;
-        list.forceActiveFocus(reason);
-        list.positionViewAtIndex(list.currentIndex, ListView.Contain);
+        sidebar.focusList(reason);
     }
+    function openDetails(reason: int): void {
+        detailsReason = reason;
+        if (root.adapter.canManageGroups) {
+            if (root.adapter.selectedConversation.kind === "group") root.adapter.inspectGroup();
+            else if (root.adapter.selectedConversation.kind === "direct") root.adapter.inspectContact(root.adapter.selectedConversation.target);
+        }
+        root.detailsOpen = true;
+    }
+
     Rectangle {
         anchors.fill: parent
         color: Theme.backgroundStrong
@@ -68,7 +84,7 @@ FocusScope {
         anchors.top: parent.top
         anchors.margins: Metrics.space12
         calls: root.adapter ? root.adapter.calls : null
-        downTarget: root.narrow && root.detail ? (callButton.enabled ? callButton : detailsButton) : list
+        downTarget: root.narrow && root.detail ? (callButton.enabled ? callButton : detailsButton) : root.list
     }
     RowLayout {
         anchors.left: parent.left
@@ -77,130 +93,18 @@ FocusScope {
         anchors.top: callBar.visible ? callBar.bottom : parent.top
         anchors.margins: Metrics.space12
         spacing: Metrics.space12
-        ColumnLayout {
+        ConversationSidebar {
             id: sidebar
             visible: !root.narrow || (!root.detail && !root.creating)
-            Layout.preferredWidth: root.narrow ? root.width - 24 : 260
+            Layout.preferredWidth: root.narrow ? root.width - 24 : implicitWidth
             Layout.fillWidth: root.narrow
             Layout.fillHeight: true
-            spacing: Metrics.space8
-            RowLayout {
-                Layout.fillWidth: true
-                Text {
-                    text: qsTr("Wiadomości")
-                    font.family: Theme.fontFamily
-                    font.pixelSize: Metrics.fontSize
-                    font.bold: true
-                    color: Theme.text
-                    Layout.fillWidth: true
-                }
-                UI.NavigationButton {
-                    id: newButton
-                    objectName: "newConversation"
-                    text: qsTr("Nowa rozmowa")
-                    Layout.preferredWidth: Metrics.controlHeight
-                    enabled: root.adapter !== null && root.adapter.canCreate
-                    downTarget: search
-                    contentItem: UI.Glyph { symbol: "add"; color: newButton.foreground }
-                    onClicked: { root.creating = true; root.detail = false; newView.focusInitial(); }
-                }
-            }
-            UI.TextField {
-                id: search
-                objectName: "conversationSearch"
-                Accessible.name: qsTr("Szukaj rozmowy")
-                Layout.fillWidth: true
-                onTextChanged: list.currentIndex = 0
-                Keys.onDownPressed: list.forceActiveFocus(Qt.TabFocusReason)
-                Keys.onEscapePressed: list.forceActiveFocus(Qt.TabFocusReason)
-                Keys.onReturnPressed: { if (root.filtered.length) root.openConversation(root.filtered[list.currentIndex < 0 ? 0 : list.currentIndex].route, Qt.TabFocusReason); }
-            }
-            ListView {
-                id: list
-                objectName: "conversationList"
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                model: root.filtered
-                clip: true
-                spacing: Metrics.space4
-                boundsBehavior: Flickable.StopAtBounds
-                keyNavigationEnabled: false
-                activeFocusOnTab: true
-                property int focusReason: Qt.OtherFocusReason
-                Keys.forwardTo: [listInput]
-                UI.ControlInput { id: listInput; control: list }
-                UI.KineticScroll { id: listScroll; flickable: list }
-                Controls.ScrollBar.vertical: UI.ScrollBar {}
-                Keys.onPressed: event => {
-                    listScroll.reset();
-                    list.cancelFlick();
-                    if (event.modifiers !== Qt.NoModifier && event.modifiers !== Qt.KeypadModifier) return;
-                    if (event.key === Qt.Key_J || event.key === Qt.Key_Down) currentIndex = Math.min(count - 1, currentIndex + 1);
-                    else if ((event.key === Qt.Key_K || event.key === Qt.Key_Up) && currentIndex <= 0 && callBar.visible) callBar.focusInitial();
-                    else if (event.key === Qt.Key_K || event.key === Qt.Key_Up) currentIndex = Math.max(0, currentIndex - 1);
-                    else if (event.key === Qt.Key_H || event.key === Qt.Key_Slash) search.forceActiveFocus(Qt.TabFocusReason);
-                    else if ((event.key === Qt.Key_L || event.key === Qt.Key_Right || event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && currentIndex >= 0 && currentIndex < count) {
-                        if (!event.isAutoRepeat) root.openConversation(root.filtered[currentIndex].route, Qt.TabFocusReason);
-                    }
-                    else return;
-                    positionViewAtIndex(currentIndex, ListView.Contain);
-                    event.accepted = true;
-                }
-                delegate: UI.Button {
-                    id: entry
-                    required property var modelData
-                    required property int index
-                    width: list.width
-                    height: 68
-                    text: modelData.title
-                    focusPolicy: Qt.ClickFocus
-                    highlighted: Route.equal(root.adapter ? root.adapter.selectedRoute : null, modelData.route)
-                    onClicked: { list.currentIndex = index; root.openConversation(modelData.route, focusReason); }
-                    contentItem: Column {
-                        spacing: Metrics.space4
-                        Text {
-                            width: parent.width
-                            text: entry.modelData.title
-                            elide: Text.ElideRight
-                            textFormat: Text.PlainText
-                            font.family: Theme.fontFamily
-                            font.pixelSize: Metrics.fontSize
-                            font.bold: entry.modelData.unreadCount > 0
-                            color: entry.foreground
-                        }
-                        Text {
-                            width: parent.width
-                            text: entry.modelData.serviceName + (entry.modelData.unreadCount ? " · " + entry.modelData.unreadCount : "")
-                            elide: Text.ElideRight
-                            font.family: Theme.fontFamily
-                            font.pixelSize: Metrics.smallFontSize
-                            color: entry.foreground
-                        }
-                    }
-                    background: UI.AccentRectangle {
-                        color: entry.fillColor
-                        radius: Metrics.radius
-                        border.width: Metrics.borderWidth
-                        border.color: entry.down ? Theme.text : entry.highlighted ? Theme.accentBorder : Theme.border
-                        accentFill: entry.accentFill
-                        accentOutline: entry.accentFill && !entry.down
-                        UI.FocusIndicator { control: list; shown: list.currentIndex === entry.index }
-                    }
-                }
-            }
-            UI.NavigationButton {
-                text: root.showHidden ? qsTr("Wszystkie rozmowy") : qsTr("Pokaż ukryte")
-                visible: root.hub.conversations.some(c => c.hidden)
-                onClicked: root.showHidden = !root.showHidden
-            }
-            Text {
-                Layout.fillWidth: true
-                text: root.adapter ? root.adapter.displayName + " · " + root.adapter.statusText : ""
-                color: Theme.textMuted
-                font.family: Theme.fontFamily
-                font.pixelSize: Metrics.smallFontSize
-                elide: Text.ElideRight
-            }
+            hub: root.hub
+            narrow: root.narrow
+            upTarget: callBar.visible ? callBar.firstAction : null
+            onConversationRequested: (route, reason) => root.openConversation(route, reason)
+            onMenuRequested: (route, trigger, reason) => conversationMenu.show(route, trigger, reason)
+            onNewRequested: reason => { root.creating = true; root.detail = false; newView.focusInitial(); }
         }
         Rectangle { visible: !root.narrow; Layout.fillHeight: true; Layout.preferredWidth: 1; color: Theme.border }
         NewConversation {
@@ -227,45 +131,68 @@ FocusScope {
                         objectName: "backToConversations"
                         visible: root.narrow
                         text: qsTr("Wróć")
-                        rightTarget: callButton
+                        rightTarget: detailsButton
                         downTarget: history
                         onClicked: root.showList(focusReason)
                     }
-                    Text {
+                    UI.NavigationButton {
+                        id: detailsButton
+                        objectName: "conversationDetails"
                         Layout.fillWidth: true
-                        objectName: "conversationTitle"
-                        text: root.adapter && root.adapter.selectedConversation ? root.adapter.selectedConversation.title : qsTr("Wiadomości")
-                        color: Theme.text
-                        font.family: Theme.fontFamily
-                        font.pixelSize: Metrics.fontSize
-                        font.bold: true
-                        elide: Text.ElideRight
-                        textFormat: Text.PlainText
+                        Layout.minimumWidth: 48
+                        Layout.preferredHeight: 48
+                        padding: Metrics.space4
+                        visible: root.adapter && root.adapter.selectedConversation !== null
+                        text: qsTr("Szczegóły rozmowy"); tooltip: ""
+                        leftTarget: back.visible ? back : root.list
+                        rightTarget: callButton.visible && callButton.enabled ? callButton : menuButton
+                        upTarget: callBar.visible ? callBar.firstAction : null
+                        downTarget: history
+                        onClicked: root.openDetails(focusReason)
+                        background: Rectangle {
+                            color: detailsButton.down ? Theme.border : "transparent"
+                            UI.FocusIndicator { control: detailsButton }
+                        }
+                        contentItem: RowLayout {
+                            spacing: Metrics.space8
+                            ConversationAvatar {
+                                conversation: root.adapter ? root.adapter.selectedConversation : null
+                                Layout.preferredWidth: 40; Layout.preferredHeight: 40
+                            }
+                            Text {
+                                Layout.fillWidth: true
+                                objectName: "conversationTitle"
+                                text: root.adapter && root.adapter.selectedConversation ? root.adapter.selectedConversation.title : ""
+                                color: Theme.text; font.family: Theme.fontFamily; font.pixelSize: Metrics.fontSize; font.bold: true
+                                elide: Text.ElideRight; textFormat: Text.PlainText
+                            }
+                        }
                     }
                     UI.NavigationButton {
                         id: callButton
                         objectName: "startCall"
                         visible: root.adapter && root.adapter.selectedConversation !== null && root.adapter.selectedConversation.kind === "direct"
                         enabled: root.adapter && root.adapter.canCall
-                        text: qsTr("Zadzwoń")
-                        tooltip: ""
+                        text: qsTr("Zadzwoń"); tooltip: ""
                         Layout.preferredWidth: Metrics.controlHeight
                         contentItem: UI.Glyph { symbol: "call"; color: callButton.foreground }
-                        leftTarget: back.visible ? back : list
-                        rightTarget: detailsButton
+                        leftTarget: detailsButton
+                        rightTarget: menuButton
                         upTarget: callBar.visible ? callBar.firstAction : null
                         downTarget: history
                         onClicked: root.adapter.calls.start(root.adapter.selectedConversation.conversationId)
                     }
                     UI.NavigationButton {
-                        id: detailsButton
-                        objectName: "conversationDetails"
+                        id: menuButton
+                        objectName: "conversationOptions"
                         visible: root.adapter && root.adapter.selectedConversation !== null
-                        text: qsTr("Szczegóły")
-                        leftTarget: callButton
+                        text: qsTr("Zarządzaj rozmową"); tooltip: ""
+                        Layout.preferredWidth: Metrics.controlHeight
+                        contentItem: UI.Glyph { symbol: "more_horiz"; color: menuButton.foreground }
+                        leftTarget: callButton.visible && callButton.enabled ? callButton : detailsButton
                         upTarget: callBar.visible ? callBar.firstAction : null
                         downTarget: history
-                        onClicked: { if (root.adapter.canManageGroups) root.adapter.inspectGroup(); root.detailsOpen = true; }
+                        onClicked: conversationMenu.show(root.adapter.selectedRoute, menuButton, focusReason)
                     }
                 }
                 Flow {
@@ -289,6 +216,14 @@ FocusScope {
                     Layout.fillWidth: true
                     adapter: root.adapter
                 }
+                Text {
+                    Layout.fillWidth: true
+                    visible: root.adapter && !root.adapter.selectedRoute && root.adapter.lastError.length > 0
+                    text: root.adapter ? root.adapter.lastError : ""
+                    wrapMode: Text.Wrap
+                    color: Theme.error; font.family: Theme.fontFamily; font.pixelSize: Metrics.smallFontSize
+                    textFormat: Text.PlainText
+                }
                 MessageSelection {
                     Layout.fillWidth: true
                     visible: history.selecting
@@ -296,6 +231,7 @@ FocusScope {
                 }
                 MessageHistory {
                     id: history
+                    visible: root.adapter !== null && root.adapter.selectedRoute !== null
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     adapter: root.adapter
@@ -306,7 +242,7 @@ FocusScope {
                         root.previewReason = reason; root.previewAttachment = attachment;
                     }
                     onBackRequested: root.showList()
-                    onComposeRequested: root.focusComposer()
+                    onComposeRequested: insert => root.focusComposer(Qt.TabFocusReason, insert)
                 }
                 Text {
                     Layout.fillWidth: true
@@ -320,6 +256,8 @@ FocusScope {
                 }
                 MessageComposer {
                     id: composer
+                    historyTarget: history
+                    onHistoryRequested: history.focusEdge(false)
                     editingEnabled: history.readingEnabled && root.adapter && root.adapter.canSend
                     enabled: root.adapter && root.adapter.canSend
                     visible: root.adapter !== null && root.adapter.selectedRoute !== null
@@ -334,17 +272,33 @@ FocusScope {
         target: root.hub
         function onConversationOpened(_route: var): void {
             root.detail = true; root.creating = false;
-            root.focusComposer(root.conversationFocusReason);
+            if (Route.equal(root.pendingDetailsRoute, _route)) {
+                root.pendingDetailsRoute = null; root.openDetails(root.detailsReason);
+            } else root.focusComposer(root.conversationFocusReason, root.conversationInsert);
+            root.conversationInsert = true;
         }
     }
     Connections {
         target: composer.editor
         function onEnabledChanged(): void { Qt.callLater(root.restoreComposerFocus); }
     }
+    Connections {
+        target: root.Window.window
+        function onActiveFocusItemChanged(): void {
+            if (!root.composerFocusPending || root.settingComposerFocus) return;
+            const item = root.Window.window.activeFocusItem;
+            if (item && item !== conversation && item !== composer.editor) root.composerFocusPending = false;
+        }
+    }
     Loader {
         anchors.fill: parent
         active: root.detailsOpen && root.adapter && root.adapter.selectedConversation !== null
-        sourceComponent: ConversationDetails { adapter: root.adapter; onDismissed: { root.detailsOpen = false; root.focusComposer(); } }
+        sourceComponent: ConversationDetails {
+            adapter: root.adapter
+            initialFocusReason: root.detailsReason
+            onManagementRequested: reason => root.managementReason = reason
+            onDismissed: { root.detailsOpen = false; detailsButton.forceActiveFocus(root.detailsReason); }
+        }
     }
     Loader {
         id: mediaPreview
@@ -361,10 +315,25 @@ FocusScope {
             }
         }
     }
+    ConversationMenu {
+        id: conversationMenu
+        hub: root.hub
+        onActionRequested: reason => root.managementReason = reason
+        onDetailsRequested: (route, reason) => {
+            root.detailsReason = reason;
+            if (Route.equal(route, root.adapter.selectedRoute)) root.openDetails(reason);
+            else { root.pendingDetailsRoute = Route.copy(route); root.openConversation(route, reason); }
+        }
+    }
     Connections {
         target: root.adapter
+        function onConversationManaged(cid: string, action: string, value: bool): void {
+            if (value && ["archived", "markedUnread"].includes(action) && root.adapter.selectedRoute && root.adapter.selectedRoute.conversationId === cid) {
+                root.adapter.closeConversation(); root.showList(root.managementReason);
+            }
+        }
         function onDraftReadyChanged(): void { Qt.callLater(root.restoreComposerFocus); }
-        function onSelectedRouteChanged(): void { root.previewAttachment = null; root.detailsOpen = false; }
+        function onSelectedRouteChanged(): void { root.previewAttachment = null; root.detailsOpen = false; conversationMenu.dismiss(); }
         function onHistoryChanged(_reset: bool): void {
             if (!root.previewAttachment || !root.adapter) return;
             const aid = root.previewAttachment.attachment_id;
@@ -375,6 +344,13 @@ FocusScope {
         }
     }
     Keys.priority: Keys.AfterItem
+    Keys.onPressed: event => {
+        if (event.key === Qt.Key_I && event.modifiers === Qt.NoModifier && conversation.activeFocus
+                && !root.detailsOpen && !root.previewAttachment && !root.creating) {
+            if (!event.isAutoRepeat) root.focusComposer();
+            event.accepted = true;
+        }
+    }
     Keys.onEscapePressed: { if (detailsOpen) detailsOpen = false; else if (creating || conversation.activeFocus || composerFocusPending) showList(); else dismissed(); }
     Component.onCompleted: { detail = adapter !== null && adapter.selectedRoute !== null; }
 }

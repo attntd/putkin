@@ -10,9 +10,18 @@ Item {
     required property var adapter
     readonly property alias editor: editor
     property bool editingEnabled: false
+    property bool insertMode: true
+    property Item historyTarget: null
+    signal historyRequested()
     readonly property bool editing: adapter !== null && !!adapter.editingMessage
     readonly property string value: adapter ? adapter.composerText : ""
-    function syncTyping(): void { if (adapter) adapter.editorActive = editingEnabled && visible && editor.activeFocus; }
+    function syncTyping(): void { if (adapter) adapter.editorActive = insertMode && editingEnabled && visible && editor.activeFocus && !editor.readOnly; }
+    function leaveInsert(): void { insertMode = false; members.close(); editor.deselect(); }
+    function enterInsert(reason = Qt.TabFocusReason): void {
+        if (!editor.enabled || !adapter || adapter.composerBusy) return;
+        insertMode = true; editor.forceActiveFocus(reason);
+    }
+    onInsertModeChanged: { syncTyping(); if (!insertMode) members.close(); }
     onValueChanged: { if (editor.text !== value) sync(); }
     onEditingEnabledChanged: syncTyping()
     onVisibleChanged: syncTyping()
@@ -21,7 +30,7 @@ Item {
     function sync(): void { editor.text = value; }
     function handleReturn(event: var, composing: bool): void {
         if (event.key !== Qt.Key_Return && event.key !== Qt.Key_Enter) return;
-        if (composing || (event.modifiers & Qt.ShiftModifier)) return;
+        if (!insertMode || composing || (event.modifiers & Qt.ShiftModifier)) return;
         event.accepted = true;
         if (!event.isAutoRepeat && (event.modifiers === Qt.NoModifier || event.modifiers === Qt.KeypadModifier) && adapter) adapter.sendComposer();
     }
@@ -66,7 +75,8 @@ Item {
             id: editor
             objectName: "messageEditor"
             enabled: root.adapter !== null && root.adapter.draftReady
-            readOnly: root.adapter !== null && root.adapter.composerBusy
+            readOnly: !root.insertMode || (root.adapter !== null && root.adapter.composerBusy)
+            cursorVisible: activeFocus && !readOnly
             wrapMode: TextEdit.Wrap
             textFormat: TextEdit.PlainText
             selectByMouse: true
@@ -83,14 +93,31 @@ Item {
             Accessible.name: qsTr("Wiadomość")
             Keys.forwardTo: [input]
             Keys.onPressed: event => {
+                if (!root.insertMode) {
+                    if (event.modifiers !== Qt.NoModifier && event.modifiers !== Qt.KeypadModifier) return;
+                    if ([Qt.Key_I, Qt.Key_Return, Qt.Key_Enter].includes(event.key)) {
+                        if (!event.isAutoRepeat) root.enterInsert();
+                    } else if ([Qt.Key_H, Qt.Key_Left].includes(event.key)) {
+                        if (attachButton.enabled) attachButton.forceActiveFocus(Qt.TabFocusReason);
+                    } else if ([Qt.Key_K, Qt.Key_Up].includes(event.key)) root.historyRequested();
+                    else if (![Qt.Key_J, Qt.Key_Down, Qt.Key_L, Qt.Key_Right].includes(event.key)) return;
+                    event.accepted = true; return;
+                }
+                if (event.key === Qt.Key_Escape && !editor.inputMethodComposing && !editor.preeditText.length) {
+                    root.leaveInsert(); event.accepted = true; return;
+                }
                 if (members.handleKey(event)) return;
-                if (event.key === Qt.Key_Escape && root.editing) { root.adapter.cancelEdit(); return; }
                 if (event.key === Qt.Key_V && (event.modifiers & Qt.ControlModifier) && ((event.modifiers & Qt.ShiftModifier) || !editor.canPaste) && root.adapter) {
                     event.accepted = true; root.adapter.pasteImage();
                 } else root.handleReturn(event, editor.inputMethodComposing || editor.preeditText.length > 0);
             }
             onActiveFocusChanged: root.syncTyping()
+            onReadOnlyChanged: root.syncTyping()
             onTextEdited: { if (activeFocus && root.adapter && text !== root.value) root.adapter.editComposer(text); }
+            TapHandler {
+                acceptedButtons: Qt.LeftButton
+                onPressedChanged: if (pressed) root.enterInsert(Qt.MouseFocusReason)
+            }
             UI.ControlInput { id: input; control: editor }
             UI.AccentCoordinates { id: accent; item: editor }
             background: Rectangle {
@@ -112,6 +139,7 @@ Item {
         enabled: root.adapter !== null && root.adapter.canSend && !root.editing
         contentItem: UI.Glyph { symbol: "add"; color: attachButton.foreground }
         rightTarget: editor
+        upTarget: root.historyTarget
         onClicked: files.open()
     }
     FileDialog {
@@ -160,7 +188,7 @@ Item {
     }
     Connections {
         target: root.adapter
-        function onComposerLoaded(): void { root.sync(); editor.forceActiveFocus(Qt.TabFocusReason); }
+        function onComposerLoaded(): void { root.sync(); root.enterInsert(); }
         function onDraftReadyChanged(): void { if (!root.adapter.draftReady) editor.text = ""; }
         function onDraftLoaded(): void { root.sync(); }
         function onSelectedRouteChanged(): void { root.sync(); }

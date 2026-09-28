@@ -1,5 +1,45 @@
 # Testowanie Putkin
 
+## Nawigacja rozmowy i pisanie — 2026-09-28
+
+`tst_message_navigation.qml` wykonuje l/oba Entery w oknie 320/980 px,
+h do załącznika, k/j między dymkami, i do pisania, dwa Escape oraz
+Spację/Enter z powrotem z popupu do tej samej wiadomości. Sprawdza
+readOnly, widoczność natywnego kursora, rzeczywisty fokus, zachowany
+szkic, brak wysyłki w nawigacji, Shift+Enter i typing tylko podczas pisania.
+Paginacja/nowa wiadomość zachowują wybrany dymek; aktualizacja historii
+nie kradnie fokusu pisania. Mysz usuwa ramkę także po powrocie z popupu.
+
+Regresja obejmuje wiadomości, reakcje, media, odczyt, retencję, edycję,
+wzmianki i nagłówek połączeń. `scripts/test-wayland --nested --signal`
+wysyła natywne klawisze przez wtype: wejście w nawigację, załącznik,
+dymek, Spacja, i, tekst hjkli i dwa Escape. Zrzuty są syntetyczne;
+nie uruchamia się drugiego shella produkcyjnego.
+[Wyniki](status.md#nawigacja-rozmowy-i-pisanie--2026-09-28).
+
+## Karty i zarządzanie rozmowami — 2026-09-28
+
+`tests/test_signal_conversations.py` używa prawdziwej prywatnej SQLite oraz
+produkcyjnego bridge z atrapą CLI: archiwum zachowuje szkic i historię,
+przeżywa restart, nowe wiadomości przywracają niewyciszone rozmowy,
+deduplikaty ich nie przywracają, przypięcie usuwa archiwizację, a ręczne
+nieprzeczytanie nie cofa receipts. Sprawdzane są też obce konta,
+niepoprawne wartości, migracja v8 i odczyt 105 wiadomości w dwóch partiach.
+
+`tests/qml/tst_conversations.qml` wykonuje klawiaturę i mysz na produkcyjnym
+widoku: przełączanie kart, odtworzenie preferencji, archiwum i powrót,
+zmianę kolejności, menu, anulowanie, wyciszenie, oznaczenie odczytu,
+awarie zapisu, awatary, nagłówek i małe okno. `scripts/test-signal-messages`
+sprawdza rzeczywiste okno, backend, szkic i reload z atrapą Signal.
+Archiwizacja aktywnej rozmowy sprawdza też wyczyszczenie kursora historii
+i ukrycie jej kontrolek. Kliknięcia czekają na zakończenie układania Qt
+przez `waitForPolish`, aby nie trafić w poprzednie położenie przycisku.
+`scripts/test-messages-input` pobiera właściwy pasek przez dołączone
+`ScrollBar.vertical`, nie pierwszego potomka o wspólnej nazwie; testuje
+rzeczywiste zdarzenia touchpada/myszy, bezwładność oraz wygaszanie.
+Wszystkie przebiegi Qt mają prywatne XDG i D-Bus; brak pełnego shella na pulpicie.
+[Wyniki](status.md#karty-archiwum-i-zarządzanie-rozmowami--2026-09-28).
+
 ## Migający pasek ramki — 2026-09-27
 
 `scripts/test-window-borders --output artifacts/window-borders` uruchamia

@@ -1,5 +1,17 @@
 # Wygląd i zakres Putkin
 
+## Karty i nagłówek rozmów — 2026-09-28
+
+Lista rozwinięta ma awatar, nazwę, podgląd treści, licznik nieprzeczytanych
+oraz oznaczenie przypięcia/wyciszenia. „Ukryj karty” zostawia pasek awatarów
+64 px, „Pokaż karty” odtwarza listę 280 px. Przy szerokości okna poniżej
+680 px lista zajmuje całą stronę; zapisany wybór wraca w szerokim oknie.
+Kwadratowe awatary, inicjały i symbole grup/notatek używają tokenów Putkina.
+Nagłówek ma klikalny awatar z nazwą, połączenie głosowe i menu ⋯.
+Menu rozmowy działa również pod prawym przyciskiem i Menu/Shift+F10 na liście.
+Archiwum to osobna lista, bez usuwania treści i bez mieszania z bieżącymi rozmowami.
+[Zachowanie i fokus](signal/CONVERSATIONS.md). Bez nowych tooltipów ani instrukcji w UI.
+
 ## Fokus, załączniki i lista reakcji — 2026-09-26
 
 Escape na listę rozmów rysuje jedną ramkę wewnątrz wybranego kafelka.
@@ -53,7 +65,8 @@ wiadomości oraz pozostałych widoków używających wspólnego ScrollBar.
 
 W grupie `@` na początku słowa otwiera listę osób nad edytorem. Kolejne
 litery filtrują nazwy. Fokus pozostaje w tekście; góra/dół wybierają osobę,
-Enter wstawia wzmiankę, Escape zamyka listę, Shift+Enter dodaje nowy wiersz.
+Enter wstawia wzmiankę, Escape zamyka listę i kończy pisanie,
+Shift+Enter dodaje nowy wiersz.
 Tab przenosi fokus na listę, gdzie działają h/j/k/l i Enter.
 Kliknięcie osoby przywraca edytor bez ramki klawiatury. Adres e-mail
 nie otwiera listy. Osobny przycisk `@` i jego pusty wiersz są usunięte.
@@ -449,12 +462,20 @@ pozostaje na panelu, aby nadal obsługiwać Escape.
 
 W Message Hubie zwykłe otwarcie kieruje fokus do listy rozmów, a otwarcie
 z powiadomienia do pola pisania wskazanej rozmowy. Strzałki góra/dół i j/k
-wybierają wiersz; Enter/l otwiera go i przenosi fokus do edytora. Escape
-z rozmowy wraca do listy także w szerokim oknie. Pole wiadomości sięga do
-prawej krawędzi obszaru rozmowy, bez przycisku wysyłania. Enter wysyła,
-Shift+Enter wstawia nowy wiersz; litery pozostają tekstem. Historia i lista
+wybierają wiersz; Enter/l otwiera go i ustawia fokus edytora w nawigacji,
+bez kursora pisania. h przechodzi na załącznik, k na ostatni widoczny dymek;
+j/k wybierają kolejne wiadomości i dochodzą do pola/nagłówka. Spacja na
+dymku otwiera reakcje, Enter jego menu. i z pola, dymka lub kontrolki
+rozmowy uruchamia pisanie w edytorze. Escape kończy pisanie, zachowując
+tekst i fokus pola; następne Escape wraca do wybranej rozmowy na liście.
+Tryby nie mają nazw, wskaźników ani podpowiedzi w UI: rozróżnia je tylko
+fokus oraz natywny migający kursor. Kliknięcie pola rozpoczyna pisanie
+bez ramki klawiatury. Wyszukiwanie zachowuje zwykłe wpisywanie liter.
+Pole wiadomości sięga do prawej krawędzi obszaru rozmowy, bez przycisku
+wysyłania. Podczas pisania Enter wysyła, Shift+Enter dodaje wiersz,
+a litery h/j/k/l/i pozostają tekstem. Historia i lista
 rozmów kontynuują rozpędzony gest touchpada po oderwaniu palców.
-[Pełny kontrakt](signal/CONTRACTS.md#sterowanie-message-hubem--2026-09-23).
+[Pełny kontrakt](signal/CONVERSATIONS.md#nawigacja-i-pisanie).
 
 Ustalenie użytkownika z 2026-09-16: **nawigacja Putkin jest vimowa**.
 

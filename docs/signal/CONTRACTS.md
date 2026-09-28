@@ -1,5 +1,19 @@
 # Signal — kontrakty po audycie S00
 
+## Nawigacja rozmowy i pisanie — 2026-09-28
+
+[Aktualny kontrakt](CONVERSATIONS.md#nawigacja-i-pisanie) zastępuje
+wcześniejsze natychmiastowe pisanie po klawiaturowym wyborze wiersza
+oraz Escape anulujący edycję. Wejście przez l/Enter daje nawigację,
+i uruchamia pisanie, Escape kończy pisanie, następne wraca na listę.
+Brak etykiet trybów; jedyne oznaczenia to fokus i natywny kursor.
+
+## Karty i zarządzanie rozmowami — 2026-09-28
+
+[CONVERSATIONS.md](CONVERSATIONS.md) rozszerza listę i nagłówek o tryb
+awatarów, lokalne archiwum, przypięcia, oznaczanie odczytu i menu.
+SQLite v9; poprzednie opisy etapów poniżej pozostają historią wdrożenia.
+
 ## Rozmowy głosowe 1:1 — 2026-09-26
 
 [CALLS.md](CALLS.md) opisuje nowe IPC, interfejs, pin tunelu RingRTC,

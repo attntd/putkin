@@ -7,6 +7,7 @@ import "../../components" as UI
 Controls.Popup {
     id: root
     property Item trigger: null
+    property Item anchorItem: trigger
     property int reason: Qt.MouseFocusReason
     property bool returnFocus: true
     property bool closing: false
@@ -17,12 +18,12 @@ Controls.Popup {
     width: Math.min(preferredWidth, parent ? Math.max(1, parent.width - 16) : preferredWidth)
     height: Math.min(implicitHeight, parent ? Math.max(1, parent.height - 16) : implicitHeight)
     x: {
-        const p = trigger && parent ? trigger.mapToItem(parent, 0, 0) : Qt.point(8, 8);
+        const p = anchorItem && parent ? anchorItem.mapToItem(parent, 0, 0) : Qt.point(8, 8);
         return Math.max(8, Math.min(p.x, parent ? parent.width - width - 8 : 8));
     }
     y: {
-        const p = trigger && parent ? trigger.mapToItem(parent, 0, 0) : Qt.point(8, 8);
-        const below = p.y + (trigger ? trigger.height : 0) + 4;
+        const p = anchorItem && parent ? anchorItem.mapToItem(parent, 0, 0) : Qt.point(8, 8);
+        const below = p.y + (anchorItem ? anchorItem.height : 0) + 4;
         if (preferAbove && p.y - height - 4 >= 8) return p.y - height - 4;
         return Math.max(8, Math.min(below + height <= (parent ? parent.height - 8 : 0) ? below : p.y - height - 4,
             parent ? parent.height - height - 8 : 8));

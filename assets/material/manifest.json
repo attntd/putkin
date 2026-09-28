@@ -374,6 +374,30 @@
     "download": {
       "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/download/default/24px.svg",
       "sha256": "9a9ad266a87dbd92e0d263628d31f3b73b59ab2e0a06ad6a44ac4eafe32b056d"
+    },
+    "menu": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/menu/default/24px.svg",
+      "sha256": "30f1250c0ee5bfc0c4eaf6d4f2b4c25701b84c55af69929e93a5e751084f224d"
+    },
+    "archive": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/archive/default/24px.svg",
+      "sha256": "3ba7422beedd4e1058ee7a3676d079eac48fc840ca2d64f50444811e8b1c37bf"
+    },
+    "unarchive": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/unarchive/default/24px.svg",
+      "sha256": "852ffca91ca9bed0a7abd475363a3d6942290c45c9bb571a315e1d1946bdc4d4"
+    },
+    "push_pin": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/push_pin/default/24px.svg",
+      "sha256": "caf56891bf0baa376b4d00d3622fd188829bd37d174c3cfc5d0776c94f7fefe7"
+    },
+    "person": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/person/default/24px.svg",
+      "sha256": "4541fd03a5b2352263dfbb169aa492af612f8504a00eb48eb5acca9ec8dc464a"
+    },
+    "groups": {
+      "url": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/groups/default/24px.svg",
+      "sha256": "6b4d11047122bc3fb3ba8224281c6a7c9a751d9b8607e84542f9163a14dbfe67"
     }
   }
 }

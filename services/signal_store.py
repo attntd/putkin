@@ -19,12 +19,12 @@ from signal_events import digest, group_id, identifier, integer, message_fingerp
 from signal_paths import private_file
 from signal_transport import Failure
 
-SCHEMA_VERSION = 8
+SCHEMA_VERSION = 9
 PENDING_TTL = 7 * 86400 * 1000
 OUTBOX_TTL = 86400 * 1000  # Unconfirmed content is staging, not an eternal archive.
 PAGE_BYTES = 512 * 1024
 CAPABILITIES = ["conversations.page", "messages.page", "message.get", "conversation.open",
-                "conversation.get", "conversation.preferences", "message.send", "draft.get", "draft.set", "operation.status",
+                "conversation.get", "conversation.preferences", "conversation.read", "messages.preferences", "message.send", "draft.get", "draft.set", "operation.status",
                 "operation.cancel", "operation.retry", "reply.draft.get", "reply.draft.set", "conversation.notifications", "messages.read", "message.edit", "message.react", "message.pin", "message.forward", "message.delete", "conversation.expiration", "typing.set"] + MEDIA_CAPABILITIES
 
 
@@ -136,6 +136,14 @@ class Store:
                 with self.transaction():
                     for row in self.db.execute("SELECT m.message_id,c.account_id FROM messages m JOIN conversations c USING(conversation_id)").fetchall():
                         signal_receipts.apply_message(self, row["account_id"], row["message_id"])
+            if schema <= 8:
+                with self.transaction():
+                    statement = ""
+                    for line in Path(__file__).with_name("signal_schema_v9.sql").read_text().splitlines(keepends=True):
+                        statement += line
+                        if sqlite3.complete_statement(statement):
+                            self.db.execute(statement)
+                            statement = ""
             if self.db.execute("PRAGMA quick_check").fetchone()[0] != "ok":
                 raise Failure("storage_error")
             if self.db.execute("PRAGMA journal_mode=WAL").fetchone()[0] != "wal":
@@ -287,12 +295,15 @@ class Store:
         group = next((v for v in directory["groups"] if v["groupId"] == row["target"]), {})
         title = group.get("name") if row["kind"] == "group" else contact.get("name") or contact.get("profileName") or contact.get("number")
         unread = self.db.execute("SELECT COUNT(*) FROM messages WHERE conversation_id=? AND direction='incoming' AND read_at_ms IS NULL AND kind NOT IN ('deleted','expired')", (cid,)).fetchone()[0]
+        last = self.db.execute("SELECT message_id,body,kind FROM messages WHERE conversation_id=? AND hidden_local=0 ORDER BY order_sequence DESC,message_id DESC LIMIT 1", (cid,)).fetchone()
         return {"conversationId": cid, "kind": row["kind"], "target": row["target"],
                 "title": title or row["title"] or ("Notatka" if row["kind"] == "note" else row["target"]),
                 "searchText": " ".join(str(contact.get(k) or "") for k in ("name", "profileName", "number")),
                 "activityTimestampMs": row["activity_ms"], "expirationSeconds": row["expiration_seconds"],
                 "muted": signal_replies.muted(self, cid), "pinnedMessages": signal_pins.listed(self, cid),
-                "unreadCount": unread, **signal_directory.access(self, account, row, contact, group)}
+                "unreadCount": unread, "lastMessageId": last['message_id'] if last else '',
+                "previewText": (last['body'] or '')[:240] if last and last['kind'] in ('text', 'media') else '',
+                **signal_directory.access(self, account, row, contact, group)}
 
     def touch(self, account, cid, timestamp):
         self.db.execute("UPDATE conversations SET activity_ms=MAX(activity_ms,?) WHERE conversation_id=?", (timestamp, cid))
@@ -442,6 +453,8 @@ class Store:
         signal_interactions.base(self, mid, {} if hidden else signal_retention.clean_metadata(self, cid, event.get("metadata", {})))
         signal_interactions.resolve(self, account, cid)
         signal_interactions.refresh_quotes(self, account, cid, event["author"], event["event_ms"])
+        if not hidden and (event['direction'] == 'outgoing' or not signal_replies.muted(self, cid)):
+            self.db.execute('UPDATE conversation_preferences SET hidden=0 WHERE conversation_id=?', (cid,))
         self.touch(account, cid, event["event_ms"])
         signal_receipts.apply_message(self, account, mid)
         self.notify_message(account, mid)

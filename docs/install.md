@@ -1,5 +1,38 @@
 # Instalacja Putkina
 
+## Nawigacja rozmowy i pisanie — 2026-09-28
+
+Aktywne **`20260928-210607-4d3626da5e34`**, zainstalowane przez
+`scripts/install --shell-only --offline --no-prune --activate`.
+**187 QML PASS** przy pakowaniu; **409 plików runtime** zgodnych ze źródłami.
+Dwa odczyty w odstępie 10 s: jeden stabilny shell i jego właściciel
+powiadomień, Signal `ready/linked`, gotowe idle/lock, brak błędów QML,
+ostrzeżeń i błędów konfiguracji Hyprlanda. Zachowano sumy ustawień,
+skrótów, konfiguracji Signal/uruchamiania i Caffeinate `presentation`.
+Bez migracji — SQLite pozostaje v9. Poprzednie wydanie
+`20260928-202907-dab33dc039b4` również obsługuje v9; starszych nie usuwano.
+[Log](evidence/vim-conversations-20260928/install.log),
+[odbiór](evidence/vim-conversations-20260928/activation.json),
+[wyniki testów](status.md#nawigacja-rozmowy-i-pisanie--2026-09-28).
+
+## Karty, archiwum i zarządzanie rozmowami — 2026-09-28
+
+Aktywne **`20260928-202907-dab33dc039b4`**, zainstalowane na polecenie
+użytkownika przez `scripts/install --shell-only --offline --no-prune --activate`.
+Pakowanie: **187 QML PASS**; **409 plików runtime** odpowiada źródłom.
+Dwa odczyty w odstępie 10 s potwierdziły jedną stabilną instancję,
+jej własność powiadomień, Signal `ready/linked` ze schematem **v9**,
+gotowe idle/lock i brak ostrzeżeń oraz błędów konfiguracji Hyprlanda.
+Zachowano ustawienia, skróty, konfigurację Signal/uruchamiania i Caffeinate
+`presentation`. [Log](evidence/conversations-20260928/install.log),
+[odbiór](evidence/conversations-20260928/activation.json),
+[wyniki testów](status.md#karty-archiwum-i-zarządzanie-rozmowami--2026-09-28).
+
+`previous` wskazuje `20260927-171612-49a8dde683d4`; starszych wydań
+nie usuwano. Baza rozmów przeszła migrację v8→v9, dlatego poprzedni
+runtime v8 nie jest zgodnym rollbackiem i instalator blokuje jego aktywację.
+Nie odtwarzano starszych kopii historii ani kluczy konta.
+
 ## Odcisk i zegar po wznowieniu — 2026-09-27
 
 Aktywne **`20260927-093540-8d0a4069d380`**, zainstalowane przez

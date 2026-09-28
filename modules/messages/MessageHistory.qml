@@ -47,6 +47,9 @@ ListView {
     }
     required property var adapter
     property Item upTarget: null
+    property string focusedMessageId: ""
+    property bool restoringMessageFocus: false
+    property int focusIndex: -1
     property string anchorId: ""
     readonly property string actionsMessageId: actions.opened ? actions.messageId : ""
     property var selectedIds: []
@@ -74,6 +77,10 @@ ListView {
     property bool readingEnabled: false
     property string audioAttachmentId: ""
     property int focusReason: Qt.OtherFocusReason
+    onFocusReasonChanged: {
+        const row = currentItem as MessageRow;
+        if (row) row.focusReason = focusReason;
+    }
     objectName: "messageHistory"
     model: adapter && !resetting && !releasing ? adapter.messages : null
     clip: true
@@ -81,8 +88,65 @@ ListView {
     boundsBehavior: Flickable.StopAtBounds
     cacheBuffer: 400
     keyNavigationEnabled: false
+    Keys.forwardTo: [historyInput]
+    UI.ControlInput { id: historyInput; control: root }
     UI.KineticScroll { id: scroll; flickable: root }
     Controls.ScrollBar.vertical: UI.ScrollBar {}
+    function focusMessage(index: int, reason = Qt.TabFocusReason): void {
+        scroll.reset(); cancelFlick();
+        if (index < 0) {
+            const target = headerItem && headerItem.visible && headerItem.enabled ? headerItem : upTarget;
+            if (target) target.forceActiveFocus(reason);
+            return;
+        }
+        if (index >= count) { composeRequested(false); return; }
+        followEnd = false;
+        currentIndex = index;
+        focusedMessageId = adapter.messages.get(index).messageId;
+        positionViewAtIndex(index, ListView.Contain); forceLayout();
+        const item = itemAtIndex(index) as MessageRow;
+        if (item) { root.focusReason = reason; item.focusReason = reason; item.forceActiveFocus(reason); }
+    }
+    function focusEdge(first: bool): void {
+        const visibleRows = contentItem.children.filter(item => item.objectName === "messageBubble"
+            && item.y + item.height > contentY && item.y < contentY + height).sort((a, b) => a.index - b.index);
+        const item = visibleRows.length ? visibleRows[first ? 0 : visibleRows.length - 1] : null;
+        focusMessage(item ? item.index : first ? 0 : count - 1);
+    }
+    function navigate(event: var, index: int): void {
+        scroll.reset(); cancelFlick();
+        if (event.modifiers !== Qt.NoModifier && event.modifiers !== Qt.KeypadModifier
+                && !(event.key === Qt.Key_F10 && event.modifiers === Qt.ShiftModifier)) return;
+        const row = itemAtIndex(index) as MessageRow;
+        if ([Qt.Key_K, Qt.Key_Up].includes(event.key)) focusMessage(index - 1);
+        else if ([Qt.Key_J, Qt.Key_Down].includes(event.key)) focusMessage(index + 1);
+        else if ([Qt.Key_H, Qt.Key_Left].includes(event.key)) {
+            if (row && row.outgoing && row.toolsVisible && row.lastAction.enabled) row.lastAction.forceActiveFocus(Qt.TabFocusReason);
+            else backRequested();
+        } else if ([Qt.Key_L, Qt.Key_Right].includes(event.key)) {
+            if (row && !row.outgoing && row.toolsVisible && row.firstAction.enabled) row.firstAction.forceActiveFocus(Qt.TabFocusReason);
+            else composeRequested(false);
+        } else if (event.key === Qt.Key_Escape) { if (selecting) clearSelection(); else backRequested(); }
+        else if ([Qt.Key_Space, Qt.Key_Return, Qt.Key_Enter, Qt.Key_Menu, Qt.Key_F10].includes(event.key)) {
+            if (row && !event.isAutoRepeat && readingEnabled && !row.system) {
+                if (event.key === Qt.Key_Space) {
+                    if (row.canReact) showActions(row.messageId, row, Qt.TabFocusReason, "reactions");
+                } else showActions(row.messageId, row, Qt.TabFocusReason, "menu");
+            }
+        } else return;
+        event.accepted = true;
+    }
+    onActiveFocusChanged: if (activeFocus) entryFocus.restart()
+    Timer {
+        id: entryFocus
+        interval: 0
+        onTriggered: {
+            if (!root.Window.window || root.Window.window.activeFocusItem !== root) return;
+            const index = root.adapter ? Array.from({length: root.count}, (_, i) => root.adapter.messages.get(i).messageId).indexOf(root.focusedMessageId) : -1;
+            if (index >= 0) root.focusMessage(index);
+            else root.focusEdge(false);
+        }
+    }
     function revealControl(item: Item): void {
         const top = item.mapToItem(contentItem, 0, 0).y;
         if (top < contentY) { followEnd = false; contentY = top; }
@@ -133,6 +197,10 @@ ListView {
     }
     function capture(reset: bool): void {
         if (restoring || releasing) return;
+        restoringMessageFocus = !reset && root.activeFocus && root.Window.window
+            && root.Window.window.activeFocusItem && root.Window.window.activeFocusItem.objectName === "messageBubble";
+        focusIndex = currentIndex;
+        if (reset) focusedMessageId = "";
         followEnd = reset || endVisible() || count === 0;
         anchorId = "";
         for (let i = 0; i < count; i++) {
@@ -159,6 +227,12 @@ ListView {
             }
         }
         restoring = false;
+        if (restoringMessageFocus && activeFocus) {
+            let index = -1;
+            for (let i = 0; i < count; i++) if (adapter.messages.get(i).messageId === focusedMessageId) { index = i; break; }
+            focusMessage(index >= 0 ? index : Math.min(focusIndex, count - 1));
+        }
+        restoringMessageFocus = false;
     }
     function settleEnd(): void {
         if (followEnd && !moving && visible && width > 0 && height > 0) { forceLayout(); positionViewAtEnd(); }
@@ -171,43 +245,37 @@ ListView {
     onContentHeightChanged: { scheduleEnd(); scheduleRead(); }
     Keys.onPressed: event => {
         root.focusReason = Qt.TabFocusReason;
-        scroll.reset();
-        cancelFlick();
-        if (event.modifiers !== Qt.NoModifier) return;
-        if (event.key === Qt.Key_K || event.key === Qt.Key_Up) {
-            if (atYBeginning && upTarget && upTarget.visible && upTarget.enabled) {
-                upTarget.forceActiveFocus(Qt.TabFocusReason);
-                event.accepted = true;
-                return;
-            }
-            followEnd = false;
-            contentY = Math.max(originY, contentY - 48);
-        } else if (event.key === Qt.Key_J || event.key === Qt.Key_Down) {
-            contentY = Math.min(originY + Math.max(0, contentHeight - height), contentY + 48);
-            followEnd = atYEnd;
-        }
-        else if (event.key === Qt.Key_Escape) { if (selecting) clearSelection(); else root.backRequested(); }
-        else if (event.key === Qt.Key_H) root.backRequested();
-        else if (event.key === Qt.Key_L || event.key === Qt.Key_Return) root.composeRequested();
-        else return;
-        event.accepted = true;
+        if (root.Window.window && root.Window.window.activeFocusItem === root && count > 0
+                && ![Qt.Key_Escape, Qt.Key_I].includes(event.key)) focusEdge(event.key === Qt.Key_J || event.key === Qt.Key_Down);
+        navigate(event, currentIndex >= 0 ? currentIndex : count - 1);
     }
     signal backRequested()
-    signal composeRequested()
+    signal composeRequested(bool insert)
     signal previewRequested(var attachment, int reason)
     header: UI.NavigationButton {
+        id: older
         objectName: "olderMessages"
         width: root.width
         height: visible ? implicitHeight + Metrics.space8 : 0
         visible: root.adapter !== null && root.adapter.nextCursor !== null
         enabled: root.adapter !== null && !root.adapter.loading
         text: qsTr("Starsze wiadomości")
+        upTarget: root.upTarget
         downTarget: root
         onClicked: root.adapter.loadMore()
     }
     delegate: MessageRow {}
-    component MessageRow: Item {
+    component MessageRow: Controls.Control {
         id: row
+        objectName: "messageBubble"
+        focusPolicy: Qt.TabFocus
+        onFocusReasonChanged: if (activeFocus || focusReason === Qt.MouseFocusReason) root.focusReason = focusReason
+        Keys.forwardTo: [rowInput]
+        UI.ControlInput { id: rowInput; control: row }
+        Keys.onPressed: event => root.navigate(event, row.index)
+        onActiveFocusChanged: if (activeFocus) {
+            root.focusedMessageId = messageId; root.currentIndex = index;
+        }
         required property int index
         required property bool system
         required property string receiptsJson
@@ -261,10 +329,13 @@ ListView {
             message: row
             history: root
             visible: !root.selecting && !row.system && (row.canDeleteLocal || row.canReact || row.canReply || row.canEdit)
-            revealed: hover.hovered
+            revealed: hover.hovered || row.activeFocus
             x: row.outgoing ? column.x - width - Metrics.space4 : column.x + column.width + Metrics.space4
             y: column.y + (column.height - height) / 2
         }
+        readonly property bool toolsVisible: tools.visible
+        readonly property alias firstAction: tools.firstAction
+        readonly property alias lastAction: tools.lastAction
         UI.NavigationButton {
             id: selectionButton
             objectName: "messageSelection"
@@ -298,6 +369,11 @@ ListView {
             border.width: 1
             accentFill: row.accented
             accentOutline: row.accented
+            UI.FocusIndicator {
+                control: row
+                border.color: row.accented ? row.foreground : Theme.focus
+                accentOutline: !row.accented
+            }
         }
         Column {
             id: column

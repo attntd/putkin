@@ -324,6 +324,21 @@ class Bridge:
             return signal_replies.set_draft(self.store, account, params)
         if method == "conversation.preferences":
             return signal_directory.preferences(self.store, account, params)
+        if method == "messages.preferences":
+            return signal_directory.layout(self.store, account, params)
+        if method == "conversation.read":
+            if self.account_state != "linked" or self.state not in ("ready", "reconnecting"):
+                raise Failure("account_unlinked")
+            item = self.store.conversation_item(account, params.get('conversationId'))
+            if not item['canRead']:
+                raise Failure('invalid_request')
+            anchor = params.get('throughMessageId', item['lastMessageId'])
+            result = signal_receipts.mark_visible(self.store, account, {'conversationId': item['conversationId'],
+                'throughMessageId': anchor}) if anchor else {'messageIds': [], 'hasMore': False}
+            signal_directory.preferences(self.store, account, {'conversationId': item['conversationId'], 'markedUnread': False})
+            self.wake_outbox.set()
+            self.schedule_cleanup()
+            return dict(result, throughMessageId=anchor)
         if method == "conversation.notifications":
             return signal_replies.configure(self.store, account, params)
         if method == "messages.read":

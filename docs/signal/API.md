@@ -1,8 +1,27 @@
 # Signal — zweryfikowane API S00
 
+## Organizacja rozmów — 2026-09-28
+
+SQLite **v9**, IPC v1, bez zmiany CLI/retencji. `conversation.get` i elementy
+`conversations.page` dodają `archived`, `pinned`, `markedUnread`,
+`lastMessageId` i `previewText` (do 240 znaków, bez treści redagowanych).
+`hidden` pozostaje zgodnym aliasem `archived`.
+
+- `conversation.preferences`: `conversationId` i co najmniej jeden boolean
+  `archived`/`hidden`, `pinned`, `markedUnread`. Archiwizacja odpina;
+  przypięcie przywraca z archiwum. Sprzeczne aliasy/archiwizacja z przypięciem są odrzucane.
+- `conversation.read`: `conversationId`, opcjonalnie `throughMessageId`.
+  Pierwsza odpowiedź ustala kotwicę; zwraca `messageIds`, `hasMore`,
+  `throughMessageId`. Kolejne żądania używają tej samej kotwicy.
+- `messages.preferences`: bez zmiany odczytuje układ; boolean `cardsCollapsed`
+  zapisuje wybór dla bieżącego konta.
+
+Te preferencje są lokalne. Nie deklarujemy synchronizacji archiwum,
+przypięć ani ręcznego nieprzeczytania z telefonem.
+
 ## Kolejność i akcje wiadomości — 2026-09-26
 
-Aktualny schemat to **SQLite v8**, nadal IPC v1 i signal-cli 0.14.8 JVM
+Schemat poprzedniego rozszerzenia to **SQLite v8**, nadal IPC v1 i signal-cli 0.14.8 JVM
 z putkin-retention-2. Wiadomość dodaje `orderSequence`, `canForward`,
 `canPin` i `pinned`. `orderSequence` jest trwałą kolejnością przyjęcia;
 `sortTimestampMs` nadal dostarcza datę i HH:mm, bez porządkowania historii.

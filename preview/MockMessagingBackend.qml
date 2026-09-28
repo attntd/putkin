@@ -21,6 +21,8 @@ MockSignalBackend {
     property var operations: ({})
     property string replyResult: "sent"
     property string interactionError: ""
+    property string conversationError: ""
+    property bool cardsCollapsed: false
     property var directory: ({contacts: [
         {serviceId: "aci:peer", name: "Alicja", number: "+12025550101", profileName: "", blocked: false},
         {serviceId: "aci:other", name: "Łukasz", number: "+12025550102", profileName: "", blocked: false}
@@ -28,10 +30,12 @@ MockSignalBackend {
     function seed(): void {
         calls = []; held = []; holdResponses = false; sentCount = 0;
         voiceCall = null;
+        cardsCollapsed = false; conversationError = "";
         replyDrafts = ({}); operations = ({}); replyResult = "sent"; interactionError = "";
         accountState = "linked"; accountId = "account-a"; serviceState = "ready";
         configuration = ({enabled: true});
         capabilities = ["account.directory", "conversations.page", "conversation.get", "conversation.open", "messages.page", "message.get", "draft.get", "draft.set", "message.send", "recipient.resolve", "reply.draft.get", "reply.draft.set", "conversation.notifications", "operation.retry", "messages.read", "message.delete", "conversation.expiration", "message.pin", "message.forward"];
+        capabilities = capabilities.concat(["conversation.preferences", "conversation.read", "messages.preferences"]);
         groupOps = []; groupResult = "succeeded";
         if (callsEnabled) capabilities = capabilities.concat(["call.status", "call.start", "call.accept", "call.reject", "call.hangup", "call.mute", "call.dismiss"]);
         if (groupsEnabled) capabilities = capabilities.concat(["group.create", "group.operations", "group.get", "group.update", "group.join", "group.quit", "group.reconcile", "directory.refresh", "directory.profile", "directory.avatar", "conversation.accept", "conversation.block", "conversation.preferences"]);
@@ -60,6 +64,19 @@ MockSignalBackend {
         let error = null;
         const cid = params.conversationId;
         if (params.accountId !== accountId) error = {code: "account_mismatch"};
+        else if (conversationError && ["conversation.preferences", "conversation.read", "messages.preferences"].includes(method)) error = {code: conversationError};
+        else if (method === "messages.preferences") {
+            if (params.cardsCollapsed !== undefined) cardsCollapsed = params.cardsCollapsed;
+            result = {cardsCollapsed: cardsCollapsed};
+        }
+        else if (method === "conversation.read") {
+            const row = rows.find(c => c.conversationId === cid);
+            const messages = history[cid] || [];
+            messages.forEach(m => m.unread = false);
+            row.unreadCount = 0; row.markedUnread = false;
+            result = {messageIds: messages.map(m => m.messageId), hasMore: false};
+            Qt.callLater(() => root.event("conversation.changed", {accountId: root.accountId, conversationId: cid}));
+        }
         else if (method.startsWith("call.")) {
             if (method === "call.start") voiceCall = {accountId: accountId, conversationId: cid, title: "Alicja", callId: "-9223372036854775807", state: "RINGING_OUTGOING", isOutgoing: true, muted: false, connectedAtMs: 0, errorCode: ""};
             else if (method === "call.accept") voiceCall = Object.assign({}, voiceCall, {state: "CONNECTED", connectedAtMs: Date.now()});
@@ -144,7 +161,12 @@ MockSignalBackend {
             result = rows.find(r => r.conversationId === cid);
             if (method === "conversation.accept") { result.canRead = true; result.canSend = true; result.requestState = "accepted"; }
             else if (method === "conversation.block") { result.blocked = params.blocked; result.canSend = !params.blocked; result.canRead = !params.blocked; result.requestState = params.blocked ? "blocked" : "accepted"; }
-            else result.hidden = params.hidden;
+            else {
+                for (const field of ["hidden", "archived", "pinned", "markedUnread"]) if (params[field] !== undefined) result[field] = params[field];
+                if (params.archived !== undefined) { result.hidden = params.archived; if (params.archived) result.pinned = false; }
+                if (params.hidden !== undefined) result.archived = params.hidden;
+                if (params.pinned) { result.hidden = false; result.archived = false; }
+            }
             Qt.callLater(() => root.event("conversation.changed", {accountId: root.accountId, conversationId: cid}));
         }
         else if (method === "conversations.page") result = {items: rows, nextCursor: null};

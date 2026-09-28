@@ -1,5 +1,154 @@
 # Status implementacji
 
+## Nawigacja rozmowy i pisanie — 2026-09-28
+
+**Wdrożone lokalnie: `20260928-210607-4d3626da5e34`.**
+
+Wejście przez l/Enter ustawia fokus pola bez pisania i bez migającego
+kursora. h prowadzi do załącznika, k do dymka; j/k wybierają wiadomości,
+Spacja otwiera reakcje, Enter menu. i z pola/dymka/kontrolki rozmowy
+uruchamia pisanie. Escape zachowuje tekst i wraca do nawigacji, następne
+wraca do listy. Nie dodano etykiet trybów, wskaźników ani podpowiedzi.
+Pisanie wyróżnia natywny kursor; ramka pozostaje wyłącznie klawiaturowa.
+
+Kliknięcie pola uruchamia pisanie. Popup oddaje fokus tej samej wiadomości,
+paginacja i aktualizacja historii zachowują jej ID. Wyszukiwanie nadal
+wpisuje litery; odpowiedź/edycja oraz jawne otwarcie z powiadomienia
+kierują do pisania. Escape nie kasuje szkicu ani bufora edycji i zatrzymuje
+typing. Schemat SQLite v9 i bridge nie zmieniły się w tej korekcie.
+
+Walidacja na syntetycznych danych, prywatnych XDG/D-Bus i Waylandzie:
+
+- `scripts/check`: **299 QML PASS**, zero błędów;
+  [log](evidence/vim-conversations-20260928/check-final.log).
+- Osiem pakietów QML: **109 różnych przypadków PASS**, w tym
+  [17 nawigacji](evidence/vim-conversations-20260928/qml-focus-final.log),
+  29 wiadomości, 12 akcji, 15 mediów, 8 receipts, 8 retencji,
+  10 interakcji oraz 10 połączeń. [Przebieg regresji](evidence/vim-conversations-20260928/qml-final.log)
+  zawiera dwa wcześniejsze niepowodzenia ramki myszy; ostatni pakiet
+  nawigacji potwierdza ich naprawę bez ostrzeżeń Qt.
+- [Prywatny Wayland](evidence/vim-conversations-20260928/wayland-final/signal-report.json):
+  **10 scenariuszy PASS**, w tym natywne wejście w nawigację, załącznik,
+  dymek, reakcje, i, hjkli i dwa Escape. Pozostałe scenariusze obejmują
+  powiadomienia, skalę 1,5, dwa monitory, blokadę, wzmianki i reload.
+  [Sprzątanie](evidence/vim-conversations-20260928/wayland-final/cleanup.json): **PASS**.
+- [Przewijanie](evidence/vim-conversations-20260928/input-final/input.log):
+  **PASS** dla listy/historii, touchpada/myszy, bezwładności i przerwania klawiszem.
+- [Rzeczywiste wejście Qt](evidence/vim-conversations-20260928/ime-input.log):
+  **2 scenariusze PASS** — URL/FileDialog oraz IME preedit/commit,
+  hjkl/Unicode/Shift+Enter i pojedyncza wysyłka.
+- [Okno z produkcyjnym bridge](evidence/vim-conversations-20260928/integration.json):
+  **5 scenariuszy PASS**; szkic, historia, karty i archiwum po reloadzie,
+  zero błędów QML i pozostawionych procesów.
+
+Wczesne próby wymagały poprawki przekazywania powodu fokusu i zastąpienia
+delegata standardową kontrolką Qt; obsługę kliknięcia obejmuje wspólny
+ControlInput także wewnątrz dymka. Test przewijania wybiera teraz górny
+widoczny dymek przed przejściem k, ponieważ klawisz wybiera wiadomość,
+a nie przesuwa historię o stałą liczbę pikseli.
+
+[Fokus dymka](evidence/vim-conversations-20260928/normal-bubble.png),
+[pisanie](evidence/vim-conversations-20260928/insert.png),
+[pole po Escape](evidence/vim-conversations-20260928/normal-editor.png).
+Nie wykonano ręcznego odbioru wymiany wiadomości z prawdziwym telefonem;
+wysyłki testowe trafiały do atrap. Nie uruchomiono drugiego pełnego
+shella na pulpicie. [Kontrakt](signal/CONVERSATIONS.md#nawigacja-i-pisanie).
+
+Zainstalowano przez `scripts/install --shell-only --offline --no-prune --activate`:
+**187 QML PASS** przy pakowaniu i **409 plików runtime** zgodnych ze źródłami.
+Dwa odczyty w odstępie 10 s potwierdziły jedną stabilną instancję,
+jej własność powiadomień i Signal `ready/linked`, bez błędów ani ostrzeżeń.
+Sumy ustawień, skrótów, konfiguracji Signal/uruchamiania oraz Caffeinate
+`presentation` zachowano. SQLite pozostała v9. `previous` wskazuje
+`20260928-202907-dab33dc039b4`; starszych wydań nie usuwano.
+[Plan](evidence/vim-conversations-20260928/install-plan.json),
+[instalacja](evidence/vim-conversations-20260928/install.log),
+[odbiór aktywnej wersji](evidence/vim-conversations-20260928/activation.json).
+
+## Karty, archiwum i zarządzanie rozmowami — 2026-09-28
+
+**Wdrożone lokalnie: `20260928-202907-dab33dc039b4`.**
+
+Przycisk nad listą przełącza pełne karty na wąski pasek awatarów i liczników.
+Preferencja przeżywa restart, a zwijanie zachowuje otwartą rozmowę i szkic.
+Archiwum jest osobną listą; archiwizacja zachowuje historię, media i szkice.
+Menu wiersza i nagłówka udostępnia archiwizację/przywracanie, przypięcie,
+odczyt/nieprzeczytanie, wyciszenie i szczegóły. Nagłówek łączy awatar,
+nazwę, istniejące połączenie głosowe oraz menu. Awatary korzystają
+z kontrolowanego magazynu, z inicjałami/symbolem jako zastępstwem zdjęcia.
+GUI zachowuje tokeny, geometrię i wspólny gradient Putkina, bez tooltipów.
+
+Menu i nagłówek obsługują h/j/k/l, Enter i Escape; pola zachowują litery.
+Fokus wraca do właściwego wiersza również po zmianie kolejności. Mysz usuwa
+ramkę klawiatury. Archiwizacja aktywnej rozmowy czyści jej widok i przenosi
+fokus na listę. Naprawiono też widoczność wspólnego paska podczas bezwładnego
+przewijania: stan aktywnego ruchu zapobiega przerywaniu animacji przez timer.
+
+Walidacja na prywatnych XDG/D-Bus i atrapach Signal:
+
+- `scripts/check`: **298 QML PASS**, zero błędów;
+  [log](evidence/conversations-20260928/check-final.log).
+  Ostatnia korekta wspólnego paska i jego testu: **2 QML PASS**;
+  [log](evidence/conversations-20260928/check-scrollbar.log).
+- Python Signal: **198 różnych testów zakończonych PASS**.
+  [Pełny przebieg](evidence/conversations-20260928/python-signal.log)
+  dał 192 PASS i 6 błędów uruchomienia podprocesów w sandboxie;
+  [powtórka tych sześciu](evidence/conversations-20260928/python-sandbox-retry.log)
+  poza tym ograniczeniem, nadal na prywatnych danych: **6 PASS**.
+  [Nowy pakiet](evidence/conversations-20260928/python-final.log): **8 PASS**,
+  w tym migracja SQLite v8→v9, trwałość i odczyt 105 wiadomości w dwóch partiach.
+- [Nowe zachowania QML](evidence/conversations-20260928/conversations.log):
+  **14 PASS**. Dziesięć pakietów QML (rozmowy, wiadomości, grupy, połączenia,
+  akcje, receipts, powiadomienia, media, retencja i ikony): **232 PASS**;
+  [przebieg](evidence/conversations-20260928/qml-final.log),
+  [powtórka po korekcie zamykania](evidence/conversations-20260928/qml-archive-reset.log).
+- Po ostatniej korekcie paska [wiadomości](evidence/conversations-20260928/qml-scrollbar-final.log):
+  **29 PASS**, w tym ukrycie przy samym hover. Dodatkowa regresja
+  [launchera](evidence/conversations-20260928/launcher.log): **77 PASS**.
+- [Produkcyjny bridge i okno](evidence/conversations-20260928/integration-final.json):
+  **5 scenariuszy PASS**, w tym archiwum, układ kart, szkic i historia po
+  twardym reloadzie. Zero błędów QML i pozostawionych własnych procesów.
+- [Przewijanie](evidence/conversations-20260928/input-final/input.log):
+  **PASS** dla listy i historii, obu kierunków, touchpada/myszy, hamowania,
+  przerwania gestem/klawiszem, granic oraz znikania paska po ruchu.
+- [Prywatny Wayland](evidence/conversations-20260928/wayland/signal-report.json):
+  **9 scenariuszy PASS**, w tym fokus, media, małe/duże okno, skala 1,5,
+  dwa monitory, hotplug, blokada, wzmianki i reload. To regresja natywnego
+  okna; nowe akcje kart pokrywają testy QML i produkcyjnego bridge.
+  [Sprzątanie](evidence/conversations-20260928/wayland/cleanup.json): **PASS**.
+
+Pierwsze próby ujawniły brak akceptacji schematu v9 w ramkach QML,
+odłożone wywołanie po zniszczeniu listy oraz wyścig fokusu i geometrii
+przycisków. Poprawiono kod i synchronizację testów, bez wyciszania ostrzeżeń.
+Test przewijania najpierw wybierał pasek ukrytego menu; po wskazaniu
+właściwego wykrył rzeczywisty problem animacji, również naprawiony.
+Weryfikacja hover wymagała zawężenia warunku do `Flickable.moving`,
+ponieważ `ScrollBar.active` obejmuje również najechanie kursorem.
+
+[Zwinięta lista](evidence/conversations-20260928/rail.png),
+[archiwum](evidence/conversations-20260928/archive.png),
+[nagłówek](evidence/conversations-20260928/header-wide.png),
+[małe okno](evidence/conversations-20260928/header-narrow.png).
+[Kontrakt i granice](signal/CONVERSATIONS.md): archiwum, przypięcia
+i ręczny znacznik nieprzeczytania są lokalne, bez synchronizacji z telefonem.
+SQLite v9 wymaga zgodnego runtime; starszy v8 nie jest zgodnym rollbackiem.
+Nie wykonano odbioru wymiany wiadomości z prawdziwym telefonem.
+Nie uruchamiano drugiego pełnego shella na pulpicie.
+
+Na polecenie użytkownika zainstalowano i aktywowano wydanie przez
+`scripts/install --shell-only --offline --no-prune --activate`.
+Pakowanie: **187 QML PASS**, wszystkie **409 plików runtime** zgodne
+ze źródłami. Aktywna baza Signal przeszła migrację **v8→v9**;
+dwa odczyty w odstępie 10 s potwierdziły `ready/linked`, stabilny proces,
+jedną instancję shella i właściwego właściciela powiadomień. Brak błędów
+QML, ostrzeżeń i błędów konfiguracji Hyprlanda. Sumy ustawień, skrótów,
+konfiguracji Signal i uruchamiania zachowano, podobnie Caffeinate `presentation`.
+[Plan](evidence/conversations-20260928/install-plan.json),
+[log instalacji](evidence/conversations-20260928/install.log),
+[odbiór aktywnej wersji](evidence/conversations-20260928/activation.json).
+Poprzednie `20260927-171612-49a8dde683d4` i starsze wydania zachowano;
+instalator blokuje powrót do runtime v8 po migracji danych do v9.
+
 ## Powiadomienia o aktualizacjach i zamykanie panelu — 2026-09-27
 
 `Super+N` używa `notifications toggle`: ponowne wywołanie zwalnia fokus

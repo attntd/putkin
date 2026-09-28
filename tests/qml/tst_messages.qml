@@ -53,7 +53,7 @@ Item {
             compare(bar.contentItem.opacity, 0);
             mouseMove(bar, bar.width / 2, bar.height / 2);
             wait(300); compare(bar.contentItem.opacity, 0);
-            history.forceActiveFocus(Qt.TabFocusReason);
+            history.focusEdge(true);
             keyClick(Qt.Key_K);
             tryVerify(() => bar.contentItem.opacity > .5);
             tryCompare(bar.contentItem, "opacity", 0, 1800);
@@ -95,6 +95,8 @@ Item {
             (view.item as MessagesView).focusInitial(true);
             tryVerify(() => control("messageEditor").activeFocus);
             keyClick(Qt.Key_Escape);
+            verify(control("messageEditor").activeFocus && control("messageEditor").readOnly);
+            keyClick(Qt.Key_Escape);
             verify(control("conversationList").activeFocus);
             compare(control("conversationList").currentIndex, 1);
             (view.item as MessagesView).focusInitial(true);
@@ -132,6 +134,7 @@ Item {
             compare(editor.text, "h");
             verify(findChild(editor, "focusIndicator").visible);
             keyClick(Qt.Key_Escape);
+            verify(editor.readOnly); keyClick(Qt.Key_Escape);
             verify(list.activeFocus);
         }
         function test_escape_focus_stays_on_selected_tile_data() {
@@ -149,7 +152,7 @@ Item {
             const first = list.itemAtIndex(0);
             mouseClick(first, first.width / 2, first.height / 2);
             tryVerify(() => control("messageEditor").activeFocus);
-            keyClick(Qt.Key_Escape);
+            keyClick(Qt.Key_Escape); keyClick(Qt.Key_Escape);
             keyClick(Qt.Key_J); keyClick(Qt.Key_Return);
             tryVerify(() => control("messageEditor").activeFocus && adapter.draftReady);
             mouseMove(scene, scene.width - 2, 2);
@@ -254,6 +257,7 @@ Item {
             tryVerify(() => adapter.draftReady);
             const editor = control("messageEditor");
             editor.forceActiveFocus(Qt.TabFocusReason);
+            verify(editor.readOnly); keyClick(Qt.Key_I);
             for (const c of "hjkl") keyClick(c);
             compare(editor.text, "hjkl");
             keyClick(Qt.Key_Return, Qt.ShiftModifier);
@@ -331,7 +335,7 @@ Item {
             choose();
             verifyLatest();
             const history = control("messageHistory");
-            history.forceActiveFocus(Qt.TabFocusReason);
+            history.focusEdge(true);
             for (let i = 0; i < 8; i++) keyClick(Qt.Key_K);
             verify(!history.atYEnd);
             verify(!history.followEnd);

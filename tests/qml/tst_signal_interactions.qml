@@ -48,7 +48,9 @@ Item {
             for (const c of "hjkl") keyClick(c);
             compare(editor.text, "hjkl"); compare(adapter.draftText, "Zwykły szkic");
             keyClick(Qt.Key_Return, Qt.ShiftModifier); compare(editor.text, "hjkl\n");
-            keyClick(Qt.Key_Escape); compare(editor.text, "Zwykły szkic");
+            keyClick(Qt.Key_Escape); compare(editor.text, "hjkl\n"); verify(editor.readOnly);
+            verify(adapter.editingMessage !== null);
+            control("cancelMessageMode").click(); compare(editor.text, "Zwykły szkic");
             verify(adapter.beginEdit("own"));
             backend.interactionError = "version_conflict";
             adapter.editComposer("Poprawiona"); adapter.sendComposer();
@@ -78,9 +80,9 @@ Item {
             keyClick(Qt.Key_A); keyClick(Qt.Key_B); keyClick(Qt.Key_C);
             compare(backend.calls.filter(c => c.method === "typing.set" && c.params.active).length, 1);
             keyClick(Qt.Key_Escape);
-            verify(control("conversationList").activeFocus);
+            verify(editor.activeFocus && editor.readOnly);
             compare(backend.calls.filter(c => c.method === "typing.set" && !c.params.active).length, 1);
-            editor.forceActiveFocus(Qt.TabFocusReason); keyClick(Qt.Key_D);
+            keyClick(Qt.Key_I); keyClick(Qt.Key_D);
             (view.item as MessagesView).readingEnabled = false;
             verify(!adapter.editorActive); verify(!adapter.typingSent);
             (view.item as MessagesView).readingEnabled = true;
@@ -137,7 +139,8 @@ Item {
             const editor = control("messageEditor"); editor.forceActiveFocus(Qt.TabFocusReason);
             keyClick(Qt.Key_At); tryCompare(control("mentionPicker"), "opened", true);
             keyClick(Qt.Key_Escape); tryCompare(control("mentionPicker"), "visible", false);
-            verify(editor.activeFocus); compare(editor.text, "@");
+            verify(editor.activeFocus && editor.readOnly); compare(editor.text, "@");
+            keyClick(Qt.Key_I);
             keyClick(Qt.Key_Backspace); keyClick(Qt.Key_A); keyClick(Qt.Key_At);
             compare(control("mentionPicker").visible, false);
             editor.selectAll(); keyClick(Qt.Key_At);
@@ -192,7 +195,9 @@ Item {
                     || Math.abs(before.blue(x, y) - restored.blue(x, y)) > 1
                     || before.alpha(x, y) !== restored.alpha(x, y)) fail("Accent restore differs at " + x + "," + y);
             }
-            editor.forceActiveFocus(Qt.TabFocusReason); keyClick(Qt.Key_Escape); verify(!adapter.editingMessage);
+            editor.forceActiveFocus(Qt.TabFocusReason); keyClick(Qt.Key_Escape);
+            verify(editor.readOnly && adapter.editingMessage !== null);
+            control("cancelMessageMode").click(); verify(!adapter.editingMessage);
         }
     }
 }

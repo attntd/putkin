@@ -1,4 +1,7 @@
 MessagesView 1.0 MessagesView.qml
+ConversationAvatar 1.0 ConversationAvatar.qml
+ConversationMenu 1.0 ConversationMenu.qml
+ConversationSidebar 1.0 ConversationSidebar.qml
 CallBar 1.0 CallBar.qml
 MessagesWindow 1.0 MessagesWindow.qml
 MessageComposer 1.0 MessageComposer.qml

@@ -1,5 +1,29 @@
 # Roadmapa Putkin
 
+## Wybrana korekta — nawigacja rozmowy i pisanie, 2026-09-28
+
+**Wdrożone lokalnie: `20260928-210607-4d3626da5e34`.**
+
+Wejście przez l/Enter ustawia fokus na polu wiadomości w nawigacji.
+h/j/k/l prowadzi między polem, załącznikiem, dymkami i nagłówkiem;
+Spacja na dymku otwiera reakcje. i przechodzi do pisania, Escape do
+nawigacji, następne Escape na listę rozmów. Bez etykiet trybów:
+tylko ramka fokusu i standardowy migający kursor w polu.
+[Kontrakt](docs/signal/CONVERSATIONS.md#nawigacja-i-pisanie),
+[wyniki](docs/status.md#nawigacja-rozmowy-i-pisanie--2026-09-28).
+Korekta zamówiona przez użytkownika; bez następnego etapu roadmapy.
+
+## Wybrany zakres — karty i zarządzanie rozmowami, 2026-09-28
+
+**Wdrożone lokalnie: `20260928-202907-dab33dc039b4`.**
+
+Funkcje listy i nagłówka inspirowane Signal Desktop, w stylu Putkina:
+przełączanie kart na listę awatarów, archiwum, przypinanie, wyciszanie,
+oznaczenie odczytu i menu rozmowy. Nagłówek z awatarem, szczegółami,
+połączeniem głosowym oraz menu. Trwałe lokalne preferencje i testy fokusu.
+Zakres wybrany przez użytkownika; bez następnego etapu roadmapy.
+[Kontrakt](docs/signal/CONVERSATIONS.md), [wyniki](docs/status.md#karty-archiwum-i-zarządzanie-rozmowami--2026-09-28).
+
 ## Wybrana korekta — migający pasek przy ramce, 2026-09-27
 
 **Obejście cofnięte na polecenie użytkownika; trwa obserwacja poprzedniego trybu.**

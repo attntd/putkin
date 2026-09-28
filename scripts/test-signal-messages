@@ -112,15 +112,28 @@ def run(output):
             eventually(snapshot, lambda v: v.get("width") == 320 and v.get("height") == 300)
             capture("-small")
             report["checks"].append("closed window receives 65 messages; same process/subscription; ordinary open focuses list, scoped conversation routing focuses editor and reuses window; 50+16 history pages")
+            ipc("cards", "true")
+            eventually(snapshot, lambda v: v.get("cardsCollapsed") and not v.get("pending"))
+            assert ipc("organize", route["conversationId"], "archived", "true") == "true"
+            eventually(snapshot, lambda v: v.get("selected") is None and v["conversations"][0]["archived"] and not v.get("pending"))
             ipc("reload")
             restarted = eventually(snapshot, lambda v: v.get("state") == "ready" and v.get("generation") != ready["generation"])
             assert restarted["accountId"] == route["accountId"]
+            restored = eventually(snapshot, lambda v: v.get("cardsCollapsed") and v.get("conversations") and not v.get("pending"))
+            assert restored["conversations"][0]["archived"]
             ipc("openConversation", route["serviceId"], route["accountId"], route["conversationId"], target="messages")
             eventually(snapshot, lambda v: v.get("draftReady") and not v.get("loading") and not v.get("pending") and v.get("draft") == "Szkic po ponownym otwarciu — hjkl")
             capture("-reload")  # Require the reconstructed window to finish rendering.
             assert len(records("send")) == 1
             assert gone(ready["pid"])
             report["checks"].append("hard reload restores committed draft/account/history; old bridge reaped; no repeated send")
+            assert ipc("organize", route["conversationId"], "pinned", "true") == "true"
+            eventually(snapshot, lambda v: v["conversations"][0]["pinned"] and not v["conversations"][0]["archived"] and not v.get("pending"))
+            assert ipc("organize", route["conversationId"], "markedUnread", "true") == "true"
+            eventually(snapshot, lambda v: v["conversations"][0]["markedUnread"] and v.get("selected") is None and not v.get("pending"))
+            assert ipc("organize", route["conversationId"], "read", "true") == "true"
+            eventually(snapshot, lambda v: not v["conversations"][0]["markedUnread"] and not v.get("pending"))
+            report["checks"].append("collapsed cards and archive survive bridge/window reload; archive preserves draft/history; pin restores chat; unread/read management returns focus to list")
             ipc("quit")
             shell.wait(timeout=8)
             report["passed"] = True

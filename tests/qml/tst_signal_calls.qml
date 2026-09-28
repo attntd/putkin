@@ -47,6 +47,7 @@ Item {
             verify(hub.openConversation(adapter.address("chat-a")));
             tryVerify(() => control("startCall").enabled);
             wait(80);
+            verify(waitForPolish(scene.Window.window));
             mouseClick(control("startCall"));
             tryCompare(service.calls, "active", true);
             compare(service.calls.current.callId, "-9223372036854775807");
@@ -96,10 +97,11 @@ Item {
             history.forceLayout();
             history.positionViewAtBeginning();
             tryCompare(history, "atYBeginning", true);
-            history.forceActiveFocus(Qt.TabFocusReason);
+            history.focusMessage(0);
+            keyClick(Qt.Key_K); verify(control("olderMessages").activeFocus);
             keyClick(Qt.Key_K); verify(start.activeFocus);
-            keyClick(Qt.Key_L); verify(details.activeFocus);
-            keyClick(Qt.Key_H); verify(start.activeFocus);
+            keyClick(Qt.Key_H); verify(details.activeFocus);
+            keyClick(Qt.Key_L); verify(start.activeFocus);
             keyClick(Qt.Key_Return);
             tryCompare(service.calls, "active", true);
         }

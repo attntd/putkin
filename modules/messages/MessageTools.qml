@@ -9,6 +9,8 @@ FocusScope {
     required property var message
     required property var history
     property bool revealed: false
+    readonly property Item firstAction: react.enabled ? react : reply.enabled ? reply : more
+    readonly property alias lastAction: more
     readonly property bool showing: revealed || activeFocus || history.actionsMessageId === message.messageId
     implicitWidth: 3 * 32
     implicitHeight: 32
@@ -39,7 +41,8 @@ FocusScope {
             symbol: "react"
             text: qsTr("Reakcja")
             enabled: root.history.readingEnabled && root.message.canReact
-            rightTarget: reply; upTarget: root.history; downTarget: root.history
+            leftTarget: root.message.outgoing ? null : root.message
+            rightTarget: reply; upTarget: root.message; downTarget: root.message
             onClicked: root.history.showActions(root.message.messageId, react, focusReason, "reactions")
         }
         Action {
@@ -48,7 +51,7 @@ FocusScope {
             symbol: "reply"
             text: qsTr("Odpowiedz")
             enabled: root.history.readingEnabled && root.message.canReply
-            leftTarget: react; rightTarget: more; upTarget: root.history; downTarget: root.history
+            leftTarget: react; rightTarget: more; upTarget: root.message; downTarget: root.message
             onClicked: root.history.adapter.replyTo(root.message.messageId)
         }
         Action {
@@ -56,7 +59,8 @@ FocusScope {
             objectName: "messageActions"
             symbol: "more"
             text: qsTr("Akcje wiadomości")
-            leftTarget: reply; upTarget: root.history; downTarget: root.history
+            leftTarget: reply; rightTarget: root.message.outgoing ? root.message : null
+            upTarget: root.message; downTarget: root.message
             onClicked: root.history.showActions(root.message.messageId, more, focusReason, "menu")
         }
     }

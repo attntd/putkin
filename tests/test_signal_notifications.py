@@ -151,7 +151,7 @@ class NotificationTests(unittest.TestCase):
             self.assertEqual(db.execute("PRAGMA user_version").fetchone()[0], 1)
             self.assertFalse(db.execute("SELECT 1 FROM sqlite_master WHERE name='reply_drafts'").fetchone())
         self.store = Store(self.lease)
-        self.assertEqual(self.store.db.execute("PRAGMA user_version").fetchone()[0], 8)
+        self.assertEqual(self.store.db.execute("PRAGMA user_version").fetchone()[0], 9)
         self.assertEqual(self.messages(cid)[0]["messageId"], mid)
 
 

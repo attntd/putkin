@@ -1,5 +1,33 @@
 # Środowisko i rozwój
 
+## Nawigacja rozmowy i pisanie — 2026-09-28
+
+Ponownie sprawdzono lokalne Qt Quick/Test **6.11.2** i dokumentację Qt 6.11:
+[TextEdit: readOnly i cursorVisible](https://doc.qt.io/qt-6.11/qml-qtquick-textedit.html),
+[propagację Keys](https://doc.qt.io/qt-6.11/qml-qtquick-keys.html),
+[ListView: wybór i pozycjonowanie](https://doc.qt.io/qt-6.11/qml-qtquick-listview.html)
+oraz [Control: focusReason](https://doc.qt.io/qt-6.11/qml-qtquick-controls-control.html).
+Kursor pozostaje natywny; brak ręcznego migania i zastępczego edytora.
+Testy Qt i prywatny Hyprland używają istniejącego środowiska z atrapami.
+
+## Rozmowy, archiwum i awatary — 2026-09-28
+
+Lokalnie: Qt **6.11.2**, Quickshell **0.3.1**, Signal Desktop **8.28.0**,
+SQLite **3.53.4**. Zachowano przypięty signal-cli **0.14.8** i jego magazyn.
+Przed użyciem sprawdzono oficjalne API Qt 6.11:
+[Image](https://doc.qt.io/qt-6.11/qml-qtquick-image.html),
+[ListView](https://doc.qt.io/qt-6.11/qml-qtquick-listview.html),
+[AbstractButton](https://doc.qt.io/qt-6.11/qml-qtquick-controls-abstractbutton.html),
+[Popup](https://doc.qt.io/qt-6.11/qml-qtquick-controls-popup.html),
+[ScrollBar](https://doc.qt.io/qt-6.11/qml-qtquick-controls-scrollbar.html),
+[TestCase.waitForPolish](https://doc.qt.io/qt-6.11/qml-qttest-testcase.html#waitForPolish-method),
+[SQLite ALTER TABLE](https://sqlite.org/lang_altertable.html) oraz źródło
+[getAvatar 0.14.8](https://github.com/AsamK/signal-cli/blob/v0.14.8/src/main/java/org/asamk/signal/commands/GetAvatarCommand.java).
+Punktem odniesienia dla oddzielenia archiwum od usuwania historii jest
+[oficjalna pomoc Signal](https://support.signal.org/hc/en-us/articles/360007321231-Archiving-or-unarchiving-chats).
+Nowe ikony pochodzą z dotychczasowego katalogu Google Material Symbols;
+źródła i sumy są w `assets/material/manifest.json`.
+
 ## Zegar i odcisk po wznowieniu — 2026-09-27
 
 Potwierdzono lokalne Quickshell **0.3.1-1**, Qt **6.11.2**, fprintd
