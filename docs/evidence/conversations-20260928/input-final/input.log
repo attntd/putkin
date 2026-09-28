@@ -1,0 +1,10 @@
+conversationList direction=-1 release=1568 after80=1659.04 after160=1748.46 velocity80=1099.11 velocity160=971.504
+conversationList direction=1 release=1232 after80=1153.84 after160=1084.99 velocity80=1002.41 velocity160=883.853
+conversationList direction=-1 release=1568 after80=1642.61 after160=1716.2 velocity80=1020.89 velocity160=906.162
+conversationList direction=1 release=1232 after80=1152.26 after160=1077.73 velocity80=1052.58 velocity160=931.212
+PASS: conversationList: both directions, Wayland mouse/touchpad devices, deceleration, pause, interruption, keyboard, wheel and bounds
+messageHistory direction=-1 release=1947 after80=1978.29 after160=2009.49 velocity80=478.766 velocity160=364.547
+messageHistory direction=1 release=1672 after80=1637.66 after160=1597.21 velocity80=511.041 velocity160=357.305
+messageHistory direction=-1 release=1930 after80=1966.13 after160=2000.42 velocity80=445.33 velocity160=279.428
+messageHistory direction=1 release=1698 after80=1662.25 after160=1602.46 velocity80=542.086 velocity160=315.659
+PASS: messageHistory: both directions, Wayland mouse/touchpad devices, deceleration, pause, interruption, keyboard, wheel and bounds

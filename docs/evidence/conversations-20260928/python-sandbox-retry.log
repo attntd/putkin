@@ -1,0 +1,11 @@
+test_partial_create_preserves_real_group_id_and_avatar_is_private (test_signal_groups.GroupTests.test_partial_create_preserves_real_group_id_and_avatar_is_private) ... ok
+test_profile_number_and_avatar_changes_do_not_replace_direct_conversation (test_signal_groups.GroupTests.test_profile_number_and_avatar_changes_do_not_replace_direct_conversation) ... ok
+test_production_requires_media_policy_and_durable_store_before_subscribe (test_signal_lifecycle.LifecycleTests.test_production_requires_media_policy_and_durable_store_before_subscribe) ... ok
+test_unconfigured_idle_disabled_and_missing_binary (test_signal_lifecycle.LifecycleTests.test_unconfigured_idle_disabled_and_missing_binary) ... ok
+test_cancel_preparation_and_foreign_account_leave_no_files (test_signal_media.MediaBridgeTests.test_cancel_preparation_and_foreign_account_leave_no_files) ... ok
+test_real_bridge_stages_sends_receives_and_restarts_media (test_signal_media.MediaBridgeTests.test_real_bridge_stages_sends_receives_and_restarts_media) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 9.835s
+
+OK

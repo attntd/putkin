@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "build": "20260928-210607-4d3626da5e34",
+  "runtimeFiles": 409,
+  "configurationPreserved": true,
+  "signal": {
+    "state": "ready",
+    "accountState": "linked",
+    "schemaVersion": 9,
+    "cliVersion": "0.14.8",
+    "errorCode": "",
+    "linkError": "",
+    "eventErrorLocation": "",
+    "qrVisible": false,
+    "processId": 254263
+  },
+  "stableChecks": 2,
+  "warnings": []
+}

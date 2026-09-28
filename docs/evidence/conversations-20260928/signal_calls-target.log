@@ -1,0 +1,9 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::SignalCalls::initTestCase()
+QDEBUG : qmltestrunner::SignalCalls::test_start_scoped_call_and_hide_for_groups() qml: CALL 574 6 36 36 QPointF(891, 18)
+QDEBUG : qmltestrunner::SignalCalls::test_start_scoped_call_and_hide_for_groups() qml: CLICK [[object Object],[object Object],[object Object],[object Object],[object Object]]
+PASS   : qmltestrunner::SignalCalls::test_start_scoped_call_and_hide_for_groups()
+PASS   : qmltestrunner::SignalCalls::cleanupTestCase()
+Totals: 3 passed, 0 failed, 0 skipped, 0 blacklisted, 809ms
+********* Finished testing of qmltestrunner *********

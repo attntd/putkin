@@ -1,0 +1,32 @@
+{
+  "focus": "notificationSelection",
+  "center": true,
+  "screen": "",
+  "stackFound": false,
+  "stackCount": -1,
+  "variants": [
+    {
+      "name": "WAYLAND-1",
+      "loaded": false,
+      "children": []
+    },
+    {
+      "name": "HEADLESS-1",
+      "loaded": false,
+      "children": []
+    }
+  ],
+  "firstAction": "notificationAction-0",
+  "actions": [
+    {
+      "name": "notificationAction-0",
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "name": "notificationAction-1",
+      "visible": true,
+      "enabled": true
+    }
+  ]
+}

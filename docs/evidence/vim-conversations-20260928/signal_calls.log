@@ -1,0 +1,14 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::SignalCalls::initTestCase()
+PASS   : qmltestrunner::SignalCalls::test_dnd_keeps_incoming_call_in_hub_without_toast()
+PASS   : qmltestrunner::SignalCalls::test_incoming_notice_actions_and_redaction_on_lock_and_end()
+PASS   : qmltestrunner::SignalCalls::test_keyboard_accept_mute_hangup_and_mouse_clears_focus(wide)
+PASS   : qmltestrunner::SignalCalls::test_keyboard_accept_mute_hangup_and_mouse_clears_focus(narrow)
+PASS   : qmltestrunner::SignalCalls::test_locked_and_stale_status_never_accept_or_revive()
+PASS   : qmltestrunner::SignalCalls::test_start_scoped_call_and_hide_for_groups()
+PASS   : qmltestrunner::SignalCalls::test_typing_keeps_hjkl_and_call_survives_window_recreation()
+PASS   : qmltestrunner::SignalCalls::test_vim_from_history_to_call_and_details()
+PASS   : qmltestrunner::SignalCalls::cleanupTestCase()
+Totals: 10 passed, 0 failed, 0 skipped, 0 blacklisted, 1362ms
+********* Finished testing of qmltestrunner *********

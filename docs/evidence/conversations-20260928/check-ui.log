@@ -1,0 +1,14 @@
+FAIL [imports/types, exit=255] /home/attntd/projects/putkin/tests/qml/tst_conversations.qml
+Warning: /home/attntd/projects/putkin/tests/qml/tst_conversations.qml:52:31: Member "setDraft" not found on type "SignalMessagingAdapter" [missing-property]
+            select(); adapter.setDraft("Szkic hjkl");
+                              ^^^^^^^^
+Info: Did you mean "editDraft"?
+            select(); adapter.editDraft("Szkic hjkl");
+                              ^^^^^^^^^
+Warning: /home/attntd/projects/putkin/tests/qml/tst_conversations.qml:89:31: Member "setDraft" not found on type "SignalMessagingAdapter" [missing-property]
+            select(); adapter.setDraft("Zachowaj mnie");
+                              ^^^^^^^^
+Info: Did you mean "editDraft"?
+            select(); adapter.editDraft("Zachowaj mnie");
+                              ^^^^^^^^^
+FAIL: 22 plików QML, 1 z błędami.

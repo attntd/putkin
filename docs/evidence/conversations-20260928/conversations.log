@@ -1,0 +1,18 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::Conversations::initTestCase()
+PASS   : qmltestrunner::Conversations::test_archive_active_and_restore_from_distinct_list()
+PASS   : qmltestrunner::Conversations::test_avatars_lazy_cache_and_identity_across_refresh()
+PASS   : qmltestrunner::Conversations::test_cards_collapse_preserves_route_draft_and_survives_recreation()
+PASS   : qmltestrunner::Conversations::test_compact_search_expands_and_keeps_letters()
+PASS   : qmltestrunner::Conversations::test_failed_archive_does_not_drop_selection_or_messages()
+PASS   : qmltestrunner::Conversations::test_header_focus_call_and_details_return(wide)
+PASS   : qmltestrunner::Conversations::test_header_focus_call_and_details_return(narrow)
+PASS   : qmltestrunner::Conversations::test_keyboard_menu_navigation_and_pointer_remove_frame()
+PASS   : qmltestrunner::Conversations::test_mark_active_unread_returns_to_list_without_reading()
+PASS   : qmltestrunner::Conversations::test_pin_reorders_without_changing_focused_conversation()
+PASS   : qmltestrunner::Conversations::test_resize_compact_to_narrow_keeps_card_preference()
+PASS   : qmltestrunner::Conversations::test_unread_and_mute_target_context_row_without_opening()
+PASS   : qmltestrunner::Conversations::cleanupTestCase()
+Totals: 14 passed, 0 failed, 0 skipped, 0 blacklisted, 25882ms
+********* Finished testing of qmltestrunner *********

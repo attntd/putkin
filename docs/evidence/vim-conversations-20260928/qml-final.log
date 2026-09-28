@@ -1,0 +1,177 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::MessageNavigation::initTestCase()
+PASS   : qmltestrunner::MessageNavigation::test_i_from_attachment_and_header()
+PASS   : qmltestrunner::MessageNavigation::test_keyboard_entry_normal(980-76)
+PASS   : qmltestrunner::MessageNavigation::test_keyboard_entry_normal(980-16777220)
+PASS   : qmltestrunner::MessageNavigation::test_keyboard_entry_normal(980-16777221)
+PASS   : qmltestrunner::MessageNavigation::test_keyboard_entry_normal(320-76)
+PASS   : qmltestrunner::MessageNavigation::test_keyboard_entry_normal(320-16777220)
+PASS   : qmltestrunner::MessageNavigation::test_keyboard_entry_normal(320-16777221)
+PASS   : qmltestrunner::MessageNavigation::test_mouse_enters_insert_without_keyboard_frame()
+PASS   : qmltestrunner::MessageNavigation::test_navigation_editor_attachment_bubbles_and_insert()
+PASS   : qmltestrunner::MessageNavigation::test_normal_does_not_type_or_send_and_insert_keeps_shift_enter()
+PASS   : qmltestrunner::MessageNavigation::test_normal_search_keeps_literal_letters()
+FAIL!  : qmltestrunner::MessageNavigation::test_pointer_on_history_clears_bubble_keyboard_frame() Compared values are not the same
+   Actual   (): 1
+   Expected (): 0
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_message_navigation.qml(112)]
+PASS   : qmltestrunner::MessageNavigation::test_refresh_and_pagination_keep_bubble_identity_and_insert_focus()
+PASS   : qmltestrunner::MessageNavigation::test_space_reaction_returns_to_same_bubble()
+FAIL!  : qmltestrunner::MessageNavigation::test_toolbar_keyboard_return_after_pointer_uses_focus_frame() Compared values are not the same
+   Actual   (): 1
+   Expected (): 0
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_message_navigation.qml(123)]
+PASS   : qmltestrunner::MessageNavigation::cleanupTestCase()
+Totals: 15 passed, 2 failed, 0 skipped, 0 blacklisted, 10084ms
+********* Finished testing of qmltestrunner *********
+
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::Messages::initTestCase()
+PASS   : qmltestrunner::Messages::test_bubble_width(320-incoming)
+PASS   : qmltestrunner::Messages::test_bubble_width(320-outgoing)
+PASS   : qmltestrunner::Messages::test_bubble_width(640-incoming)
+PASS   : qmltestrunner::Messages::test_bubble_width(640-outgoing)
+PASS   : qmltestrunner::Messages::test_bubble_width(980-incoming)
+PASS   : qmltestrunner::Messages::test_bubble_width(980-outgoing)
+PASS   : qmltestrunner::Messages::test_bubble_width(1600-incoming)
+PASS   : qmltestrunner::Messages::test_bubble_width(1600-outgoing)
+PASS   : qmltestrunner::Messages::test_burst_refresh_queue_and_missing_target()
+PASS   : qmltestrunner::Messages::test_delayed_draft_focus_and_escape_cancels_pending_focus()
+PASS   : qmltestrunner::Messages::test_draft_pending_switch_and_window_recreation()
+PASS   : qmltestrunner::Messages::test_escape_focus_stays_on_selected_tile(wide)
+PASS   : qmltestrunner::Messages::test_escape_focus_stays_on_selected_tile(narrow)
+PASS   : qmltestrunner::Messages::test_initial_list_and_conversation_navigation(wide)
+PASS   : qmltestrunner::Messages::test_initial_list_and_conversation_navigation(narrow)
+PASS   : qmltestrunner::Messages::test_keyboard_send_shift_enter_and_ime_guard()
+PASS   : qmltestrunner::Messages::test_new_conversation_small_layout_disabled_send()
+PASS   : qmltestrunner::Messages::test_open_and_reopen_at_latest(wide)
+PASS   : qmltestrunner::Messages::test_open_and_reopen_at_latest(narrow)
+PASS   : qmltestrunner::Messages::test_open_before_view_and_delayed_history(loaded)
+PASS   : qmltestrunner::Messages::test_open_before_view_and_delayed_history(delayed)
+PASS   : qmltestrunner::Messages::test_pointer_selection_has_no_keyboard_outline()
+PASS   : qmltestrunner::Messages::test_reopen_defaults_to_list_and_explicit_route_to_editor()
+PASS   : qmltestrunner::Messages::test_route_scope_and_stale_replies()
+PASS   : qmltestrunner::Messages::test_scroll_anchor_pagination_and_incoming()
+PASS   : qmltestrunner::Messages::test_scrollbar_hides_at_rest_and_hover_and_shows_for_keyboard()
+PASS   : qmltestrunner::Messages::test_search_names_numbers_group_authors_and_accents()
+PASS   : qmltestrunner::Messages::cleanupTestCase()
+Totals: 29 passed, 0 failed, 0 skipped, 0 blacklisted, 34143ms
+********* Finished testing of qmltestrunner *********
+
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::SignalMessageActions::initTestCase()
+PASS   : qmltestrunner::SignalMessageActions::test_copy_plain_text_and_info_popup()
+PASS   : qmltestrunner::SignalMessageActions::test_delete_scopes_and_invalidation_on_route_lock_redaction()
+PASS   : qmltestrunner::SignalMessageActions::test_forward_confirmation_selection_and_target_draft_unchanged()
+PASS   : qmltestrunner::SignalMessageActions::test_icons_outside_bubble_and_popup_does_not_resize_history(wide-outgoing)
+PASS   : qmltestrunner::SignalMessageActions::test_icons_outside_bubble_and_popup_does_not_resize_history(narrow-incoming)
+PASS   : qmltestrunner::SignalMessageActions::test_keyboard_menu_navigation_escape_and_pointer_focus()
+PASS   : qmltestrunner::SignalMessageActions::test_order_uses_reception_and_hhmm_survives_ack_and_incremental_merge()
+PASS   : qmltestrunner::SignalMessageActions::test_pin_duration_display_jump_and_unpin()
+PASS   : qmltestrunner::SignalMessageActions::test_reaction_chip_shows_only_its_people_and_refreshes()
+PASS   : qmltestrunner::SignalMessageActions::test_reaction_row_full_picker_replace_remove_and_reply()
+PASS   : qmltestrunner::SignalMessageActions::cleanupTestCase()
+Totals: 12 passed, 0 failed, 0 skipped, 0 blacklisted, 17043ms
+********* Finished testing of qmltestrunner *********
+
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::SignalMessageMedia::initTestCase()
+QINFO  : qmltestrunner::SignalMessageMedia::test_audio_inline_play_pause_seek_and_stop_on_lock() qt.multimedia.ffmpeg: Using Qt multimedia with FFmpeg version n9.0.2 GPL version 3 or later
+Input #0, wav, from '/home/attntd/projects/putkin/tests/fixtures/signal/media/audio-long.wav':
+  Duration: 00:00:08.00, bitrate: 128 kb/s
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 8000 Hz, 1 channels, s16, 128 kb/s
+PASS   : qmltestrunner::SignalMessageMedia::test_audio_inline_play_pause_seek_and_stop_on_lock()
+PASS   : qmltestrunner::SignalMessageMedia::test_caption_keeps_literal_attachment_word_below_photo()
+PASS   : qmltestrunner::SignalMessageMedia::test_file_card_name_size_and_unavailable_state()
+Input #0, wav, from '/home/attntd/projects/putkin/tests/fixtures/signal/media/audio-long.wav':
+  Duration: 00:00:08.00, bitrate: 128 kb/s
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 8000 Hz, 1 channels, s16, 128 kb/s
+Input #0, wav, from '/home/attntd/projects/putkin/tests/fixtures/signal/media/audio-long.wav':
+  Duration: 00:00:08.00, bitrate: 128 kb/s
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 8000 Hz, 1 channels, s16, 128 kb/s
+PASS   : qmltestrunner::SignalMessageMedia::test_mixed_media_and_exclusive_audio_playback()
+PASS   : qmltestrunner::SignalMessageMedia::test_pending_photo_keeps_state_visible_and_never_overlaps()
+PASS   : qmltestrunner::SignalMessageMedia::test_photo_is_edge_to_edge_without_placeholder(wide-incoming)
+PASS   : qmltestrunner::SignalMessageMedia::test_photo_is_edge_to_edge_without_placeholder(narrow-outgoing)
+PASS   : qmltestrunner::SignalMessageMedia::test_photo_mosaic_keeps_all_files_clickable(2)
+PASS   : qmltestrunner::SignalMessageMedia::test_photo_mosaic_keeps_all_files_clickable(3)
+PASS   : qmltestrunner::SignalMessageMedia::test_photo_mosaic_keeps_all_files_clickable(4)
+PASS   : qmltestrunner::SignalMessageMedia::test_photo_mosaic_keeps_all_files_clickable(5)
+PASS   : qmltestrunner::SignalMessageMedia::test_photo_mosaic_keeps_all_files_clickable(7)
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/home/attntd/projects/putkin/tests/fixtures/signal/media/video.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf63.1.101
+  Duration: 00:00:00.20, start: 0.000000, bitrate: 68 kb/s
+  Stream #0:0[0x1](und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(progressive), 96x64 [SAR 1:1 DAR 3:2], 31 kb/s, 25 fps, 25 tbr, 12800 tbn (default)
+    Metadata:
+      handler_name    : VideoHandler
+      encoder         : Lavc63.1.101 libx264
+PASS   : qmltestrunner::SignalMessageMedia::test_video_thumbnail_has_play_and_opens_player()
+PASS   : qmltestrunner::SignalMessageMedia::cleanupTestCase()
+Totals: 15 passed, 0 failed, 0 skipped, 0 blacklisted, 12339ms
+********* Finished testing of qmltestrunner *********
+
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::SignalReceipts::initTestCase()
+PASS   : qmltestrunner::SignalReceipts::test_gate_loss_during_debounce_hidden_detail_and_closed_view()
+PASS   : qmltestrunner::SignalReceipts::test_incoming_outside_scrolled_view_and_stale_route_do_not_read()
+PASS   : qmltestrunner::SignalReceipts::test_open_at_end_reads_older_pages_and_reopening_stays_read()
+PASS   : qmltestrunner::SignalReceipts::test_pending_read_batch_stops_on_hide_and_stale_reply_does_not_touch_other_chat()
+PASS   : qmltestrunner::SignalReceipts::test_status_counts_accessible_and_unknown_not_delivered()
+PASS   : qmltestrunner::SignalReceipts::test_visible_range_once_and_unread_shared_with_hub()
+PASS   : qmltestrunner::SignalReceipts::cleanupTestCase()
+Totals: 8 passed, 0 failed, 0 skipped, 0 blacklisted, 12105ms
+********* Finished testing of qmltestrunner *********
+
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::SignalRetention::initTestCase()
+PASS   : qmltestrunner::SignalRetention::test_expiration_setting_uses_explicit_duration()
+PASS   : qmltestrunner::SignalRetention::test_local_and_everyone_buttons_have_distinct_scope_and_keyboard()
+PASS   : qmltestrunner::SignalRetention::test_redaction_clears_busy_editor_quote_and_late_page()
+QINFO  : qmltestrunner::SignalRetention::test_redaction_closes_media_preview_and_drops_image_reference() qt.multimedia.ffmpeg: Using Qt multimedia with FFmpeg version n9.0.2 GPL version 3 or later
+PASS   : qmltestrunner::SignalRetention::test_redaction_closes_media_preview_and_drops_image_reference()
+PASS   : qmltestrunner::SignalRetention::test_redaction_removes_quote_without_overwriting_draft()
+PASS   : qmltestrunner::SignalRetention::test_remote_button_and_shared_accent_preview()
+PASS   : qmltestrunner::SignalRetention::cleanupTestCase()
+Totals: 8 passed, 0 failed, 0 skipped, 0 blacklisted, 3936ms
+********* Finished testing of qmltestrunner *********
+
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::SignalInteractions::initTestCase()
+PASS   : qmltestrunner::SignalInteractions::test_edit_cancel_and_error_keep_normal_draft_and_keyboard_semantics()
+PASS   : qmltestrunner::SignalInteractions::test_inline_mention_replaces_token_at_cursor_in_edit_and_shifts_utf16_ranges()
+PASS   : qmltestrunner::SignalInteractions::test_inline_mentions_escape_shift_enter_email_and_route_change()
+PASS   : qmltestrunner::SignalInteractions::test_inline_mentions_filter_keyboard_menu_and_pointer_focus()
+PASS   : qmltestrunner::SignalInteractions::test_picker_and_saved_composition_survive_adapter_recreation()
+PASS   : qmltestrunner::SignalInteractions::test_react_replace_remove_quote_and_unicode_mention()
+PASS   : qmltestrunner::SignalInteractions::test_safe_styles_and_live_accents()
+PASS   : qmltestrunner::SignalInteractions::test_typing_only_focused_editor_rate_limited_and_stops_on_blur_lock_send()
+PASS   : qmltestrunner::SignalInteractions::cleanupTestCase()
+Totals: 10 passed, 0 failed, 0 skipped, 0 blacklisted, 6244ms
+********* Finished testing of qmltestrunner *********
+
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::SignalCalls::initTestCase()
+PASS   : qmltestrunner::SignalCalls::test_dnd_keeps_incoming_call_in_hub_without_toast()
+PASS   : qmltestrunner::SignalCalls::test_incoming_notice_actions_and_redaction_on_lock_and_end()
+PASS   : qmltestrunner::SignalCalls::test_keyboard_accept_mute_hangup_and_mouse_clears_focus(wide)
+PASS   : qmltestrunner::SignalCalls::test_keyboard_accept_mute_hangup_and_mouse_clears_focus(narrow)
+PASS   : qmltestrunner::SignalCalls::test_locked_and_stale_status_never_accept_or_revive()
+PASS   : qmltestrunner::SignalCalls::test_start_scoped_call_and_hide_for_groups()
+PASS   : qmltestrunner::SignalCalls::test_typing_keeps_hjkl_and_call_survives_window_recreation()
+PASS   : qmltestrunner::SignalCalls::test_vim_from_history_to_call_and_details()
+PASS   : qmltestrunner::SignalCalls::cleanupTestCase()
+Totals: 10 passed, 0 failed, 0 skipped, 0 blacklisted, 1362ms
+********* Finished testing of qmltestrunner *********
+

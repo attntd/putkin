@@ -1,0 +1,19 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::SignalCalls::initTestCase()
+PASS   : qmltestrunner::SignalCalls::test_dnd_keeps_incoming_call_in_hub_without_toast()
+PASS   : qmltestrunner::SignalCalls::test_incoming_notice_actions_and_redaction_on_lock_and_end()
+PASS   : qmltestrunner::SignalCalls::test_keyboard_accept_mute_hangup_and_mouse_clears_focus(wide)
+PASS   : qmltestrunner::SignalCalls::test_keyboard_accept_mute_hangup_and_mouse_clears_focus(narrow)
+PASS   : qmltestrunner::SignalCalls::test_locked_and_stale_status_never_accept_or_revive()
+FAIL!  : qmltestrunner::SignalCalls::test_start_scoped_call_and_hide_for_groups() property active
+   Actual   (): false
+   Expected (): true
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_signal_calls.qml(51)]
+FAIL!  : qmltestrunner::SignalCalls::test_typing_keeps_hjkl_and_call_survives_window_recreation() 'function returned false' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_signal_calls.qml(124)]
+FAIL!  : qmltestrunner::SignalCalls::test_vim_from_history_to_call_and_details() 'verify()' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_signal_calls.qml(100)]
+PASS   : qmltestrunner::SignalCalls::cleanupTestCase()
+Totals: 7 passed, 3 failed, 0 skipped, 0 blacklisted, 13634ms
+********* Finished testing of qmltestrunner *********

@@ -1,0 +1,96 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::Conversations::initTestCase()
+PASS   : qmltestrunner::Conversations::test_archive_active_and_restore_from_distinct_list()
+PASS   : qmltestrunner::Conversations::test_avatars_lazy_cache_and_identity_across_refresh()
+PASS   : qmltestrunner::Conversations::test_cards_collapse_preserves_route_draft_and_survives_recreation()
+PASS   : qmltestrunner::Conversations::test_compact_search_expands_and_keeps_letters()
+PASS   : qmltestrunner::Conversations::test_failed_archive_does_not_drop_selection_or_messages()
+PASS   : qmltestrunner::Conversations::test_header_focus_call_and_details_return(wide)
+PASS   : qmltestrunner::Conversations::test_header_focus_call_and_details_return(narrow)
+PASS   : qmltestrunner::Conversations::test_keyboard_menu_navigation_and_pointer_remove_frame()
+PASS   : qmltestrunner::Conversations::test_mark_active_unread_returns_to_list_without_reading()
+PASS   : qmltestrunner::Conversations::test_pin_reorders_without_changing_focused_conversation()
+PASS   : qmltestrunner::Conversations::test_resize_compact_to_narrow_keeps_card_preference()
+PASS   : qmltestrunner::Conversations::test_unread_and_mute_target_context_row_without_opening()
+PASS   : qmltestrunner::Conversations::cleanupTestCase()
+Totals: 14 passed, 0 failed, 0 skipped, 0 blacklisted, 25882ms
+********* Finished testing of qmltestrunner *********
+
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::Messages::initTestCase()
+PASS   : qmltestrunner::Messages::test_bubble_width(320-incoming)
+PASS   : qmltestrunner::Messages::test_bubble_width(320-outgoing)
+PASS   : qmltestrunner::Messages::test_bubble_width(640-incoming)
+PASS   : qmltestrunner::Messages::test_bubble_width(640-outgoing)
+PASS   : qmltestrunner::Messages::test_bubble_width(980-incoming)
+PASS   : qmltestrunner::Messages::test_bubble_width(980-outgoing)
+PASS   : qmltestrunner::Messages::test_bubble_width(1600-incoming)
+PASS   : qmltestrunner::Messages::test_bubble_width(1600-outgoing)
+PASS   : qmltestrunner::Messages::test_burst_refresh_queue_and_missing_target()
+PASS   : qmltestrunner::Messages::test_delayed_draft_focus_and_escape_cancels_pending_focus()
+PASS   : qmltestrunner::Messages::test_draft_pending_switch_and_window_recreation()
+PASS   : qmltestrunner::Messages::test_escape_focus_stays_on_selected_tile(wide)
+PASS   : qmltestrunner::Messages::test_escape_focus_stays_on_selected_tile(narrow)
+PASS   : qmltestrunner::Messages::test_initial_list_and_conversation_navigation(wide)
+PASS   : qmltestrunner::Messages::test_initial_list_and_conversation_navigation(narrow)
+PASS   : qmltestrunner::Messages::test_keyboard_send_shift_enter_and_ime_guard()
+PASS   : qmltestrunner::Messages::test_new_conversation_small_layout_disabled_send()
+PASS   : qmltestrunner::Messages::test_open_and_reopen_at_latest(wide)
+PASS   : qmltestrunner::Messages::test_open_and_reopen_at_latest(narrow)
+PASS   : qmltestrunner::Messages::test_open_before_view_and_delayed_history(loaded)
+PASS   : qmltestrunner::Messages::test_open_before_view_and_delayed_history(delayed)
+PASS   : qmltestrunner::Messages::test_pointer_selection_has_no_keyboard_outline()
+PASS   : qmltestrunner::Messages::test_reopen_defaults_to_list_and_explicit_route_to_editor()
+PASS   : qmltestrunner::Messages::test_route_scope_and_stale_replies()
+PASS   : qmltestrunner::Messages::test_scroll_anchor_pagination_and_incoming()
+PASS   : qmltestrunner::Messages::test_scrollbar_hides_at_rest_and_hover_and_shows_for_keyboard()
+PASS   : qmltestrunner::Messages::test_search_names_numbers_group_authors_and_accents()
+PASS   : qmltestrunner::Messages::cleanupTestCase()
+Totals: 29 passed, 0 failed, 0 skipped, 0 blacklisted, 40879ms
+********* Finished testing of qmltestrunner *********
+
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::SignalGroups::initTestCase()
+PASS   : qmltestrunner::SignalGroups::test_destructive_action_targets_member_and_defaults_cancel()
+PASS   : qmltestrunner::SignalGroups::test_group_creation_selects_members_once_and_opens_result()
+PASS   : qmltestrunner::SignalGroups::test_lost_membership_disables_composer_and_admin_controls()
+PASS   : qmltestrunner::SignalGroups::test_profiles_refresh_keep_selection_and_both_accents()
+PASS   : qmltestrunner::SignalGroups::test_request_accept_mute_hide_and_block_are_distinct()
+PASS   : qmltestrunner::SignalGroups::test_unknown_create_stays_blocked_and_offers_readback()
+PASS   : qmltestrunner::SignalGroups::cleanupTestCase()
+Totals: 8 passed, 0 failed, 0 skipped, 0 blacklisted, 5023ms
+********* Finished testing of qmltestrunner *********
+
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::SignalMessageActions::initTestCase()
+PASS   : qmltestrunner::SignalMessageActions::test_copy_plain_text_and_info_popup()
+PASS   : qmltestrunner::SignalMessageActions::test_delete_scopes_and_invalidation_on_route_lock_redaction()
+PASS   : qmltestrunner::SignalMessageActions::test_forward_confirmation_selection_and_target_draft_unchanged()
+PASS   : qmltestrunner::SignalMessageActions::test_icons_outside_bubble_and_popup_does_not_resize_history(wide-outgoing)
+PASS   : qmltestrunner::SignalMessageActions::test_icons_outside_bubble_and_popup_does_not_resize_history(narrow-incoming)
+PASS   : qmltestrunner::SignalMessageActions::test_keyboard_menu_navigation_escape_and_pointer_focus()
+PASS   : qmltestrunner::SignalMessageActions::test_order_uses_reception_and_hhmm_survives_ack_and_incremental_merge()
+PASS   : qmltestrunner::SignalMessageActions::test_pin_duration_display_jump_and_unpin()
+PASS   : qmltestrunner::SignalMessageActions::test_reaction_chip_shows_only_its_people_and_refreshes()
+PASS   : qmltestrunner::SignalMessageActions::test_reaction_row_full_picker_replace_remove_and_reply()
+PASS   : qmltestrunner::SignalMessageActions::cleanupTestCase()
+Totals: 12 passed, 0 failed, 0 skipped, 0 blacklisted, 17786ms
+********* Finished testing of qmltestrunner *********
+
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::SignalReceipts::initTestCase()
+PASS   : qmltestrunner::SignalReceipts::test_gate_loss_during_debounce_hidden_detail_and_closed_view()
+PASS   : qmltestrunner::SignalReceipts::test_incoming_outside_scrolled_view_and_stale_route_do_not_read()
+PASS   : qmltestrunner::SignalReceipts::test_open_at_end_reads_older_pages_and_reopening_stays_read()
+PASS   : qmltestrunner::SignalReceipts::test_pending_read_batch_stops_on_hide_and_stale_reply_does_not_touch_other_chat()
+PASS   : qmltestrunner::SignalReceipts::test_status_counts_accessible_and_unknown_not_delivered()
+PASS   : qmltestrunner::SignalReceipts::test_visible_range_once_and_unread_shared_with_hub()
+PASS   : qmltestrunner::SignalReceipts::cleanupTestCase()
+Totals: 8 passed, 0 failed, 0 skipped, 0 blacklisted, 13587ms
+********* Finished testing of qmltestrunner *********
+

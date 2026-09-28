@@ -1,0 +1,22 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::MessageNavigation::initTestCase()
+PASS   : qmltestrunner::MessageNavigation::test_i_from_attachment_and_header()
+PASS   : qmltestrunner::MessageNavigation::test_keyboard_entry_normal(980-76)
+PASS   : qmltestrunner::MessageNavigation::test_keyboard_entry_normal(980-16777220)
+PASS   : qmltestrunner::MessageNavigation::test_keyboard_entry_normal(980-16777221)
+PASS   : qmltestrunner::MessageNavigation::test_keyboard_entry_normal(320-76)
+PASS   : qmltestrunner::MessageNavigation::test_keyboard_entry_normal(320-16777220)
+PASS   : qmltestrunner::MessageNavigation::test_keyboard_entry_normal(320-16777221)
+PASS   : qmltestrunner::MessageNavigation::test_mouse_enters_insert_without_keyboard_frame()
+PASS   : qmltestrunner::MessageNavigation::test_navigation_editor_attachment_bubbles_and_insert()
+PASS   : qmltestrunner::MessageNavigation::test_normal_does_not_type_or_send_and_insert_keeps_shift_enter()
+PASS   : qmltestrunner::MessageNavigation::test_normal_search_keeps_literal_letters()
+PASS   : qmltestrunner::MessageNavigation::test_pointer_on_history_clears_bubble_keyboard_frame()
+PASS   : qmltestrunner::MessageNavigation::test_refresh_and_pagination_keep_bubble_identity_and_insert_focus()
+PASS   : qmltestrunner::MessageNavigation::test_space_reaction_returns_to_same_bubble()
+PASS   : qmltestrunner::MessageNavigation::test_toolbar_keyboard_return_after_pointer_uses_focus_frame()
+PASS   : qmltestrunner::MessageNavigation::cleanupTestCase()
+Totals: 17 passed, 0 failed, 0 skipped, 0 blacklisted, 11571ms
+********* Finished testing of qmltestrunner *********
+

@@ -1,0 +1,87 @@
+{
+  "build": "20260928-202907-dab33dc039b4",
+  "instances": [
+    {
+      "config_path": "/home/attntd/.config/quickshell/shell.qml",
+      "id": "p0a57yc3mt",
+      "launch_time": "2026-09-28T22:30:07",
+      "pid": 246265,
+      "shell_id": "770bba0d0f619c4ab3ab0453a539d542"
+    }
+  ],
+  "quickshellVersion": "Quickshell 0.3.1 (revision , distributed by Arch Linux)",
+  "session": {
+    "busy": false,
+    "phase": "",
+    "error": "",
+    "result": "",
+    "capabilities": {
+      "reboot": {
+        "available": true,
+        "reason": ""
+      },
+      "poweroff": {
+        "available": true,
+        "reason": ""
+      },
+      "suspend": {
+        "available": false,
+        "reason": "Operację wstrzymuje inhibitor aplikacji."
+      },
+      "hibernate": {
+        "available": false,
+        "reason": "Operację wstrzymuje inhibitor aplikacji."
+      },
+      "idleSuspend": {
+        "available": false,
+        "reason": "Operację wstrzymuje inhibitor aplikacji."
+      },
+      "logout": {
+        "available": true,
+        "reason": ""
+      },
+      "lock": {
+        "available": true,
+        "reason": ""
+      }
+    },
+    "lock": {
+      "locked": false,
+      "secure": false
+    },
+    "idle": {
+      "ready": true,
+      "inhibited": true,
+      "sleepInhibited": true,
+      "dimmed": false,
+      "displaysOff": false,
+      "error": ""
+    }
+  },
+  "signal": {
+    "state": "ready",
+    "accountState": "linked",
+    "schemaVersion": 9,
+    "cliVersion": "0.14.8",
+    "errorCode": "",
+    "linkError": "",
+    "eventErrorLocation": "",
+    "qrVisible": false,
+    "processId": 246296
+  },
+  "caffeinate": {
+    "active": true,
+    "mode": "presentation",
+    "busy": false,
+    "preventDisplaySleep": true,
+    "preventLock": true,
+    "preventSleep": true,
+    "error": ""
+  },
+  "configurationHashes": {
+    "settings.json": "e1424ff3ff0403d6236cf59a77c90db1c387f5aee4d4548909a6284cc1431c3e",
+    "keyboard.json": "54427f8a8193996e2a6bb0f28f7fc097a23711faaefb49af29ed4fd73c77b540",
+    "signal.json": "1f6f81427e90ec0791959fab6699e7c56aaaa52936a8fe5da9c52a36d4b1a41f",
+    "launch.json": "11b979700fb6c6d596c445ef71e7f79c7592ac033dd5770e6e9070f6b0f56af3"
+  }
+}

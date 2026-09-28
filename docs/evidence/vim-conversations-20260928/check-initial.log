@@ -1,0 +1,5 @@
+FAIL [imports/types, exit=255] /home/attntd/projects/putkin/tests/qml/tst_message_navigation.qml
+Warning: /home/attntd/projects/putkin/tests/qml/tst_message_navigation.qml:52:31: Member "flatMap" not found on type "QVariantList" [missing-property]
+            return [980, 320].flatMap(width => [Qt.Key_L, Qt.Key_Return, Qt.Key_Enter].map(key => ({tag: width + "-" + key, width: width, key: key})));
+                              ^^^^^^^
+FAIL: 22 plików QML, 1 z błędami.

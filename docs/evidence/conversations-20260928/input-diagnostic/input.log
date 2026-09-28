@@ -1,0 +1,10 @@
+conversationList direction=-1 release=1568 after80=1679.51 after160=1753.37 velocity80=1018.18 velocity160=883.943
+conversationList direction=1 release=1232 after80=1163.69 after160=1067.48 velocity80=1064.77 velocity160=894.621
+conversationList direction=-1 release=1568 after80=1626.47 after160=1676.16 velocity80=651.247 velocity160=529.026
+conversationList direction=1 release=1232 after80=1159.36 after160=1058.17 velocity80=1076.95 velocity160=938.074
+PASS: conversationList: both directions, Wayland mouse/touchpad devices, deceleration, pause, interruption, keyboard, wheel and bounds
+DIAGNOSTIC list=messageHistory contentY=1978.3 height=588 contentHeight=4242 barPosition=0 barSize=0 thumbOpacity=0
+BAR 0x557f8779e4a0 parent=QQuickScrollBarAttached pos=0 size=0
+BAR 0x557f87734f20 parent=QQuickScrollBarAttached pos=0 size=0
+BAR 0x557f87798a00 parent=QQuickScrollBarAttached pos=0.369236 size=0.138614
+FAIL: scrollbar is visible during momentum

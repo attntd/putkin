@@ -1,0 +1,50 @@
+on() qml: INIT true true true true true true true true true
+PASS   : qmltestrunner::Conversations::test_cards_collapse_preserves_route_draft_and_survives_recreation()
+QDEBUG : qmltestrunner::Conversations::test_compact_search_expands_and_keeps_letters() qml: INIT true true true true true true true true true
+PASS   : qmltestrunner::Conversations::test_compact_search_expands_and_keeps_letters()
+QDEBUG : qmltestrunner::Conversations::test_failed_archive_does_not_drop_selection_or_messages() qml: INIT true true true true true true true true true
+FAIL!  : qmltestrunner::Conversations::test_failed_archive_does_not_drop_selection_or_messages() property opened
+   Actual   (): false
+   Expected (): true
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_conversations.qml(133)]
+QDEBUG : qmltestrunner::Conversations::test_header_focus_call_and_details_return(wide) qml: INIT true true true true true true true true false
+QDEBUG : qmltestrunner::Conversations::test_header_focus_call_and_details_return(wide) qml: HEAD false true true true true
+QDEBUG : qmltestrunner::Conversations::test_header_focus_call_and_details_return(wide) qml: AFTER null false
+FAIL!  : qmltestrunner::Conversations::test_header_focus_call_and_details_return(wide) 'verify()' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_conversations.qml(144)]
+QDEBUG : qmltestrunner::Conversations::test_header_focus_call_and_details_return(narrow) qml: INIT true true true true true true true true false
+QDEBUG : qmltestrunner::Conversations::test_header_focus_call_and_details_return(narrow) qml: HEAD false true true true true
+QDEBUG : qmltestrunner::Conversations::test_header_focus_call_and_details_return(narrow) qml: AFTER null false
+FAIL!  : qmltestrunner::Conversations::test_header_focus_call_and_details_return(narrow) 'verify()' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_conversations.qml(144)]
+QDEBUG : qmltestrunner::Conversations::test_keyboard_menu_navigation_and_pointer_remove_frame() qml: INIT true true true true true true true true false
+QDEBUG : qmltestrunner::Conversations::test_keyboard_menu_navigation_and_pointer_remove_frame() qml: MENU false 0 false false
+FAIL!  : qmltestrunner::Conversations::test_keyboard_menu_navigation_and_pointer_remove_frame() property opened
+   Actual   (): false
+   Expected (): true
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_conversations.qml(36)]
+QDEBUG : qmltestrunner::Conversations::test_mark_active_unread_returns_to_list_without_reading() qml: INIT true true true true true true true true false
+FAIL!  : qmltestrunner::Conversations::test_mark_active_unread_returns_to_list_without_reading() property opened
+   Actual   (): false
+   Expected (): true
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_conversations.qml(126)]
+QDEBUG : qmltestrunner::Conversations::test_pin_reorders_without_changing_focused_conversation() qml: INIT true true true true true true true true false
+QDEBUG : qmltestrunner::Conversations::test_pin_reorders_without_changing_focused_conversation() qml: BEFORE J false 2 null
+QDEBUG : qmltestrunner::Conversations::test_pin_reorders_without_changing_focused_conversation() qml: AFTER J 0 null
+FAIL!  : qmltestrunner::Conversations::test_pin_reorders_without_changing_focused_conversation() Compared values are not the same
+   Actual   (): 0
+   Expected (): 1
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_conversations.qml(107)]
+QDEBUG : qmltestrunner::Conversations::test_resize_compact_to_narrow_keeps_card_preference() qml: INIT true true true true true true true true false
+FAIL!  : qmltestrunner::Conversations::test_resize_compact_to_narrow_keeps_card_preference() 'function returned false' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_conversations.qml(171)]
+QDEBUG : qmltestrunner::Conversations::test_unread_and_mute_target_context_row_without_opening() qml: INIT true true true true true true true true false
+QDEBUG : qmltestrunner::Conversations::test_unread_and_mute_target_context_row_without_opening() qml: MENU false 0 false false
+FAIL!  : qmltestrunner::Conversations::test_unread_and_mute_target_context_row_without_opening() property opened
+   Actual   (): false
+   Expected (): true
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_conversations.qml(36)]
+PASS   : qmltestrunner::Conversations::cleanupTestCase()
+Totals: 6 passed, 8 failed, 0 skipped, 0 blacklisted, 36264ms
+********* Finished testing of qmltestrunner *********
+

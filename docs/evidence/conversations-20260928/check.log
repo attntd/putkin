@@ -1,0 +1,11 @@
+FAIL [imports/types, exit=255] /home/attntd/projects/putkin/tests/qml/tst_conversations.qml
+Warning: /home/attntd/projects/putkin/tests/qml/tst_conversations.qml:51:183: Member "enabled" not found on type "QObject" [missing-property]
+            (view.item as MessagesView).focusInitial(); wait(80); console.log("INIT", scene.Window.window.visible, scene.Window.window.active, scene.enabled, view.enabled, view.item.enabled, list().visible, list().enabled, list().focus, list().activeFocus);
+                                                                                                                                                                                      ^^^^^^^
+Warning: /home/attntd/projects/putkin/tests/qml/tst_conversations.qml:143:149: Member "composerFocusPending" not found on type "QObject" [missing-property]
+            console.log("HEAD", details.activeFocus, control("startCall").enabled, control("startCall").visible, service.calls.available, view.item.composerFocusPending);
+                                                                                                                                                    ^^^^^^^^^^^^^^^^^^^^
+Warning: /home/attntd/projects/putkin/tests/qml/tst_conversations.qml:144:100: Member "composerFocusPending" not found on type "QObject" [missing-property]
+            keyClick(Qt.Key_L); console.log("AFTER",scene.Window.window.activeFocusItem, view.item.composerFocusPending); verify(control("startCall").activeFocus);
+                                                                                                   ^^^^^^^^^^^^^^^^^^^^
+FAIL: 298 plików QML, 1 z błędami.

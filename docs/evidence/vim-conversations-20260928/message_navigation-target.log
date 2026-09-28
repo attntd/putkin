@@ -1,0 +1,11 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::MessageNavigation::initTestCase()
+QDEBUG : qmltestrunner::MessageNavigation::test_pointer_on_history_clears_bubble_keyboard_frame() qml: pointer focus 1 1 true messageBubble 5 5
+FAIL!  : qmltestrunner::MessageNavigation::test_pointer_on_history_clears_bubble_keyboard_frame() Compared values are not the same
+   Actual   (): 1
+   Expected (): 0
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_message_navigation.qml(113)]
+PASS   : qmltestrunner::MessageNavigation::cleanupTestCase()
+Totals: 2 passed, 1 failed, 0 skipped, 0 blacklisted, 692ms
+********* Finished testing of qmltestrunner *********

@@ -1,0 +1,86 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::MessageNavigation::initTestCase()
+PASS   : qmltestrunner::MessageNavigation::test_i_from_attachment_and_header()
+PASS   : qmltestrunner::MessageNavigation::test_keyboard_entry_normal(980-76)
+PASS   : qmltestrunner::MessageNavigation::test_keyboard_entry_normal(980-16777220)
+PASS   : qmltestrunner::MessageNavigation::test_keyboard_entry_normal(980-16777221)
+PASS   : qmltestrunner::MessageNavigation::test_keyboard_entry_normal(320-76)
+PASS   : qmltestrunner::MessageNavigation::test_keyboard_entry_normal(320-16777220)
+PASS   : qmltestrunner::MessageNavigation::test_keyboard_entry_normal(320-16777221)
+PASS   : qmltestrunner::MessageNavigation::test_mouse_enters_insert_without_keyboard_frame()
+PASS   : qmltestrunner::MessageNavigation::test_navigation_editor_attachment_bubbles_and_insert()
+PASS   : qmltestrunner::MessageNavigation::test_normal_does_not_type_or_send_and_insert_keeps_shift_enter()
+PASS   : qmltestrunner::MessageNavigation::test_normal_search_keeps_literal_letters()
+PASS   : qmltestrunner::MessageNavigation::test_refresh_and_pagination_keep_bubble_identity_and_insert_focus()
+PASS   : qmltestrunner::MessageNavigation::test_space_reaction_returns_to_same_bubble()
+PASS   : qmltestrunner::MessageNavigation::cleanupTestCase()
+Totals: 15 passed, 0 failed, 0 skipped, 0 blacklisted, 8175ms
+********* Finished testing of qmltestrunner *********
+
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::Messages::initTestCase()
+PASS   : qmltestrunner::Messages::test_bubble_width(320-incoming)
+PASS   : qmltestrunner::Messages::test_bubble_width(320-outgoing)
+PASS   : qmltestrunner::Messages::test_bubble_width(640-incoming)
+PASS   : qmltestrunner::Messages::test_bubble_width(640-outgoing)
+PASS   : qmltestrunner::Messages::test_bubble_width(980-incoming)
+PASS   : qmltestrunner::Messages::test_bubble_width(980-outgoing)
+PASS   : qmltestrunner::Messages::test_bubble_width(1600-incoming)
+PASS   : qmltestrunner::Messages::test_bubble_width(1600-outgoing)
+PASS   : qmltestrunner::Messages::test_burst_refresh_queue_and_missing_target()
+PASS   : qmltestrunner::Messages::test_delayed_draft_focus_and_escape_cancels_pending_focus()
+PASS   : qmltestrunner::Messages::test_draft_pending_switch_and_window_recreation()
+PASS   : qmltestrunner::Messages::test_escape_focus_stays_on_selected_tile(wide)
+PASS   : qmltestrunner::Messages::test_escape_focus_stays_on_selected_tile(narrow)
+PASS   : qmltestrunner::Messages::test_initial_list_and_conversation_navigation(wide)
+PASS   : qmltestrunner::Messages::test_initial_list_and_conversation_navigation(narrow)
+PASS   : qmltestrunner::Messages::test_keyboard_send_shift_enter_and_ime_guard()
+PASS   : qmltestrunner::Messages::test_new_conversation_small_layout_disabled_send()
+FAIL!  : qmltestrunner::Messages::test_open_and_reopen_at_latest(wide) 'verify()' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_messages.qml(340)]
+FAIL!  : qmltestrunner::Messages::test_open_and_reopen_at_latest(narrow) 'verify()' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_messages.qml(340)]
+PASS   : qmltestrunner::Messages::test_open_before_view_and_delayed_history(loaded)
+PASS   : qmltestrunner::Messages::test_open_before_view_and_delayed_history(delayed)
+PASS   : qmltestrunner::Messages::test_pointer_selection_has_no_keyboard_outline()
+PASS   : qmltestrunner::Messages::test_reopen_defaults_to_list_and_explicit_route_to_editor()
+PASS   : qmltestrunner::Messages::test_route_scope_and_stale_replies()
+PASS   : qmltestrunner::Messages::test_scroll_anchor_pagination_and_incoming()
+PASS   : qmltestrunner::Messages::test_scrollbar_hides_at_rest_and_hover_and_shows_for_keyboard()
+PASS   : qmltestrunner::Messages::test_search_names_numbers_group_authors_and_accents()
+PASS   : qmltestrunner::Messages::cleanupTestCase()
+Totals: 27 passed, 2 failed, 0 skipped, 0 blacklisted, 28896ms
+********* Finished testing of qmltestrunner *********
+
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::SignalInteractions::initTestCase()
+PASS   : qmltestrunner::SignalInteractions::test_edit_cancel_and_error_keep_normal_draft_and_keyboard_semantics()
+PASS   : qmltestrunner::SignalInteractions::test_inline_mention_replaces_token_at_cursor_in_edit_and_shifts_utf16_ranges()
+PASS   : qmltestrunner::SignalInteractions::test_inline_mentions_escape_shift_enter_email_and_route_change()
+PASS   : qmltestrunner::SignalInteractions::test_inline_mentions_filter_keyboard_menu_and_pointer_focus()
+PASS   : qmltestrunner::SignalInteractions::test_picker_and_saved_composition_survive_adapter_recreation()
+PASS   : qmltestrunner::SignalInteractions::test_react_replace_remove_quote_and_unicode_mention()
+PASS   : qmltestrunner::SignalInteractions::test_safe_styles_and_live_accents()
+PASS   : qmltestrunner::SignalInteractions::test_typing_only_focused_editor_rate_limited_and_stops_on_blur_lock_send()
+PASS   : qmltestrunner::SignalInteractions::cleanupTestCase()
+Totals: 10 passed, 0 failed, 0 skipped, 0 blacklisted, 5333ms
+********* Finished testing of qmltestrunner *********
+
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::SignalCalls::initTestCase()
+PASS   : qmltestrunner::SignalCalls::test_dnd_keeps_incoming_call_in_hub_without_toast()
+PASS   : qmltestrunner::SignalCalls::test_incoming_notice_actions_and_redaction_on_lock_and_end()
+PASS   : qmltestrunner::SignalCalls::test_keyboard_accept_mute_hangup_and_mouse_clears_focus(wide)
+PASS   : qmltestrunner::SignalCalls::test_keyboard_accept_mute_hangup_and_mouse_clears_focus(narrow)
+PASS   : qmltestrunner::SignalCalls::test_locked_and_stale_status_never_accept_or_revive()
+PASS   : qmltestrunner::SignalCalls::test_start_scoped_call_and_hide_for_groups()
+PASS   : qmltestrunner::SignalCalls::test_typing_keeps_hjkl_and_call_survives_window_recreation()
+PASS   : qmltestrunner::SignalCalls::test_vim_from_history_to_call_and_details()
+PASS   : qmltestrunner::SignalCalls::cleanupTestCase()
+Totals: 10 passed, 0 failed, 0 skipped, 0 blacklisted, 1319ms
+********* Finished testing of qmltestrunner *********
+

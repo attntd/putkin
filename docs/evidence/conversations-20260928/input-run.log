@@ -1,0 +1,6 @@
+conversationList direction=-1 release=1568 after80=1659.18 after160=1738.19 velocity80=1051.23 velocity160=928.95
+conversationList direction=1 release=1232 after80=1167.62 after160=1085.46 velocity80=1017.88 velocity160=895.575
+conversationList direction=-1 release=1568 after80=1643.78 after160=1716.8 velocity80=1045.01 velocity160=929.374
+conversationList direction=1 release=1232 after80=1134.62 after160=1053.23 velocity80=1067.56 velocity160=943.9
+PASS: conversationList: both directions, Wayland mouse/touchpad devices, deceleration, pause, interruption, keyboard, wheel and bounds
+FAIL: scrollbar is visible during momentum

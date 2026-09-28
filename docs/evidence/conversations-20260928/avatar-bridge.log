@@ -1,0 +1,7 @@
+test_partial_create_preserves_real_group_id_and_avatar_is_private (test_signal_groups.GroupTests.test_partial_create_preserves_real_group_id_and_avatar_is_private) ... ok
+test_profile_number_and_avatar_changes_do_not_replace_direct_conversation (test_signal_groups.GroupTests.test_profile_number_and_avatar_changes_do_not_replace_direct_conversation) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 3.235s
+
+OK

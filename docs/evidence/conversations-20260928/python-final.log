@@ -1,0 +1,13 @@
+test_archive_layout_and_read_through_production_transport (test_signal_conversations.ConversationBridgeTests.test_archive_layout_and_read_through_production_transport) ... ok
+test_archive_preserves_history_draft_and_survives_restart (test_signal_conversations.ConversationStoreTests.test_archive_preserves_history_draft_and_survives_restart) ... ok
+test_invalid_and_foreign_route_do_not_mutate_preferences (test_signal_conversations.ConversationStoreTests.test_invalid_and_foreign_route_do_not_mutate_preferences) ... ok
+test_layout_is_typed_persistent_and_scoped_to_account (test_signal_conversations.ConversationStoreTests.test_layout_is_typed_persistent_and_scoped_to_account) ... ok
+test_manual_unread_does_not_revert_receipts (test_signal_conversations.ConversationStoreTests.test_manual_unread_does_not_revert_receipts) ... ok
+test_only_new_message_restores_archive_and_muted_stays_archived (test_signal_conversations.ConversationStoreTests.test_only_new_message_restores_archive_and_muted_stays_archived) ... ok
+test_pin_unarchives_and_archiving_unpins (test_signal_conversations.ConversationStoreTests.test_pin_unarchives_and_archiving_unpins) ... ok
+test_v8_hidden_migrates_to_archive_without_loss (test_signal_conversations.ConversationStoreTests.test_v8_hidden_migrates_to_archive_without_loss) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 1.129s
+
+OK
