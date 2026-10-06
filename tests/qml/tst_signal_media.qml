@@ -91,10 +91,13 @@ Item {
             tryVerify(() => control("mediaPreview") !== null && control("closeMediaPreview").activeFocus);
             compare(control("attachmentFilename").text, data.filename);
             compare(control("attachmentSize").text, "2.0 KiB");
-            verify(control("saveMedia").visible && control("openMedia").visible);
-            control("openMedia").click();
-            const open = backend.calls.filter(c => c.method === "attachment.open");
-            compare(open.length, 1); compare(open[0].params.attachmentId, "photo");
+            verify(control("saveMedia").visible);
+            compare(control("openMedia").visible, !data.image);
+            if (!data.image) {
+                control("openMedia").click();
+                const open = backend.calls.filter(c => c.method === "attachment.open");
+                compare(open.length, 1); compare(open[0].params.attachmentId, "photo");
+            }
             wait(250); keyClick(Qt.Key_Escape);
             tryVerify(() => !(view.item as MessagesView).previewAttachment);
             verify(thumbnail.activeFocus);
@@ -111,10 +114,10 @@ Item {
             verify(control("closeMediaPreview").activeFocus);
             compare(control("closeMediaPreview").focusReason, Qt.MouseFocusReason);
             keyClick(Qt.Key_Tab); verify(control("saveMedia").activeFocus);
-            keyClick(Qt.Key_Tab); verify(control("openMedia").activeFocus);
             keyClick(Qt.Key_Tab); verify(control("closeMediaPreview").activeFocus);
-            keyClick(Qt.Key_Backtab); verify(control("openMedia").activeFocus);
+            keyClick(Qt.Key_Backtab); verify(control("saveMedia").activeFocus);
             keyClick(Qt.Key_Tab); verify(control("closeMediaPreview").activeFocus);
+            tryCompare(control("mediaOverlay"), "opacity", 1);
             settings.beginEdit(); waitForRendering(surface); const original = grabImage(surface);
             settings.setColor("accent", "#89b4fa"); settings.setColor("accentSecondary", "#f38ba8");
             waitForRendering(surface); const changed = grabImage(surface); verify(!original.equals(changed));

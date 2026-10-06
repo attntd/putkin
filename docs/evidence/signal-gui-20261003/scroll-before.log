@@ -1,0 +1,11 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::Messages::initTestCase()
+FAIL!  : qmltestrunner::Messages::test_follow_end_survives_resize_and_incoming_in_same_turn() 'function returned false' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_messages.qml(323)]
+FAIL!  : qmltestrunner::Messages::test_metadata_refresh_preserves_following_and_keyboard_focus() 'restoring focus after a receipt must not disable tail following' returned FALSE. ()
+   Loc: [/home/attntd/projects/putkin/tests/qml/tst_messages.qml(348)]
+PASS   : qmltestrunner::Messages::cleanupTestCase()
+Totals: 2 passed, 2 failed, 0 skipped, 0 blacklisted, 6590ms
+********* Finished testing of qmltestrunner *********
+QtTest exit: 2

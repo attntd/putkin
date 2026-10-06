@@ -131,6 +131,25 @@ class ReceiptTests(unittest.TestCase):
         self.store.receive(self.account, read_sync([t]))
         self.assertEqual(self.store.conversation_item(self.account, self.conversation())["unreadCount"], 1)
 
+    def test_technical_events_never_leave_a_permanent_unread_count(self):
+        cid = self.conversation()
+        for i in range(15):
+            wire = event(timestamp=1790000003000 + i)
+            wire["params"]["result"]["envelope"]["dataMessage"]["message"] = None
+            self.store.receive(self.account, wire)
+        self.assertEqual({m["kind"] for m in self.messages(cid)}, {"event"})
+        self.assertFalse(any(name == "message.received" for name, _ in self.changes))
+        self.assertEqual(self.store.conversation_item(self.account, cid)["unreadCount"], 0)
+        self.assertTrue(all(not m["unread"] for m in self.messages(cid)))
+        self.store.receive(self.account, event(timestamp=1790000004000))
+        latest = self.messages(cid)[0]["messageId"]
+        self.assertEqual(self.store.conversation_item(self.account, cid)["unreadCount"], 1)
+        reads.mark_visible(self.store, self.account, {"conversationId": cid, "throughMessageId": latest})
+        self.assertEqual(reads.next_batch(self.store, self.account)["targetTimestamp"], [1790000004000])
+        self.reopen()
+        self.assertEqual(self.store.conversation_item(self.account, cid)["unreadCount"], 0)
+        self.assertEqual(len(self.messages(cid)), 16)
+
     def test_receipt_scope_account_direction_recipient_and_missing_aci(self):
         t = 1790000002000
         mid = self.sent(t)

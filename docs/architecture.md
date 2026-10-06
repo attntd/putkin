@@ -1,5 +1,20 @@
 # Architektura Putkin
 
+## Odczyt i zdjęcia Signal — 2026-10-03
+
+`signal_store` stosuje te same rodzaje `text`/`media` dla licznika,
+flagi `unread` i zdarzenia powiadomienia, co istniejący reducer odczytu.
+Korekta działa także dla starych rekordów `event`, bez migracji ani
+modyfikowania ich treści. `MessageHistory` zachowuje zamiar podążania
+za końcem przez układ i odtworzenie fokusu; ręczne wejście przerywa go.
+Zmiana geometrii delegata planuje wspólne pozycjonowanie i odczyt.
+
+`AttachmentCard` i `MediaPreview` dekodują sprawdzony oryginał z magazynu
+mediów do rozmiaru odpowiadającego ekranowi. Zachowują asynchroniczne
+ładowanie, brak cache, orientację EXIF i filtrowanie. Błąd walidacji
+mediów blokuje dekodowanie oryginału. Nakładka informacji nie zmniejsza
+obszaru zdjęcia; istniejące kontrolki utrzymują wspólny fokus i gradient.
+
 ## Nawigacja rozmowy i pisanie — 2026-09-28
 
 `MessagesView` przekazuje sposób wejścia z listy do `MessageComposer`.

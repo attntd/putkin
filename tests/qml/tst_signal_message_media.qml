@@ -53,6 +53,15 @@ Item {
             waitForRendering(view.item);
             grabImage(view.item).save(Qt.resolvedUrl("../../docs/evidence/signal-message-polish-20260926/" + name + ".png").toString().replace("file://", ""));
         }
+        function savePreview(name) {
+            if (Screen.devicePixelRatio !== 1) return;
+            let captured = false;
+            (view.item as MessagesView).grabToImage(result => {
+                result.saveToFile(Qt.resolvedUrl("../../artifacts/signal-gui-20261003/" + name + ".png").toString().replace("file://", ""));
+                captured = true;
+            });
+            tryVerify(() => captured);
+        }
         function test_photo_is_edge_to_edge_without_placeholder_data() {
             return [{tag: "wide-incoming", width: 980, outgoing: false}, {tag: "narrow-outgoing", width: 320, outgoing: true}];
         }
@@ -87,6 +96,81 @@ Item {
             compare(adapter.messages.get(0).text, "Załącznik z wakacji 🐈");
             verify(body.y >= gallery.y + gallery.height);
             save("photo-caption");
+        }
+        function test_original_pixels_and_resolution_in_bubble_and_preview() {
+            const original = attachment("detail.png");
+            // Deliberately different low-resolution derivatives: decoding one
+            // of them must fail both the pixel and effective resolution checks.
+            original.preview = original.thumbnail;
+            openMedia([original]);
+            const thumb = control("attachmentThumbnail");
+            tryCompare(thumb, "status", Image.Ready);
+            verify(thumb.implicitWidth >= thumb.width * Screen.devicePixelRatio - 2);
+            waitForRendering(thumb);
+            let pixels = grabImage(view.item);
+            const sample = thumb.mapToItem(view.item, thumb.width / 4, thumb.height / 2);
+            compare(pixels.pixel(Math.floor(sample.x * Screen.devicePixelRatio), Math.floor(sample.y * Screen.devicePixelRatio)),
+                Qt.rgba(32 / 255, 224 / 255, 64 / 255, 1));
+            const trigger = control("previewAttachment");
+            mouseClick(trigger, trigger.width / 2, trigger.height / 2);
+            tryVerify(() => control("attachmentImage") !== null);
+            const image = control("attachmentImage"), surface = control("mediaPreview");
+            tryCompare(image, "status", Image.Ready);
+            tryCompare(surface, "opacity", 1);
+            compare(image.width, surface.width); compare(image.height, surface.height);
+            verify(image.implicitWidth >= image.paintedWidth * Screen.devicePixelRatio - 2);
+            verify(image.implicitHeight >= image.paintedHeight * Screen.devicePixelRatio - 2);
+            waitForRendering(image);
+            pixels = grabImage(image);
+            compare(pixels.pixel(Math.floor(pixels.width / 4), Math.floor(pixels.height / 2)), Qt.rgba(32 / 255, 224 / 255, 64 / 255, 1));
+            verify(!control("openMedia").visible);
+        }
+        function test_photo_overlays_hover_keyboard_and_pointer_focus() {
+            openMedia([attachment("detail.png")]);
+            const trigger = control("previewAttachment");
+            mouseClick(trigger, trigger.width / 2, trigger.height / 2);
+            tryVerify(() => control("mediaPreview") !== null);
+            const surface = control("mediaPreview"), overlay = control("mediaOverlay"), image = control("attachmentImage");
+            tryCompare(image, "status", Image.Ready);
+            tryCompare(surface, "opacity", 1);
+            mouseMove(scene, -20, -20);
+            tryCompare(overlay, "opacity", 0);
+            waitForRendering(view.item);
+            savePreview("image-clean");
+            verify(!findChild(control("closeMediaPreview"), "focusIndicator").visible);
+            mouseMove(surface, surface.width / 2, surface.height / 2);
+            tryCompare(overlay, "opacity", 1);
+            waitForRendering(view.item);
+            savePreview("image-hover");
+            const filename = control("attachmentFilename"), close = control("closeMediaPreview"), saveButton = control("saveMedia");
+            const top = filename.mapToItem(image, 0, 0), bottom = close.mapToItem(image, 0, close.height);
+            verify(top.y >= (image.height - image.paintedHeight) / 2);
+            verify(bottom.y <= (image.height + image.paintedHeight) / 2);
+            verify(top.y < image.height / 2 && bottom.y > image.height / 2);
+            mouseMove(scene, -20, -20); tryCompare(overlay, "opacity", 0);
+            keyClick(Qt.Key_Tab);
+            verify(saveButton.activeFocus); tryCompare(overlay, "opacity", 1);
+            keyClick(Qt.Key_L); verify(close.activeFocus);
+            keyClick(Qt.Key_H); verify(saveButton.activeFocus);
+            mouseClick(surface, surface.width / 2, surface.height / 2);
+            verify(!findChild(saveButton, "focusIndicator").visible);
+            mouseMove(scene, -20, -20); tryCompare(overlay, "opacity", 0);
+            mouseMove(close, close.width / 2, close.height / 2);
+            tryCompare(overlay, "opacity", 1);
+            mouseClick(close, close.width / 2, close.height / 2);
+            tryVerify(() => !(view.item as MessagesView).previewAttachment);
+        }
+        function test_rejected_image_never_decodes_original() {
+            const rejected = attachment("detail.png");
+            rejected.errorCode = "media_dimensions";
+            rejected.thumbnail = ""; rejected.preview = "";
+            openMedia([rejected]);
+            compare(control("attachmentThumbnail").status, Image.Null);
+            const trigger = control("previewAttachment");
+            mouseClick(trigger, trigger.width / 2, trigger.height / 2);
+            tryVerify(() => control("mediaPreview") !== null);
+            compare(control("attachmentImage").status, Image.Null);
+            verify(control("mediaPreview").decoderFailed);
         }
         function test_photo_mosaic_keeps_all_files_clickable_data() {
             return [2, 3, 4, 5, 7].map(count => ({tag: String(count), count: count}));

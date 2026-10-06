@@ -1,5 +1,20 @@
 # Wygląd i zakres Putkin
 
+## Zdjęcia i nieprzeczytane Signal — 2026-10-03
+
+Licznik nieprzeczytanych obejmuje przychodzący tekst i zwykłe media.
+Wpisy techniczne i oznaczenia nieobsługiwanej treści nie są wiadomościami
+do przeczytania. Ręczne przewinięcie historii zachowuje pozycję przy nowych
+wiadomościach; pozostanie na końcu podąża za nimi również po zmianie
+wysokości okna, edytora i asynchronicznym załadowaniu zdjęcia.
+
+Dymek i powiększenie pokazują oryginalne zdjęcie, z uwzględnieniem skali
+ekranu i orientacji. Obraz zajmuje cały dostępny obszar z zachowaniem proporcji.
+Nazwa i rozmiar u góry, Zapisz/Zamknij u dołu są nakładkami na obraz,
+widocznymi po najechaniu. Nie ma dodatkowych pasków ani „Otwórz” dla zdjęć.
+Nawigacja klawiaturą również ujawnia akcje; kliknięcie usuwa ramkę fokusu.
+Escape nadal zamyka podgląd. Bez dodatkowych tekstów i tooltipów.
+
 ## Karty i nagłówek rozmów — 2026-09-28
 
 Lista rozwinięta ma awatar, nazwę, podgląd treści, licznik nieprzeczytanych

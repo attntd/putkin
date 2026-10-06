@@ -1,0 +1,9 @@
+{
+  "files": [
+    "modules/messages/AttachmentCard.qml",
+    "modules/messages/MediaPreview.qml",
+    "modules/messages/MessageHistory.qml",
+    "services/signal_store.py"
+  ],
+  "runtimeFiles": 409
+}

@@ -1,0 +1,10 @@
+********* Start testing of qmltestrunner *********
+Config: Using QtTest library 6.11.2, Qt 6.11.2 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 16.2.1 20260810), arch unknown
+PASS   : qmltestrunner::SignalMessageMedia::initTestCase()
+QINFO  : qmltestrunner::SignalMessageMedia::test_original_pixels_and_resolution_in_bubble_and_preview() qt.multimedia.ffmpeg: Using Qt multimedia with FFmpeg version n9.0.2 GPL version 3 or later
+PASS   : qmltestrunner::SignalMessageMedia::test_original_pixels_and_resolution_in_bubble_and_preview()
+PASS   : qmltestrunner::SignalMessageMedia::test_photo_overlays_hover_keyboard_and_pointer_focus()
+PASS   : qmltestrunner::SignalMessageMedia::cleanupTestCase()
+Totals: 4 passed, 0 failed, 0 skipped, 0 blacklisted, 3419ms
+********* Finished testing of qmltestrunner *********
+QtTest exit: 0

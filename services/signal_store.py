@@ -294,7 +294,9 @@ class Store:
         contact = next((v for v in directory["contacts"] if v["serviceId"] == row["target"]), {})
         group = next((v for v in directory["groups"] if v["groupId"] == row["target"]), {})
         title = group.get("name") if row["kind"] == "group" else contact.get("name") or contact.get("profileName") or contact.get("number")
-        unread = self.db.execute("SELECT COUNT(*) FROM messages WHERE conversation_id=? AND direction='incoming' AND read_at_ms IS NULL AND kind NOT IN ('deleted','expired')", (cid,)).fetchone()[0]
+        # Match the kinds accepted by mark_visible. Technical/unsupported
+        # records have no readable payload and must not leave a stuck badge.
+        unread = self.db.execute("SELECT COUNT(*) FROM messages WHERE conversation_id=? AND direction='incoming' AND read_at_ms IS NULL AND kind IN ('text','media')", (cid,)).fetchone()[0]
         last = self.db.execute("SELECT message_id,body,kind FROM messages WHERE conversation_id=? AND hidden_local=0 ORDER BY order_sequence DESC,message_id DESC LIMIT 1", (cid,)).fetchone()
         return {"conversationId": cid, "kind": row["kind"], "target": row["target"],
                 "title": title or row["title"] or ("Notatka" if row["kind"] == "note" else row["target"]),
@@ -462,7 +464,7 @@ class Store:
             signal_retention.start(self, account, mid, event["expiration_start_ms"])
         current = self.db.execute("SELECT read_at_ms,kind FROM messages WHERE message_id=?", (mid,)).fetchone()
         read, kind = current["read_at_ms"], current["kind"]
-        if event["direction"] == "incoming" and event["origin"] == "remote" and read is None and kind not in ("deleted", "expired", "edit_unsupported"):
+        if event["direction"] == "incoming" and event["origin"] == "remote" and read is None and kind in ("text", "media"):
             self.changed("message.received", accountId=account, conversationId=cid, messageId=mid)
 
     def draft(self, account, cid):
@@ -511,7 +513,7 @@ class Store:
                 "sentTimestampMs": row["sent_ms"], "sortTimestampMs": row["sort_ms"], "orderSequence": row["order_sequence"], "direction": row["direction"],
                 "origin": row["origin"], "kind": row["kind"], "text": row["body"], **signal_receipts.summary(self, account, row),
                 "operationId": operation[0] if operation else "", "safeRetry": bool(operation and operation[1]),
-                "readAtMs": row["read_at_ms"], "unread": row["direction"] == "incoming" and row["read_at_ms"] is None and row["kind"] not in ("deleted", "expired"),
+                "readAtMs": row["read_at_ms"], "unread": row["direction"] == "incoming" and row["read_at_ms"] is None and row["kind"] in ("text", "media"),
                 "hiddenLocal": bool(row["hidden_local"]), "expirationSeconds": row["expiration_seconds"], "expirationStartMs": row["expiration_start_ms"],
                 "canDeleteLocal": not row["hidden_local"], "canDeleteRemote": signal_retention.can_remote_delete(self, account, row),
                 "conflict": bool(row["conflict"]), "expiresAtMs": row["expires_at_ms"], "attachments": media,

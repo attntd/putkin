@@ -90,9 +90,14 @@ ListView {
     keyNavigationEnabled: false
     Keys.forwardTo: [historyInput]
     UI.ControlInput { id: historyInput; control: root }
-    UI.KineticScroll { id: scroll; flickable: root }
-    Controls.ScrollBar.vertical: UI.ScrollBar {}
-    function focusMessage(index: int, reason = Qt.TabFocusReason): void {
+    UI.KineticScroll { id: scroll; flickable: root; onActiveChanged: if (active) root.followEnd = false }
+    Controls.ScrollBar.vertical: UI.ScrollBar {
+        onPressedChanged: {
+            root.followEnd = !pressed && root.endVisible();
+            if (!pressed) root.scheduleEnd();
+        }
+    }
+    function focusMessage(index: int, reason = Qt.TabFocusReason, reveal = true): void {
         scroll.reset(); cancelFlick();
         if (index < 0) {
             const target = headerItem && headerItem.visible && headerItem.enabled ? headerItem : upTarget;
@@ -100,10 +105,10 @@ ListView {
             return;
         }
         if (index >= count) { composeRequested(false); return; }
-        followEnd = false;
+        if (reveal) followEnd = false;
         currentIndex = index;
         focusedMessageId = adapter.messages.get(index).messageId;
-        positionViewAtIndex(index, ListView.Contain); forceLayout();
+        if (reveal) { positionViewAtIndex(index, ListView.Contain); forceLayout(); }
         const item = itemAtIndex(index) as MessageRow;
         if (item) { root.focusReason = reason; item.focusReason = reason; item.forceActiveFocus(reason); }
     }
@@ -196,12 +201,14 @@ ListView {
         return atYEnd || (last !== null && last.y + last.height <= contentY + height + 2);
     }
     function capture(reset: bool): void {
-        if (restoring || releasing) return;
+        if (releasing || (restoring && !reset)) return;
         restoringMessageFocus = !reset && root.activeFocus && root.Window.window
             && root.Window.window.activeFocusItem && root.Window.window.activeFocusItem.objectName === "messageBubble";
         focusIndex = currentIndex;
         if (reset) focusedMessageId = "";
-        followEnd = reset || endVisible() || count === 0;
+        // A resize or a late image layout can move the geometric end before
+        // the queued settle runs. Only user navigation cancels that intent.
+        followEnd = reset || followEnd || endVisible() || count === 0;
         anchorId = "";
         for (let i = 0; i < count; i++) {
             const item = itemAtIndex(i);
@@ -230,7 +237,7 @@ ListView {
         if (restoringMessageFocus && activeFocus) {
             let index = -1;
             for (let i = 0; i < count; i++) if (adapter.messages.get(i).messageId === focusedMessageId) { index = i; break; }
-            focusMessage(index >= 0 ? index : Math.min(focusIndex, count - 1));
+            focusMessage(index >= 0 ? index : Math.min(focusIndex, count - 1), Qt.TabFocusReason, !followEnd);
         }
         restoringMessageFocus = false;
     }
@@ -241,7 +248,7 @@ ListView {
         if (!releasing && followEnd) Qt.callLater(settleCallback);
     }
     onMovementStarted: followEnd = false
-    onMovementEnded: followEnd = atYEnd
+    onMovementEnded: { followEnd = endVisible(); scheduleEnd(); }
     onContentHeightChanged: { scheduleEnd(); scheduleRead(); }
     Keys.onPressed: event => {
         root.focusReason = Qt.TabFocusReason;
@@ -323,6 +330,8 @@ ListView {
         readonly property bool newDay: index <= 0 || !root.adapter.messages.get(index - 1) || root.adapter.messages.get(index - 1).day !== day
         width: root.width
         height: column.height + (newDay ? 36 : 0)
+        onHeightChanged: { root.scheduleEnd(); root.scheduleRead(); }
+        onYChanged: if (index === root.count - 1) { root.scheduleEnd(); root.scheduleRead(); }
         HoverHandler { id: hover }
         MessageTools {
             id: tools

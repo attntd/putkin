@@ -14,7 +14,11 @@ Column {
     readonly property bool visual: /^(image|video)\//.test(attachment.content_type)
     readonly property bool video: /^video\//.test(attachment.content_type)
     readonly property bool audio: /^audio\//.test(attachment.content_type) || attachment.content_type === "application/ogg"
-    readonly property bool hasThumbnail: visual && !!(attachment.thumbnail || attachment.preview)
+    // Originals have already passed the backend's MIME/dimension checks.
+    // Keep video posters separate and never decode a rejected original here.
+    readonly property string imageSource: !video && visual && !attachment.errorCode && attachment.url
+        ? attachment.url : attachment.thumbnail || attachment.preview || ""
+    readonly property bool hasThumbnail: visual && !!imageSource
     readonly property bool ready: attachment.state === "ready"
     readonly property string sizeLabel: {
         const bytes = Number(attachment.size_bytes || 0);
@@ -48,10 +52,14 @@ Column {
                 objectName: "attachmentThumbnail"
                 anchors.fill: parent
                 visible: root.hasThumbnail
-                source: root.attachment.thumbnail || root.attachment.preview || ""
+                source: root.imageSource
                 asynchronous: true
                 cache: false
-                sourceSize: Qt.size(384, 384)
+                autoTransform: true
+                mipmap: true
+                retainWhileLoading: true
+                sourceSize: Qt.size(Math.max(1, Math.ceil(width * Screen.devicePixelRatio)),
+                    root.mediaHeight > 0 ? Math.max(1, Math.ceil(height * Screen.devicePixelRatio)) : -1)
                 fillMode: Image.PreserveAspectCrop
             }
             UI.Glyph {

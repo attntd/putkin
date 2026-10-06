@@ -1,0 +1,37 @@
+{
+  "versions": {
+    "Qt": "6.11.2",
+    "Quickshell": "0.3.1",
+    "Python": "3.14.7"
+  },
+  "check": "PUTKIN_QMLFORMAT=/usr/lib/qt6/bin/qmlformat PUTKIN_QMLLINT=/usr/lib/qt6/bin/qmllint python3 scripts/check",
+  "qmlRunner": "python3 docs/evidence/signal-gui-20261003/run-qml.py tests/qml/tst_<suite>.qml",
+  "suites": [
+    "messages",
+    "messages_controller",
+    "message_navigation",
+    "signal_receipts",
+    "signal_media",
+    "signal_message_media",
+    "signal_message_actions",
+    "signal_retention"
+  ],
+  "scales": [
+    "1",
+    "1.5",
+    "2"
+  ],
+  "scaleEnvironment": "PUTKIN_TEST_SCALE",
+  "python": "python3 -B -m unittest discover -s tests -p test_signal_<suite>.py -v",
+  "pythonSuites": [
+    "receipts",
+    "history",
+    "notifications"
+  ],
+  "integration": [
+    "python3 scripts/test-signal-receipts --output artifacts/signal-gui-20261003/receipts-integration.json",
+    "python3 scripts/test-signal-media --output artifacts/signal-gui-20261003/media-integration/report.json",
+    "python3 scripts/test-messages-input --output artifacts/signal-gui-20261003/input"
+  ],
+  "isolation": "private XDG/session D-Bus; offscreen/software; synthetic CLI and account; unavailable system bus and audio servers"
+}

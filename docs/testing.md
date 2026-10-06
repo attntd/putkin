@@ -1,5 +1,21 @@
 # Testowanie Putkin
 
+## Odczyt, przewijanie i zdjęcia Signal — 2026-10-03
+
+`test_signal_receipts.py` odtwarza 15 technicznych wpisów `event`, normalną
+wiadomość i odczyt do końca. Sprawdza licznik, brak fałszywych powiadomień,
+zakres receipts i ponowne otwarcie SQLite. `tst_messages.qml` sprawdza
+zmniejszenie viewportu jednocześnie z nową wiadomością, odświeżenie
+wiadomości z fokusem oraz ręczne kółko/suwak i zachowanie pozycji.
+
+`tst_signal_message_media.qml` używa syntetycznego `detail.png` 2400×1600:
+pola koloru, przezroczystości i drobnej szachownicy. Miniatura jest celowo
+innym obrazem. Test mierzy rozdzielczość dekodowania i rzeczywiste piksele,
+sprawdza hover, układ nad zdjęciem, h/l/Tab/Escape, brak „Otwórz”,
+ramkę po kliknięciu oraz odmowę dekodowania obrazu odrzuconego przez backend.
+Dodatkowe przebiegi obejmują skale 1,5 i 2. Testy używają prywatnych
+XDG/D-Bus i syntetycznego konta. [Wyniki](status.md#odczyt-przewijanie-i-zdjęcia-signal--2026-10-03).
+
 ## Nawigacja rozmowy i pisanie — 2026-09-28
 
 `tst_message_navigation.qml` wykonuje l/oba Entery w oknie 320/980 px,

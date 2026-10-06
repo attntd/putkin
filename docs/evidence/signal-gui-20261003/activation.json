@@ -1,0 +1,53 @@
+{
+  "build": "20261003-193722-632cf8f03eff",
+  "previous": "20260928-210607-4d3626da5e34",
+  "runtimeFiles": 409,
+  "runtimeMatchesSource": true,
+  "settingsPreserved": true,
+  "caffeinatePreserved": true,
+  "snapshots": [
+    {
+      "pid": 432095,
+      "instances": 1,
+      "signal": {
+        "state": "ready",
+        "accountState": "linked",
+        "schemaVersion": 9,
+        "cliVersion": "0.14.8",
+        "errorCode": "",
+        "eventErrorLocation": ""
+      },
+      "idleReady": true,
+      "lockAvailable": true,
+      "sessionError": "",
+      "notificationOwnerMatches": true,
+      "caffeinate": "off",
+      "qmlDiagnostics": 0,
+      "hyprlandConfigClean": true
+    },
+    {
+      "pid": 432095,
+      "instances": 1,
+      "signal": {
+        "state": "ready",
+        "accountState": "linked",
+        "schemaVersion": 9,
+        "cliVersion": "0.14.8",
+        "errorCode": "",
+        "eventErrorLocation": ""
+      },
+      "idleReady": true,
+      "lockAvailable": true,
+      "sessionError": "",
+      "notificationOwnerMatches": true,
+      "caffeinate": "off",
+      "qmlDiagnostics": 0,
+      "hyprlandConfigClean": true
+    }
+  ],
+  "unreadCountsByKind": {
+    "event": 15
+  },
+  "storedUnreadMessages": 0,
+  "passed": true
+}

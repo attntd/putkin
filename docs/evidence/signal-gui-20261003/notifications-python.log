@@ -1,0 +1,11 @@
+test_cas_account_scope_and_mute_are_persistent (test_signal_notifications.NotificationTests.test_cas_account_scope_and_mute_are_persistent) ... ok
+test_definite_failure_retries_existing_operation_and_keeps_text (test_signal_notifications.NotificationTests.test_definite_failure_retries_existing_operation_and_keeps_text) ... ok
+test_migration_v1_preserves_history_and_rolls_back_on_failure (test_signal_notifications.NotificationTests.test_migration_v1_preserves_history_and_rolls_back_on_failure) ... ok
+test_new_incoming_only_after_commit_without_duplicate_or_technical_toasts (test_signal_notifications.NotificationTests.test_new_incoming_only_after_commit_without_duplicate_or_technical_toasts) ... ok
+test_reply_separate_from_composer_stable_operation_and_success (test_signal_notifications.NotificationTests.test_reply_separate_from_composer_stable_operation_and_success) ... ok
+test_unknown_blocks_new_intent_and_retention_cleans_every_reply_copy (test_signal_notifications.NotificationTests.test_unknown_blocks_new_intent_and_retention_cleans_every_reply_copy) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.266s
+
+OK

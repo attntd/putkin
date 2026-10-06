@@ -327,6 +327,46 @@ Item {
             verify(last.y + last.height > history.contentY);
             verify(last.y + last.height <= history.contentY + history.height + 2);
         }
+        function test_follow_end_survives_resize_and_incoming_in_same_turn() {
+            choose(); verifyLatest();
+            const history = control("messageHistory");
+            verify(history.followEnd);
+            // The viewport can shrink before the deferred tail layout runs,
+            // e.g. while the composer expands and a message arrives together.
+            history.height -= 120;
+            adapter.merge([backend.message("chat-a", "during-resize", 1000)], false);
+            verifyLatest();
+            verify(history.followEnd);
+        }
+        function test_metadata_refresh_preserves_following_and_keyboard_focus() {
+            choose(); verifyLatest();
+            const history = control("messageHistory"), last = history.count - 1;
+            history.focusMessage(last);
+            adapter.merge([backend.history["chat-a"][179]], false);
+            tryCompare(history, "restoring", false);
+            verify(history.itemAtIndex(last).activeFocus);
+            verify(history.followEnd, "restoring focus after a receipt must not disable tail following");
+            history.height -= 120;
+            verifyLatest();
+        }
+        function test_manual_scroll_stops_following_new_messages_data() {
+            return [{tag: "wheel", drag: false}, {tag: "scrollbar", drag: true}];
+        }
+        function test_manual_scroll_stops_following_new_messages(data) {
+            choose(); verifyLatest();
+            const history = control("messageHistory"), before = history.contentY;
+            if (data.drag) {
+                const bar = history.ScrollBar.vertical;
+                mouseDrag(bar, bar.width / 2, bar.height * (bar.position + bar.size / 2), 0, -120);
+            } else mouseWheel(history, history.width / 2, history.height / 2, 0, 120);
+            tryVerify(() => history.contentY < before - 10);
+            tryCompare(history, "moving", false);
+            verify(!history.followEnd);
+            const anchor = history.contentY;
+            backend.incoming("chat-a");
+            tryCompare(history, "count", 51); wait(150);
+            verify(Math.abs(history.contentY - anchor) < 2);
+        }
         function test_open_and_reopen_at_latest_data() {
             return [{tag: "wide", width: 980}, {tag: "narrow", width: 320}];
         }

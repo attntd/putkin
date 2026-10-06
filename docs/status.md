@@ -1,5 +1,79 @@
 # Status implementacji
 
+## Odczyt, przewijanie i zdjęcia Signal — 2026-10-03
+
+**Wdrożone lokalnie: `20261003-193722-632cf8f03eff`.**
+
+Odczyt wyłącznie zagregowanych typów rekordów w lokalnej bazie potwierdził
+zgłoszenie: **15 nieprzeczytanych `event`, zero tekstów/mediów**. Licznik,
+flaga `unread` i zdarzenia powiadomień obejmują teraz te same rodzaje co
+odczyt (`text`/`media`). Stare wpisy pozostają w bazie, bez fałszywego „15”,
+bez migracji i bez wysyłania receipts dla zdarzeń technicznych.
+
+Dwa nowe testy odtworzyły utratę przewijania: zmniejszenie viewportu wraz
+z nową wiadomością i przywrócenie fokusu po aktualizacji metadanych.
+Oba przechodzą po poprawce. Zamiar pozostania na końcu przetrwał układ,
+załadowanie obrazu i odtworzenie fokusu. Ręczne kółko, suwak i klawiatura
+zachowują przeglądanie wcześniejszej historii.
+
+Dymek i powiększenie korzystają ze sprawdzonego oryginału, zamiast kopii
+JPEG 384/1600 px. Rozdzielczość dekodowania uwzględnia skalę ekranu;
+zachowano orientację, proporcje, przezroczystość i limit pamięci obrazu.
+Odrzuconego przez backend oryginału UI nie dekoduje. Nazwa/rozmiar są
+nad obrazem u góry, Zapisz/Zamknij u dołu, ujawniane przy hover lub
+nawigacji klawiaturą. Brak dodatkowych pasków i „Otwórz” dla zdjęć.
+Kliknięcie obrazu usuwa ramkę klawiatury. Nie dodano podpowiedzi.
+
+Wyniki w prywatnych XDG/D-Bus, z syntetycznym kontem i plikami:
+
+- `scripts/check`: **299 QML PASS**, zero błędów.
+- Osiem pakietów QML: **108 PASS**, zero pominięć; dodatkowo **2 przypadki**
+  ręcznego przewijania kółkiem/suwakiem PASS. Liczby QtTest obejmują
+  `initTestCase`/`cleanupTestCase`; dodatkowe dwa przypadki ich nie liczą.
+- Python: **19 receipts + 24 historii + 6 powiadomień = 49 PASS**.
+  Regresja technicznych zdarzeń sprawdza powiadomienia, odczyt i restart bazy.
+- Rzeczywiste piksele, rozdzielczość i hover: **PASS przy skali 1 / 1,5 / 2**.
+- `test-signal-receipts`: **7 scenariuszy PASS**; rzeczywiste okno,
+  SQLite, bridge, blokada/minimalizacja, odczyt do końca i reload.
+- `test-signal-media`: **4 scenariusze PASS**; staging, wysyłka do atrapy,
+  odebrany obraz, natywny podgląd i trwałość po reloadzie.
+- `test-messages-input`: **PASS** dla touchpada, kółka, bezwładności,
+  przerwania ruchem/klawiszem i granic. Integracje nie zostawiły procesów
+  potomnych ani błędów QML.
+
+[Dowody](evidence/signal-gui-20261003/). Pierwsze uruchomienie QtTest
+zablokował sandbox (socket D-Bus). Izolację zachowano poza tym ograniczeniem.
+PATH wskazywał Qt 5; użyto jawnych narzędzi Qt 6.11. Testy ujawniły też
+ramkę po kliknięciu tła podglądu — poprawiona. Asercję pikseli skorygowano
+o fizyczne współrzędne w skali ekranu, a zrzuty czekają na zakończony fade.
+Przed zmianą testy przewijania były czerwone; [log](evidence/signal-gui-20261003/scroll-before.log).
+
+Pierwsza aktywacja przeszła walidację paczki (187 QML), ale installer
+cofnął `current` po timeout gotowości sesji. Diagnoza: środowisko narzędzia
+miało stary `XDG_SESSION_ID`; backend logind zgłaszał `NoSuchSession`.
+Nowy i przywrócony shell ładowały QML bez błędów. Ponowienie używa
+identyfikatora odczytanego z procesu bieżącego Hyprlanda i zachowuje
+pełne bramki instalatora. [Pierwsza próba](evidence/signal-gui-20261003/install-initial.log).
+
+Aktywacja przez `scripts/install --shell-only --offline --no-prune --activate`
+zakończyła się **PASS**. **187 QML** przy pakowaniu, **409 plików runtime**
+zgodnych ze źródłami; zmienione są tylko cztery pliki klienta. Dwa odczyty
+w odstępie 10 s potwierdziły jedną stabilną instancję, jej własność
+powiadomień, Signal **ready/linked**, gotowość idle/lock, zero błędów QML
+i konfiguracji Hyprlanda. Suma ustawień, klawiatury i konfiguracji Signala
+pozostała zgodna; Caffeinate `off` zachowane. SQLite nadal **v9**.
+Zbiorczy odczyt bazy po aktualizacji: **15 `event`, 0 rzeczywistych
+nieprzeczytanych tekstów/mediów**. `previous` wskazuje
+`20260928-210607-4d3626da5e34`; starszych wydań nie usuwano.
+[Instalacja](evidence/signal-gui-20261003/install.log),
+[odbiór aktywnej wersji](evidence/signal-gui-20261003/activation.json),
+[podgląd bez nakładek](evidence/signal-gui-20261003/image-clean.png),
+[po najechaniu](evidence/signal-gui-20261003/image-hover.png).
+
+Nie wykonano nowej wymiany z prawdziwym telefonem ani ręcznego odbioru
+fotografii użytkownika. Testowe wysyłki trafiały do atrap; nie uruchomiono
+drugiego pełnego shella na pulpicie.
+
 ## Nawigacja rozmowy i pisanie — 2026-09-28
 
 **Wdrożone lokalnie: `20260928-210607-4d3626da5e34`.**

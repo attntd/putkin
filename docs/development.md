@@ -1,5 +1,23 @@
 # Środowisko i rozwój
 
+## Jakość zdjęć i historia Signal — 2026-10-03
+
+Lokalnie sprawdzono Qt **6.11.2**, Quickshell **0.3.1** i Python **3.14.7**.
+Przed zmianą zweryfikowano oficjalne API Qt 6.11:
+[Image](https://doc.qt.io/qt-6.11/qml-qtquick-image.html)
+(`sourceSize`, `autoTransform`, `mipmap`, `retainWhileLoading`),
+[Screen.devicePixelRatio](https://doc.qt.io/qt-6.11/qml-qtquick-screen.html),
+[ListView](https://doc.qt.io/qt-6.11/qml-qtquick-listview.html)
+(położenie i zmienna wysokość delegatów),
+[Flickable](https://doc.qt.io/qt-6.11/qml-qtquick-flickable.html)
+oraz [HoverHandler](https://doc.qt.io/qt-6.11/qml-qtquick-hoverhandler.html).
+
+Na tym hoście PATH wybierał narzędzia Qt 5. Testy używają jawnie
+`/usr/lib/qt6/bin/qmltestrunner`, a `scripts/check` override'ów
+`PUTKIN_QMLFORMAT=/usr/lib/qt6/bin/qmlformat` i
+`PUTKIN_QMLLINT=/usr/lib/qt6/bin/qmllint`. Prywatne XDG/D-Bus pozostają
+obowiązkowe; nie uruchamia się drugiego shella na aktywnym pulpicie.
+
 ## Nawigacja rozmowy i pisanie — 2026-09-28
 
 Ponownie sprawdzono lokalne Qt Quick/Test **6.11.2** i dokumentację Qt 6.11:

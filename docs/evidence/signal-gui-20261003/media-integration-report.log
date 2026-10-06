@@ -1,0 +1,19 @@
+bus:
+dbus-daemon[425143]: [session uid=1000 pid=425143 pidfd=4] Connection :1.1 (uid=1000 pid=425153 comm="/usr/bin/python3 -B /home/attntd/projects/putkin/s") became a monitor.
+dbus-daemon[425143]: [session uid=1000 pid=425143 pidfd=4] Monitoring connection :1.1 closed.
+dbus-daemon[425143]: [session uid=1000 pid=425143 pidfd=4] Connection :1.7 (uid=1000 pid=425420 comm="/usr/bin/python3 -B /home/attntd/projects/putkin/s") became a monitor.
+dbus-daemon[425143]: [session uid=1000 pid=425143 pidfd=4] Monitoring connection :1.7 closed.
+
+shell:
+  INFO: Launching config: "/home/attntd/projects/putkin/signal-media-test.qml"
+  INFO: Shell ID: "3118775252fc51eef9665026a6c54ae4" Path ID "3118775252fc51eef9665026a6c54ae4"
+  INFO: Saving logs to "/tmp/pk-s07-k6zv3luc/runtime/quickshell/by-id/k149chjcmt/log.qslog"
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks
+  INFO qt.multimedia.ffmpeg: Using Qt multimedia with FFmpeg version n9.0.2 GPL version 3 or later
+  WARN: This plugin does not support setting window masks
+  INFO: Reloading configuration...
+  INFO: Configuration Loaded
+  WARN: This plugin does not support setting window masks
+  WARN: This plugin does not support setting window masks

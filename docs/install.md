@@ -1,5 +1,22 @@
 # Instalacja Putkina
 
+## Poprawki GUI Signal — 2026-10-03
+
+Aktywne **`20261003-193722-632cf8f03eff`**, po `--shell-only --offline --no-prune --activate`.
+Pakowanie: **187 QML PASS**, **409 plików runtime** zgodnych ze źródłami.
+Zmieniły się cztery pliki: licznik nieprzeczytanych, przewijanie i zdjęcia.
+Dwa odczyty co 10 s: jeden stabilny shell, Signal `ready/linked`,
+gotowe idle/lock, poprawny właściciel powiadomień i brak błędów QML.
+Ustawienia, konfiguracja Signal, Caffeinate `off` i schemat SQLite v9
+zachowane. `previous`: `20260928-210607-4d3626da5e34`.
+
+Pierwsza próba cofnęła wydanie po timeout: narzędzie miało identyfikator
+nieistniejącej już sesji logind. Ponowienie z aktualnym środowiskiem
+bieżącego Hyprlanda przeszło wszystkie bramki instalatora.
+[Instalacja](evidence/signal-gui-20261003/install.log),
+[odbiór](evidence/signal-gui-20261003/activation.json),
+[testy i ograniczenia](status.md#odczyt-przewijanie-i-zdjęcia-signal--2026-10-03).
+
 ## Nawigacja rozmowy i pisanie — 2026-09-28
 
 Aktywne **`20260928-210607-4d3626da5e34`**, zainstalowane przez

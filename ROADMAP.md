@@ -1,5 +1,14 @@
 # Roadmapa Putkin
 
+## Wybrana korekta — odczyt, przewijanie i zdjęcia Signal, 2026-10-03
+
+**Wdrożone lokalnie: `20261003-193722-632cf8f03eff`.**
+
+Zakres zgłoszony przez użytkownika: trwały licznik nieprzeczytanych,
+podążanie za nową wiadomością, jakość zdjęć w dymku i powiększeniu
+oraz informacje i przyciski nakładane na obraz przy hover, bez „Otwórz”.
+Bez następnego etapu roadmapy. [Wyniki](docs/status.md#odczyt-przewijanie-i-zdjęcia-signal--2026-10-03).
+
 ## Wybrana korekta — nawigacja rozmowy i pisanie, 2026-09-28
 
 **Wdrożone lokalnie: `20260928-210607-4d3626da5e34`.**
